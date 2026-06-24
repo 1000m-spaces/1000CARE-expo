@@ -1,56 +1,41 @@
-import { Dimensions, StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
-const fullWidth = Dimensions.get('window').width
+import { StyleSheet } from 'react-native'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { fs, s } from '~/utils/responsive'
 
 export default StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    paddingBottom: 10,
-    backgroundColor: Colors.backgroundColor,
   },
   containerConfirm: {
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    backgroundColor: Colors.white,
-    marginTop: 12,
     flex: 1,
+    paddingHorizontal: s(20),
+    paddingTop: s(18),
   },
-  phoneContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent:'space-between',
+  card: {
+    borderRadius: s(28),
+    backgroundColor: liquidGlass.backgroundStrong,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    paddingHorizontal: s(18),
+    paddingTop: s(22),
+    paddingBottom: s(18),
+    ...liquidGlass.shadow,
   },
-  inputContainerStyle: {
-    borderWidth: 0,
-    borderColor: Colors.borderColor,
-    borderBottomWidth: 1,
-    marginBottom: 16,
-  },
-  labelStyle: {
-    color: Colors.textColor3,
-    fontWeight: 'normal',
-    fontSize: 12,
-    lineHeight: 20,
-  },
-  image: {
-    marginTop: 30,
-    marginBottom: 30,
-  },
-  buttonConfirm: {
-    flex: 1,
-    // justifyContent: 'flex-end',
-    width: fullWidth,
-  },
-  ml14: {
-    flex: 2,
-    marginLeft: 14,
-  },
-  formItem:{
-    flex: 1,
+  title: {
+    color: brandColors.textDark,
+    fontSize: fs(24),
+    lineHeight: fs(31),
+    fontWeight: '600',
   },
   message: {
-    marginBottom: 36,
-    color: Colors.textColor3,
-    lineHeight: 22,
+    marginTop: s(8),
+    marginBottom: s(12),
+    color: brandColors.muted,
+    fontSize: fs(14),
+    lineHeight: fs(21),
+    fontWeight: '600',
+  },
+  confirmButton: {
+    marginTop: s(18),
   },
 })

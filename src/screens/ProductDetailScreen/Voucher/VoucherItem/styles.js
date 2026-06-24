@@ -38,30 +38,30 @@ export default StyleSheet.create({
   },
   titleVoucher: {
     fontSize: 16,
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Roboto',
     color: Colors.textColor1,
-    fontWeight:'700',
+    fontWeight:'600',
     lineHeight: 24,
 
   },
   distributorName: {
     fontSize: 12,
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Roboto',
     color: '#8C8C8C',
     lineHeight: 18,
   },
   timeVoucher: {
     marginTop: 4,
     fontSize: 12,
-    fontFamily: 'Quicksand-Regular',
+    fontFamily: 'Roboto',
     color: '#7B7B7B',
   },
   codeOrder: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Roboto',
     color: '#4276FE',
   },
   expired: {
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Roboto',
     color: '#F5222D',
   },
   row: {
@@ -110,7 +110,7 @@ export default StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '600',
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Roboto',
   },
   saleOff: {
     width: 86,
@@ -131,7 +131,7 @@ export default StyleSheet.create({
   textSaleOff: {
     color: Colors.textColor1,
     fontSize: 14,
-    fontWeight: '400',
-    fontFamily: 'Quicksand-Medium',
+    fontWeight: 'normal',
+    fontFamily: 'Roboto',
   },
 })

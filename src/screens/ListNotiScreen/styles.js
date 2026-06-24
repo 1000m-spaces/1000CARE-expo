@@ -3,41 +3,43 @@ import { Fonts } from '~/assets/config'
 import Colors from '~/common/Colors/Colors'
 import dimen from '~/constants/dimens'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   hero: {
     marginHorizontal: s(16),
     marginTop: s(14),
     borderRadius: s(28),
     padding: s(20),
-    backgroundColor: brandColors.textDark,
-    ...brandShadow.soft,
+    backgroundColor: liquidGlass.backgroundTint,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.6,
-    color: brandColors.goldAccent,
+    color: brandColors.tealPrimary,
   },
   heroTitle: {
     marginTop: s(6),
     fontSize: fs(26),
     lineHeight: fs(32),
-    fontWeight: '900',
-    color: brandColors.surface,
+    fontWeight: '600',
+    color: brandColors.textDark,
   },
   heroSubtitle: {
     marginTop: s(8),
     fontSize: fs(13),
     lineHeight: fs(20),
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.68)',
+    color: brandColors.muted,
   },
   listContent: {
     paddingHorizontal: s(16),
@@ -47,15 +49,15 @@ const styles = StyleSheet.create({
   buttonItem: (read,isReadAll) => ({
     flexDirection: 'row',
     marginBottom: s(12),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
     alignItems: 'flex-start',
     paddingVertical: s(14),
     paddingRight: s(14),
     paddingLeft: s(14),
     borderRadius: s(22),
     borderWidth: 1,
-    borderColor: read || isReadAll ? brandColors.borderSoft : brandColors.tealLight,
-    ...brandShadow.soft,
+    borderColor: read || isReadAll ? liquidGlass.border : 'rgba(11,123,138,0.18)',
+    ...liquidGlass.shadow,
   }),
   statusRail: (read, isReadAll) => ({
     position: 'absolute',
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   }),
   title: {
     flex: 1,
-    fontWeight:'900',
+    fontWeight:'600',
     lineHeight: fs(21),
     fontSize: fs(15),
     fontFamily: Fonts.bold,
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
     height: s(46),
     width: s(46),
     borderRadius: s(17),
-    backgroundColor: read || isReadAll ? brandColors.background : brandColors.tealLight,
+    backgroundColor: read || isReadAll ? 'rgba(238,252,253,0.5)' : 'rgba(11,123,138,0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-start',
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     fontSize: fs(11),
     fontFamily: Fonts.base,
     color: brandColors.tealPrimary,
-    fontWeight: '800',
+    fontWeight: '600',
   },
 })
 export default styles

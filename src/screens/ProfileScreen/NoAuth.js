@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   eyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.4,
     color: brandColors.goldAccent,
   },
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     marginTop: s(4),
     fontSize: fs(20),
     lineHeight: fs(25),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.surface,
   },
   textNotification: {
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   textSignIn: {
     color: brandColors.textDark,
     fontSize: fs(14),
-    fontWeight: '800',
+    fontWeight: '600',
   },
   btnSignUp: {
     marginLeft: s(12),

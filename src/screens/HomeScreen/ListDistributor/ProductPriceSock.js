@@ -4,17 +4,18 @@ import { useSelector } from 'react-redux'
 import ProductItem from '~/common/ProductItem/ProductItem'
 import { DIMENS } from '~/constants/index'
 import { NAVIGATION_PRODUCT_LIST } from '~/navigation/routes'
-import { getListProductPriceSock } from '~/store/selector'
+import { getListProductPriceSockHome } from '~/store/selector'
 import { s, fs } from '~/utils/responsive'
+import { brandColors } from '~/design-system/tokens'
 
 const ProductPriceSock = ({ navigation, onFavorClick, onAddProduct, onMessage }) => {
-  const listProductPriceSock = useSelector(state => getListProductPriceSock(state))
+  const listProductPriceSock = useSelector(state => getListProductPriceSockHome(state))
   const safeList = Array.isArray(listProductPriceSock) ? listProductPriceSock : []
   if (safeList.length === 0) return null
 
   const productWidth = Math.round(DIMENS.common.WINDOW_WIDTH * 0.36)
   const snapToInterval = productWidth + 10
-  const listHeight = productWidth * 1.4 + 50 + 10
+  const listHeight = productWidth * 1.65 + 58 + s(14)
 
   return (
     <View style={styles.container}>
@@ -62,24 +63,15 @@ const ProductPriceSock = ({ navigation, onFavorClick, onAddProduct, onMessage })
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: s(20),
-    marginHorizontal: s(12),
-    marginBottom: s(12),
-    paddingTop: s(16),
-    shadowColor: '#EF4444',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 3,
-    overflow: 'hidden',
+    marginBottom: s(8),
+    paddingTop: s(2),
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: s(16),
-    marginBottom: s(12),
+    marginBottom: s(10),
   },
   headerLeft: {
     flexDirection: 'row',
@@ -95,8 +87,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: fs(13),
-    fontWeight: '800',
-    color: '#1A202C',
+    fontWeight: '600',
+    color: brandColors.textDark,
     letterSpacing: 0.5,
   },
   hotBadge: {
@@ -108,21 +100,21 @@ const styles = StyleSheet.create({
   },
   hotBadgeText: {
     fontSize: fs(10),
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#EF4444',
   },
   seeAllBtn: {
-    backgroundColor: '#FEF2F2',
+    backgroundColor: 'rgba(255,255,255,0.58)',
     paddingHorizontal: s(12),
     paddingVertical: s(6),
     borderRadius: s(20),
     borderWidth: 1,
-    borderColor: '#EF4444',
+    borderColor: 'rgba(239,68,68,0.3)',
   },
   seeAllText: {
     color: '#EF4444',
     fontSize: fs(12),
-    fontWeight: '700',
+    fontWeight: '600',
   },
 })
 

@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react'
-import { FlatList, View, TouchableOpacity, Image } from 'react-native'
+import React, { useState } from 'react'
+import { View, TouchableOpacity, Image } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Text } from '~/common/index'
 import PromotionItem from '~/common/PromotionItem/index'
@@ -13,44 +13,31 @@ import styles from './styles'
 const ListPromotion = ({ distributorId, product, navigation, promotions, expand, setExpand }) => {
   if (Array.isArray(promotions) && promotions.length > 0) {
     return (
-      <FlatList
-        data={promotions}
-        scrollEnabled={true}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => {
-          return (
-            <PromotionItem
-              type={3}
-              onBuy={() => {
-                navigation.navigate(NAVIGATION_PROMOTION_DETAIL, {
-                  promotion: item,
-                  product,
-                  distributorId: distributorId,
-                })
-              }}
-              text={item.name}
-              textAction={'Xem chi tiết'}
-            />
-          )
-        }}
-        ListFooterComponent={() => {
-          const currentExpand = expand
-          if (currentExpand) {
-            return null
-          }
-          return (
-            <TouchableOpacity
-              onPress={() => setExpand(true)}
-              style={styles.expandContainer}
-            >
-              <Text style={styles.expand}>Xem thêm</Text>
-            </TouchableOpacity>
-          )
-        }}
-        keyExtractor={(item) => {
-          return item.id.toString()
-        }}
-      />
+      <View>
+        {promotions.map((item, index) => (
+          <PromotionItem
+            key={(item?.id ?? index).toString()}
+            type={3}
+            onBuy={() => {
+              navigation.navigate(NAVIGATION_PROMOTION_DETAIL, {
+                promotion: item,
+                product,
+                distributorId: distributorId,
+              })
+            }}
+            text={item.name}
+            textAction={'Xem chi tiết'}
+          />
+        ))}
+        {!expand && (
+          <TouchableOpacity
+            onPress={() => setExpand(true)}
+            style={styles.expandContainer}
+          >
+            <Text style={styles.expand}>Xem thêm</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     )
   } else if (Array.isArray(product?.range_prices) && product.range_prices.length > 0) {
     return null
@@ -91,6 +78,8 @@ const ProductPromotion = ({ product, navigation, distributorId, addProduct }) =>
     return promotions.filter((_, idx) => idx < 2)
   }, [safePromotionsOfProduct, expand])
 
+  const rangePrices = Array.isArray(product?.range_prices) ? product.range_prices : []
+
   return (
     <View
       style={styles.rangePricesContainer}
@@ -104,7 +93,7 @@ const ProductPromotion = ({ product, navigation, distributorId, addProduct }) =>
           {'Khuyến mãi'}
         </Text>
         {
-          !expandBlock && (listPromotions?.length > 0 || (product.range_prices && product.range_prices.length > 0)) && (
+          !expandBlock && (listPromotions?.length > 0 || (product?.range_prices && product.range_prices.length > 0)) && (
             <Image
               style={styles.imagePromotionAnnotation}
               source={promotion_annotation}
@@ -122,40 +111,26 @@ const ProductPromotion = ({ product, navigation, distributorId, addProduct }) =>
       </TouchableOpacity>
       {
         expandBlock && (
-          <FlatList
-            data={Array.isArray(product?.range_prices) ? product.range_prices : []}
-            horizontal={false}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => {
-              return (
-                <PromotionItem
-                  type={3}
-                  text={`Mua ${item.min_quantity} sản phẩm giảm\n${item.discount}% giá bán`}
-                  onBuy={() => {
-                    addProduct(item.min_quantity)
-                  }}
-                />
-              )
-            }}
-            ListFooterComponent={() => {
-              return (
-                <ListPromotion
-                  promotions={listPromotions}
-                  distributorId={distributorId}
-                  product={product}
-                  navigation={navigation}
-                  expand={expand}
-                  setExpand={setExpand}
-                />
-              )
-            }}
-            keyExtractor={(item, index) => (item?.id ?? index).toString()}
-            ItemSeparatorComponent={() => {
-              return (
-                <View style={{ width: 6 }} />
-              )
-            }}
-          />
+          <View>
+            {rangePrices.map((item, index) => (
+              <PromotionItem
+                key={(item?.id ?? index).toString()}
+                type={3}
+                text={`Mua ${item.min_quantity} sản phẩm giảm\n${item.discount}% giá bán`}
+                onBuy={() => {
+                  addProduct(item.min_quantity)
+                }}
+              />
+            ))}
+            <ListPromotion
+              promotions={listPromotions}
+              distributorId={distributorId}
+              product={product}
+              navigation={navigation}
+              expand={expand}
+              setExpand={setExpand}
+            />
+          </View>
         )
       }
       

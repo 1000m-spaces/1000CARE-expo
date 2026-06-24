@@ -14,7 +14,7 @@ const ListProductPromotion = ({ navigation, onFavorClick, onAddProduct, onMessag
 
   const productWidth = Math.round(DIMENS.common.WINDOW_WIDTH * 0.36)
   const snapToInterval = productWidth + 10
-  const listHeight = productWidth * 1.4 + 50 + 10
+  const listHeight = productWidth * 1.65 + 58 + s(14)
 
   return (
     <View style={styles.container}>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: fs(13),
-    fontWeight: '800',
+    fontWeight: '600',
     color: '#1A202C',
     letterSpacing: 0.5,
   },
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   seeAllText: {
     color: '#F59E0B',
     fontSize: fs(12),
-    fontWeight: '700',
+    fontWeight: '600',
   },
 })
 

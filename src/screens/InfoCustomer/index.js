@@ -54,7 +54,7 @@ const FormSection = ({ eyebrow, title, children }) => (
 
 const list = [
   { name: 'Ảnh cửa hàng', star: true, url: '' },
-  { name: 'Ảnh Giấy chứng nhận đạt chuẩn', star: true, url: '' },
+  { name: 'Ảnh giấy chứng nhận cửa hàng', star: true, url: '' },
   { name: 'Ảnh giấy chứng nhận đăng ký kinh doanh', star: true, url: '' },
   { name: 'Ảnh Giấy chứng nhận đủ điều kiện kinh doanh', star: true, url: '' },
 ]
@@ -409,7 +409,7 @@ const InfoCustomer = props => {
       >
         <View style={styles.hero}>
           <Text style={styles.heroEyebrow}>CUSTOMER PROFILE</Text>
-          <Text style={styles.heroTitle}>Hồ sơ nhà thuốc</Text>
+          <Text style={styles.heroTitle}>Hồ sơ cửa hàng</Text>
           <Text style={styles.heroSubtitle}>Cập nhật thông tin cửa hàng, chủ tài khoản và dữ liệu xuất hóa đơn.</Text>
         </View>
 
@@ -477,6 +477,7 @@ const InfoCustomer = props => {
             <Text style={styles.fieldLabel}>{strings.addAddress.placeHolderProvince}</Text>
             <ModalSelect
               style={styles.selectInput}
+              inputContainerStyle={styles.selectInnerInput}
               textStyle={styles.modalSelectPlaceHolder}
               onChange={(province) => {
                 setProvince(province)
@@ -491,6 +492,7 @@ const InfoCustomer = props => {
             <Text style={styles.fieldLabel}>{strings.addAddress.placeHolderDistrict}</Text>
             <ModalSelect
               style={styles.selectInput}
+              inputContainerStyle={styles.selectInnerInput}
               textStyle={styles.modalSelectPlaceHolder}
               label={district?.name || strings.addAddress.placeHolderDistrict}
               data={districts}
@@ -507,6 +509,7 @@ const InfoCustomer = props => {
               label={ward?.name || strings.addAddress.placeHolderWards}
               textStyle={styles.modalSelectPlaceHolder}
               style={styles.selectInput}
+              inputContainerStyle={styles.selectInnerInput}
               data={wards}
               onChange={(ward) => {
                 setWard(ward)
@@ -571,7 +574,7 @@ const InfoCustomer = props => {
           </View>
         </View>
       </Modal>
-      {isLoading && <LoadingView />}
+      {isLoading && <LoadingView variant="form" />}
       <ErrorView
         error={updateErr}
         isOpen={updateErr ? true : false}

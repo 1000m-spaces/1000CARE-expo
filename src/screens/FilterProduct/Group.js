@@ -1,22 +1,33 @@
 import React, { useState } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import _ from 'lodash'
-import { Text } from '~/common/index'
+import { Icon, Text } from '~/common/index'
 
 import styles from './styles'
 import { NAVIGATION_ALL_FILTER } from '~/navigation/routes'
+import { brandColors } from '~/design-system/tokens'
+import GlassFilterChip from '~/design-system/GlassFilterChip'
 
 const GroupItem = ({ index, item, clickItem, isSelect }) => {
   const selected = isSelect(index, item)
   return (
-    <TouchableOpacity
-      style={[styles.groupItemContrainer, selected ? styles.groupItemContrainerSelected: {}]}
+    <GlassFilterChip
+      selected={selected}
       onPress={() => clickItem && clickItem(index, item)}
+      style={styles.groupItemContrainer}
+      contentStyle={styles.groupItemGlass}
     >
       <Text
-        style={styles.groupItem}
-      >{item.name}</Text>
-    </TouchableOpacity>
+        style={[styles.groupItem, selected ? styles.groupItemSelected : {}]}
+        numberOfLines={2}
+        ellipsizeMode='tail'
+      >{item.nick_name || item.name}</Text>
+      {selected && (
+        <View style={styles.checkMark}>
+          <Icon type="feather" name="check" color={brandColors.surface} size={12} />
+        </View>
+      )}
+    </GlassFilterChip>
   )
 }
 
@@ -52,19 +63,21 @@ const Group = ({
       <View>
         {
           _.chunk(data.filter((_, idx) => showAll || idx >= fromIdx && idx < fromIdx + 10), 2).map((items, index) => {
+            const firstIndex = showAll ? data.findIndex((d) => d === items[0]) : fromIdx + index * 2
+            const secondIndex = showAll ? data.findIndex((d) => d === items[1]) : firstIndex + 1
             return (
-              <View style={styles.groupListItemContainer}>
-                <GroupItem 
+              <View style={styles.groupListItemContainer} key={`${items[0]?.id || items[0]?.category_id || firstIndex}-${index}`}>
+                <GroupItem
                   item={items[0]}
-                  index={index}
+                  index={firstIndex}
                   clickItem={clickItem}
                   isSelect={isSelect}
                 />
                 {
                   items.length > 1 && (
-                    <GroupItem 
+                    <GroupItem
                       item={items[1]}
-                      index={index}
+                      index={secondIndex}
                       clickItem={clickItem}
                       isSelect={isSelect}
                     />
@@ -81,7 +94,7 @@ const Group = ({
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                marginVertical:8,
+                marginTop: 10,
               }}
               onPress={() => {
                 navigation.navigate(NAVIGATION_ALL_FILTER, {
@@ -91,13 +104,13 @@ const Group = ({
                     }
                     clickItem(idx, item)
                   },
-                  data, 
+                  data,
                   title: title,
                   subTitle: subTitle,
                 })
               }}
             >
-              <Text style={styles.groupSubTitle}>{'Hiển thị thêm  >'}</Text>
+              <Text style={styles.showMore}>{'Xem thêm lựa chọn'}</Text>
             </TouchableOpacity>
           )
         }

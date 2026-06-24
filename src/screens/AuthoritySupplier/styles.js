@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.6,
     color: brandColors.goldAccent,
   },
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     marginTop: s(6),
     fontSize: fs(25),
     lineHeight: fs(31),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.surface,
   },
   heroSubtitle: {
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     backgroundColor: brandColors.background,
   },
   nameDistri: {
-    fontWeight: '900',
+    fontWeight: '600',
     fontSize: fs(15),
     lineHeight: fs(21),
     color: brandColors.textDark,
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   consentLink: {
     color: brandColors.tealPrimary,
     textDecorationLine: 'underline',
-    fontWeight: '900',
+    fontWeight: '600',
   },
 })
 export default styles

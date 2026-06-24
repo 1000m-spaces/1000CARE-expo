@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, FlatList, SafeAreaView, BackHandler, TouchableOpacity, TextInput, Platform } from 'react-native';
+import { View, FlatList, BackHandler, TouchableOpacity, TextInput, Platform } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import styles from './styles';
@@ -21,7 +21,9 @@ import BottomSheet from '~/common/BottomSheet/index';
 import RadioButtonGroup from '~/common/RadioButtonGroup/RadioButtonGroup';
 import { KeyboardAvoidingView } from 'react-native';
 import { showToast } from '~/utils/toast';
-import { brandColors } from '~/design-system/tokens';
+import { useTabBarVisibility } from '~/navigation/TabBarVisibilityContext';
+import AppBackground from '~/design-system/AppBackground';
+import GlassFilterChip from '~/design-system/GlassFilterChip';
 
 const OrdersStatus = [
   {
@@ -74,6 +76,7 @@ const reasonTypes = [
 
 const OrdersScreen = props => {
   console.log('SSSSSSSSSS:', props);
+  const { handleScroll } = useTabBarVisibility();
   const goHome = props.route.params?.goHome;
   const listOrders = useSelector((state) => getListOrders(state));
   const [refreshing, setRefreshing] = useState(false);
@@ -235,7 +238,7 @@ const OrdersScreen = props => {
     }
   }, [userConfirmStatus]);
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: brandColors.background }}>
+    <AppBackground>
       <View style={styles.mainContainer}>
           <View style={styles.ordersHero}>
             <Text style={styles.heroEyebrow}>ORDER DESK</Text>
@@ -255,16 +258,12 @@ const OrdersScreen = props => {
                     horizontal={true}
                     renderItem={({ item }) => {
                       return (
-                        <TouchableOpacity
-                          style={[styles.statusLabelContainer, item.id === currentStatus ? styles.statusLabelContainerSelected : {}]}
+                        <GlassFilterChip
+                          label={item.title}
+                          selected={item.id === currentStatus}
                           onPress={() => setCurrentStatus(item.id)}
-                        >
-                          <Text
-                            style={[styles.statusLabel, item.id === currentStatus ? styles.statusLabelSelected : {}]}
-                          >
-                            {item.title}
-                          </Text>
-                        </TouchableOpacity>
+                          style={styles.statusLabelContainer}
+                        />
                       );
                     }}
                     keyExtractor={(item, index) => {
@@ -277,6 +276,8 @@ const OrdersScreen = props => {
                     }}
                     data={listOrders}
                     scrollEnabled={true}
+                    onScroll={handleScroll}
+                    scrollEventThrottle={16}
                     onRefresh={() => onRefresh()}
                     refreshing={refreshing}
                     onEndReached={() => loadMore()}
@@ -402,7 +403,7 @@ const OrdersScreen = props => {
             </View>
           </KeyboardAvoidingView>
         </BottomSheet> */}
-    </SafeAreaView>
+    </AppBackground>
   );
 };
 export default OrdersScreen;

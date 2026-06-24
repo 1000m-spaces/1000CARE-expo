@@ -123,6 +123,7 @@ import {
   PromotionDetail,
 } from '~/screens/index';
 import ChooseGiftPromotion from '~/screens/CartScreen/ChooseGiftPromotion/index';
+import { brandColors } from '~/design-system/tokens';
 
 const Stack = createNativeStackNavigator();
 
@@ -138,6 +139,9 @@ const StackNavigator = () => {
         headerTintColor: theme.appbar.tintColor,
         headerStyle: {
           backgroundColor: theme.appbar.backgroundColor,
+        },
+        contentStyle: {
+          backgroundColor: brandColors.background,
         },
         headerBackTitleVisible: false,
       }}>

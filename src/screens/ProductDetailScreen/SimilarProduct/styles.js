@@ -13,19 +13,22 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
     marginTop: 6,
     marginLeft: 6,
     marginBottom: 12,
   },
   all: {
     color: Colors.systemColor2,
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 14,
   },
   allContainer: {
     position: 'absolute',
     right: 18,
     top: 9,
+  },
+  productSpacer: {
+    marginRight: 6,
   },
 })

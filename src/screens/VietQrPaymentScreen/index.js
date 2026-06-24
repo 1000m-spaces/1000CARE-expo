@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { SafeAreaView, View, ActivityIndicator, Alert, ScrollView } from 'react-native'
 import { back } from '~/assets/constants'
 import Header from '~/common/Header/index'
-import { Text, Button } from '~/common/index'
+import { Text, Button, SkeletonLoader } from '~/common/index'
 import styles from './styles'
 import { VietQr } from '~/neomed'
 import { useSelector } from 'react-redux'
@@ -54,7 +54,7 @@ const VietQrPaymentScreen = ({ navigation, route }) => {
             const tempOrderId = `TEMP_${Date.now()}_${distributor_id}`
 
             const response = await VietQr.generateQR({
-                brand_id: 100, // Healthcare brand ID
+                brand_id: 100, // Marketplace brand ID
                 merchant_id: distributor_id,
                 branch_id: distributor_id,
                 order_id: tempOrderId,
@@ -162,10 +162,7 @@ const VietQrPaymentScreen = ({ navigation, route }) => {
                     leftAction={handleCancel}
                     iconLeft={back}
                 />
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color={Colors.primary} />
-                    <Text style={styles.loadingText}>Đang tạo mã QR...</Text>
-                </View>
+                <SkeletonLoader variant="checkout" withHeader={false} />
             </SafeAreaView>
         )
     }
@@ -278,4 +275,3 @@ const VietQrPaymentScreen = ({ navigation, route }) => {
 }
 
 export default VietQrPaymentScreen
-

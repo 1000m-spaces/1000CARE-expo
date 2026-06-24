@@ -187,7 +187,7 @@ const AddAddressScreen = (props) => {
           </View>
         </View>
       </KeyboardAwareScrollView>
-      {isLoading && <LoadingView />}
+      {isLoading && <LoadingView variant="form" />}
       <ErrorView
         error={textError}
         isOpen={textError ? true : false}

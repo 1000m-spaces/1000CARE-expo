@@ -56,16 +56,17 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
     return data
   }, [cartData])
   const productInCart = getProducts()
+  const effectiveDistributorId = distributorId || data?.distributor_id || data?.distributor?.id
   const addProduct = useCallback(
     (qty) => {
       const index = inList(data.product_id, productInCart)
       if (index < 0) {
-        dispatch(addToCart(data.product_id, distributorId, qty))
+        dispatch(addToCart(data.product_id, effectiveDistributorId, qty))
       } else {
-        dispatch(updateCart(data.product_id, distributorId, data.qty + qty))
+        dispatch(updateCart(data.product_id, effectiveDistributorId, (productInCart[index]?.qty || 0) + qty))
       }
     },
-    [data, productInCart],
+    [data.product_id, effectiveDistributorId, productInCart],
   )
 
   const addProd = (qty) => {
@@ -75,7 +76,7 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
 
   const inList = (productId, list = []) => {
     for (let i = 0; i < list.length; i += 1) {
-      if (list[i].product_id === productId && list[i].distributor_id === distributorId) {
+      if (list[i].product_id === productId && list[i].distributor_id === effectiveDistributorId) {
         return i
       }
     }
@@ -123,6 +124,10 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
   const resolvedProductWidth = Number(productWidth) > 0 ? Number(productWidth) : PRODUCT_WIDTH
   const resolvedImageContainerHeight = resolvedProductWidth
   const resolvedImageHeight = resolvedImageContainerHeight - 8
+  const supplierName = data?.distributor?.nick_name || data?.supplier?.name || ''
+  const isPointPayment = data.payment_type === 2
+  const hasDiscount = !isPointPayment && Number(data.price) > 0 && Number(data.sale_price) > 0 && Number(data.sale_price) !== Number(data.price)
+  const discountPercent = hasDiscount ? Math.max(0, 100 - (Number(data.sale_price) / Number(data.price)) * 100).toFixed(1) : null
 
   return (
     <TouchableOpacity
@@ -151,7 +156,7 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
               styles.productContainer,
               {
                 width: resolvedProductWidth,
-                height: resolvedProductWidth * 1.4 + 50,
+                height: resolvedProductWidth * 1.72 + 64,
               },
             ]}
           >
@@ -175,94 +180,59 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
               />
             </View>
             <View style={styles.productInfoContainer}>
-              <View
-                style={{
-                  flex: 4,
-                }}
-              >
-                <View style={styles.productNameContainer}>
+              <Text
+                style={styles.productName}
+                numberOfLines={2}
+                ellipsizeMode='tail'
+              >{data.name}</Text>
+              <Text
+                style={styles.supplierName}
+                numberOfLines={1}
+                ellipsizeMode='tail'
+              >{supplierName}</Text>
+              <View style={styles.priceRow}>
+                <View style={styles.priceTextBlock}>
                   <Text
-                    style={styles.productName}
-                    numberOfLines={2}
+                    style={isPointPayment ? styles.salePrice : styles.price}
+                    numberOfLines={1}
                     ellipsizeMode='tail'
-                  >{data.name}</Text>
-
-                </View>
-                <View
-                  style={styles.bottomContainer}
-                >
-                  {
-                    data.payment_type !== 2 && (
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'space-around',
-                        }}
-                      >
-                        <Text
-                          style={styles.price}
-                          numberOfLines={1}
-                          ellipsizeMode='tail'
-                        >{formatMoney(data.sale_price, { unit: 'đ', space: false })}
-                        </Text>
-                        {
-                          data.sale_price !== data.price && (
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: -3 }}>
-                              <Text style={styles.discount}>{formatMoney(data.price, { unit: 'đ', space: false })}</Text>
-                              <Text style={{ marginLeft: 6, color: brandColors.danger, fontSize: fs(12) }}>-{(100 - (Number(data.sale_price) / Number(data.price)) * 100).toFixed(1)}%</Text>
-                            </View>
-                          )
-                        }
-                        <Text style={{ color: brandColors.tealDark, fontSize: fs(12) }}>{data?.distributor?.nick_name ? data?.distributor?.nick_name : ''}</Text>
-                      </View>
-                    )
-                  }
-                  {
-                    data.payment_type === 2 && (
-                      <View style={{ justifyContent: 'space-around' }}>
-                        <View style={styles.salePriceContainer}>
-                          <Text style={styles.salePrice}>{formatMoney(data.sale_price, { unit: 'điểm', space: false })}</Text>
-                        </View>
-                        <Text style={{ color: brandColors.tealDark, fontSize: fs(12) }}>{data?.distributor?.nick_name ? data?.distributor?.nick_name : ''}</Text>
-                      </View>
-                    )
-                  }
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                    }}
                   >
-                    {
-                      addButton && (
-                        <TouchableOpacity
-                          onPress={() => addItem()}
-                          style={styles.buttonAddContainer}
-                        >
-                          <Image
-                            source={plus_2}
-                            style={styles.buttonAdd}
-                          />
-                        </TouchableOpacity>
-                      )
-                    }
+                    {formatMoney(data.sale_price, { unit: isPointPayment ? 'điểm' : 'đ', space: false })}
+                  </Text>
+                  {hasDiscount && (
+                    <View style={styles.discountRow}>
+                      <Text style={styles.discount}>{formatMoney(data.price, { unit: 'đ', space: false })}</Text>
+                      <Text style={styles.discountPercent}>-{discountPercent}%</Text>
+                    </View>
+                  )}
+                </View>
+                <View style={styles.actionColumn}>
+                  {addButton && (
                     <TouchableOpacity
-                      onPress={() => favorClick()}
-                      style={styles.favorContainer}
+                      onPress={() => addItem()}
+                      style={styles.buttonAddContainer}
+                      activeOpacity={0.82}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
                       <Image
-                        style={{
-                          height: 25,
-                          width: 25,
-                        }}
-                        resizeMode={'contain'}
-                        source={data.is_wishlist ? heart_red : heart}
-                        tintColor={Colors.errorColor}
+                        source={plus_2}
+                        style={styles.buttonAdd}
                       />
                     </TouchableOpacity>
-                  </View>
+                  )}
+                  <TouchableOpacity
+                    onPress={() => favorClick()}
+                    style={styles.favorContainer}
+                    activeOpacity={0.82}
+                    hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                  >
+                    <Image
+                      style={styles.favorIcon}
+                      resizeMode={'contain'}
+                      source={data.is_wishlist ? heart_red : heart}
+                      tintColor={Colors.errorColor}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -359,8 +329,8 @@ const styles = StyleSheet.create({
     height: IMAGE_CONTAINER_HEIGHT,
     backgroundColor: brandColors.surface,
     alignItems: 'center',
-    borderTopLeftRadius: s(18),
-    borderTopRightRadius: s(18),
+    justifyContent: 'center',
+    padding: s(8),
   },
   imageColumnContainer: {
     backgroundColor: brandColors.surface,
@@ -372,9 +342,7 @@ const styles = StyleSheet.create({
   productImage: {
     width: '100%',
     height: IMAGE_HEIGHT,
-    borderTopLeftRadius: s(18),
-    borderTopRightRadius: s(18),
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   productImageColumn: {
     width: IMAGE_COLUMN_WIDTH - 2,
@@ -382,12 +350,13 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   productInfoContainer: {
-    padding: s(10),
-    paddingTop: 0,
+    paddingHorizontal: s(10),
+    paddingTop: s(8),
+    paddingBottom: s(10),
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'flex-end',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    flex: 1,
   },
   productNameContainer: {
     marginTop: 1,
@@ -397,14 +366,22 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   productName: {
-    fontSize: fs(14),
+    fontFamily: Fonts.bold,
+    fontSize: fs(13),
     color: brandColors.textDark,
-    lineHeight: fs(18),
-    height: fs(38),
-    flex: 2,
-    marginRight: 3,
+    lineHeight: fs(17),
+    minHeight: fs(34),
+    fontWeight: 'normal',
+  },
+  supplierName: {
+    fontFamily: Fonts.base,
+    color: brandColors.muted,
+    fontSize: fs(11),
+    lineHeight: fs(15),
+    marginTop: s(3),
   },
   productColumName: {
+    fontFamily: Fonts.bold,
     fontSize: fs(14),
     color: brandColors.textDark,
     textAlign: 'center',
@@ -415,28 +392,50 @@ const styles = StyleSheet.create({
   },
   buttonAddContainer: {
     backgroundColor: brandColors.tealPrimary,
-    width: s(30),
-    height: s(30),
-    borderRadius: s(15),
+    width: s(28),
+    height: s(28),
+    borderRadius: s(14),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'flex-end',
   },
   buttonAdd: {
-    width: s(13),
-    height: s(13),
+    width: s(12),
+    height: s(12),
     borderRadius: s(12),
+  },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    marginTop: s(8),
+  },
+  priceTextBlock: {
+    flex: 1,
+    minWidth: 0,
+    paddingRight: s(8),
   },
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
-  favorContainer: {
-    height: s(30),
+  actionColumn: {
     width: s(30),
     alignItems: 'flex-end',
+    justifyContent: 'space-between',
+  },
+  favorContainer: {
+    height: s(28),
+    width: s(28),
+    alignItems: 'flex-end',
     justifyContent: 'flex-end',
+    marginTop: s(6),
+  },
+  favorIcon: {
+    height: s(22),
+    width: s(22),
   },
   promotionLabel: {
     height: 24,
@@ -450,11 +449,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   price: {
-    fontSize: fs(13),
+    fontFamily: Fonts.bold,
+    fontSize: fs(14),
     marginTop: 1,
-    fontWeight: 'bold',
-    color: Colors.priceColor,
-    lineHeight: 20,
+    fontWeight: 'normal',
+    color: brandColors.goldAccent,
+    lineHeight: fs(19),
   },
   salePriceContainer: {
     marginTop: 1,
@@ -462,17 +462,31 @@ const styles = StyleSheet.create({
     // flex: 2,
   },
   salePrice: {
+    fontFamily: Fonts.bold,
     fontSize: fs(14),
-    fontWeight: 'bold',
-    color: Colors.priceColor,
-    lineHeight: 22,
+    fontWeight: 'normal',
+    color: brandColors.goldAccent,
+    lineHeight: fs(19),
+  },
+  discountRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: s(2),
   },
   discount: {
-    fontSize: fs(12),
+    fontFamily: Fonts.base,
+    fontSize: fs(10),
     color: brandColors.mutedLight,
-    fontWeight: '500',
-    lineHeight: 20,
+    fontWeight: 'normal',
+    lineHeight: fs(14),
     textDecorationLine: 'line-through',
+  },
+  discountPercent: {
+    marginLeft: s(4),
+    color: brandColors.danger,
+    fontFamily: Fonts.bold,
+    fontSize: fs(10),
+    fontWeight: 'normal',
   },
   quantityContainer: {
     flexDirection: 'row',

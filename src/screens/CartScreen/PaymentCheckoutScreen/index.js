@@ -20,6 +20,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import DialogInfo from '~/common/DialogInfo/index';
 import { NAVIGATION_CHECKOUT_RESULT_SCREEN, NAVIGATION_VIETQR_PAYMENT } from '~/navigation/routes';
 import Address from '../Address/index';
+import { brandColors } from '~/design-system/tokens';
 
 const PromotionTypes = {
   3: 'range_prices',
@@ -222,7 +223,7 @@ const PaymentCheckoutScreen = props => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: brandColors.background }}>
       <View style={styles.mainContainer}>
         <Header
           title={strings.cartDetail.paymentCheckoutScreen.title}

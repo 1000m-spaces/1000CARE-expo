@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import Colors from '../Colors/Colors'
+import { liquidGlass } from '~/design-system/tokens'
 
 export default StyleSheet.create({
   shadowContainer: {
@@ -9,9 +9,11 @@ export default StyleSheet.create({
   },
 
   headerContainer: {
-    backgroundColor: Colors.white,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
+    backgroundColor: liquidGlass.backgroundStrong,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
     marginTop: 8,
     marginBottom: -1, // to remove the divider between header and content
     paddingVertical: 8,
@@ -29,4 +31,3 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
 })
-

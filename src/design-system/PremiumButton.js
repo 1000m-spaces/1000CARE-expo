@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { s, fs } from '../utils/responsive';
 import { brandColors, brandGradients, brandShadow } from './tokens';
+import { Fonts } from '~/assets/config';
 
 const PremiumButton = ({ text, onPress, style, textStyle, colors = brandGradients.primary, disabled }) => {
   return (
@@ -40,8 +41,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: brandColors.surface,
+    fontFamily: Fonts.bold,
     fontSize: fs(16),
-    fontWeight: '800',
+    fontWeight: 'normal',
     letterSpacing: 0,
   },
   disabled: {

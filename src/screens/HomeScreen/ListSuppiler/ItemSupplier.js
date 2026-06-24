@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     paddingHorizontal: 15,
     fontSize: 14,       
-    fontWeight: '700', 
+    fontWeight: '600', 
   },
   selected: {
     backgroundColor: 'white',
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     textAlign: 'center',
     color: Colors.systemColor2,
-    fontWeight: '700',
+    fontWeight: '600',
     textTransform: 'uppercase',
   },
   categoryName: {
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     color: Colors.textColor2,
     textTransform: 'uppercase',
     lineHeight: 18,
-    fontWeight: '500',
+    fontWeight: 'normal',
     marginTop: 6,
     marginHorizontal: 2,
   },

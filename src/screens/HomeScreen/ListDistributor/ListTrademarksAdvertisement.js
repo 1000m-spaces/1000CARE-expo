@@ -1,18 +1,15 @@
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, TouchableOpacity, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Text } from '~/common/index'
-import strings from '~/i18n'
-import { NAVIGATION_LIST_DISTRIBUTOR_TRADEMARK, NAVIGATION_PRODUCT_LIST } from '~/navigation/routes'
-import { getAuthStore, getListTrademarksAdvertisement } from '~/store/selector'
-import Swiper from 'react-native-swiper'
-import { DIMENS } from '~/constants/index'
-import ItemDistributor from '~/common/ItemDistributor/index'
+import { NAVIGATION_PRODUCT_LIST } from '~/navigation/routes'
+import { getListTrademarksAdvertisement } from '~/store/selector'
+import { logoNeoMed } from '~/assets/constants'
+import { formatMoney } from '~/utils/format'
 import styles from './styles'
 
 const ListTrademarksAdvertisement = ({ navigation, distributor, onMessage }) => {
   const listTrademarksAdvertisement = useSelector(state => getListTrademarksAdvertisement(state))
-  const { isLoggedIn } = useSelector(state => getAuthStore(state))
   const safeListTrademarksAdvertisement = Array.isArray(listTrademarksAdvertisement) ? listTrademarksAdvertisement : []
   if (safeListTrademarksAdvertisement.length === 0)
     return null
@@ -27,76 +24,57 @@ const ListTrademarksAdvertisement = ({ navigation, distributor, onMessage }) => 
     })
   }
 
-  return (
-    <View style={styles.listDistributorContainer}>
-      <View
-        style={styles.labelContainer}
+  const getBrandImage = item => {
+    const uri = item?.logo || item?.images || item?.image
+    return uri ? { uri } : logoNeoMed
+  }
+
+  const getBrandName = item => item?.nick_name || item?.name || 'Thương hiệu'
+
+  const getVoucherLabel = item => {
+    const voucher = item?.voucher || item?.campaign || item?.promotion || item?.best_voucher
+    const discount = Number(item?.discount || item?.voucher_discount || voucher?.discount || 0)
+    const discountPercent = Number(item?.discount_percent || item?.percent || voucher?.discount_percent || voucher?.percent || 0)
+
+    if (discountPercent > 0) return `Voucher -${Math.round(discountPercent)}%`
+    if (discount > 0) return `Voucher ${formatMoney(discount, { unit: 'đ', space: false })}`
+    return null
+  }
+
+  const renderBrandItem = (item, index) => {
+    const voucherLabel = getVoucherLabel(item)
+
+    return (
+      <TouchableOpacity
+        key={item?.id ?? index}
+        activeOpacity={0.86}
+        style={styles.trademarkCard}
+        onPress={() => onItemPress(item)}
       >
-        <Text style={styles.labelDistributor}>
-          {'CHỌN THƯƠNG HIỆU'}
+        <View style={styles.trademarkLogoWrap}>
+          <Image source={getBrandImage(item)} style={styles.trademarkLogo} resizeMode="contain" />
+        </View>
+        <Text style={styles.trademarkName} numberOfLines={2}>
+          {getBrandName(item)}
         </Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate(NAVIGATION_LIST_DISTRIBUTOR_TRADEMARK, {
-              type: 'trademark',
-              onItemPress: (item) => onItemPress(item),
-              title: 'Thương hiệu',
-            })
-          }}
-        >
-          <Text style={styles.seeAll} >
-            {'Tất cả'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <Swiper
-        showsButtons
-        style={{
-          height: 2 * ((DIMENS.common.WINDOW_WIDTH - 5 * 6 - 12) / 3) + 12,
-        }}
-        showsPagination={false}
-        autoplay={true}
-        autoplayTimeout={10}
-        loadMinimal={true}
-        loadMinimalSize={1}
-        nextButton={<Text />}
-        prevButton={<Text />}
+        {voucherLabel && (
+          <View style={styles.trademarkVoucher}>
+            <Text style={styles.trademarkVoucherText} numberOfLines={1}>{voucherLabel}</Text>
+          </View>
+        )}
+      </TouchableOpacity>
+    )
+  }
+
+  return (
+    <View style={styles.brandRailContainer}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.brandHorizontalRail}
       >
-        {
-          Array.from({ length: Math.ceil(safeListTrademarksAdvertisement.length / 6) }, (_, i) => i + 1).map((value, idx) => {
-            return (
-              <View key={`page-${value}`}>
-                <View style={styles.rowItemContainer}>
-                  {
-                    safeListTrademarksAdvertisement.filter((_, id) => (value - 1) * 6 <= id && id < value * 6 - 3).map((item, itIdx) => {
-                      return (
-                        <ItemDistributor
-                          key={item?.id ?? itIdx}
-                          onItemPress={() => onItemPress(item)}
-                          data={item}
-                        />
-                      )
-                    })
-                  }
-                </View>
-                <View style={styles.rowItemContainer}>
-                  {
-                    safeListTrademarksAdvertisement.filter((_, id) => (value - 1) * 6 + 3 <= id && id < value * 6).map((item, itIdx) => {
-                      return (
-                        <ItemDistributor
-                          key={item?.id ?? itIdx}
-                          onItemPress={() => onItemPress(item)}
-                          data={item}
-                        />
-                      )
-                    })
-                  }
-                </View>
-              </View>
-            )
-          })
-        }
-      </Swiper>
+        {safeListTrademarksAdvertisement.map((item, index) => renderBrandItem(item, index))}
+      </ScrollView>
 
     </View>
   )

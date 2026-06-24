@@ -124,13 +124,13 @@ const styles = StyleSheet.create({
 
   addressName: {
     color: Colors.textColor1,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: 14,
   },
   addressText: {
     color: Colors.textColor2,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: 14,
   },
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: 12,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   deleteAddressText: {
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 12,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   defaultAddressText: {
     marginRight: 15,

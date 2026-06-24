@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     fontSize: 14,
     color: '#595959',
-    fontWeight: '500',
-    fontFamily: 'Quicksand-Medium',
+    fontWeight: 'normal',
+    fontFamily: 'Roboto',
   },
   iconNext: {
     width: 12,

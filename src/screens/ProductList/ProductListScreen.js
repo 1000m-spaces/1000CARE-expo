@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { SafeAreaView, FlatList, StyleSheet, View, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Header from '~/common/Header/index'
 import ProductItem from '~/common/ProductItem/ProductItem'
@@ -12,13 +12,15 @@ import EmptyItem from '~/common/EmptyItem/index'
 import ErrorView from '~/common/ErrorView/index'
 import { check_info } from '~/assets/constants'
 import { Text } from '~/common/index'
+import { Icon } from '~/common'
 import { Fonts } from '~/assets/config'
 import { setSelectedDistri } from '~/store/actions'
 import { NAVIGATION_TO_HOME_SCREEN } from '~/navigation/routes'
 import ProductItemListView from '~/common/ProductItemListView/ProductItemListView'
 import SearchBar from './SearchBar'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, brandShadow, liquidGlass } from '~/design-system/tokens'
+import AppBackground from '~/design-system/AppBackground'
 
 const ListViewListProduct = ({ navigation, products, loadMore, onShowMessage, setMessage, setOpenMessage }) => {
   const keyExtractorProduct = useCallback((_, idx) => {
@@ -27,9 +29,7 @@ const ListViewListProduct = ({ navigation, products, loadMore, onShowMessage, se
   return (
     <FlatList
       numColumns={1}
-      contentContainerStyle={[styles.listProductsContainer, {
-        marginHorizontal: 4,
-      }]}
+      contentContainerStyle={styles.listRowsContainer}
       data={Array.isArray(products) ? products : []}
       keyExtractor={keyExtractorProduct}
       onEndReachedThreshold={0.1}
@@ -283,8 +283,20 @@ const ProductListScreen = ({ navigation, route }) => {
       })
     }
   }
+
+  const clearPriceSockFilter = () => {
+    setCurrentPage(1)
+    setQuery({
+      supplierSelected: null,
+      cateSelected: null,
+      distributorSelected: null,
+    })
+  }
+
+  const activeDistributorName = query?.distributorSelected?.nick_name || query?.distributorSelected?.name
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: brandColors.background }}>
+    <AppBackground>
       <Header
         leftAction={() => navigation.pop()}
         iconLeft={back}
@@ -338,6 +350,23 @@ const ProductListScreen = ({ navigation, route }) => {
           </View>
         )
       }
+      {type === 'priceSock' && activeDistributorName && (
+        <View style={styles.activeFilterRow}>
+          <View style={styles.activeFilterPill}>
+            <Icon type="feather" name="filter" color={brandColors.tealPrimary} size={15} />
+            <Text style={styles.activeFilterText} numberOfLines={1}>
+              {`Đang lọc: ${activeDistributorName}`}
+            </Text>
+            <TouchableOpacity
+              onPress={clearPriceSockFilter}
+              style={styles.clearFilterButton}
+              activeOpacity={0.78}
+            >
+              <Icon type="feather" name="x" color={brandColors.surface} size={14} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
       <View
         style={styles.wrap}
       >
@@ -363,14 +392,14 @@ const ProductListScreen = ({ navigation, route }) => {
           )
         }
       </View>
-      {isLoading && <LoadingView />}
+      {isLoading && <LoadingView variant="grid" />}
       <ErrorView
         icon={check_info}
         error={message}
         isOpen={openMessage}
         onClose={() => setOpenMessage(false)}
       />
-    </SafeAreaView>
+    </AppBackground>
   )
 }
 export default ProductListScreen
@@ -380,16 +409,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(12),
     paddingBottom: s(96),
   },
+  listRowsContainer: {
+    paddingTop: s(2),
+    paddingBottom: s(96),
+  },
   wrap: {
     flex: 1,
     marginTop: s(10),
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   title: {
     color: brandColors.tealPrimary,
     fontFamily: Fonts.bold,
     fontSize: fs(16),
-    fontWeight: '800',
+    fontWeight: 'normal',
     textAlign: 'center',
     textAlignVertical: 'center',
     width: 100,
@@ -403,41 +436,77 @@ const styles = StyleSheet.create({
   },
   filterPanel: {
     marginHorizontal: s(16),
-    marginTop: s(12),
-    borderRadius: s(24),
-    overflow: 'hidden',
-    backgroundColor: brandColors.surface,
+    marginTop: s(10),
+    backgroundColor: 'transparent',
+  },
+  activeFilterRow: {
+    marginHorizontal: s(16),
+    marginTop: s(10),
+    flexDirection: 'row',
+  },
+  activeFilterPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    maxWidth: '100%',
+    paddingLeft: s(12),
+    paddingRight: s(6),
+    paddingVertical: s(6),
+    borderRadius: s(999),
+    backgroundColor: liquidGlass.backgroundStrong,
     borderWidth: 1,
-    borderColor: brandColors.borderSoft,
-    ...brandShadow.soft,
+    borderColor: liquidGlass.borderTint,
+  },
+  activeFilterText: {
+    flexShrink: 1,
+    marginLeft: s(7),
+    color: brandColors.tealDark,
+    fontFamily: Fonts.bold,
+    fontSize: fs(12),
+    lineHeight: fs(17),
+    fontWeight: 'normal',
+  },
+  clearFilterButton: {
+    width: s(24),
+    height: s(24),
+    marginLeft: s(8),
+    borderRadius: s(12),
+    backgroundColor: brandColors.tealPrimary,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   marketHero: {
     marginHorizontal: s(16),
     marginTop: s(12),
-    borderRadius: s(26),
-    padding: s(18),
-    backgroundColor: brandColors.textDark,
+    borderRadius: s(24),
+    paddingHorizontal: s(18),
+    paddingVertical: s(16),
+    backgroundColor: liquidGlass.backgroundStrong,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
     ...brandShadow.soft,
   },
   heroEyebrow: {
+    fontFamily: Fonts.bold,
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: 'normal',
     letterSpacing: 1.5,
-    color: brandColors.goldAccent,
+    color: brandColors.tealPrimary,
   },
   heroTitle: {
     marginTop: s(6),
-    fontSize: fs(24),
-    lineHeight: fs(30),
-    fontWeight: '900',
-    color: brandColors.surface,
+    fontFamily: Fonts.bold,
+    fontSize: fs(22),
+    lineHeight: fs(28),
+    fontWeight: 'normal',
+    color: brandColors.textDark,
   },
   heroSubtitle: {
     marginTop: s(8),
+    fontFamily: Fonts.base,
     fontSize: fs(12),
     lineHeight: fs(18),
-    fontWeight: '600',
-    color: 'rgba(255,255,255,0.68)',
+    fontWeight: 'normal',
+    color: brandColors.muted,
   },
 })

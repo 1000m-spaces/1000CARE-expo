@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, Linking, Image, Animated, Easing } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Animated, Easing, StyleSheet, TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   loginByPhone,
   requestGetListPhoneByPassFirebase,
@@ -10,25 +11,22 @@ import {
 } from '~/store/auth/authActions';
 import {
   getErrMsg,
-  getListByPassFirebase,
   getLoginPhoneStatus,
 } from '~/store/auth/authSelector';
 import ErrorView from '~/common/ErrorView';
-import DialogInfo from '~/common/DialogInfo/index';
-import PremiumBackground from '~/design-system/PremiumBackground';
-import PremiumInput from '~/design-system/PremiumInput';
-import PremiumButton from '~/design-system/PremiumButton';
+import { Icon } from '~/common/index';
+import AppBackground from '~/design-system/AppBackground';
 import strings from '~/i18n';
-import { logoNeoMed, back } from '~/assets/constants';
+import { logoNeoMed } from '~/assets/constants';
 import { NAVIGATION_CONFIRM } from '~/navigation/routes';
 import Status from '~/common/Status/Status';
-import { brandColors, brandGradients } from '~/design-system/tokens';
+import { brandColors } from '~/design-system/tokens';
+import { fs, s } from '~/utils/responsive';
 
 const LoginPhone = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const loginStatus = useSelector(state => getLoginPhoneStatus(state));
-  const [showDialog, setShowDialog] = useState(false);
   const [loading, setLoading] = useState(false);
   
   const [phone, setPhone] = useState('');
@@ -79,113 +77,76 @@ const LoginPhone = ({ navigation }) => {
   }, [loginStatus]);
 
   return (
-    <PremiumBackground colors={brandGradients.light}>
+    <AppBackground>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={'always'}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={styles.scrollContent}
       >
-        <View style={{ paddingHorizontal: 28, paddingTop: 20, flex: 1 }}>
-          <TouchableOpacity 
-            onPress={() => navigation.pop()} 
-            style={{ 
-              width: 44, 
-              height: 44, 
-              borderRadius: 22, 
-              backgroundColor: brandColors.surface,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 30 
-            }}
+        <View style={styles.screen}>
+          <TouchableOpacity
+            onPress={() => navigation.pop()}
+            style={styles.backButton}
+            activeOpacity={0.78}
           >
-            <Image source={back} style={{ width: 20, height: 20, tintColor: '#354052' }} />
+            <Icon type="feather" name="chevron-left" color={brandColors.textDark} size={s(30)} />
           </TouchableOpacity>
-          
-          <Animated.View style={{ 
-            alignItems: 'center', 
-            marginBottom: 50,
+
+          <Animated.View style={[styles.card, {
             opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }]
-          }}>
-            <View style={{ 
-              width: 120, 
-              height: 120, 
-              backgroundColor: brandColors.surface,
-              borderRadius: 30,
-              padding: 10,
-              shadowColor: brandColors.tealPrimary,
-              shadowOffset: { width: 0, height: 10 },
-              shadowOpacity: 0.1,
-              shadowRadius: 20,
-              elevation: 5,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-              <Image source={logoNeoMed} resizeMode="contain" style={{ width: 90, height: 90 }} />
+            transform: [{ translateY: slideAnim }],
+          }]}>
+            <View style={styles.logoRing}>
+              <Image source={logoNeoMed} resizeMode="contain" style={styles.logo} />
             </View>
-            <Text style={{ fontSize: 32, fontWeight: '900', color: brandColors.tealPrimary, marginTop: 15, letterSpacing: 0 }}>1000CARE</Text>
-            <Text style={{ fontSize: 14, color: brandColors.muted, fontWeight: '500', marginTop: 5 }}>Chăm sóc sức khỏe tận tâm</Text>
-          </Animated.View>
+            <Text style={styles.brandName} allowFontScaling={false}>1000CARE</Text>
 
-          <Animated.View style={{ 
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }]
-          }}>
-            <Text style={{ fontSize: 26, fontWeight: '800', color: brandColors.textDark, marginBottom: 8 }}>{strings.loginScreen.title}</Text>
-            <Text style={{ fontSize: 15, color: brandColors.muted, marginBottom: 30, lineHeight: 22 }}>
-              Vui lòng nhập số điện thoại để bắt đầu hành trình chăm sóc sức khỏe của bạn.
-            </Text>
+            <View style={styles.formIntro}>
+              <Text style={styles.title}>{strings.loginScreen.title}</Text>
+            </View>
 
-            <PremiumInput
-              label="Số điện thoại"
-              value={phone}
-              keyboardType="numeric"
-              onChangeText={setPhone}
-              placeholder="09xx xxx xxx"
-            />
+            <Text style={styles.inputLabel}>Số điện thoại</Text>
+            <View style={styles.inputOuter}>
+              <View style={styles.inputHighlight} />
+              <Icon type="feather" name="smartphone" color={brandColors.tealDark} size={s(18)} />
+              <TextInput
+                style={styles.input}
+                value={phone}
+                keyboardType="numeric"
+                onChangeText={setPhone}
+                placeholder="09xx xxx xxx"
+                placeholderTextColor={brandColors.mutedLight}
+              />
+            </View>
 
-            <PremiumButton
-              text={loading ? 'Đang xác thực...' : strings.common.login}
-              onPress={() => onLoginPress()}
-              style={{ marginTop: 25, height: 56 }}
-            />
-            
-            <View style={{ marginTop: 25, alignItems: 'center' }}>
-              <Text style={{ color: brandColors.muted, fontSize: 14 }}>
-                Bạn chưa có tài khoản? {' '}
-                <Text 
-                  style={{ color: brandColors.tealPrimary, fontWeight: '800' }}
-                  onPress={() => navigation.navigate('RegisterScreen')}
-                >
-                  Đăng ký ngay
+            <TouchableOpacity
+              activeOpacity={0.82}
+              onPress={onLoginPress}
+              disabled={loading}
+              style={[styles.loginButton, loading && styles.loginButtonDisabled]}
+            >
+              <LinearGradient
+                colors={loading ? [brandColors.border, brandColors.border] : [brandColors.tealDark, brandColors.tealPrimary]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.buttonGradient}
+              >
+                <Text style={styles.buttonText}>
+                  {loading ? 'Đang xác thực...' : strings.common.login}
                 </Text>
-              </Text>
-            </View>
-          </Animated.View>
-        </View>
+              </LinearGradient>
+            </TouchableOpacity>
 
-        <View style={{ padding: 24, alignItems: 'center' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-            <View style={{ height: 1, flex: 1, backgroundColor: brandColors.border }} />
-            <Text style={{ marginHorizontal: 15, color: brandColors.mutedLight, fontSize: 12, fontWeight: '700' }}>HỖ TRỢ 24/7</Text>
-            <View style={{ height: 1, flex: 1, backgroundColor: brandColors.border }} />
-          </View>
-          
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <TouchableOpacity 
-              onPress={() => Linking.openURL('tel:0966492818')}
-              style={{ paddingHorizontal: 10 }}
-            >
-              <Text style={{ color: brandColors.tealPrimary, fontWeight: '700', fontSize: 15 }}>096 649 2818</Text>
-            </TouchableOpacity>
-            <Text style={{ color: brandColors.border }}>|</Text>
-            <TouchableOpacity 
-              onPress={() => Linking.openURL('tel:0358525558')}
-              style={{ paddingHorizontal: 10 }}
-            >
-              <Text style={{ color: brandColors.tealPrimary, fontWeight: '700', fontSize: 15 }}>035 852 5558</Text>
-            </TouchableOpacity>
-          </View>
+            <Text style={styles.registerLine}>
+              Bạn chưa có tài khoản?{' '}
+              <Text
+                style={styles.registerLink}
+                onPress={() => navigation.navigate('RegisterScreen')}
+              >
+                Đăng ký ngay
+              </Text>
+            </Text>
+          </Animated.View>
         </View>
       </KeyboardAwareScrollView>
 
@@ -197,8 +158,189 @@ const LoginPhone = ({ navigation }) => {
           dispatch(resetLogin());
         }}
       />
-    </PremiumBackground>
+    </AppBackground>
   );
 };
+
+const neumorphicShadow = {
+  shadowColor: '#86AEB5',
+  shadowOffset: { width: s(10), height: s(12) },
+  shadowOpacity: 0.28,
+  shadowRadius: s(22),
+  elevation: 8,
+};
+
+const styles = StyleSheet.create({
+  scrollContent: {
+    flexGrow: 1,
+  },
+  screen: {
+    flex: 1,
+    paddingHorizontal: s(28),
+    paddingTop: s(108),
+    paddingBottom: s(28),
+    justifyContent: 'flex-start',
+  },
+  backButton: {
+    position: 'absolute',
+    top: s(20),
+    left: s(28),
+    width: s(46),
+    height: s(46),
+    borderRadius: s(23),
+    backgroundColor: 'rgba(255,255,255,0.24)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,255,255,0.86)',
+    shadowColor: '#6F9EA6',
+    shadowOffset: { width: s(8), height: s(10) },
+    shadowOpacity: 0.28,
+    shadowRadius: s(16),
+    elevation: 7,
+    overflow: 'hidden',
+  },
+  card: {
+    width: '100%',
+    minHeight: s(560),
+    borderRadius: s(34),
+    backgroundColor: '#EEF9FA',
+    paddingHorizontal: s(30),
+    paddingTop: s(44),
+    paddingBottom: s(38),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.76)',
+    ...neumorphicShadow,
+  },
+  logoRing: {
+    width: s(92),
+    height: s(92),
+    borderRadius: s(28),
+    padding: 0,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#6F9EA6',
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.14,
+    shadowRadius: s(18),
+    elevation: 5,
+    overflow: 'hidden',
+  },
+  logo: {
+    width: s(92),
+    height: s(92),
+    borderRadius: s(28),
+  },
+  brandName: {
+    marginTop: s(16),
+    color: brandColors.tealPrimary,
+    fontSize: fs(30),
+    lineHeight: fs(38),
+    fontWeight: '600',
+    letterSpacing: 0,
+  },
+  formIntro: {
+    alignSelf: 'stretch',
+    marginTop: s(42),
+    marginBottom: s(28),
+  },
+  title: {
+    color: brandColors.textDark,
+    fontSize: fs(25),
+    lineHeight: fs(32),
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  inputLabel: {
+    alignSelf: 'stretch',
+    color: brandColors.textDark,
+    fontSize: fs(14),
+    lineHeight: fs(18),
+    fontWeight: '600',
+    marginBottom: s(9),
+    marginLeft: s(4),
+  },
+  inputOuter: {
+    width: '100%',
+    height: s(58),
+    borderRadius: s(22),
+    backgroundColor: 'rgba(255,255,255,0.24)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: s(18),
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,255,255,0.86)',
+    shadowColor: '#6F9EA6',
+    shadowOffset: { width: s(8), height: s(10) },
+    shadowOpacity: 0.34,
+    shadowRadius: s(16),
+    elevation: 7,
+    overflow: 'hidden',
+  },
+  inputHighlight: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: s(22),
+    backgroundColor: 'rgba(238,252,253,0.42)',
+    borderTopWidth: 2.5,
+    borderLeftWidth: 2.5,
+    borderTopColor: 'rgba(105,145,153,0.32)',
+    borderLeftColor: 'rgba(105,145,153,0.2)',
+    borderRightWidth: 2.5,
+    borderBottomWidth: 2.5,
+    borderRightColor: 'rgba(255,255,255,0.94)',
+    borderBottomColor: 'rgba(255,255,255,0.94)',
+  },
+  input: {
+    flex: 1,
+    marginLeft: s(12),
+    color: brandColors.textDark,
+    fontSize: fs(18),
+    lineHeight: fs(24),
+    fontWeight: '600',
+    paddingVertical: 0,
+  },
+  loginButton: {
+    width: '100%',
+    marginTop: s(34),
+    borderRadius: s(23),
+    overflow: 'hidden',
+    shadowColor: '#0A6470',
+    shadowOffset: { width: s(6), height: s(8) },
+    shadowOpacity: 0.24,
+    shadowRadius: s(12),
+    elevation: 5,
+  },
+  loginButtonDisabled: {
+    shadowOpacity: 0.08,
+  },
+  buttonGradient: {
+    minHeight: s(58),
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: s(24),
+  },
+  buttonText: {
+    color: brandColors.surface,
+    fontSize: fs(16),
+    lineHeight: fs(22),
+    fontWeight: '600',
+  },
+  registerLine: {
+    marginTop: s(28),
+    color: brandColors.muted,
+    fontSize: fs(14),
+    lineHeight: fs(20),
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  registerLink: {
+    color: brandColors.tealPrimary,
+    fontWeight: '600',
+  },
+});
 
 export default LoginPhone;

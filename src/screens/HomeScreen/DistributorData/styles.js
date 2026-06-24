@@ -2,26 +2,28 @@ import { StyleSheet } from 'react-native'
 import Colors from '~/common/Colors/Colors'
 import { DIMENS } from '~/constants/index'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 export default StyleSheet.create({
   listSupplierColumnContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   titleSupplierContainer: {
     minHeight: s(56),
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
     alignItems: 'center',
     marginHorizontal: s(16),
     marginTop: s(12),
     borderRadius: s(20),
     paddingHorizontal: s(10),
-    ...brandShadow.soft,
+    ...liquidGlass.shadow,
   },
   viewTitleSupplier: {
     height: s(40),
@@ -34,7 +36,7 @@ export default StyleSheet.create({
   titleSupplier: {
     color: brandColors.surface,
     fontSize: fs(12),
-    fontWeight: '800',
+    fontWeight: '600',
     textAlign: 'center',
     textAlignVertical: 'center',
   },
@@ -50,7 +52,7 @@ export default StyleSheet.create({
     textAlignVertical: 'center',
     paddingLeft: s(12),
     paddingVertical: s(7),
-    fontWeight: '800',
+    fontWeight: '600',
     textTransform: 'uppercase',
   },
   banner: {
@@ -62,7 +64,7 @@ export default StyleSheet.create({
   listCategoriesContainer: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
     padding: s(10),
   },
 
@@ -73,7 +75,9 @@ export default StyleSheet.create({
     borderRadius: s(20),
     overflow: 'hidden',
     marginBottom: s(10),
-    ...brandShadow.soft,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   swiperItemContainer: {
     backgroundColor: 'transparent',
@@ -86,7 +90,7 @@ export default StyleSheet.create({
   textButton: {
     fontSize: fs(12),
     lineHeight: fs(15),
-    fontWeight: '800',
+    fontWeight: '600',
     color: brandColors.tealPrimary,
   },
 })

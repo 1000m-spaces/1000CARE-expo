@@ -1,116 +1,74 @@
 import { StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { fs, s } from '~/utils/responsive'
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  scrollContent: {
+    flexGrow: 1,
+  },
+  content: {
     flex: 1,
-    backgroundColor: Colors.white,
+    paddingHorizontal: s(20),
+    paddingTop: s(12),
   },
-  inner_container: {
-    flex: 2,
-    marginHorizontal: 24,
-  },
-  logo: {
+  logoCard: {
     alignSelf: 'center',
-    marginVertical: 54,
-  },
-  footer_views: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    marginBottom: 24,
-  },
-  inputContainerStyle: {
-    height: 50,
-    borderWidth: 0,
-    borderColor: Colors.borderColor,
-    borderBottomWidth: 1,
-    marginBottom: 16,
-  },
-  inputContainer: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  labelStyle: {
-    color: Colors.textColor3,
-    fontWeight: 'normal',
-    fontSize: 12,
-    lineHeight: 20,
-  },
-
-  fullNameContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-
-  loginBtnContainer: {
-    flexDirection: 'row',
-    margin: 0, 
-    padding: 0,
-    alignItems: 'center', 
-    paddingHorizontal: 18,
-  },
-
-  loginBtn: {
-    height: 50,
-    width: '100%',
-    padding: 0,
-    paddingHorizontal: 0,
-    borderRadius: 50,
-    backgroundColor: Colors.systemColor2,
-  },
-
-  listLoginBtnContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: 22,
-    justifyContent: 'center',
-  },
-
-  otherLoginMethod: {
-    textAlignVertical: 'center',
-    textAlign: 'center',
-    fontSize: 14,
-    color: Colors.textColor3,
-  },
-
-  otherLoginMethodContainer: {
-    marginTop: 84,
-  },
-
-  text_register_now: {
-    color: Colors.systemColor2,
-    textDecorationLine: 'underline',
-    marginLeft: 6,
-  },
-
-  logoLogin: {
-    alignSelf: 'center',
-  },
-
-  btnContainer: {
-    width: 100,
-    display: 'flex',
+    width: s(138),
+    height: s(72),
+    borderRadius: s(24),
+    backgroundColor: liquidGlass.backgroundStrong,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 58,
-    borderRadius: 12,
-    shadowColor: 'rgba(0, 0, 0, 0.1)',
-    shadowOpacity: 12,
+    marginBottom: s(18),
+    ...liquidGlass.shadow,
   },
-  ml16: {
-    marginLeft: 16,
+  logo: {
+    width: s(112),
+    height: s(42),
   },
-  mr16: {
-    marginRight: 16,
+  card: {
+    borderRadius: s(28),
+    backgroundColor: liquidGlass.backgroundStrong,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    paddingHorizontal: s(18),
+    paddingTop: s(22),
+    paddingBottom: s(18),
+    ...liquidGlass.shadow,
   },
-
+  fullNameContainer: {
+    gap: s(2),
+  },
+  registerButton: {
+    marginTop: s(18),
+  },
+  footer_views: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: s(18),
+    marginBottom: s(24),
+  },
+  footerText: {
+    color: brandColors.muted,
+    fontSize: fs(14),
+    fontWeight: '600',
+  },
+  text_register_now: {
+    color: brandColors.tealPrimary,
+    textDecorationLine: 'underline',
+    marginLeft: s(6),
+    fontSize: fs(14),
+    fontWeight: '600',
+  },
   title: {
-    color: Colors.textColor3,
-    fontSize: 16,
-    marginBottom: 25,
+    color: brandColors.textDark,
+    fontSize: fs(24),
+    lineHeight: fs(31),
+    fontWeight: '600',
+    marginBottom: s(12),
   },
 })
 

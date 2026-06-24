@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   addressName: {
     color: Colors.textColor1,
     fontFamily: Fonts.bold,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: 14,
   },
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   addressText: {
     color: Colors.textColor2,
     fontFamily: Fonts.medium,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: 14,
   },
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: 12,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   listHeader: {

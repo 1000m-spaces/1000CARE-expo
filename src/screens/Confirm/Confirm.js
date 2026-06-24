@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Dimensions,
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
-  Keyboard,
   TouchableOpacity,
   Linking,
   Platform,
@@ -16,9 +13,7 @@ import Header from '~/common/Header/index';
 import { back } from '~/assets/constants';
 import strings from '~/i18n';
 import { CodeField, Cursor } from 'react-native-confirmation-code-field';
-import Colors from '~/common/Colors/Colors';
 import Logo from '~/assets/configNeoMed/bank/logoConfirm.png';
-import { Button } from '~/common/index';
 import DialogInfo from '~/common/DialogInfo/index';
 import ErrorView from '~/common/ErrorView/index';
 import {
@@ -89,9 +84,11 @@ import {
 } from '~/navigation/routes';
 import { CommonActions } from '@react-navigation/native';
 import { showToast } from '~/utils/toast';
+import AppBackground from '~/design-system/AppBackground';
+import PremiumButton from '~/design-system/PremiumButton';
+import { brandColors, liquidGlass } from '~/design-system/tokens';
+import { fs, s } from '~/utils/responsive';
 // import OtpAutocomplete from 'react-native-otp-autocomplete';
-
-const fullWidth = Dimensions.get('window').width;
 
 const Confirm = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -527,8 +524,8 @@ const Confirm = ({ route, navigation }) => {
     }
   }, [showDialog]);
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
+    <AppBackground>
+      <View style={styles.screen}>
         <Header
           title={strings.Confirm.title}
           leftAction={() => {
@@ -537,39 +534,43 @@ const Confirm = ({ route, navigation }) => {
           iconLeft={back}
         />
         <View style={styles.containerConfirm}>
-          <Image style={styles.image} source={Logo} />
-          <Text style={{ textAlign: 'center', marginBottom: 20 }}>
-            {strings.Confirm.notification}
-          </Text>
-          <CodeField
-            cellBorderWidth={1}
-            inactiveColor={Colors.black}
-            activeColor={Colors.red}
-            ref={inputCode}
-            autoFocus={true}
-            value={value}
-            textContentType="oneTimeCode"
-            onChangeText={setValue}
-            keyboardType="number-pad"
-            cellCount={getCellCount()}
-            renderCell={({ index, symbol, isFocused }) => (
-              <Text
-                key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
-          />
-          <Button
-            onPressEvent={onConfirmPress}
-            text={strings.Confirm.confirm}
-            styleButton={{ borderRadius: 35, marginTop: 20 }}
-            styleText={{ fontWeight: '100' }}
-          />
+          <View style={styles.card}>
+            <View style={styles.logoWrap}>
+              <Image style={styles.image} source={Logo} resizeMode="contain" />
+            </View>
+            <Text style={styles.title}>{strings.Confirm.title}</Text>
+            <Text style={styles.message}>
+              {strings.Confirm.notification}
+            </Text>
+            <CodeField
+              cellBorderWidth={1}
+              inactiveColor={brandColors.border}
+              activeColor={brandColors.tealPrimary}
+              ref={inputCode}
+              autoFocus={true}
+              value={value}
+              textContentType="oneTimeCode"
+              onChangeText={setValue}
+              keyboardType="number-pad"
+              cellCount={getCellCount()}
+              renderCell={({ index, symbol, isFocused }) => (
+                <Text
+                  key={index}
+                  style={[styles.cell, isFocused && styles.focusCell]}>
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              )}
+            />
+            <PremiumButton
+              onPress={onConfirmPress}
+              text={strings.Confirm.confirm}
+              style={styles.confirmButton}
+            />
+          </View>
         </View>
         {(type === 'LOGIN' || type === 'SIGNUP') && (
           <View style={styles.footer_views}>
-            <Text style={{ color: Colors.textColor2 }}>{'Hotline:'}</Text>
+            <Text style={styles.hotlineLabel}>{'Hotline:'}</Text>
             <TouchableOpacity
               onPress={() => Linking.openURL('tel:096 649 2818')}>
               <Text style={styles.text_register_now}>{'096 649 2818'}</Text>
@@ -592,44 +593,83 @@ const Confirm = ({ route, navigation }) => {
           />
         )}
       </View>
-    </SafeAreaView>
+    </AppBackground>
   );
 };
 export default Confirm;
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    paddingBottom: 10,
-    backgroundColor: Colors.white,
   },
   containerConfirm: {
-    alignItems: 'center',
-    paddingHorizontal: 20,
     flex: 1,
+    paddingHorizontal: s(20),
+    paddingTop: s(18),
+  },
+  card: {
+    alignItems: 'center',
+    borderRadius: s(28),
+    backgroundColor: liquidGlass.backgroundStrong,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    paddingHorizontal: s(18),
+    paddingTop: s(24),
+    paddingBottom: s(18),
+    ...liquidGlass.shadow,
+  },
+  logoWrap: {
+    width: s(86),
+    height: s(86),
+    borderRadius: s(26),
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: s(16),
   },
   image: {
-    marginTop: 30,
-    marginBottom: 30,
+    width: s(58),
+    height: s(58),
+  },
+  title: {
+    color: brandColors.textDark,
+    fontSize: fs(24),
+    lineHeight: fs(31),
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  message: {
+    marginTop: s(8),
+    marginBottom: s(20),
+    color: brandColors.muted,
+    fontSize: fs(14),
+    lineHeight: fs(21),
+    fontWeight: '600',
+    textAlign: 'center',
   },
   cell: {
-    width: 40,
-    height: 40,
-    lineHeight: 38,
-    fontSize: 24,
-    borderColor: '#878787',
+    width: s(42),
+    height: s(48),
+    lineHeight: s(46),
+    fontSize: fs(22),
+    borderColor: brandColors.border,
     textAlign: 'center',
     borderWidth: 1,
-    color: Colors.textColor2,
-    marginLeft: 5,
+    color: brandColors.textDark,
+    marginHorizontal: s(3),
+    borderRadius: s(14),
+    backgroundColor: brandColors.surface,
+    fontWeight: '600',
   },
   focusCell: {
-    borderColor: '#000',
+    borderColor: brandColors.tealPrimary,
+    backgroundColor: brandColors.tealLight,
   },
   buttonConfirm: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    width: fullWidth,
+    marginTop: s(20),
+    width: '100%',
   },
   viewModal: {
     justifyContent: 'center',
@@ -648,12 +688,17 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignSelf: 'center',
-    marginBottom: 24,
+    marginBottom: s(24),
+  },
+  hotlineLabel: {
+    color: brandColors.muted,
+    fontWeight: '600',
   },
 
   text_register_now: {
-    color: Colors.systemColor2,
+    color: brandColors.tealPrimary,
     textDecorationLine: 'underline',
-    marginLeft: 6,
+    marginLeft: s(6),
+    fontWeight: '600',
   },
 });

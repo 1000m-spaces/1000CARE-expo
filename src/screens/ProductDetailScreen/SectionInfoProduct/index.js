@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#595959',
   },
   content: {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   textViewMore: {
     textAlign: 'center',
     color: '#4276FE',
-    fontWeight: '700',
+    fontWeight: '600',
   },
   iconViewMore: {
     width: 12,

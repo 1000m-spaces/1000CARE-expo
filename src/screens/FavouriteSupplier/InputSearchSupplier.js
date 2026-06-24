@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: brandColors.border,
     fontSize: fs(14),
-    fontWeight: '700',
+    fontWeight: '600',
   },
   icon: {
     width: s(24),

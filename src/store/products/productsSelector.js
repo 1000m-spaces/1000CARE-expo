@@ -11,6 +11,7 @@ export const getListProductsOfTrademark = (state) => state.products.listProducts
 export const getListProductsHotDeal = (state) => state.products.listProductsHotDeal
 export const getListProductsBestSeller = (state) => state.products.listProductsBestSeller
 export const getListProductPriceSock = (state) => state.products.listProductPriceSock
+export const getListProductPriceSockHome = (state) => state.products.listProductPriceSockHome && state.products.listProductPriceSockHome.length > 0 ? state.products.listProductPriceSockHome : state.products.listProductPriceSock
 export const getListProductsPropose = (state, distributorId) => state.products.listProductsProposeByDistributor ? state.products.listProductsProposeByDistributor[distributorId] : []
 export const getListProductsByDistributorId = (state, distributorId) => state.products.listProductsByDistributor ? state.products.listProductsByDistributor[distributorId] : []
 export const getListProductsBySupplier = (state) => state.products.listProductBySupplier

@@ -13,7 +13,7 @@ const ItemWaitGoods = props => {
                 <Text>Tại NPP: {product.company}</Text>
             </View>
             <View style={{marginRight:10,alignItems:'center'}}>
-                <Buttons styleText={{fontWeight:'100'}} styleButton={{paddingHorizontal:10}} text={'Đặt nhanh'} />
+                <Buttons styleText={{fontWeight:'normal'}} styleButton={{paddingHorizontal:10}} text={'Đặt nhanh'} />
             </View>
         </View>
     );

@@ -58,7 +58,7 @@ const MenuItem = ({ data, navigation, isLoggedIn, onShowMessage, lengthNotiNonRe
           }
           {data.text == strings.profileScreen.notification && lengthNotiNonRead != 0 ?
             <View style={styles.viewNonNoti}>
-              <Text style={{ color: brandColors.surface, fontSize: fs(10), fontWeight: '800' }}>{lengthNotiNonRead >= 100 ? '99+' : lengthNotiNonRead}</Text>
+              <Text style={{ color: brandColors.surface, fontSize: fs(10), fontWeight: '600' }}>{lengthNotiNonRead >= 100 ? '99+' : lengthNotiNonRead}</Text>
             </View>
             : undefined
           }
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: s(18),
     paddingVertical: s(12),
-    backgroundColor: brandColors.surface,
+    backgroundColor: 'transparent',
 
     display: 'flex',
     flexDirection: 'row',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginLeft: s(12),
     fontSize: fs(14),
     color: brandColors.textDark,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   viewNonNoti: {
     position: 'absolute',

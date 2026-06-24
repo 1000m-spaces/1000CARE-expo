@@ -253,7 +253,7 @@ const ProductItem = ({ product }) => {
             >
               <Text
                 style={[styles.productName, {
-                  fontWeight: '400',
+                  fontWeight: 'normal',
                   fontStyle: 'italic',
                   flex: 2,
                 }]}

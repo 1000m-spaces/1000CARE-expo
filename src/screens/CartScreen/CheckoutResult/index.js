@@ -59,7 +59,7 @@ const OrderItem = ({ isError, distributor, order, error }) => {
             {'Mã đơn hàng: '}
             <Text
               color={Colors.textColor3}
-              style={[styles.errorMessage, { fontWeight: '700' }]}
+              style={[styles.errorMessage, { fontWeight: '600' }]}
             >
               {order.order_id}
             </Text>

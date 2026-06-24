@@ -65,20 +65,20 @@ const styles = StyleSheet.create({
   eyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.4,
     color: brandColors.goldAccent,
   },
   fullName: {
     marginTop: s(4),
     fontSize: fs(18),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.surface,
   },
   username: {
     marginTop: s(4),
     fontSize: fs(12),
-    fontWeight: '700',
+    fontWeight: '600',
     color: 'rgba(255,255,255,0.64)',
   },
   memberStrip: {
@@ -95,14 +95,14 @@ const styles = StyleSheet.create({
   memberLabel: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '800',
+    fontWeight: '600',
     color: 'rgba(255,255,255,0.56)',
   },
   memberValue: {
     marginTop: s(2),
     fontSize: fs(14),
     lineHeight: fs(18),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.surface,
   },
   memberBadge: {
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   memberBadgeText: {
     fontSize: fs(10),
     lineHeight: fs(13),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.tealDark,
   },
 })

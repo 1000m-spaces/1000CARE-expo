@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { GenericTemplate } from '~/common';
 import { resetLogin } from '~/store/auth/authActions';
 import { getErrMsg } from '~/store/auth/authSelector';
 import ErrorView from '~/common/ErrorView';
@@ -10,10 +9,13 @@ import ErrorView from '~/common/ErrorView';
 import styles from './styles';
 import strings from '~/i18n';
 import { logo_text } from '~/assets/constants';
-import { Button, Image, TextInput } from '~/common/index';
+import { Image } from '~/common/index';
 import { NAVIGATION_CONFIRM, NAVIGATION_PHONE_VERIFY } from '~/navigation/routes';
 import Header from '~/common/Header/index';
 import { back } from '~/assets/constants';
+import AppBackground from '~/design-system/AppBackground';
+import PremiumInput from '~/design-system/PremiumInput';
+import PremiumButton from '~/design-system/PremiumButton';
 
 const RegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -34,81 +36,76 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <GenericTemplate style={styles.mainContainer}>
+    <AppBackground>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps={'always'}>
-        <View style={styles.mainContainer}>
-          <Header
-            title={strings.registerScreen.title}
-            iconLeft={back}
-            leftAction={() => navigation.pop()}
-          />
-          <Image source={logo_text} resizeMode="contain" style={styles.logo} />
-          <View style={styles.inner_container}>
+        keyboardShouldPersistTaps={'always'}
+        contentContainerStyle={styles.scrollContent}>
+        <Header
+          title={strings.registerScreen.title}
+          iconLeft={back}
+          leftAction={() => navigation.pop()}
+        />
+        <View style={styles.content}>
+          <View style={styles.logoCard}>
+            <Image source={logo_text} resizeMode="contain" style={styles.logo} />
+          </View>
+          <View style={styles.card}>
             <Text style={styles.title}>
               {strings.registerScreen.title}
             </Text>
             <View style={styles.fullNameContainer}>
-              <TextInput
-                containerStyle={[styles.inputContainer, styles.mr16]}
-                inputContainerStyle={styles.inputContainerStyle}
-                labelStyle={styles.labelStyle}
+              <PremiumInput
+                label={strings.registerScreen.firstName}
                 value={username}
                 onChangeText={value => {
                   setUserName(value);
                 }}
-                label={strings.registerScreen.firstName}
+                placeholder={strings.registerScreen.firstName}
               />
 
-              <TextInput
-                containerStyle={[styles.inputContainer, styles.ml16]}
-                inputContainerStyle={styles.inputContainerStyle}
-                labelStyle={styles.labelStyle}
+              <PremiumInput
+                label={strings.registerScreen.lastName}
                 value={username}
                 onChangeText={value => {
                   setUserName(value);
                 }}
-                label={strings.registerScreen.lastName}
+                placeholder={strings.registerScreen.lastName}
               />
             </View>
 
-            <TextInput
-              inputContainerStyle={styles.inputContainerStyle}
-              labelStyle={styles.labelStyle}
+            <PremiumInput
+              label={strings.registerScreen.username}
               value={username}
               onChangeText={value => {
                 setUserName(value);
               }}
-              label={strings.registerScreen.username}
+              placeholder={strings.registerScreen.username}
             />
 
-            <TextInput
-              inputContainerStyle={styles.inputContainerStyle}
-              secureTextEntry={true}
-              labelStyle={styles.labelStyle}
-              value={password}
-              onChangeText={value => setPassword(value)}
+            <PremiumInput
               label={strings.registerScreen.password}
-            />
-            <TextInput
-              inputContainerStyle={styles.inputContainerStyle}
-              secureTextEntry={true}
-              labelStyle={styles.labelStyle}
               value={password}
               onChangeText={value => setPassword(value)}
-              label={strings.registerScreen.re_password}
+              placeholder={strings.registerScreen.password}
+              secureTextEntry={true}
             />
-            <Button
-              styleView={styles.loginBtnContainer}
-              styleButton={styles.loginBtn}
-              onPressEvent={onRegisterPress}
+            <PremiumInput
+              label={strings.registerScreen.re_password}
+              value={password}
+              onChangeText={value => setPassword(value)}
+              placeholder={strings.registerScreen.re_password}
+              secureTextEntry={true}
+            />
+            <PremiumButton
+              style={styles.registerButton}
+              onPress={onRegisterPress}
               text={strings.registerScreen.register}
             />
           </View>
         </View>
         <View style={styles.footer_views}>
-          <Text>{strings.registerScreen.have_account}</Text>
+          <Text style={styles.footerText}>{strings.registerScreen.have_account}</Text>
           <TouchableOpacity onPress={() => navigation.pop()}>
             <Text style={styles.text_register_now}>
               {strings.registerScreen.login_now}
@@ -121,7 +118,7 @@ const RegisterScreen = ({ navigation }) => {
         isOpen={errorMsg && errorMsg !== ''}
         onClose={() => dispatch(resetLogin())}
       />
-    </GenericTemplate>
+    </AppBackground>
   );
 };
 

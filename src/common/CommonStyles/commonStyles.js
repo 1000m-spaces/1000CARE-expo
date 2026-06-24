@@ -52,7 +52,7 @@ const commonStyles = StyleSheet.create({
     color: Colors.white,
     textAlign: "center",
     fontSize: 15,
-    fontWeight: "bold"
+    fontWeight: "600"
   },
   normal_radius_container: {
     borderRadius: 5,

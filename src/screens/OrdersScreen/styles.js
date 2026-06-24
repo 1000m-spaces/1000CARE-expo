@@ -2,14 +2,14 @@ import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
 import Colors from '~/common/Colors/Colors'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, brandShadow, liquidGlass } from '~/design-system/tokens'
 
 const styles = StyleSheet.create({
   mainContainer: { 
     flex:1,
     display: 'flex',
     justifyContent:'space-between',
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   ordersHero: {
     marginHorizontal: s(16),
@@ -18,42 +18,46 @@ const styles = StyleSheet.create({
     borderRadius: s(28),
     paddingHorizontal: s(20),
     paddingVertical: s(20),
-    backgroundColor: brandColors.textDark,
-    ...brandShadow.soft,
+    backgroundColor: liquidGlass.backgroundTint,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.6,
-    color: brandColors.goldAccent,
+    color: brandColors.tealPrimary,
   },
   heroTitle: {
     marginTop: s(6),
     fontSize: fs(26),
     lineHeight: fs(32),
-    fontWeight: '900',
-    color: brandColors.surface,
+    fontWeight: '600',
+    color: brandColors.textDark,
   },
   heroSubtitle: {
     marginTop: s(8),
     fontSize: fs(13),
     lineHeight: fs(20),
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.66)',
+    color: brandColors.muted,
   },
   
   listItem: {
     marginVertical: s(12),
     marginHorizontal: s(16),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
     borderRadius: s(20),
-    ...brandShadow.soft,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
 
   listProductContainer: {
     flex: 2,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -63,7 +67,7 @@ const styles = StyleSheet.create({
     flex: 1,
     maxHeight: s(64),
     marginBottom: s(8),
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
 
   contentListStatus: {
@@ -74,7 +78,7 @@ const styles = StyleSheet.create({
 
   itemSeparator: {
     height: s(8),
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
 
   statusLabel: {
@@ -83,7 +87,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.medium,
     fontSize: fs(12),
     lineHeight: fs(18),
-    fontWeight: '800',
+    fontWeight: '600',
   },
 
   statusLabelSelected: {
@@ -92,22 +96,11 @@ const styles = StyleSheet.create({
     fontSize: fs(12),
     fontFamily: Fonts.medium,
     lineHeight: fs(18),
-    fontWeight: '900',
+    fontWeight: '600',
   },
 
   statusLabelContainer: {
-    paddingVertical: s(10),
-    paddingHorizontal: s(16),
-    borderRadius: s(18),
     marginRight: s(8),
-    backgroundColor: brandColors.surface,
-    borderWidth: 1,
-    borderColor: brandColors.borderSoft,
-  },
-
-  statusLabelContainerSelected: {
-    backgroundColor: brandColors.tealPrimary,
-    borderColor: brandColors.tealPrimary,
   },
 
   closeBtnContainer: {
@@ -122,7 +115,7 @@ const styles = StyleSheet.create({
   title: {
     // alignSelf: 'center',
     width: '99%',
-    fontWeight: '700',
+    fontWeight: '600',
     fontFamily: Fonts.bold,
     textAlign: 'center',
     fontSize: fs(14),
@@ -132,7 +125,7 @@ const styles = StyleSheet.create({
 
   bottomSheetContainer: {
     height: '100%',
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.backgroundStrong,
   },
   radioButtonContainer: {
     flexDirection: 'column',
@@ -147,7 +140,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: s(64),
     borderTopWidth: 1,
-    borderTopColor: brandColors.border,
+    borderTopColor: liquidGlass.border,
     bottom: 0,
     width: '100%',
     padding: s(8),

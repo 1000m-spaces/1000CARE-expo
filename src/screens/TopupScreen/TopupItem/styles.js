@@ -28,13 +28,13 @@ export default StyleSheet.create({
   },
   amount: {
     color: Colors.textColor2,
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 16,
     lineHeight: 24,
   },
   amountUnit: {
     color: Colors.textColor3,
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: 12,
     lineHeight: 20,
   },
@@ -42,13 +42,13 @@ export default StyleSheet.create({
     color: Colors.textColor4,
     fontSize: 12,
     lineHeight:20,
-    fontWeight: '400',
+    fontWeight: 'normal',
   },
   point: {
     marginLeft: 8, 
     color: Colors.textColor4,
     fontSize: 14,
     lineHeight:22,
-    fontWeight: '700',
+    fontWeight: '600',
   },
 })

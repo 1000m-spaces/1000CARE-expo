@@ -1,27 +1,27 @@
 import { StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { s } from '~/utils/responsive'
 
 const styles = StyleSheet.create({
   mainContainer: { 
     flex:1,
     display: 'flex',
     justifyContent:'space-between',
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: 'transparent',
   },
   
   listCheckoutContainer: {
     flex: 2,
-    backgroundColor: Colors.white,
-    marginTop: 6,
+    backgroundColor: 'transparent',
+    marginTop: s(6),
   },
 
   itemSeparator: {
-    height: 12,
-    backgroundColor: Colors.backgroundColor,
+    height: s(12),
+    backgroundColor: 'transparent',
   },
 
   mt12: {
-    marginTop: 12,
+    marginTop: s(12),
   },
 })
 

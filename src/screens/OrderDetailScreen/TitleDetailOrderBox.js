@@ -1,6 +1,9 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { Image } from '~/common/index'
+import { s, fs } from '~/utils/responsive'
+import { brandColors } from '~/design-system/tokens'
+import { Fonts } from '~/assets/config'
 
 const TitleDetailOrderBox = ({ urlIcon, title, route, navigation, params }) => {
   return (
@@ -10,7 +13,7 @@ const TitleDetailOrderBox = ({ urlIcon, title, route, navigation, params }) => {
           <Image
             style={styles.icon}
             source={urlIcon}
-            tintColor="#0B7B8A"
+            tintColor={brandColors.tealPrimary}
           />
         </View>
         <Text style={styles.title}>{title}</Text>
@@ -32,10 +35,9 @@ const TitleDetailOrderBox = ({ urlIcon, title, route, navigation, params }) => {
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
-    backgroundColor: '#fff',
-
-    paddingHorizontal: 18,
-    paddingVertical: 12,
+    backgroundColor: 'transparent',
+    paddingHorizontal: s(18),
+    paddingVertical: s(12),
 
     display: 'flex',
     flexDirection: 'row',
@@ -48,33 +50,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   wrapIcon: {
-    width: 42,
-    height: 42,
-    backgroundColor: '#E5F4FB',
-
-    borderRadius: 21,
+    width: s(42),
+    height: s(42),
+    backgroundColor: 'rgba(11,123,138,0.1)',
+    borderRadius: s(21),
 
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: s(24),
+    height: s(24),
   },
   title: {
-    marginLeft: 12,
-
-    fontSize: 14,
-    fontFamily: '-Bold',
-    color: '#595959',
+    marginLeft: s(12),
+    fontSize: fs(14),
+    fontFamily: Fonts.bold,
+    color: brandColors.textDark,
+    fontWeight: '600',
   },
   viewDetailButton: {
-    width: 100,
-    height: 24,
-
-    borderRadius: 12,
-    borderColor: '#0B7B8A',
+    width: s(100),
+    height: s(28),
+    borderRadius: s(14),
+    borderColor: brandColors.tealPrimary,
     borderStyle: 'solid',
     borderWidth: 1,
 
@@ -83,9 +83,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textViewDetailButton: {
-    fontSize: 12,
-    color: '#0B7B8A',
-    lineHeight: 16,
+    fontSize: fs(12),
+    color: brandColors.tealPrimary,
+    lineHeight: fs(16),
   },
 })
 

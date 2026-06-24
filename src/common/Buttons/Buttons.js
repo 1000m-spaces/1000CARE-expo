@@ -3,12 +3,12 @@ import Colors from "../../common/Colors/Colors";
 import {
   StyleSheet,
   TouchableOpacity,
-  ImageBackground,
   Text,
-  ActivityIndicator,
   View
 } from "react-native";
-import { BG_btn } from "../../assets/constants";
+import { s, fs } from '~/utils/responsive'
+import { brandShadow } from '~/design-system/tokens'
+import { Fonts } from '~/assets/config'
 
 const Buttons = props => {
   const {text, onPressEvent, styleView, styleButton, styleText } = props;
@@ -28,20 +28,23 @@ const styles = StyleSheet.create({
   btn_container: {
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
-    paddingHorizontal:25,
+    minHeight: s(52),
+    paddingVertical: s(12),
+    paddingHorizontal: s(24),
     backgroundColor: Colors.colorMain,
-    borderRadius: 5
+    borderRadius: s(16),
+    ...brandShadow.teal,
   },
   container: {
     alignItems: 'center',
-    marginTop: 10
+    marginTop: s(10)
   },
   loading: { position: "absolute", left: 20 },
   text: {
     color: Colors.white,
-    fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: Fonts.bold,
+    fontSize: fs(16),
+    fontWeight: "normal",
     textAlign: "center"
   }
 });

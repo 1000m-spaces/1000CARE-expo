@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
     color: Colors.textColor2,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
     textAlign: 'center',
   },
   message: {

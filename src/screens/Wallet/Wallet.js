@@ -10,7 +10,7 @@ import WalletItem from './WalletItem'
 import EmptyItem from '~/common/EmptyItem/index'
 import { Text } from '~/common/index'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 const Wallet = props => {
   const type = props.route?.params?.type
@@ -51,7 +51,7 @@ const Wallet = props => {
         <Text style={styles.heroSubtitle}>Theo dõi số dư điểm mua hàng theo từng nhà phân phối.</Text>
       </View>
       <FlatList
-        style={{ flexGrow: 0, marginTop: 10, backgroundColor: brandColors.background }}
+        style={{ flexGrow: 0, marginTop: 10, backgroundColor: 'transparent' }}
         contentContainerStyle={{ paddingBottom: 96 }}
         data={accounts}
         keyExtractor={keyExtractorAccount}
@@ -82,28 +82,30 @@ const styles = {
     marginTop: s(12),
     borderRadius: s(26),
     padding: s(18),
-    backgroundColor: brandColors.textDark,
-    ...brandShadow.soft,
+    backgroundColor: liquidGlass.backgroundTint,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.5,
-    color: brandColors.goldAccent,
+    color: brandColors.tealPrimary,
   },
   heroTitle: {
     marginTop: s(6),
     fontSize: fs(24),
     lineHeight: fs(30),
-    fontWeight: '900',
-    color: brandColors.surface,
+    fontWeight: '600',
+    color: brandColors.textDark,
   },
   heroSubtitle: {
     marginTop: s(8),
     fontSize: fs(12),
     lineHeight: fs(18),
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.68)',
+    color: brandColors.muted,
   },
 }

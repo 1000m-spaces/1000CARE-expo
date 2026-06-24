@@ -4,7 +4,7 @@ import {View, StyleSheet} from 'react-native';
 import TouchReceptor from '../TouchReceptor/TouchReceptor';
 import {DIMENS} from '../../constants';
 import { s } from '~/utils/responsive';
-import { brandColors, brandShadow } from '~/design-system/tokens';
+import { brandShadow, liquidGlass } from '~/design-system/tokens';
 
 const OUTLINE = 'outline';
 const CLEAR = 'clear';
@@ -41,9 +41,9 @@ const shadowStyle = () => ({
 const styles = {
   container: (type) => ({
     borderWidth: type === OUTLINE ? DIMENS.common.borderWidth : 0,
-    borderColor: brandColors.borderSoft,
+    borderColor: liquidGlass.border,
     borderRadius: s(24),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
   }),
 };
 

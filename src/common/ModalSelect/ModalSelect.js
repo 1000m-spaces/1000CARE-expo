@@ -17,6 +17,7 @@ const ModalSelect = ({
   disabled = false,
   loading = false,
   style = {},
+  inputContainerStyle = {},
   textStyle = {},
   placeholderTextColor = '',
 }) => {
@@ -84,6 +85,7 @@ const ModalSelect = ({
           style,
           disabled && styles.disabledContainer,
         ])}
+        inputContainerStyle={inputContainerStyle}
         inputStyle={StyleSheet.flatten([styles.inputStyle, textStyle])}
         editable={false}
         placeholder={label}

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.textColor2,
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 14,
     lineHeight: 22,
     fontFamily: Fonts.medium,
@@ -37,21 +37,21 @@ const styles = StyleSheet.create({
   promotionName: {
     marginTop: 18,
     fontFamily: Fonts.bold,
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 16,
     lineHeight: 24,
   },
   promotionEndDate: {
     marginTop: 8,
     fontFamily: Fonts.medium,
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: 12,
     lineHeight: 20,
   },
   promotionDescription: {
     marginTop: 12,
     fontFamily: Fonts.bold,
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: 14,
     lineHeight: 22,
   },
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.medium,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   productImage: {
     width: 74,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     width: DIMENS.common.WINDOW_WIDTH - 150,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   productQuantity:{
     color: Colors.textColor3,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginTop: 2,
     width: 176,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   productInfo: {
     marginLeft: 10,
@@ -117,14 +117,14 @@ const styles = StyleSheet.create({
   },
   priceTitle: {
     color: Colors.textColor2,
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: 14,
     lineHeight: 18,
     fontFamily: Fonts.medium,
   },
   price: {
     color: Colors.systemColor2,
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 14,
     lineHeight: 18,
     fontFamily: Fonts.medium,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   quantity: {
     color: Colors.textColor3,
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: 14,
     lineHeight: 18,
     fontFamily: Fonts.medium,

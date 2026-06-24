@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, View } from 'react-native'
+import { View } from 'react-native'
 import { ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Header from '~/common/Header/index'
 import { back } from '~/assets/constants'
-import { Button } from '~/common/index'
-import Colors from '~/common/Colors/Colors'
+import { Button, Text } from '~/common/index'
 import { getCategories, getListDistributorAll, getListSuppliers } from '~/store/selector'
 import { getAllDistributors, getCateBySup, getSupplierByDistributor, resetCateBySup } from '~/store/actions'
+import AppBackground from '~/design-system/AppBackground'
+import { brandColors } from '~/design-system/tokens'
 
 import styles from './styles'
 import Group from './Group'
@@ -64,7 +65,7 @@ const FilterProduct = ({ navigation, route }) => {
   }, [supplierSelected])
 
   const onSelectCate = (_, item) => {
-    setCateSelected(item)
+    setCateSelected(cateSelected?.category_id === item?.category_id ? null : item)
   }
 
   const cleanUp = () => {
@@ -74,7 +75,7 @@ const FilterProduct = ({ navigation, route }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <AppBackground>
       <Header
         leftAction={() => navigation.pop()}
         iconLeft={back}
@@ -82,12 +83,21 @@ const FilterProduct = ({ navigation, route }) => {
         navigation={navigation}
         cart={false}
       />
-      <ScrollView style={{ backgroundColor: Colors.white, marginTop: 6 }}>
-        {
-          mode !== 'supplier' && (
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.heroCard}>
+          <Text style={styles.heroEyebrow}>FILTER</Text>
+          <Text style={styles.heroTitle}>Tinh chỉnh danh sách</Text>
+          <Text style={styles.heroSubtitle}>Chọn một tiêu chí để danh sách sản phẩm trả về đúng hơn.</Text>
+        </View>
+        <View style={styles.filterCard}>
+          {mode !== 'supplier' && (
             <Group
               title={'Nhà cung cấp'}
-              subTitle={'(Chọn tối đa 1 nhà cung cấp)'}
+              subTitle={distributorSelected ? `Đang lọc: ${distributorSelected.nick_name || distributorSelected.name || 'Nhà cung cấp đã chọn'}` : 'Chọn tối đa 1 nhà cung cấp'}
               data={listDistributor}
               isSelect={(idx, item) => {
                 return item?.id === distributorSelected?.id
@@ -95,31 +105,29 @@ const FilterProduct = ({ navigation, route }) => {
               clickItem={(idx, item) => {
                 setCateSelected(null)
                 setSupplierSelected(null)
-                setDistributorSelected(item)
+                setDistributorSelected(item?.id === distributorSelected?.id ? null : item)
               }}
               navigation={navigation}
             />
-          )
-        }
-        {
-          mode === 'supplier' && (
+          )}
+          {mode === 'supplier' && (
             <>
               <Group 
                 title={'Nhóm sản phẩm'}
-                subTitle={'(Chọn tối đa 1 nhóm sản phẩm)'}
+                subTitle={supplierSelected ? `Đang lọc: ${supplierSelected.name}` : 'Chọn tối đa 1 nhóm sản phẩm'}
                 data={listSupplier}
                 isSelect={(idx, item) => {
                   return item?.id === supplierSelected?.id
                 }}
                 clickItem={(idx, item) => {
                   setCateSelected(null)
-                  setSupplierSelected(item)
+                  setSupplierSelected(item?.id === supplierSelected?.id ? null : item)
                 }}
                 navigation={navigation}
               />
               <Group 
                 title={'Nhóm bệnh'}
-                subTitle={'(Chọn tối đa 1 nhóm bệnh)'}
+                subTitle={cateSelected ? `Đang lọc: ${cateSelected.name}` : 'Chọn tối đa 1 nhóm bệnh'}
                 data={listCategories}
                 isSelect={(idx, item) => {
                   return item?.category_id === cateSelected?.category_id
@@ -128,47 +136,31 @@ const FilterProduct = ({ navigation, route }) => {
                 navigation={navigation}
               />
             </>
-          )
-
-        }
-        
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent:'space-around',
-            marginVertical: 36,
-          }}
-        >
-          <Button
-            text={'Thiết lập lại'}
-            styleButton={{ 
-              borderRadius: 35, 
-              backgroundColor: Colors.white,
-              borderColor: Colors.systemColor2,
-              borderWidth: 1,
-            }}
-            styleText={{ fontWeight:'700', color: Colors.systemColor2 }}
-            styleView={styles.buttonConfirm}
-            onPressEvent={cleanUp}
-          />
-          <Button 
-            text={'Áp dụng'}
-            styleButton={{ 
-              borderRadius: 35, 
-            }}
-            styleText={{ fontWeight:'700' }}
-            styleView={styles.buttonConfirm}
-            onPressEvent={() => {
-              if (onLoad) {
-                onLoad(supplierSelected, cateSelected, distributorSelected)
-              }
-              navigation.pop()
-            }}
-          />
+          )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+      <View style={styles.footer}>
+        <Button
+          text={'Thiết lập lại'}
+          styleButton={styles.resetButton}
+          styleText={styles.resetButtonText}
+          styleView={styles.buttonConfirm}
+          onPressEvent={cleanUp}
+        />
+        <Button 
+          text={'Áp dụng'}
+          styleButton={styles.applyButton}
+          styleText={{ fontWeight:'600', color: brandColors.surface }}
+          styleView={styles.buttonConfirm}
+          onPressEvent={() => {
+            if (onLoad) {
+              onLoad(supplierSelected, cateSelected, distributorSelected)
+            }
+            navigation.pop()
+          }}
+        />
+      </View>
+    </AppBackground>
   )
 }
 

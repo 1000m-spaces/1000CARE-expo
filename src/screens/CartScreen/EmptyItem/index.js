@@ -12,6 +12,7 @@ const EmptyItem = () => {
       <Image
         resizeMode={'contain'}
         source={empty_cart}
+        style={styles.image}
       />
       <Text style={styles.message}>
         {strings.cartDetail.emptyCart}

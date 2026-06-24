@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 24,
   },
   orderMessage: {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 14,
     lineHeight: 24,
-    fontWeight: '700',
+    fontWeight: '600',
     textAlign: 'center',
     textTransform: 'uppercase',
   },
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     color: Colors.priceColor,
     lineHeight: 22,
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   titleItem:{
     color: Colors.textColor3,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     color: Colors.priceColor,
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   orderItemContainer: {
     display: 'flex',
@@ -119,19 +119,19 @@ const styles = StyleSheet.create({
     width: 200,
     fontSize: 14,
     lineHeight: 24,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   errorMessage: {
     fontSize: 12,
     fontFamily: Fonts.medium,
     lineHeight: 20,
-    fontWeight: '500',
+    fontWeight: 'normal',
     color: Colors.textColor3,
   },
   checkoutStatus: {
     fontSize: 14,
     lineHeight: 24,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   checkoutStatusContainer: {
     display: 'flex',

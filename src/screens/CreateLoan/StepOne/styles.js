@@ -31,21 +31,21 @@ export default StyleSheet.create({
     color: Colors.priceColor,
     fontSize: 24,
     lineHeight: 26,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
   unit: {
     color: Colors.priceColor,
     fontSize: 12,
     lineHeight: 26,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   max: {
     color: Colors.textColor3,
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
   interestRate: {
@@ -63,14 +63,14 @@ export default StyleSheet.create({
     fontFamily: Fonts.medium,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   interestRateValue: {
     color: Colors.textColor1,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   termsContainer: {
@@ -86,7 +86,7 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginBottom: 18,
   },
   
@@ -95,7 +95,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.medium,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
     marginBottom: 12,
   },
 
@@ -112,7 +112,7 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: '700',
+    fontWeight: '600',
   },
 
   termMessage: {
@@ -120,7 +120,7 @@ export default StyleSheet.create({
     color: Colors.systemColor2,
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
   termItemContainer: {
@@ -133,7 +133,7 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 22,
     lineHeight: 22,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
   termItemValue: {
@@ -142,6 +142,6 @@ export default StyleSheet.create({
     fontFamily: Fonts.medium,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 })

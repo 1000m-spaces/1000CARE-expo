@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { FlatList, View, TouchableOpacity } from 'react-native'
+import { ScrollView, View, TouchableOpacity } from 'react-native'
 import { Text } from '~/common/index'
 import ProductItemScrollHorizontal from '~/common/ProductItemScrollHorizontal/ProductItemScrollHorizontal'
 import { check_info } from '~/assets/constants'
@@ -65,12 +65,15 @@ const SimilarProduct = ({ navigation, product, scrollToTop }) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={safeProducts}
-        horizontal={true}
+      <ScrollView
+        horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => {
-          return (
+      >
+        {safeProducts.map((item, index) => (
+          <View
+            key={(item?.product_id ?? item?.id ?? index).toString()}
+            style={index < safeProducts.length - 1 ? styles.productSpacer : null}
+          >
             <ProductItemScrollHorizontal
               navigation={navigation}
               data={item}
@@ -98,15 +101,9 @@ const SimilarProduct = ({ navigation, product, scrollToTop }) => {
                 }, 1000)
               }}
             />
-          )
-        }}
-        keyExtractor={(item, index) => (item?.product_id ?? item?.id ?? index).toString()}
-        ItemSeparatorComponent={() => {
-          return (
-            <View style={{ width: 6 }} />
-          )
-        }}
-      />
+          </View>
+        ))}
+      </ScrollView>
       <ErrorView
         icon={check_info}
         error={message}

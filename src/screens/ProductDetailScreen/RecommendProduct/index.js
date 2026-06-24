@@ -1,9 +1,11 @@
 import React, { useState,useEffect } from 'react'
-import { FlatList, View } from 'react-native'
+import { View } from 'react-native'
 import { Text } from '~/common/index'
 import ProductItem from '~/common/ProductItem/ProductItem'
 import { check_info } from '~/assets/constants'
 import ErrorView from '~/common/ErrorView/index'
+import dimens from '~/constants/dimens'
+import { s } from '~/utils/responsive'
 
 import styles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -44,6 +46,44 @@ const RecommendProduct = ({ navigation, product, scrollToTop }) => {
     return null
   }
 
+  const productWidth = (dimens.common.WINDOW_WIDTH - s(64)) / 2
+  const rows = Array.from({ length: Math.ceil(safeProducts.length / 2) }, (_, index) => safeProducts.slice(index * 2, index * 2 + 2))
+  const renderProduct = (item, index) => (
+    <View
+      key={(item?.product_id ?? item?.id ?? index).toString()}
+      style={styles.productCell}
+    >
+      <ProductItem
+        navigation={navigation}
+        data={item}
+        distributorId={item.distributor_id}
+        type={2}
+        productWidth={productWidth}
+        onNavigate={scrollToTop}
+        onMessage={(msg) => onShowMessage(msg)}
+        onFavorClick={(isAdd) => {
+          if (isAdd) {
+            setMessage('Đã thêm sản phẩm yêu thích')
+          } else {
+            setMessage('Đã xóa sản phẩm yêu thích')
+          }
+          setOpenMessage(true)
+          setTimeout(() => {
+            setOpenMessage(false)
+          }, 1000)
+        }}
+        onAdd={() => {
+          console.log('item', item)
+          setMessage('Thêm sản phẩm thành công')
+          setOpenMessage(true)
+          setTimeout(() => {
+            setOpenMessage(false)
+          }, 1000)
+        }}
+      />
+    </View>
+  )
+
   return (
     <View
       style={styles.mainContainer}
@@ -55,49 +95,16 @@ const RecommendProduct = ({ navigation, product, scrollToTop }) => {
           {'Có thể bạn quan tâm'}
         </Text>
       </View>
-      
-      <FlatList
-        data={safeProducts}
-        numColumns={2}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => {
-          return (
-            <ProductItem
-              navigation={navigation}
-              data={item}
-              distributorId={item.distributor_id}
-              type={2}
-              onNavigate={scrollToTop}
-              onMessage={(msg) => onShowMessage(msg)}
-              onFavorClick={(isAdd) => {
-                if (isAdd) {
-                  setMessage('Đã thêm sản phẩm yêu thích')
-                } else {
-                  setMessage('Đã xóa sản phẩm yêu thích')
-                }
-                setOpenMessage(true)
-                setTimeout(() => {
-                  setOpenMessage(false)
-                }, 1000)
-              }}
-              onAdd={() => {
-                console.log('item', item)
-                setMessage('Thêm sản phẩm thành công')
-                setOpenMessage(true)
-                setTimeout(() => {
-                  setOpenMessage(false)
-                }, 1000)
-              }}
-            />
-          )
-        }}
-        keyExtractor={(item, index) => (item?.product_id ?? item?.id ?? index).toString()}
-        ItemSeparatorComponent={() => {
-          return (
-            <View style={{ width: 6 }} />
-          )
-        }}
-      />
+      <View style={styles.productGrid}>
+        {rows.map((row, rowIndex) => (
+          <View
+            key={`row-${rowIndex}`}
+            style={styles.productRow}
+          >
+            {row.map(renderProduct)}
+          </View>
+        ))}
+      </View>
       <ErrorView
         icon={check_info}
         error={message}

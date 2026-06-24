@@ -55,7 +55,7 @@ export default StyleSheet.create({
     color: '#F5222D',
     fontSize: 10,
     fontWeight: '600',
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Roboto',
     textAlignVertical: 'center',
     textAlign: 'center',
   },

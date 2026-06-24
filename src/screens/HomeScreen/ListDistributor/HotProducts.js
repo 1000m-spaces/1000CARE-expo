@@ -1,56 +1,95 @@
 import React from 'react'
-import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { FlatList, Image, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
-import ProductItem from '~/common/ProductItem/ProductItem'
-import { NAVIGATION_PRODUCT_LIST } from '~/navigation/routes'
+import { banner_2 } from '~/assets/constants'
+import { NAVIGATION_PRODUCT_DETAIL_SCREEN } from '~/navigation/routes'
 import { getListProductsBestSeller } from '~/store/selector'
 import { DIMENS } from '~/constants/index'
 import { s, fs } from '~/utils/responsive'
+import { formatMoney } from '~/utils/format'
+import { getProductImage } from '~/utils/image'
 
-const HotProducts = ({ navigation, onFavorClick, onAddProduct, onMessage }) => {
+const HotProducts = ({ navigation }) => {
   const listProductsBestSeller = useSelector(state => getListProductsBestSeller(state))
   const safeList = Array.isArray(listProductsBestSeller) ? listProductsBestSeller : []
   if (safeList.length === 0) return null
 
-  const productWidth = Math.round(DIMENS.common.WINDOW_WIDTH * 0.36)
-  const snapToInterval = productWidth + 10
-  const listHeight = productWidth * 1.4 + 50 + 10
+  const productWidth = Math.round((DIMENS.common.WINDOW_WIDTH - s(44)) / 2)
+  const snapToInterval = productWidth + s(12)
+  const listHeight = s(252)
+
+  const getPrice = item => Number(item?.sale_price || item?.price || 0)
+  const getOriginalPrice = item => Number(item?.price || item?.original_price || item?.listed_price || 0)
+  const hasDiscount = item => {
+    const price = getOriginalPrice(item)
+    const salePrice = getPrice(item)
+    return price > 0 && salePrice > 0 && salePrice < price
+  }
+  const goProductDetail = item => {
+    navigation.navigate(NAVIGATION_PRODUCT_DETAIL_SCREEN, {
+      product: item,
+      distributorId: item?.distributor_id,
+    })
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <View style={styles.headerAccent} />
-          <Text style={styles.headerTitle}>SẢN PHẨM BÁN CHẠY</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.seeAllBtn}
-          onPress={() => navigation.navigate(NAVIGATION_PRODUCT_LIST, { type: 'best_seller', title: 'Sản phẩm bán chạy' })}
-        >
-          <Text style={styles.seeAllText}>Xem tất cả</Text>
-        </TouchableOpacity>
-      </View>
       <FlatList
         data={safeList}
         horizontal
         showsHorizontalScrollIndicator={false}
         style={{ height: listHeight }}
-        contentContainerStyle={{ paddingHorizontal: s(10) }}
+        contentContainerStyle={{ paddingHorizontal: s(16), paddingBottom: s(8) }}
         decelerationRate="fast"
         snapToInterval={snapToInterval}
         snapToAlignment="start"
         keyExtractor={(item, idx) => String(item?.product_id ?? item?.id ?? idx)}
         renderItem={({ item }) => (
-          <ProductItem
-            type={1}
-            navigation={navigation}
-            data={item}
-            onFavorClick={onFavorClick}
-            onAdd={onAddProduct}
-            distributorId={item?.distributor_id}
-            onMessage={onMessage}
-            productWidth={productWidth}
-          />
+          <TouchableOpacity
+            activeOpacity={0.88}
+            style={[styles.dealCard, { width: productWidth }]}
+            onPress={() => goProductDetail(item)}
+          >
+            <View style={styles.dealTop}>
+              <Text style={styles.dealName} numberOfLines={2}>{item?.name}</Text>
+              <View style={styles.dealImageRow}>
+                <Image
+                  source={getProductImage(item, 'xl', banner_2)}
+                  style={styles.dealImage}
+                  resizeMode="contain"
+                />
+                {hasDiscount(item) && (
+                  <View style={styles.giftPanel}>
+                    <Text style={styles.giftTitle}>GIÁ TỐT</Text>
+                    <Text
+                      style={styles.giftValue}
+                      numberOfLines={1}
+                    >
+                      -{Math.round(((getOriginalPrice(item) - getPrice(item)) / getOriginalPrice(item)) * 100)}%
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+            <View style={styles.priceBand}>
+              <View pointerEvents="none" style={styles.priceSlant} />
+              <View style={styles.priceBlock}>
+                {hasDiscount(item) && (
+                  <Text style={styles.oldPrice}>{formatMoney(getOriginalPrice(item), { unit: 'đ', space: false })}</Text>
+                )}
+                <Text
+                  style={styles.salePrice}
+                  numberOfLines={1}
+                  ellipsizeMode="clip"
+                >
+                  {formatMoney(getPrice(item), { unit: 'đ', space: false })}
+                </Text>
+              </View>
+              <TouchableOpacity style={styles.buyButton} activeOpacity={0.86} onPress={() => goProductDetail(item)}>
+                <Text style={styles.buyText}>MUA NGAY</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -59,54 +98,126 @@ const HotProducts = ({ navigation, onFavorClick, onAddProduct, onMessage }) => {
 
 const styles = StyleSheet.create({
   container: {
+    marginBottom: s(8),
+    paddingTop: s(2),
+  },
+  dealCard: {
+    height: s(236),
+    marginRight: s(12),
+    borderRadius: s(24),
+    borderWidth: s(3),
+    borderColor: '#079DE2',
     backgroundColor: '#FFFFFF',
-    borderRadius: s(20),
-    marginHorizontal: s(12),
-    marginBottom: s(12),
-    paddingTop: s(16),
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
-    elevation: 3,
+    overflow: 'hidden',
+    shadowColor: '#0F2B33',
+    shadowOffset: { width: 0, height: s(7) },
+    shadowOpacity: 0.14,
+    shadowRadius: s(12),
+    elevation: 5,
+  },
+  dealTop: {
+    flex: 1,
+    paddingTop: s(10),
+    paddingHorizontal: s(8),
+  },
+  dealName: {
+    height: s(36),
+    color: '#111827',
+    fontSize: fs(10.5),
+    lineHeight: fs(13),
+    fontWeight: '600',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  },
+  dealImageRow: {
+    height: s(126),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  dealImage: {
+    width: '52%',
+    height: '98%',
+  },
+  giftPanel: {
+    width: '45%',
+    minHeight: s(88),
+    borderRadius: s(16),
+    backgroundColor: '#0EA5E9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: s(2),
+    borderWidth: 2,
+    borderColor: '#78D8FF',
+  },
+  giftTitle: {
+    color: '#FFFFFF',
+    fontSize: fs(10),
+    lineHeight: fs(13),
+    fontWeight: '600',
+  },
+  giftValue: {
+    width: '100%',
+    marginTop: s(6),
+    color: '#FFFFFF',
+    fontSize: fs(16),
+    lineHeight: fs(20),
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  priceBand: {
+    height: s(58),
+    backgroundColor: '#0B8DD3',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: s(8),
+    paddingRight: s(6),
     overflow: 'hidden',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: s(16),
-    marginBottom: s(12),
+  priceSlant: {
+    position: 'absolute',
+    left: s(-18),
+    top: 0,
+    bottom: 0,
+    width: '63%',
+    backgroundColor: '#086AAE',
+    transform: [{ skewX: '-22deg' }],
   },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  priceBlock: {
+    flex: 1,
+    marginRight: s(2),
+    zIndex: 1,
   },
-  headerAccent: {
-    width: s(4),
-    height: s(18),
-    backgroundColor: '#10B981',
-    borderRadius: s(2),
-    marginRight: s(8),
+  oldPrice: {
+    color: 'rgba(255,255,255,0.64)',
+    fontSize: fs(10.5),
+    lineHeight: fs(13),
+    fontWeight: '600',
+    textDecorationLine: 'line-through',
   },
-  headerTitle: {
-    fontSize: fs(13),
-    fontWeight: '800',
-    color: '#1A202C',
-    letterSpacing: 0.5,
+  salePrice: {
+    color: '#FFFFFF',
+    fontSize: fs(12.5),
+    lineHeight: fs(16),
+    fontWeight: '600',
   },
-  seeAllBtn: {
-    backgroundColor: '#F0FAFA',
-    paddingHorizontal: s(12),
-    paddingVertical: s(6),
-    borderRadius: s(20),
+  buyButton: {
+    width: s(76),
+    height: s(32),
+    borderRadius: s(16),
+    backgroundColor: '#0EA5E9',
     borderWidth: 1,
-    borderColor: '#0B7B8A',
+    borderColor: 'rgba(255,255,255,0.78)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
   },
-  seeAllText: {
-    color: '#0B7B8A',
-    fontSize: fs(12),
-    fontWeight: '700',
+  buyText: {
+    color: '#FFFFFF',
+    fontSize: fs(10.5),
+    lineHeight: fs(13),
+    fontWeight: '600',
+    textAlign: 'center',
   },
 })
 

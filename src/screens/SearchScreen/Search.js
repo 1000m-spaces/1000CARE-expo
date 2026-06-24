@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { SafeAreaView, StatusBar, StyleSheet, FlatList, View, TouchableOpacity, SectionList } from 'react-native'
+import { StatusBar, StyleSheet, FlatList, View, TouchableOpacity, SectionList } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import _ from 'lodash'
 
@@ -12,6 +12,7 @@ import EmptyItem from '~/common/EmptyItem/index'
 import { searchProducts, searchDistributors, searchPharmacies } from '~/services/meilisearch'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, brandShadow } from '~/design-system/tokens'
+import AppBackground from '~/design-system/AppBackground'
 
 const SEARCH_TABS = {
   ALL: 0,
@@ -134,7 +135,7 @@ const Search = ({ navigation }) => {
       sections.push({ title: 'Nhà phân phối', data: distributorResults, type: 'distributor' })
     }
     if (pharmacyResults.length > 0) {
-      sections.push({ title: 'Nhà thuốc', data: pharmacyResults, type: 'pharmacy' })
+      sections.push({ title: 'Cửa hàng', data: pharmacyResults, type: 'pharmacy' })
     }
     return sections
   }
@@ -166,8 +167,8 @@ const Search = ({ navigation }) => {
   )
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: brandColors.background }}>
-      <StatusBar backgroundColor={brandColors.surface} />
+    <AppBackground>
+      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
       <SearchBar
         ref_input={ref_input}
         navigation={navigation}
@@ -180,7 +181,7 @@ const Search = ({ navigation }) => {
       <View style={styles.searchHero}>
         <Text style={styles.heroEyebrow}>SMART SEARCH</Text>
         <Text style={styles.heroTitle}>Tìm đúng sản phẩm nhanh hơn</Text>
-        <Text style={styles.heroSubtitle}>Tra cứu sản phẩm, nhà phân phối và nhà thuốc từ một màn hình.</Text>
+        <Text style={styles.heroSubtitle}>Tra cứu sản phẩm, nhà phân phối và cửa hàng từ một màn hình.</Text>
       </View>
 
       <View style={styles.tabShell}>
@@ -201,7 +202,7 @@ const Search = ({ navigation }) => {
           style={[styles.tabButton, tab === SEARCH_TABS.PHARMACY && styles.tabButtonActive]}
           onPress={() => onTabChange(SEARCH_TABS.PHARMACY)}
         >
-          <Text style={[styles.tabText, tab === SEARCH_TABS.PHARMACY && styles.tabTextActive]}>Nhà thuốc</Text>
+          <Text style={[styles.tabText, tab === SEARCH_TABS.PHARMACY && styles.tabTextActive]}>Cửa hàng</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tabButton, tab === SEARCH_TABS.ALL && styles.tabButtonActive]}
@@ -212,7 +213,7 @@ const Search = ({ navigation }) => {
       </View>
       </View>
 
-      {isLoading ? <LoadingView /> : null}
+      {isLoading ? <LoadingView variant="grid" /> : null}
 
       <View style={styles.wrap}>
         {tab === SEARCH_TABS.PRODUCT && (
@@ -254,7 +255,7 @@ const Search = ({ navigation }) => {
             keyExtractor={keyExtractorProduct}
             renderItem={renderPharmacyItem}
             ListEmptyComponent={() => (
-              <EmptyItem text="Không có nhà thuốc nào" />
+              <EmptyItem text="Không có cửa hàng nào" />
             )}
           />
         )}
@@ -272,7 +273,7 @@ const Search = ({ navigation }) => {
           />
         )}
       </View>
-    </SafeAreaView>
+    </AppBackground>
   )
 }
 
@@ -287,10 +288,10 @@ const styles = StyleSheet.create({
   },
   wrap: {
     flex: 1,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   tabShell: {
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
     paddingHorizontal: s(16),
     paddingBottom: s(12),
   },
@@ -306,7 +307,7 @@ const styles = StyleSheet.create({
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.5,
     color: brandColors.goldAccent,
   },
@@ -314,7 +315,7 @@ const styles = StyleSheet.create({
     marginTop: s(5),
     fontSize: fs(22),
     lineHeight: fs(28),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.surface,
   },
   heroSubtitle: {
@@ -343,10 +344,10 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: fs(12),
     color: brandColors.muted,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   tabTextActive: {
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.tealPrimary,
   },
   listItem: {
@@ -360,7 +361,7 @@ const styles = StyleSheet.create({
   },
   listItemTitle: {
     fontSize: fs(15),
-    fontWeight: '800',
+    fontWeight: '600',
     color: brandColors.textDark,
     marginBottom: s(4),
   },
@@ -369,13 +370,13 @@ const styles = StyleSheet.create({
     color: brandColors.muted,
   },
   sectionHeader: {
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
     paddingHorizontal: s(16),
     paddingVertical: s(12),
   },
   sectionHeaderText: {
     fontSize: fs(14),
-    fontWeight: '800',
+    fontWeight: '600',
     color: brandColors.tealPrimary,
   },
 })

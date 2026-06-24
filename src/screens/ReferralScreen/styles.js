@@ -1,17 +1,17 @@
 import { Dimensions, StyleSheet } from 'react-native'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 const fullWidth = Dimensions.get('window').width
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   scroll: {
     flex: 1,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   scrollContent: {
     paddingBottom: s(36),
@@ -21,44 +21,46 @@ export default StyleSheet.create({
     marginTop: s(14),
     borderRadius: s(28),
     padding: s(20),
-    backgroundColor: brandColors.tealDark,
-    ...brandShadow.teal,
+    backgroundColor: liquidGlass.backgroundTint,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.6,
-    color: brandColors.goldAccent,
+    color: brandColors.tealPrimary,
   },
   heroTitle: {
     marginTop: s(6),
     fontSize: fs(26),
     lineHeight: fs(32),
-    fontWeight: '900',
-    color: brandColors.surface,
+    fontWeight: '600',
+    color: brandColors.textDark,
   },
   heroSubtitle: {
     marginTop: s(8),
     fontSize: fs(13),
     lineHeight: fs(20),
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.7)',
+    color: brandColors.muted,
   },
   containerConfirm: {
     marginHorizontal: s(16),
     marginTop: s(14),
     padding: s(18),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
     borderRadius: s(24),
     borderWidth: 1,
-    borderColor: brandColors.borderSoft,
-    ...brandShadow.soft,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   cardEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.5,
     color: brandColors.tealPrimary,
   },
@@ -66,7 +68,7 @@ export default StyleSheet.create({
     marginTop: s(5),
     fontSize: fs(20),
     lineHeight: fs(26),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.textDark,
   },
   phoneContainer: {
@@ -76,12 +78,12 @@ export default StyleSheet.create({
     minHeight: s(52),
     borderRadius: s(16),
     borderWidth: 1,
-    borderColor: brandColors.border,
-    backgroundColor: brandColors.surface,
+    borderColor: liquidGlass.border,
+    backgroundColor: liquidGlass.backgroundStrong,
   },
   labelStyle: {
     color: brandColors.textDark,
-    fontWeight: '800',
+    fontWeight: '600',
     fontSize: fs(12),
     lineHeight: fs(16),
   },
@@ -96,7 +98,7 @@ export default StyleSheet.create({
     backgroundColor: brandColors.tealPrimary,
   },
   confirmButtonText: {
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.surface,
   },
   formItem:{
@@ -114,6 +116,6 @@ export default StyleSheet.create({
     color: brandColors.tealPrimary,
     lineHeight: fs(28),
     fontSize: fs(22),
-    fontWeight: '900',
+    fontWeight: '600',
   },
 })

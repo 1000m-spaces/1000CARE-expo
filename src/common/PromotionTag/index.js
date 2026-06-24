@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     color: Colors.redColor,
     fontSize: 10,
     lineHeight: 20,
-    fontWeight: 'bold',
+    fontWeight: '600',
     alignSelf: 'flex-start',
   },
 })

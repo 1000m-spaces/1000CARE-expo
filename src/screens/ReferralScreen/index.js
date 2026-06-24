@@ -74,7 +74,7 @@ const ReferralScreen = ({ navigation, route }) => {
         <View style={styles.hero}>
           <Text style={styles.heroEyebrow}>REFERRAL</Text>
           <Text style={styles.heroTitle}>Người giới thiệu</Text>
-          <Text style={styles.heroSubtitle}>Liên kết tài khoản với người giới thiệu để hoàn tất hồ sơ nhà thuốc.</Text>
+          <Text style={styles.heroSubtitle}>Liên kết tài khoản với người giới thiệu để hoàn tất hồ sơ cửa hàng.</Text>
         </View>
         <View style={styles.containerConfirm}>
           <Text style={styles.cardEyebrow}>{existReferral ? 'ĐÃ LIÊN KẾT' : 'CHƯA CÓ THÔNG TIN'}</Text>

@@ -9,7 +9,8 @@ import ItemDistributor from '~/common/ItemDistributor/index'
 import { getListDistributors, getListTrademarksAdvertisement } from '~/store/selector'
 import EmptyItem from '~/common/EmptyItem/index'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { Fonts } from '~/assets/config'
 
 const ListDistributorTrademark = ({ navigation, route }) => {
   // const [currentPage, setCurrentPage] = useState(1)
@@ -69,7 +70,7 @@ const ListDistributorTrademark = ({ navigation, route }) => {
         <Text style={styles.heroTitle}>{title}</Text>
         <Text style={styles.heroSubtitle}>
           {type === 'distributor'
-            ? 'Chọn nhà cung cấp để xem danh mục sản phẩm phù hợp với nhà thuốc.'
+            ? 'Chọn nhà cung cấp để xem danh mục sản phẩm phù hợp với cửa hàng của bạn.'
             : 'Chọn thương hiệu để lọc nhanh các sản phẩm đang phân phối.'}
         </Text>
       </View>
@@ -104,7 +105,7 @@ const ListDistributorTrademark = ({ navigation, route }) => {
             )}
           /> : null }
       </View>
-      {isLoading && <LoadingView />}
+      {isLoading && <LoadingView variant="list" />}
     </SafeAreaView>
   )
 }
@@ -120,34 +121,39 @@ const styles = StyleSheet.create({
     marginTop: s(14),
     borderRadius: s(28),
     padding: s(20),
-    backgroundColor: brandColors.tealDark,
-    ...brandShadow.teal,
+    backgroundColor: liquidGlass.backgroundTint,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   heroEyebrow: {
+    fontFamily: Fonts.bold,
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: 'normal',
     letterSpacing: 1.6,
-    color: brandColors.goldAccent,
+    color: brandColors.tealPrimary,
   },
   heroTitle: {
     marginTop: s(6),
+    fontFamily: Fonts.bold,
     fontSize: fs(25),
     lineHeight: fs(31),
-    fontWeight: '900',
-    color: brandColors.surface,
+    fontWeight: 'normal',
+    color: brandColors.textDark,
   },
   heroSubtitle: {
     marginTop: s(8),
+    fontFamily: Fonts.base,
     fontSize: fs(13),
     lineHeight: fs(20),
-    fontWeight: '600',
-    color: 'rgba(255,255,255,0.7)',
+    fontWeight: 'normal',
+    color: brandColors.muted,
   },
   wrap: {
     flex: 1,
     marginTop: s(12),
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   listDistributors: {
     flex: 1,

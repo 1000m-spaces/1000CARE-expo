@@ -1,11 +1,12 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import {
+  Animated,
   View,
   Text,
   FlatList,
   StyleSheet,
-  SafeAreaView,
   Dimensions,
+  Image,
 } from 'react-native'
 
 import HotDealItem from './HotDealItem'
@@ -17,19 +18,26 @@ import Status from '~/common/Status/Status'
 import { NAVIGATION_COMBO_PRODUCT_DETAIL, NAVIGATION_TOPUP_SCREEN, NAVIGATION_VOUCHER, NAVIGATION_PROMOTION_DETAIL } from '~/navigation/routes'
 import strings from '~/i18n'
 import ErrorView from '~/common/ErrorView/index'
-import Colors from '~/common/Colors/Colors'
 import ItemDistributorTab from '~/common/ItemDistributorTab'
-import { check_info } from '~/assets/constants'
+import { box_empty, check_info } from '~/assets/constants'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, brandShadow } from '~/design-system/tokens'
+import { useTabBarVisibility } from '~/navigation/TabBarVisibilityContext'
+import AppBackground from '~/design-system/AppBackground'
 
 const screenHeight = Dimensions.get('window').height
 const headerHeight = 58
 const distributorHeight = 0
 const bottomTabHeight = 45
+const HERO_MAX_HEIGHT = s(182)
+const HERO_MIN_HEIGHT = s(58)
+const HERO_SCROLL_DISTANCE = s(124)
+const BANNER_PAGE_SIZE = 10
 
 const HotDealScreen = ({ navigation, route }) => {
   const distributorId = route?.params?.distributorId
+  const { handleScroll } = useTabBarVisibility()
+  const scrollY = useRef(new Animated.Value(0)).current
   const dispatch = useDispatch()
   const { isLoggedIn } = useSelector(state => getAuthStore(state))
   const [isLoading, setLoading] = useState(false)
@@ -78,12 +86,14 @@ const HotDealScreen = ({ navigation, route }) => {
     if (!currentTabInfo?.id) return
     setBannerPage(1)
     setRefreshing(true)
-    dispatch(getBanners(currentTabInfo?.id, 10, 1, false))
+    dispatch(getBanners(currentTabInfo?.id, BANNER_PAGE_SIZE, 1, false))
   }
   const loadMore = () => {
     if (!currentTabInfo?.id) return
+    if (isLoading || isRefreshing || statusBannerByDistri === Status.LOADING) return
+    if (!Array.isArray(listBannerByDistri) || listBannerByDistri.length < BANNER_PAGE_SIZE * bannerPage) return
     setBannerPage(bannerPage + 1)
-    dispatch(getBanners(currentTabInfo?.id, 10, bannerPage + 1, true))
+    dispatch(getBanners(currentTabInfo?.id, BANNER_PAGE_SIZE, bannerPage + 1, true))
   }
 
   useEffect(() => {
@@ -105,7 +115,9 @@ const HotDealScreen = ({ navigation, route }) => {
   useEffect(() => {
     if (currentTabInfo) {
       setBannerPage(1)
-      dispatch(getBanners(currentTabInfo?.id, 10, 1, false))
+      setRefreshing(false)
+      dispatch(resetBanners())
+      dispatch(getBanners(currentTabInfo?.id, BANNER_PAGE_SIZE, 1, false))
     }
   }, [currentTabInfo])
 
@@ -143,13 +155,58 @@ const HotDealScreen = ({ navigation, route }) => {
     }, 2000)
   }
 
+  const heroHeight = scrollY.interpolate({
+    inputRange: [0, HERO_SCROLL_DISTANCE],
+    outputRange: [HERO_MAX_HEIGHT, HERO_MIN_HEIGHT],
+    extrapolate: 'clamp',
+  })
+  const heroRadius = scrollY.interpolate({
+    inputRange: [0, HERO_SCROLL_DISTANCE],
+    outputRange: [s(28), s(20)],
+    extrapolate: 'clamp',
+  })
+  const heroTitleSize = scrollY.interpolate({
+    inputRange: [0, HERO_SCROLL_DISTANCE],
+    outputRange: [fs(26), fs(15)],
+    extrapolate: 'clamp',
+  })
+  const heroTitleLine = scrollY.interpolate({
+    inputRange: [0, HERO_SCROLL_DISTANCE],
+    outputRange: [fs(32), fs(20)],
+    extrapolate: 'clamp',
+  })
+  const heroDetailOpacity = scrollY.interpolate({
+    inputRange: [0, s(54), HERO_SCROLL_DISTANCE],
+    outputRange: [1, 0.18, 0],
+    extrapolate: 'clamp',
+  })
+  const heroTitleTop = scrollY.interpolate({
+    inputRange: [0, HERO_SCROLL_DISTANCE],
+    outputRange: [s(6), 0],
+    extrapolate: 'clamp',
+  })
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: brandColors.background }}>
-      <View style={styles.dealHero}>
-        <Text style={styles.heroEyebrow}>PROMOTION HUB</Text>
-        <Text style={styles.heroTitle}>Ưu đãi nhà thuốc</Text>
-        <Text style={styles.heroSubtitle}>Chọn nhà phân phối để xem combo, voucher và chương trình nạp tiền đang mở.</Text>
-      </View>
+    <AppBackground>
+      <Animated.View style={[styles.dealHero, { height: heroHeight, borderRadius: heroRadius }]}>
+        <Animated.Text style={[styles.heroEyebrow, { opacity: heroDetailOpacity }]}>PROMOTION HUB</Animated.Text>
+        <Animated.Text
+          style={[
+            styles.heroTitle,
+            {
+              marginTop: heroTitleTop,
+              fontSize: heroTitleSize,
+              lineHeight: heroTitleLine,
+            },
+          ]}
+          numberOfLines={1}
+        >
+          Ưu đãi mua sắm
+        </Animated.Text>
+        <Animated.Text style={[styles.heroSubtitle, { opacity: heroDetailOpacity }]} numberOfLines={2}>
+          Chọn nhà phân phối để xem combo, voucher và chương trình nạp tiền đang mở.
+        </Animated.Text>
+      </Animated.View>
       <FlatList
         style={styles.listDistributors}
         contentContainerStyle={styles.distributors}
@@ -161,6 +218,8 @@ const HotDealScreen = ({ navigation, route }) => {
             <ItemDistributorTab
               onItemPress={onTabPress.bind(this, item)}
               selected={item.id === currentTabInfo?.id}
+              showLabel
+              selectedScale={1.08}
               data={item}
             />
           )
@@ -168,11 +227,19 @@ const HotDealScreen = ({ navigation, route }) => {
         keyExtractor={keyExtractorDistri}
       />
       <View style={styles.contentHotDeal}>
-        <FlatList
+        <Animated.FlatList
           data={listBannerByDistri}
           horizontal={false}
           showsVerticalScrollIndicator={false}
-          ListFooterComponent={() => {
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            {
+              useNativeDriver: false,
+              listener: handleScroll,
+            },
+          )}
+          scrollEventThrottle={16}
+          ListHeaderComponent={() => {
             return (
               <>
                 <Text style={styles.titleHotDeal}>Chiến dịch hiện có</Text>
@@ -182,6 +249,15 @@ const HotDealScreen = ({ navigation, route }) => {
               </>
             )
           }}
+          ListEmptyComponent={() => (
+            statusBannerByDistri !== Status.LOADING && (
+              <View style={styles.emptyState}>
+                <Image source={box_empty} style={styles.emptyImage} resizeMode="contain" />
+                <Text style={styles.emptyTitle}>Nhà phân phối hiện chưa có ưu đãi mới.</Text>
+                <Text style={styles.emptySubtitle}>Quay lại sau bạn nhé!</Text>
+              </View>
+            )
+          )}
           renderItem={({ item }) => {
             return (
               <HotDealItem
@@ -196,11 +272,11 @@ const HotDealScreen = ({ navigation, route }) => {
           onRefresh={() => onRefresh()}
           refreshing={isRefreshing}
           onEndReachedThreshold={0.1}
-          onEndReached={() => loadMore()}
-          keyExtractor={keyExtractorDistri}
+          onEndReached={loadMore}
+          keyExtractor={(item, index) => String(item?.id || item?.banner_id || item?.campaign?.id || index)}
         />
       </View>
-      {isLoading && <LoadingView />}
+      {isLoading && Array.isArray(listBannerByDistri) && listBannerByDistri.length > 0 && <LoadingView variant="grid" />}
       <ErrorView
         error={errorGetAllListBanner}
         isOpen={errorGetAllListBanner ? true : false}
@@ -212,7 +288,7 @@ const HotDealScreen = ({ navigation, route }) => {
         icon={check_info}
         onClose={() => setOpenMessage(false)}
       />
-    </SafeAreaView>
+    </AppBackground>
   )
 }
 
@@ -229,7 +305,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height:
       screenHeight - headerHeight - distributorHeight - bottomTabHeight - 26,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
 
     marginTop: s(4),
     paddingHorizontal: s(16),
@@ -242,14 +318,16 @@ const styles = StyleSheet.create({
     marginBottom: s(12),
     borderRadius: s(28),
     paddingHorizontal: s(20),
-    paddingVertical: s(20),
+    paddingVertical: s(14),
     backgroundColor: brandColors.tealPrimary,
     ...brandShadow.teal,
+    overflow: 'hidden',
+    justifyContent: 'center',
   },
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.6,
     color: 'rgba(255,255,255,0.68)',
   },
@@ -257,7 +335,7 @@ const styles = StyleSheet.create({
     marginTop: s(6),
     fontSize: fs(26),
     lineHeight: fs(32),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.surface,
   },
   heroSubtitle: {
@@ -270,7 +348,7 @@ const styles = StyleSheet.create({
   titleHotDeal: {
     fontSize: fs(18),
     color: brandColors.textDark,
-    fontWeight: '800',
+    fontWeight: '600',
 
   },
   subTitleHotDeal: {
@@ -282,15 +360,51 @@ const styles = StyleSheet.create({
     lineHeight: fs(20),
   },
   distributors: {
-    height: s(78),
-    backgroundColor: brandColors.background,
+    minHeight: s(98),
+    backgroundColor: 'transparent',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingHorizontal: s(8),
+    paddingHorizontal: s(16),
+    paddingTop: s(8),
+    paddingBottom: s(10),
   },
   listDistributors: {
     flexGrow: 0,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
+  },
+  emptyState: {
+    minHeight: s(310),
+    marginTop: s(18),
+    marginHorizontal: s(4),
+    borderRadius: s(28),
+    backgroundColor: 'rgba(255,255,255,0.46)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.82)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: s(24),
+    paddingVertical: s(28),
+    ...brandShadow.soft,
+  },
+  emptyImage: {
+    width: s(118),
+    height: s(118),
+    marginBottom: s(14),
+  },
+  emptyTitle: {
+    color: brandColors.textDark,
+    fontSize: fs(15),
+    lineHeight: fs(21),
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  emptySubtitle: {
+    marginTop: s(6),
+    color: brandColors.muted,
+    fontSize: fs(13),
+    lineHeight: fs(19),
+    fontWeight: '600',
+    textAlign: 'center',
   },
 })
 

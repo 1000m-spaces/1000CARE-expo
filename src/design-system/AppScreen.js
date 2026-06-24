@@ -1,6 +1,6 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import { brandColors } from './tokens';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import AppBackground from './AppBackground';
 
 const AppScreen = ({
   children,
@@ -24,20 +24,16 @@ const AppScreen = ({
   );
 
   return (
-    <SafeAreaView style={[styles.safeArea, safeAreaStyle]}>
+    <AppBackground safeAreaStyle={safeAreaStyle}>
       {content}
-    </SafeAreaView>
+    </AppBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: brandColors.background,
-  },
   body: {
     flex: 1,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   scrollContent: {
     paddingBottom: 24,

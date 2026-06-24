@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Roboto',
     color: '#8C8C8C',
   },
   value: {
     fontSize: 12,
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Roboto',
     color: '#595959',
   },
 })

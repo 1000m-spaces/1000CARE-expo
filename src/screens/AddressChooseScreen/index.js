@@ -156,7 +156,7 @@ const AddressChooseScreen = (props) => {
           }}
         />
       </KeyboardAwareScrollView>
-      {isLoading && <LoadingView />}
+      {isLoading && <LoadingView variant="list" />}
       <ErrorView
         error={errorMsg}
         isOpen={openError}

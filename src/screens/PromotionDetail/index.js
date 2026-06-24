@@ -425,7 +425,7 @@ const PromotionDetail = ({ navigation, route }) => {
                 styleButton={[styles.btnAdd]}
                 styleText={{
                   fontSize: 14,
-                  fontWeight: '700',
+                  fontWeight: '600',
                 }}
                 onPressEvent={() => addProductToCart()}
                 text={strings.productDetailScreen.addToCart}

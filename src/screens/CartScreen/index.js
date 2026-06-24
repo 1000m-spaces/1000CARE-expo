@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, FlatList, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native'
+import { View, FlatList, StatusBar, TouchableOpacity } from 'react-native'
 
 import styles from './styles'
 import strings from '~/i18n'
@@ -16,6 +16,7 @@ import CartItem from './CartItem'
 import DialogInfo from '~/common/DialogInfo/index'
 import { Button, Icon, Text } from '~/common/index'
 import { brandColors } from '~/design-system/tokens'
+import AppBackground from '~/design-system/AppBackground'
 
 const mockCartData = {
   shipping_address: null,
@@ -75,8 +76,8 @@ const mockCartData = {
     {
       distributor: {
         id: 10002,
-        name: 'Nhà cung cấp Dược phẩm An Tâm',
-        nick_name: 'An Tâm Pharma',
+        name: 'Nhà cung cấp Hàng tiêu dùng An Tâm',
+        nick_name: 'An Tâm Store',
         order_limit: 300000,
       },
       items: [
@@ -236,9 +237,11 @@ const CartScreen = props => {
   }, [listSelectedIds])
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: brandColors.background }}>
+    <AppBackground>
       <StatusBar
-        backgroundColor={brandColors.background}
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
       />
       <View style={styles.checkoutHero}>
         <TouchableOpacity
@@ -249,7 +252,7 @@ const CartScreen = props => {
             props.navigation.pop()
           }}
         >
-          <Icon type="feather" name="arrow-left" size={20} color={brandColors.surface} />
+          <Icon type="feather" name="arrow-left" size={20} color={brandColors.tealPrimary} />
         </TouchableOpacity>
         <View style={styles.checkoutCopy}>
           <Text style={styles.checkoutEyebrow}>CHECKOUT</Text>
@@ -403,7 +406,7 @@ const CartScreen = props => {
           </View>
         </View>
       </DialogInfo>
-    </SafeAreaView>
+    </AppBackground>
   )
 }
 export default CartScreen

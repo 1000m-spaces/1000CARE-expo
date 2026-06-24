@@ -1,8 +1,10 @@
-import { Platform } from 'react-native';
+import { Fonts } from '~/assets/config';
 
-const fontFamily = Platform.select({ android: 'sans-serif', ios: 'Helvetica' });
+const fontFamily = Fonts.base;
+const fontFamilyMedium = Fonts.base;
+const fontFamilyBold = Fonts.bold;
 const fontWeightRegular = 'normal';
-const fontWeightBold = 'bold';
+const fontWeightBold = 'normal';
 
 export default {
   /**
@@ -16,7 +18,7 @@ export default {
     fontWeight: fontWeightRegular,
   }),
   headingTextBold: theme => ({
-    fontFamily,
+    fontFamily: fontFamilyBold,
     color: theme.headingTextColor,
     fontSize: 18,
     fontStyle: 'normal',
@@ -26,14 +28,14 @@ export default {
    * Use the Subheading style to denote new sections within cards.
    */
   subheadingText: theme => ({
-    fontFamily,
+    fontFamily: fontFamilyMedium,
     color: theme.subHeadingTextColor,
     fontSize: 16,
     fontStyle: 'normal',
     fontWeight: fontWeightRegular,
   }),
   subheadingTextBold: theme => ({
-    fontFamily,
+    fontFamily: fontFamilyBold,
     color: theme.subHeadingTextColor,
     fontSize: 16,
     fontStyle: 'normal',
@@ -45,14 +47,14 @@ export default {
    * would generally use the Body style.
    */
   bodyText: theme => ({
-    fontFamily,
+    fontFamily: fontFamilyMedium,
     color: theme.bodyTextColor,
     fontSize: 14,
     fontStyle: 'normal',
     fontWeight: fontWeightRegular,
   }),
   bodyTextBold: theme => ({
-    fontFamily,
+    fontFamily: fontFamilyBold,
     color: theme.bodyTextColor,
     fontSize: 14,
     fontStyle: 'normal',
@@ -63,14 +65,14 @@ export default {
    * signify the element’s function to the user.
    */
   labelText: theme => ({
-    fontFamily,
+    fontFamily: fontFamilyMedium,
     color: theme.labelTextColor,
     fontSize: 12,
     fontStyle: 'normal',
     fontWeight: fontWeightRegular,
   }),
   labelTextBold: theme => ({
-    fontFamily,
+    fontFamily: fontFamilyBold,
     color: theme.labelTextColor,
     fontSize: 12,
     fontStyle: 'normal',
@@ -80,7 +82,7 @@ export default {
    * Text style meant to be used only for Button component when size = "md"
    */
   buttonText: {
-    fontFamily,
+    fontFamily: fontFamilyBold,
     fontSize: 15,
     textAlign: 'center',
     paddingTop: 2,
@@ -90,7 +92,7 @@ export default {
    * Text style meant to be used only for Button component when size = "sm"
    */
   buttonTextSmall: {
-    fontFamily,
+    fontFamily: fontFamilyMedium,
     fontSize: 12,
     textAlign: 'center',
   },
@@ -98,7 +100,7 @@ export default {
    * Form label text style used only in TextInput component
    */
   formLabel: theme => ({
-    fontFamily,
+    fontFamily: fontFamilyBold,
     fontSize: 16,
     color: theme.labelTextColor,
     fontWeight: fontWeightBold,

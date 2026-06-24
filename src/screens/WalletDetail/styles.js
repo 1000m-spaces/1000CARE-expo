@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     color: 'white',
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginTop: 20,
   },
   textMoney: {
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   textPay: {
-    fontWeight: '100',
+    fontWeight: 'normal',
   },
   viewButton: {
     paddingHorizontal: 0,

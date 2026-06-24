@@ -10,6 +10,7 @@ import SVG from './Icon2/index'
 import Image from './Image/Image'
 import ImageSlider from './ImageSlider/ImageSlider'
 import LoadingView from './LoadingView/LoadingView'
+import SkeletonLoader from './SkeletonLoader/SkeletonLoader'
 import MessageView from './MessageView/MessageView'
 import ModalSelect from './ModalSelect/ModalSelect'
 import Spinner from './Spinner/Spinner'
@@ -29,6 +30,7 @@ export {
   Image,
   ImageSlider,
   LoadingView,
+  SkeletonLoader,
   MessageView,
   ModalSelect, 
   Spinner,

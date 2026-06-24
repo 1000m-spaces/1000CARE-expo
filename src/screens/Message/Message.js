@@ -51,8 +51,8 @@ export const Message = props => {
                         style={[
                             styles.label,
                             tabActive != "admin"
-                                ? { color: "#949799", fontWeight: "bold" }
-                                : { fontWeight: "400", color: "#949799" },
+                                ? { color: "#949799", fontWeight: "600" }
+                                : { fontWeight: "normal", color: "#949799" },
                         ]}
                     >
                         {strings.strings.tab_user}

@@ -2,8 +2,9 @@ import React from 'react';
 import { View, TextInput, Text, StyleSheet } from 'react-native';
 import { s, fs } from '../utils/responsive';
 import { brandColors, brandShadow } from './tokens';
+import { Fonts } from '~/assets/config';
 
-const PremiumInput = ({ label, value, onChangeText, placeholder, keyboardType = 'default', error }) => {
+const PremiumInput = ({ label, value, onChangeText, placeholder, keyboardType = 'default', error, ...inputProps }) => {
   return (
     <View style={styles.container}>
       {label && <Text style={styles.label}>{label}</Text>}
@@ -15,6 +16,7 @@ const PremiumInput = ({ label, value, onChangeText, placeholder, keyboardType = 
           placeholder={placeholder}
           placeholderTextColor={brandColors.mutedLight}
           keyboardType={keyboardType}
+          {...inputProps}
         />
       </View>
       {error && <Text style={styles.errorText}>{error}</Text>}
@@ -28,10 +30,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
+    fontFamily: Fonts.bold,
     fontSize: fs(14),
     color: brandColors.textDark,
     marginBottom: s(8),
-    fontWeight: '700',
+    fontWeight: 'normal',
     marginLeft: s(4),
   },
   inputContainer: {
@@ -45,15 +48,17 @@ const styles = StyleSheet.create({
     ...brandShadow.soft,
   },
   input: {
+    fontFamily: Fonts.base,
     fontSize: fs(16),
     color: brandColors.textDark,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   errorInput: {
     borderColor: brandColors.danger,
   },
   errorText: {
     color: brandColors.danger,
+    fontFamily: Fonts.base,
     fontSize: fs(12),
     marginTop: s(4),
     marginLeft: s(4),

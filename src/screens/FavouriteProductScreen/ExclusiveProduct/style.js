@@ -17,7 +17,7 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
     marginHorizontal: 18,
     marginVertical: 18,
   },

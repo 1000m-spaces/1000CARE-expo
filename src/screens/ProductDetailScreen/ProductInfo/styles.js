@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import Colors from '~/common/Colors/Colors'
 import dimension from '~/constants/dimens'
+import { s } from '~/utils/responsive'
 
 export default StyleSheet.create({
   mainContainer: {
@@ -31,15 +32,15 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   swiperItem: {
-    width: dimension.common.WINDOW_WIDTH,
-    height: dimension.common.WINDOW_WIDTH * 2 / 3,
+    width: dimension.common.WINDOW_WIDTH - s(32),
+    height: (dimension.common.WINDOW_WIDTH - s(32)) * 2 / 3,
   },
   productInfoContainer: {
     flex: 2,
     flexDirection: 'column',
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(255,255,255,0.42)',
     justifyContent: 'space-around',
-    padding: 18,
+    padding: s(18),
   },
   productContainer: {
     marginBottom: 6,
@@ -110,7 +111,7 @@ export default StyleSheet.create({
   },
   title: {
     color: Colors.textColor1,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginBottom: 6,
     marginRight: 18,
     fontSize: 16,
@@ -118,18 +119,20 @@ export default StyleSheet.create({
   pack: {
     color: Colors.textColor2,
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
     lineHeight: 22,
   },
   sectiontitle: {
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#595959',
   },
   swiperConatainer: {
-    backgroundColor: Colors.white,
-    height: (dimension.common.WINDOW_WIDTH - 36) * 2 / 3,
-    marginBottom: 1,
+    backgroundColor: 'transparent',
+    height: (dimension.common.WINDOW_WIDTH - s(32)) * 2 / 3,
+    marginBottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   priceInfoContainer: {
     flexDirection: 'row',
@@ -148,7 +151,7 @@ export default StyleSheet.create({
   productPrice: {
     color: Colors.priceColor,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   actionCountContainer: {
     display: 'flex',
@@ -176,7 +179,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 12,
   },
   infoSectionTitle: {
@@ -184,7 +187,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 18,
     marginHorizontal: 18,
   },
@@ -200,7 +203,7 @@ export default StyleSheet.create({
   tabSelected: {
     backgroundColor: Colors.white,
     color: Colors.systemColor2,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   tabContainer: {
     display: 'flex',
@@ -215,7 +218,7 @@ export default StyleSheet.create({
     color: Colors.textColor1,
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: 14,
     lineHeight: 22,
   },
@@ -224,9 +227,15 @@ export default StyleSheet.create({
     width: 28,
   },
   iconWhitelistContainer: {
-    height: 25,
-    width: 28,
+    height: s(34),
+    width: s(34),
     flex: 1,
+    borderRadius: s(17),
+    backgroundColor: 'rgba(255,255,255,0.58)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.82)',
   },
   productNameContainer: {
     display: 'flex',
@@ -244,8 +253,8 @@ export default StyleSheet.create({
   },
 
   dot: {
-    width: 6,
-    height: 6,
+    width: s(6),
+    height: s(6),
   },
 
   dotContainer: {

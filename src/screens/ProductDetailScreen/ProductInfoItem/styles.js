@@ -16,7 +16,7 @@ export default StyleSheet.create({
     color: Colors.textColor1,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   value: {
     flex: 3,
@@ -26,7 +26,7 @@ export default StyleSheet.create({
     borderLeftWidth: 2,
     paddingLeft: 18,
     borderLeftColor: '#CCCCCC',
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   component: {
     flex: 2,

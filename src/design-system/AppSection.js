@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { s, fs } from '~/utils/responsive';
 import { brandColors } from './tokens';
+import { Fonts } from '~/assets/config';
 
 const AppSection = ({ title, subtitle, action, children, style, headerStyle }) => {
   return (
@@ -22,7 +23,7 @@ const AppSection = ({ title, subtitle, action, children, style, headerStyle }) =
 
 const styles = StyleSheet.create({
   section: {
-    marginTop: s(16),
+    marginTop: s(24),
   },
   header: {
     paddingHorizontal: s(18),
@@ -36,14 +37,16 @@ const styles = StyleSheet.create({
   },
   title: {
     color: brandColors.textDark,
+    fontFamily: Fonts.bold,
     fontSize: fs(18),
-    fontWeight: '800',
+    lineHeight: fs(24),
+    fontWeight: 'normal',
   },
   subtitle: {
     marginTop: s(3),
     color: brandColors.muted,
     fontSize: fs(12),
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 });
 

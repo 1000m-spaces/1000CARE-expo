@@ -13,7 +13,7 @@ import packageJson from '../../../package.json'
 
 import MenuItem from './MenuItem'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, brandShadow, liquidGlass } from '~/design-system/tokens'
 
 const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
   const dispatch = useDispatch()
@@ -167,7 +167,9 @@ const styles = StyleSheet.create({
     paddingBottom: s(20),
     marginTop: s(4),
     marginHorizontal: s(16),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
     borderRadius: s(24),
     overflow: 'hidden',
     ...brandShadow.soft,

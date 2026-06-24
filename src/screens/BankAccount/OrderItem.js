@@ -65,13 +65,13 @@ const styles = StyleSheet.create({
   textPay: {
     color: Colors.textColor2,
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
   },
   numberMoney: {
     color: Colors.priceColor,
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginTop: 2,
   },
   styleImage: {

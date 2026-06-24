@@ -23,10 +23,13 @@ const X_WIDTH = 375
 const X_HEIGHT = 812
 
 export const Fonts = {
-  base: 'Quicksand-Regular', // 400
-  medium: 'Quicksand-Medium', // 500
-  semiBold: 'Quicksand-SemiBold', // 600
-  bold: 'Quicksand-Bold', // 700
+  regular: 'SanFranciscoText-Regular',
+  base: 'SanFranciscoText-Regular',
+  medium: 'SanFranciscoText-Regular',
+  meidum: 'SanFranciscoText-Regular', // legacy typo alias
+  semiBold: 'SanFranciscoText-Semibold',
+  bold: 'SanFranciscoText-Heavy',
+  rounded: 'SanFranciscoText-Regular',
 }
 
 // const { PlatformConstants = {} } = NativeModules;

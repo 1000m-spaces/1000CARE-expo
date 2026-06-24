@@ -9,7 +9,9 @@ import { getAuthStore } from '~/store/selector'
 import { showToast } from '~/utils/toast'
 import strings from '~/i18n'
 import { s, fs } from '~/utils/responsive'
-import { brandColors } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import LiquidGlassView from '~/design-system/LiquidGlassView'
+import { Fonts } from '~/assets/config'
 
 const CartHeaderButton = ({ navigation, color = brandColors.tealPrimary }) => {
   const listItem = useSelector((state) => getListItem(state))
@@ -48,7 +50,7 @@ const CartHeaderButton = ({ navigation, color = brandColors.tealPrimary }) => {
     <TouchableOpacity
       onPress={() => onPress()}
     >
-      <View style={styles.cartLayout}>
+      <LiquidGlassView intensity="regular" style={styles.cartLayout}>
         <Icon
           type={'antdesign'}
           name={'shopping-cart'}
@@ -59,7 +61,7 @@ const CartHeaderButton = ({ navigation, color = brandColors.tealPrimary }) => {
           <Text style={styles.badgeText}>{getNumberProducts()}</Text>
         </View>
 
-      </View>
+      </LiquidGlassView>
     </TouchableOpacity>
   )
 }
@@ -74,10 +76,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   cartLayout: {
-    width: s(40),
-    height: s(34),
+    width: s(46),
+    height: s(46),
+    borderRadius: s(23),
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.56)',
+    borderColor: liquidGlass.border,
+    overflow: 'visible',
   },
   badge: {
     position: 'absolute',
@@ -101,9 +107,10 @@ const styles = StyleSheet.create({
   badgeText: {
     textAlign: 'center',
     textAlignVertical: 'center',
+    fontFamily: Fonts.bold,
     fontSize: fs(10),
     color: brandColors.surface,
-    fontWeight: '800',
+    fontWeight: 'normal',
   },
 
 })

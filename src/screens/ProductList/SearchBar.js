@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { View, TouchableOpacity, TextInput, StyleSheet, FlatList } from 'react-native'
 import { Icon } from '~/common'
-import Colors from '~/common/Colors/Colors'
 import { Text } from '~/common/index'
 import { NAVIGATION_FILTER_PRODUCT } from '~/navigation/routes'
+import { s, fs } from '~/utils/responsive'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { Fonts } from '~/assets/config'
 
 const tabs = [
   { id: 1, name: 'Siêu rẻ', icon: true, iconName: 'star' },
@@ -42,13 +44,13 @@ const SearchBar = ({ navigation, type, viewMode, setViewMode, onLoad, query, dis
                 style={tabSelected === index ? styles.wrapperDisplayTabSelected : styles.wrapperDisplayTab}
                 onPress={() => handleTabChanged(item, index)}
               >
-                <Text style={styles.titleTab}>{item.name}</Text>
+                <Text style={tabSelected === index ? styles.titleTabSelected : styles.titleTab}>{item.name}</Text>
                 {item.icon && 
                   <Icon
                     type="font-awesome"
                     name={item.iconName}
-                    color={item.iconName === 'filter' ? Colors.systemColor2 : '#FFC700'}
-                    size={24}
+                    color={item.iconName === 'filter' ? brandColors.tealPrimary : brandColors.goldAccent}
+                    size={18}
                   />}
               </TouchableOpacity>
             )
@@ -72,23 +74,24 @@ const SearchBar = ({ navigation, type, viewMode, setViewMode, onLoad, query, dis
               style={styles.wrapperTextInput}
             >
               <Icon
-                type="font-awesome"
+                type="feather"
                 name={'filter'}
-                color={Colors.systemColor2}
-                size={17}
+                color={brandColors.tealPrimary}
+                size={20}
               />
               <TextInput
                 style={styles.searchInput}
                 editable={false}
                 placeholder={'Lọc theo giá, nhóm sản phẩm'}
+                placeholderTextColor={brandColors.mutedLight}
               />
             </View>
           </View>
           <Icon
-            type="ionicon"
-            name={'filter'}
-            color={'#586B90'}
-            size={24}
+            type="feather"
+            name={'sliders'}
+            color={brandColors.tealDark}
+            size={22}
           />
         </TouchableOpacity>}
       {
@@ -106,17 +109,17 @@ const SearchBar = ({ navigation, type, viewMode, setViewMode, onLoad, query, dis
             {
               viewMode === 'list' ? (
                 <Icon
-                  type="ionicon"
-                  name={'ios-grid'}
-                  color={Colors.textColor3}
-                  size={28}
+                  type="feather"
+                  name={'grid'}
+                  color={brandColors.tealDark}
+                  size={22}
                 />
               ) : (
                 <Icon
-                  type="font-awesome-5"
-                  name={'list-ul'}
-                  color={Colors.textColor3}
-                  size={28}
+                  type="feather"
+                  name={'list'}
+                  color={brandColors.tealDark}
+                  size={22}
                 />
               )
             }
@@ -129,35 +132,41 @@ const SearchBar = ({ navigation, type, viewMode, setViewMode, onLoad, query, dis
 
 const styles = StyleSheet.create({
   titleTab:  { 
-    marginTop: 4,
-    fontWeight: '600',
-    marginRight: 2,
+    fontFamily: Fonts.bold,
+    fontSize: fs(12),
+    lineHeight: fs(16),
+    fontWeight: 'normal',
+    marginRight: s(4),
+    color: brandColors.tealDark,
   },
   titleTabSelected: {
-    marginTop: 4,
-    marginRight: 2,
-    fontWeight: '700',
-    color: Colors.colorMain,
+    fontFamily: Fonts.bold,
+    fontSize: fs(12),
+    lineHeight: fs(16),
+    marginRight: s(4),
+    fontWeight: 'normal',
+    color: brandColors.surface,
   },
   wrapperInputSearch: { 
-    width:'80%',
+    flex: 1,
     flexDirection:'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   wrapperContainer: {
-    backgroundColor: Colors.white,
-    marginTop: 4,
+    backgroundColor: 'transparent',
     display: 'flex',
     flexDirection:'row',
     width: '100%',
-    justifyContent:'space-around',
+    alignItems: 'center',
+    justifyContent:'space-between',
   },
   wrapperTextInput: {
     alignItems: 'center',
     flexDirection:'row',
-    height: 36,
-    paddingHorizontal: 12,
+    height: s(44),
+    paddingHorizontal: s(14),
+    flex: 1,
   },
   iconFilter: {
     marginRight: 0,
@@ -166,48 +175,60 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: '#D0D5E7',
-    paddingVertical: 4,
-    paddingHorizontal: 7,
-    marginVertical: 6,
-    marginHorizontal: 3,
-    borderRadius: 6,
+    borderColor: liquidGlass.borderTint,
+    backgroundColor: liquidGlass.backgroundTint,
+    paddingVertical: s(8),
+    paddingHorizontal: s(12),
+    marginVertical: s(4),
+    marginHorizontal: s(3),
+    borderRadius: s(999),
+    alignItems: 'center',
   },
   wrapperDisplayTabSelected: {
     display: 'flex',
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: Colors.colorMain,
-    paddingVertical: 4,
-    paddingHorizontal: 7,
-    marginVertical: 6,
-    marginHorizontal: 3,
-    borderRadius: 6,
+    borderColor: brandColors.tealPrimary,
+    backgroundColor: brandColors.tealPrimary,
+    paddingVertical: s(8),
+    paddingHorizontal: s(12),
+    marginVertical: s(4),
+    marginHorizontal: s(3),
+    borderRadius: s(999),
+    alignItems: 'center',
   },
   wrapperDisplayIcon: {
-    display: 'flex',
-    flexDirection: 'row',
+    width: s(52),
+    height: s(52),
     borderWidth: 1,
-    borderColor: '#D0D5E7',
-    paddingVertical: 4,
-    paddingHorizontal: 5,
-    marginVertical: 6,
-    marginHorizontal: 3,
-    borderRadius: 6,
+    borderColor: liquidGlass.borderTint,
+    backgroundColor: liquidGlass.backgroundStrong,
+    marginLeft: s(8),
+    borderRadius: s(16),
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'stretch',
   },
   searchInput:{
-    marginLeft: 8,
-    fontSize: 12,
+    flex: 1,
+    marginLeft: s(10),
+    fontFamily: Fonts.bold,
+    fontSize: fs(13),
+    fontWeight: 'normal',
+    color: brandColors.textDark,
+    paddingVertical: 0,
   },
   searchContainer:{
     flexDirection: 'row',
-    backgroundColor: 'rgba(0, 149, 217, 0.05)',
-    marginHorizontal: 12,
+    flex: 1,
+    backgroundColor: liquidGlass.backgroundStrong,
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 6,
-    borderRadius: 6,
-    height: 40,
+    borderRadius: s(16),
+    height: s(52),
+    paddingRight: s(12),
+    borderWidth: 1,
+    borderColor: liquidGlass.borderTint,
   },
   searchWithIconContainer: {
     flex: 1,

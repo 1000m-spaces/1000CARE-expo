@@ -11,6 +11,7 @@ const EmptyItem = ({ image = box_empty, text = 'Hiện tại không có lịch s
       <Image
         resizeMode={'contain'}
         source={image}
+        style={styles.image}
       />
       <Text style={styles.message}>
         {text}

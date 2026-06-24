@@ -7,6 +7,7 @@ import Swiper from 'react-native-swiper'
 import { DIMENS } from '~/constants/index'
 import ItemDistributor from '~/common/ItemDistributor/index'
 import { s, fs } from '~/utils/responsive'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 const Distributors = ({ navigation, onItemPress }) => {
   const listDistributors = useSelector(state => getListDistributors(state))
@@ -45,23 +46,25 @@ const Distributors = ({ navigation, onItemPress }) => {
           nextButton={<Text />}
           prevButton={<Text />}
         >
-          {Array.from({ length: Math.ceil(listDistributors.length / 6) }, (_, i) => i + 1).map((value, idx) => (
+          {Array.from({ length: Math.ceil(listDistributors.length / itemsPerPage) }, (_, i) => i + 1).map((value, idx) => (
             <View key={`page_${idx}`} style={styles.swiperPage}>
               <View style={styles.row}>
-                {listDistributors.filter((_, id) => (value - 1) * 6 <= id && id < value * 6 - 3).map((item, index) => (
+                {listDistributors.filter((_, id) => (value - 1) * itemsPerPage <= id && id < (value - 1) * itemsPerPage + itemsPerRow).map((item, index) => (
                   <ItemDistributor
                     key={`dist_top_${item.id || item.Id || index}`}
                     onItemPress={() => onItemPress(item)}
                     data={item}
+                    itemWidth={itemWidth}
                   />
                 ))}
               </View>
               <View style={styles.row}>
-                {listDistributors.filter((_, id) => (value - 1) * 6 + 3 <= id && id < value * 6).map((item, index) => (
+                {listDistributors.filter((_, id) => (value - 1) * itemsPerPage + itemsPerRow <= id && id < value * itemsPerPage).map((item, index) => (
                   <ItemDistributor
                     key={`dist_bot_${item.id || item.Id || index}`}
                     onItemPress={() => onItemPress(item)}
                     data={item}
+                    itemWidth={itemWidth}
                   />
                 ))}
               </View>
@@ -78,20 +81,17 @@ const Distributors = ({ navigation, onItemPress }) => {
   )
 }
 
-const swiperHeight = 2 * ((DIMENS.common.WINDOW_WIDTH - 5 * 6 - 12) / 3) * 1.05 + s(20)
+const itemsPerRow = 2
+const itemsPerPage = 4
+const pageHorizontalPadding = s(16)
+const itemGap = s(14)
+const itemWidth = Math.floor((DIMENS.common.WINDOW_WIDTH - pageHorizontalPadding * 2 - itemGap) / itemsPerRow)
+const swiperHeight = 2 * (itemWidth * 0.92 + s(8)) + s(10)
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: s(20),
-    marginHorizontal: s(12),
-    marginBottom: s(12),
-    paddingVertical: s(16),
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
-    elevation: 3,
+    marginBottom: s(8),
+    paddingVertical: s(4),
   },
   swiper: {
     height: swiperHeight,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: s(16),
-    marginBottom: s(12),
+    marginBottom: s(10),
   },
   headerLeft: {
     flexDirection: 'row',
@@ -111,54 +111,58 @@ const styles = StyleSheet.create({
   headerAccent: {
     width: s(4),
     height: s(18),
-    backgroundColor: '#0B7B8A',
+    backgroundColor: brandColors.tealPrimary,
     borderRadius: s(2),
   },
   headerTitle: {
     fontSize: fs(13),
-    fontWeight: '800',
-    color: '#1A202C',
+    fontWeight: '600',
+    color: brandColors.textDark,
     letterSpacing: 0.5,
     marginLeft: s(8),
   },
   seeAllBtn: {
-    backgroundColor: '#F0FAFA',
+    backgroundColor: 'rgba(255,255,255,0.54)',
     paddingHorizontal: s(12),
     paddingVertical: s(6),
     borderRadius: s(20),
     borderWidth: 1,
-    borderColor: '#0B7B8A',
+    borderColor: 'rgba(11,123,138,0.16)',
   },
   seeAllText: {
-    color: '#0B7B8A',
+    color: brandColors.tealPrimary,
     fontSize: fs(12),
-    fontWeight: '700',
+    fontWeight: '600',
   },
   swiperPage: {
-    paddingHorizontal: s(6),
+    paddingHorizontal: pageHorizontalPadding,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+    columnGap: itemGap,
   },
   emptyState: {
     minHeight: s(118),
     marginHorizontal: s(16),
-    borderRadius: s(18),
-    backgroundColor: '#F8FBFC',
+    borderRadius: s(26),
+    backgroundColor: liquidGlass.background,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: s(18),
+    ...liquidGlass.shadow,
   },
   emptyTitle: {
-    color: '#1A1A2E',
+    color: brandColors.textDark,
     fontSize: fs(14),
-    fontWeight: '800',
+    fontWeight: '600',
   },
   emptySubtitle: {
     marginTop: s(4),
-    color: '#6D787E',
+    color: brandColors.muted,
     fontSize: fs(12),
     textAlign: 'center',
   },

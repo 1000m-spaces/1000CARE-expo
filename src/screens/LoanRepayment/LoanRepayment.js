@@ -126,6 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: Fonts.medium,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 })

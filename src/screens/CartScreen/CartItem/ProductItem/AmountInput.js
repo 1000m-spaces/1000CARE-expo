@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 const AmountInput = ({ 
   onChangeText,
@@ -43,47 +44,50 @@ const styles = StyleSheet.create({
   wrap: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: s(18),
+    overflow: 'hidden',
+    backgroundColor: liquidGlass.backgroundStrong,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
   },
   btnMinus: {
-    width: 32,
-    height: 32,
-    backgroundColor: Colors.backgroundColor,
-
-    borderTopLeftRadius: 14,
-    borderBottomLeftRadius: 14,
+    width: s(32),
+    height: s(32),
+    backgroundColor: 'rgba(237,251,252,0.9)',
 
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   input: {
-    width: 70,
-    height: 32,
+    width: s(52),
+    height: s(32),
     padding: 0,
-
     textAlign: 'center',
-    borderColor: Colors.backgroundColor,
-    borderWidth: 1,
-    borderStyle: 'solid',
+    color: brandColors.textDark,
+    fontSize: fs(13),
+    fontWeight: '600',
+    backgroundColor: liquidGlass.backgroundStrong,
   },
   btnMinusContent: {
-    width: 10,
-    backgroundColor: Colors.black,
+    width: s(10),
+    backgroundColor: brandColors.textDark,
     height: 2,
     alignSelf: 'center',
   },
   btn: {
-    fontSize: 20,
-    lineHeight: 30,
+    fontSize: fs(18),
+    lineHeight: fs(30),
+    color: brandColors.textDark,
+    fontWeight: '600',
     textAlign: 'center',
     textAlignVertical: 'center',
   },
   btnPlus: {
-    width: 32,
-    height: 32,
-    backgroundColor: Colors.backgroundColor,
-    borderTopRightRadius: 14,
-    borderBottomRightRadius: 14,
+    width: s(32),
+    height: s(32),
+    backgroundColor: 'rgba(237,251,252,0.9)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

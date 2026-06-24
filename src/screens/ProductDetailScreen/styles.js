@@ -2,12 +2,12 @@ import { Platform, StyleSheet } from 'react-native'
 import Colors from '~/common/Colors/Colors'
 import dimension from '~/constants/dimens'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
     display: 'flex',
     justifyContent: 'space-between',
     paddingTop: s(4),
@@ -39,7 +39,7 @@ export default StyleSheet.create({
   productInfoContainer: {
     flex: 2,
     flexDirection: 'column',
-    backgroundColor: brandColors.surface,
+    backgroundColor: 'rgba(255,255,255,0.42)',
     justifyContent: 'space-around',
     padding: s(18),
   },
@@ -47,29 +47,43 @@ export default StyleSheet.create({
     marginHorizontal: s(16),
     marginTop: s(10),
     marginBottom: s(12),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
     borderRadius: s(24),
     overflow: 'hidden',
-    ...brandShadow.soft,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   purchasePanel: {
     marginHorizontal: s(16),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
     borderRadius: s(24),
     padding: s(18),
     borderWidth: 1,
-    borderColor: brandColors.borderSoft,
-    ...brandShadow.soft,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   purchaseHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    rowGap: s(14),
+  },
+  priceBlock: {
+    flexGrow: 1,
+    flexShrink: 1,
+    minWidth: s(168),
+    paddingRight: s(12),
+  },
+  amountBlock: {
+    flexShrink: 0,
+    alignItems: 'flex-end',
   },
   metaLabel: {
     color: brandColors.mutedLight,
     fontSize: fs(10),
-    fontWeight: '800',
+    fontWeight: '600',
     textTransform: 'uppercase',
     marginBottom: s(4),
   },
@@ -81,7 +95,7 @@ export default StyleSheet.create({
 
   quantityContainer: {
     display: 'flex',
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.backgroundStrong,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -104,7 +118,7 @@ export default StyleSheet.create({
   },
   btnAddText: {
     fontSize: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
   },
   quantityBtnContainer: {
     flexDirection: 'row',
@@ -119,7 +133,9 @@ export default StyleSheet.create({
     padding: 0,
     paddingHorizontal: 0,
     borderRadius: 36,
-    backgroundColor: brandColors.tealLight,
+    backgroundColor: 'rgba(11,123,138,0.1)',
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
   },
   productQuantityContainer: {
     borderRadius: 28,
@@ -149,7 +165,7 @@ export default StyleSheet.create({
   },
   title: {
     color: brandColors.textDark,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginBottom: 6,
     marginRight: 18,
     fontSize: fs(16),
@@ -157,22 +173,22 @@ export default StyleSheet.create({
   pack: {
     color: brandColors.muted,
     fontSize: fs(14),
-    fontWeight: '700',
+    fontWeight: '600',
     lineHeight: 22,
   },
   sectiontitle: {
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
     color: brandColors.textDark,
   },
   swiperConatainer: {
-    backgroundColor: brandColors.background,
+    backgroundColor: 'rgba(255,255,255,0.34)',
     height: (dimension.common.WINDOW_WIDTH - 36) * 2 / 3,
     marginBottom: 1,
   },
   priceInfoContainer: {
     flexDirection: 'row',
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.backgroundStrong,
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 18,
@@ -187,12 +203,13 @@ export default StyleSheet.create({
   productPrice: {
     color: brandColors.goldAccent,
     fontSize: fs(24),
-    fontWeight: '900',
+    fontWeight: '600',
+    lineHeight: fs(32),
   },
   discount: {
     fontSize: fs(14),
     color: brandColors.mutedLight,
-    fontWeight: '500',
+    fontWeight: 'normal',
     // lineHeight: 20,
     textDecorationLine: 'line-through',
     marginLeft: 0,
@@ -201,7 +218,7 @@ export default StyleSheet.create({
     marginLeft: s(10),
     color: brandColors.danger,
     fontSize: fs(13),
-    fontWeight: '800',
+    fontWeight: '600',
   },
   actionCountContainer: {
     display: 'flex',
@@ -221,15 +238,18 @@ export default StyleSheet.create({
   rangePricesContainer: {
     flex: 1,
     padding: 18,
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
     marginBottom: 8,
+    borderRadius: s(20),
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
   },
   promotionTitle: {
     color: brandColors.textDark,
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 12,
   },
   infoSectionTitle: {
@@ -237,7 +257,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 18,
     marginHorizontal: 18,
   },
@@ -251,24 +271,26 @@ export default StyleSheet.create({
     alignSelf: 'center',
   },
   tabSelected: {
-    backgroundColor: Colors.white,
+    backgroundColor: liquidGlass.backgroundStrong,
     color: brandColors.tealPrimary,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   tabContainer: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: brandColors.tealLight,
+    backgroundColor: 'rgba(11,123,138,0.1)',
     borderRadius: 42,
     padding: 4,
     alignSelf: 'center',
     marginBottom: 18,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
   },
   tabText: {
     color: brandColors.textDark,
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: 14,
     lineHeight: 22,
   },

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { Icon } from '~/common'
-import Colors from '~/common/Colors/Colors'
+import { s, fs } from '~/utils/responsive'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 const InputSearch = ({ textSearch, onChangeText, ref_input, placeholder = 'Nhập tên sản phẩm' }) => {
   const [value, setValue] = useState('')
@@ -13,7 +14,7 @@ const InputSearch = ({ textSearch, onChangeText, ref_input, placeholder = 'Nhậ
   return (
     <View style={styles.wrap}>
       <TextInput
-        placeholderTextColor={Colors.textColor3}
+        placeholderTextColor={brandColors.mutedLight}
         underlineColorAndroid='transparent'
         style={styles.input}
         placeholder={placeholder}
@@ -28,8 +29,8 @@ const InputSearch = ({ textSearch, onChangeText, ref_input, placeholder = 'Nhậ
         style={styles.icon}
         type="feather"
         name={'search'}
-        color={'#0B7B8A'}
-        size={17}
+        color={brandColors.tealPrimary}
+        size={20}
       />
       <TouchableOpacity
         onPress={() => {
@@ -41,6 +42,7 @@ const InputSearch = ({ textSearch, onChangeText, ref_input, placeholder = 'Nhậ
         <Icon
           type="material"
           name={'cancel'}
+          color={brandColors.mutedLight}
           size={20}
         />
       </TouchableOpacity>
@@ -51,31 +53,35 @@ const InputSearch = ({ textSearch, onChangeText, ref_input, placeholder = 'Nhậ
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
-    paddingHorizontal: 18,
-    paddingVertical: 6,
+    paddingHorizontal: s(16),
+    paddingTop: s(10),
   },
   input: {
     width: '100%',
-    height: 40,
-    backgroundColor: 'rgba(0, 149, 217, 0.05)',
-    paddingLeft: 42,
-    borderRadius: 6,
-    color: Colors.textColor3,
-    paddingRight: 50,
+    height: s(52),
+    backgroundColor: liquidGlass.backgroundStrong,
+    paddingLeft: s(48),
+    borderRadius: s(16),
+    color: brandColors.textDark,
+    paddingRight: s(48),
+    borderWidth: 1,
+    borderColor: liquidGlass.borderTint,
+    fontSize: fs(13),
+    fontWeight: '600',
   },
   icon: {
-    width: 24,
-    height: 24,
     position: 'absolute',
-    left: 30,
-    top: 19,
+    left: s(31),
+    top: s(25),
   },
   iconCancel: {
-    width: 25,
-    height: 24,
+    width: s(34),
+    height: s(34),
     position: 'absolute',
-    right: 30,
-    top: 17,
+    right: s(24),
+    top: s(19),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
 

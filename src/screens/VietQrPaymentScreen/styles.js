@@ -44,7 +44,7 @@ export default StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontWeight: '600',
         marginBottom: 20,
         color: Colors.text_dark,
         textAlign: 'center',
@@ -90,7 +90,7 @@ export default StyleSheet.create({
     amountText: {
         fontSize: 16,
         color: Colors.primary,
-        fontWeight: 'bold',
+        fontWeight: '600',
     },
     contentText: {
         fontSize: 12,
@@ -108,7 +108,7 @@ export default StyleSheet.create({
         marginLeft: 12,
         fontSize: 14,
         color: Colors.primary,
-        fontWeight: '500',
+        fontWeight: 'normal',
     },
     instructionContainer: {
         width: '100%',
@@ -119,7 +119,7 @@ export default StyleSheet.create({
     },
     instructionTitle: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '600',
         color: Colors.text_dark,
         marginBottom: 12,
     },

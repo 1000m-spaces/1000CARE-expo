@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: fs(25),
     color: brandColors.surface,
-    fontWeight: '900',
+    fontWeight: '600',
     marginTop: s(20),
   },
   textMoney: {

@@ -33,7 +33,7 @@ export default StyleSheet.create({
   name: {
     flex: 2,
     color: Colors.textColor1,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginBottom: 6,
     marginRight: 18,
     fontSize: 16,
@@ -41,14 +41,14 @@ export default StyleSheet.create({
   price: {
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: Colors.priceColor,
     // flex: 1,
   },
   discount: {
     fontSize: 16,
     color: '#CCCCCC',
-    fontWeight: '500',
+    fontWeight: 'normal',
     // lineHeight: 20,
     textDecorationLine: 'line-through',
     // marginLeft: 18,

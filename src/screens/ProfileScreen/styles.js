@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 const styles = StyleSheet.create({
   mainContainer: {
     display: 'flex',
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   profileInfoContainer: {
     display: 'flex',
@@ -13,9 +13,11 @@ const styles = StyleSheet.create({
     padding: s(18),
     marginVertical: s(12),
     marginHorizontal: s(16),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
     borderRadius: s(24),
-    ...brandShadow.soft,
+    ...liquidGlass.shadow,
   },
   infoContainer: {
     display: 'flex',
@@ -30,7 +32,7 @@ const styles = StyleSheet.create({
   name: {
     color: brandColors.textDark,
     fontSize: fs(18),
-    fontWeight: '800',
+    fontWeight: '600',
   },
   email: {
     color: brandColors.muted,
@@ -38,11 +40,13 @@ const styles = StyleSheet.create({
   },
   listItemContainer: {
     display: 'flex',
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
     marginHorizontal: s(16),
     borderRadius: s(24),
     overflow: 'hidden',
-    ...brandShadow.soft,
+    ...liquidGlass.shadow,
     flexDirection: 'column',
   },
   itemContainer: {

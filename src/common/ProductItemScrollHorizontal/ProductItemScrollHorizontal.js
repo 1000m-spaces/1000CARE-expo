@@ -19,6 +19,7 @@ import { getAuthStore } from '~/store/selector'
 import strings from '~/i18n'
 import { gift_fill } from '~/assets/constants'
 import { Fonts } from '~/assets/config'
+import { brandColors } from '~/design-system/tokens'
 
 const numColumns = 2
 const LAYOUTPADDING = 6 * 2
@@ -118,6 +119,9 @@ const ProductItemScrollHorizontal = ({ navigation, data, distributorId, type, ad
   }
 
   const isPending = data.distributor?.status === 2
+  const supplierName = data?.distributor?.nick_name || data?.supplier?.name || ''
+  const isPointPayment = data.payment_type === 2
+  const hasDiscount = !isPointPayment && Number(data.price) > 0 && Number(data.sale_price) > 0 && Number(data.sale_price) !== Number(data.price)
 
   const view1 = () => {
     const ImageH = type === 2 ? IMAGE_HEIGHT : type === 3 ? IMAGE_HEIGHT3 : IMAGE_HEIGHT2
@@ -144,102 +148,61 @@ const ProductItemScrollHorizontal = ({ navigation, data, distributorId, type, ad
           />
         </View>
         <View style={styles.productInfoContainer}>
-          <View
-            style={{
-              flex: 4,
-            }}
-          >
-            <View style={styles.productNameContainer}>
+          <Text
+            style={[styles.productName, type === 2 ? {} : styles.productName2]}
+            numberOfLines={type === 2 ? 2 : 1}
+            ellipsizeMode='tail'
+          >{data.name}</Text>
+          <Text
+            style={styles.supplierName}
+            numberOfLines={1}
+            ellipsizeMode='tail'
+          >{supplierName}</Text>
+          <View style={styles.priceRow}>
+            <View style={styles.priceTextBlock}>
               <Text
-                style={[styles.productName, type === 2 ? {} : styles.productName2]}
-                numberOfLines={type === 2 ? 2 : 1}
+                style={isPointPayment ? styles.salePrice : styles.price}
+                numberOfLines={1}
                 ellipsizeMode='tail'
-              >{data.name}</Text>
-            </View>
-            <View
-              style={styles.bottomContainer}
-            >
-              {
-                data.payment_type !== 2 && (
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-around',
-                    }}
-                  >
-                    <Text
-                      style={styles.price}
-                      numberOfLines={1}
-                      ellipsizeMode='tail'
-                    >{formatMoney(data.sale_price, { unit: 'đ', space: false })}
-                    </Text>
-                    {
-                      type === 2 && data.sale_price !== data.price && (
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: -3 }}>
-                          <Text style={styles.discount}>{formatMoney(data.price, { unit: 'đ', space: false })}</Text>
-                        </View>
-                      )
-                    }
-                    {
-                      type === 2 && (<Text style={{ color: '#071F77', fontSize: 12 }}>{data?.distributor?.nick_name ? data?.distributor?.nick_name : ''}</Text>)
-                    }
-                  </View>
-                )
-              }
-              {
-                data.payment_type === 2 && (
-                  <View style={{ justifyContent: 'space-around' }}>
-                    <View style={styles.salePriceContainer}>
-                      <Text
-                        style={styles.salePrice}
-                        numberOfLines={1}
-                        ellipsizeMode='tail'
-                      >{formatMoney(data.sale_price, { unit: 'điểm', space: false })}</Text>
-                    </View>
-                    <Text style={{ color: '#071F77', fontSize: 12 }}>{data?.distributor?.nick_name ? data?.distributor?.nick_name : ''}</Text>
-                  </View>
-                )
-              }
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}
               >
-                {
-                  addButton && isLoggedIn && (
-                    <TouchableOpacity
-                      onPress={() => addItem()}
-                      style={styles.buttonAddContainer}
-                    >
-                      <Image
-                        source={plus_2}
-                        style={styles.buttonAdd}
-                      />
-                    </TouchableOpacity>
-                  )
-                }
-                {
-                  isLoggedIn && type === 2 && (
-                    <TouchableOpacity
-                      onPress={() => favorClick()}
-                      style={styles.favorContainer}
-                    >
-                      <Image
-                        style={{
-                          height: 25,
-                          width: 25,
-                        }}
-                        resizeMode={'contain'}
-                        source={data.is_wishlist ? heart_red : heart}
-                        tintColor={Colors.errorColor}
-                      />
-                    </TouchableOpacity>
-                  )
-                }
-              </View>
+                {formatMoney(data.sale_price, { unit: isPointPayment ? 'điểm' : 'đ', space: false })}
+              </Text>
+              {type === 2 && hasDiscount && (
+                <Text
+                  style={styles.discount}
+                  numberOfLines={1}
+                >
+                  {formatMoney(data.price, { unit: 'đ', space: false })}
+                </Text>
+              )}
+            </View>
+            <View style={styles.actionColumn}>
+              {addButton && isLoggedIn && (
+                <TouchableOpacity
+                  onPress={() => addItem()}
+                  style={styles.buttonAddContainer}
+                  activeOpacity={0.82}
+                >
+                  <Image
+                    source={plus_2}
+                    style={styles.buttonAdd}
+                  />
+                </TouchableOpacity>
+              )}
+              {isLoggedIn && type === 2 && (
+                <TouchableOpacity
+                  onPress={() => favorClick()}
+                  style={styles.favorContainer}
+                  activeOpacity={0.82}
+                >
+                  <Image
+                    style={styles.favorIcon}
+                    resizeMode={'contain'}
+                    source={data.is_wishlist ? heart_red : heart}
+                    tintColor={Colors.errorColor}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
@@ -277,99 +240,23 @@ const ProductItemScrollHorizontal = ({ navigation, data, distributorId, type, ad
           source={getProductImage(data, 'xl', placeholder)}
         />
         <View style={styles.productInfoColumnContainer}>
-          <View
-            style={{
-              flex: 4,
-            }}
+          <Text
+            style={styles.productName}
+            numberOfLines={2}
+            ellipsizeMode='tail'
+          >{data.name}</Text>
+          <Text
+            style={styles.supplierName}
+            numberOfLines={1}
+            ellipsizeMode='tail'
+          >{supplierName}</Text>
+          <Text
+            style={isPointPayment ? styles.salePrice : styles.price}
+            numberOfLines={1}
+            ellipsizeMode='tail'
           >
-            <View style={styles.productNameContainer}>
-              <Text
-                style={styles.productName}
-                numberOfLines={2}
-                ellipsizeMode='tail'
-              >{data.name}</Text>
-
-            </View>
-            <View
-              style={styles.bottomContainer}
-            >
-              {
-                data.payment_type !== 2 && (
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-around',
-                    }}
-                  >
-                    <Text
-                      style={styles.price}
-                      numberOfLines={1}
-                      ellipsizeMode='tail'
-                    >{formatMoney(data.sale_price, { unit: 'đ', space: false })}
-                    </Text>
-                    {
-                      data.sale_price !== data.price && (
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: -3 }}>
-                          <Text style={styles.discount}>{formatMoney(data.price, { unit: 'đ', space: false })}</Text>
-                        </View>
-                      )
-                    }
-                    <Text style={{ color: '#071F77', fontSize: 12 }}>{data?.distributor?.nick_name ? data?.distributor?.nick_name : ''}</Text>
-                  </View>
-                )
-              }
-              {
-                data.payment_type === 2 && (
-                  <View style={{ justifyContent: 'space-around' }}>
-                    <View style={styles.salePriceContainer}>
-                      <Text style={styles.salePrice}>{formatMoney(data.sale_price, { unit: 'điểm', space: false })}</Text>
-                    </View>
-                    <Text style={{ color: '#071F77', fontSize: 12 }}>{data?.distributor?.nick_name ? data?.distributor?.nick_name : ''}</Text>
-                  </View>
-                )
-              }
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}
-              >
-                {
-                  addButton && isLoggedIn && (
-                    <TouchableOpacity
-                      onPress={() => addItem()}
-                      style={styles.buttonAddContainer}
-                    >
-                      <Image
-                        source={plus_2}
-                        style={styles.buttonAdd}
-                      />
-                    </TouchableOpacity>
-                  )
-                }
-                {
-                  isLoggedIn && (
-                    <TouchableOpacity
-                      onPress={() => favorClick()}
-                      style={styles.favorContainer}
-                    >
-                      <Image
-                        style={{
-                          height: 25,
-                          width: 25,
-                        }}
-                        resizeMode={'contain'}
-                        source={data.is_wishlist ? heart_red : heart}
-                        tintColor={Colors.errorColor}
-                      />
-                    </TouchableOpacity>
-                  )
-                }
-              </View>
-            </View>
-          </View>
+            {formatMoney(data.sale_price, { unit: isPointPayment ? 'điểm' : 'đ', space: false })}
+          </Text>
         </View>
       </View>
     )
@@ -442,23 +329,29 @@ const styles = StyleSheet.create({
   },
   productContainer: {
     width: PRODUCT_WIDTH,
-    height: PRODUCT_WIDTH * 1.4 + 35,
+    height: PRODUCT_WIDTH * 1.55 + 48,
     flexDirection: 'column',
     display: 'flex',
     justifyContent: 'flex-start',
-    backgroundColor: Colors.white,
+    backgroundColor: brandColors.surface,
     margin: 5,
     borderWidth: 1,
-    borderColor: '#F1F1F1',
-    borderRadius: 6,
+    borderColor: brandColors.borderSoft,
+    borderRadius: 8,
+    overflow: 'hidden',
+    shadowColor: '#102A33',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   productContainer2: {
     width: PRODUCT_WIDTH2,
-    height: PRODUCT_WIDTH2 * 1.4 + 8,
+    height: PRODUCT_WIDTH2 * 1.62 + 42,
   },
   productContainer3: {
     width: PRODUCT_WIDTH3,
-    height: PRODUCT_WIDTH3 * 1.4 + 8,
+    height: PRODUCT_WIDTH3 * 1.62 + 42,
   },
   productColumnContainer: {
     width: PRODUCT_COLUMN_WIDTH,
@@ -467,8 +360,10 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: IMAGE_CONTAINER_HEIGHT,
-    backgroundColor: 'white',
+    backgroundColor: brandColors.surface,
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
   },
@@ -481,20 +376,20 @@ const styles = StyleSheet.create({
   imageColumnContainer: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: brandColors.surface,
     justifyContent: 'center',
     alignItems: 'center',
     width: PRODUCT_COLUMN_WIDTH,
     height: 120,
     marginLeft: 8,
-    borderRadius: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
   },
   productImage: {
     width: '100%',
     height: IMAGE_HEIGHT,
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   productImage2: {
     height: IMAGE_HEIGHT2,
@@ -509,20 +404,20 @@ const styles = StyleSheet.create({
   },
   productInfoColumnContainer: {
     padding: 8,
-    paddingTop: 0,
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     width: PRODUCT_COLUMN_WIDTH / 2,
-    justifyContent: 'space-around',
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'stretch',
   },
   productInfoContainer: {
-    padding: 8,
-    paddingTop: 0,
+    paddingHorizontal: 8,
+    paddingTop: 6,
+    paddingBottom: 8,
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'flex-end',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    flex: 1,
   },
   productNameContainer: {
     marginTop: 1,
@@ -532,15 +427,20 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   productName: {
-    fontSize: 14,
-    color: Colors.textColor2,
-    lineHeight: 15,
-    height: 30,
-    flex: 2,
-    marginRight: 3,
+    fontSize: 13,
+    color: brandColors.textDark,
+    lineHeight: 17,
+    minHeight: 34,
+    fontWeight: '600',
   },
   productName2: {
-    height: 15,
+    minHeight: 17,
+  },
+  supplierName: {
+    color: brandColors.muted,
+    fontSize: 11,
+    lineHeight: 15,
+    marginTop: 2,
   },
   productColumName: {
     fontSize: 14,
@@ -552,10 +452,10 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   buttonAddContainer: {
-    backgroundColor: Colors.systemColor2,
-    width: 25,
-    height: 25,
-    borderRadius: 22,
+    backgroundColor: brandColors.tealPrimary,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -570,11 +470,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    marginTop: 6,
+  },
+  priceTextBlock: {
+    flex: 1,
+    minWidth: 0,
+    paddingRight: 6,
+  },
+  actionColumn: {
+    width: 30,
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+  },
   favorContainer: {
     height: 28,
     width: 28,
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
+    marginTop: 5,
+  },
+  favorIcon: {
+    height: 22,
+    width: 22,
   },
   promotionLabel: {
     height: 24,
@@ -588,12 +509,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   price: {
-    fontSize: 12,
+    fontSize: 13,
     marginTop: 1,
-    fontWeight: 'bold',
-    color: Colors.priceColor,
-    width: IMAGE_COLUMN_WIDTH - 42,
-    lineHeight: 20,
+    fontWeight: '600',
+    color: brandColors.goldAccent,
+    lineHeight: 18,
   },
   salePriceContainer: {
     marginTop: 1,
@@ -601,17 +521,16 @@ const styles = StyleSheet.create({
     // flex: 2,
   },
   salePrice: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    width: IMAGE_COLUMN_WIDTH - 42,
-    color: Colors.priceColor,
-    lineHeight: 22,
+    fontSize: 13,
+    fontWeight: '600',
+    color: brandColors.goldAccent,
+    lineHeight: 18,
   },
   discount: {
-    fontSize: 12,
-    color: '#CCCCCC',
-    fontWeight: '500',
-    lineHeight: 20,
+    fontSize: 10,
+    color: brandColors.mutedLight,
+    fontWeight: 'normal',
+    lineHeight: 14,
     textDecorationLine: 'line-through',
   },
   quantityContainer: {

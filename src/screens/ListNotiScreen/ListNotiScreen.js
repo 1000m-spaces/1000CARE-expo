@@ -220,7 +220,7 @@ const ListNotiScreen = ({ navigation }) => {
         onEndReached={() => loadMore()}
         keyExtractor={keyExtractor}
       />
-      {isLoading && <LoadingView />}
+      {isLoading && <LoadingView variant="list" />}
       <ErrorView
         error={errorGetListNoti}
         isOpen={!useMockData && errorGetListNoti ? true : false}

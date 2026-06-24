@@ -33,9 +33,10 @@ import AppSection from '~/design-system/AppSection'
 import { brandColors } from '~/design-system/tokens'
 
 const ProductDetailScreen = (props) => {
-  const { product: orgProduct, distributorId: orgDistributorId, combo: isProductCombo, goBack } = props.route.params
+  const { product: orgProduct, distributorId: orgDistributorId, combo: isProductCombo, goBack } = props.route?.params || {}
   const product = useSelector((state) => getProductDetails(state))
   const safeProduct = product || orgProduct || {}
+  const productId = safeProduct?.product_id || orgProduct?.product_id || orgProduct?.id
   const [distributorId, setDistributorId] = useState(orgDistributorId)
   const cartData = useSelector((state) => getProductInCart(state))
   const requestStatus = useSelector(state => getWishListStatus(state))
@@ -51,15 +52,16 @@ const ProductDetailScreen = (props) => {
   const [image, setImage] = useState([])
   const [openModal, setOpenModal] = useState(false)
   const [showViewPermission, setShowViewPermission] = useState(false)
-  console.log('san phaammmmmmm:', product)
-
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (orgProduct) {
-      dispatch(requestGetProductDetails(orgProduct.product_id))
-      dispatch(requestGetCampaignByDistributorIdByProduct(orgDistributorId, orgProduct.product_id))
-      dispatch(requestGetCampaignOfDistributorIdByProduct(orgDistributorId, orgProduct.product_id))
+    const nextProductId = orgProduct?.product_id || orgProduct?.id
+    if (nextProductId) {
+      dispatch(requestGetProductDetails(nextProductId))
+      if (orgDistributorId) {
+        dispatch(requestGetCampaignByDistributorIdByProduct(orgDistributorId, nextProductId))
+        dispatch(requestGetCampaignOfDistributorIdByProduct(orgDistributorId, nextProductId))
+      }
     }
     scrollToTop()
   }, [orgProduct])
@@ -90,6 +92,9 @@ const ProductDetailScreen = (props) => {
 
   const addProduct = useCallback(
     (qty) => {
+      if (!safeProduct?.product_id || !distributorId) {
+        return
+      }
       setIsRequest(true)
       const index = inList(safeProduct.product_id, productInCart)
       if (index < 0) {
@@ -98,7 +103,7 @@ const ProductDetailScreen = (props) => {
         dispatch(updateCart(safeProduct.product_id, distributorId, productInCart[index].qty + qty))
       }
     },
-    [safeProduct, productInCart],
+    [safeProduct, productInCart, distributorId],
   )
 
   const addProd = (qty) => {
@@ -140,6 +145,9 @@ const ProductDetailScreen = (props) => {
   }
 
   const favorClick = () => {
+    if (!safeProduct?.product_id) {
+      return
+    }
     setIsRequest(true)
     if (safeProduct.is_wishlist) {
       dispatch(requestRemoveProductWishList(safeProduct.product_id))
@@ -162,12 +170,14 @@ const ProductDetailScreen = (props) => {
         showToast('Set wishlist error')
         break
       case Status.SUCCESS:
-        dispatch(requestGetProductDetails(orgProduct.product_id))
+        if (productId) {
+          dispatch(requestGetProductDetails(productId))
+        }
         break
       default:
         break
     }
-  }, [requestStatus])
+  }, [requestStatus, productId])
 
   useEffect(() => {
     if (isRequest && statusAddCart === Status.SUCCESS) {
@@ -204,6 +214,11 @@ const ProductDetailScreen = (props) => {
     }
 
   }, [errorProductDetails, statusProductDetails])
+
+  const hasDiscount = Number(safeProduct?.price) > 0
+    && Number(safeProduct?.sale_price) > 0
+    && Number(safeProduct?.price) !== Number(safeProduct?.sale_price)
+
   // console.log('EMPTYYYYYYYYYYYYYYY:', errorProductDetails, errorProductDetails.includes('Tài khoản của bạn chưa được kiểm duyệt'))
   return (
     <AppScreen>
@@ -230,7 +245,7 @@ const ProductDetailScreen = (props) => {
                   textAlign: 'center', paddingHorizontal: 10, lineHeight: 25
                 }}
               >
-                {/* {'Bạn chưa thể xem sản phẩm này.\n Vui lòng đăng ký tài khoản Nhà thuốc hoặc Liên hệ CSKH NeoMed.'} */}
+                {/* {'Bạn chưa thể xem sản phẩm này.\n Vui lòng đăng ký tài khoản cửa hàng hoặc liên hệ CSKH.'} */}
                 {'Bạn chưa thể xem sản phẩm này.\n Vui lòng Liên hệ CSKH 1000M.'}
               </Text>
             </View> :
@@ -241,59 +256,64 @@ const ProductDetailScreen = (props) => {
             >
               <View style={styles.productContainer}>
                 <ProductInfo
-                  product={product}
+                  product={safeProduct}
                   favorClick={favorClick}
                   openImage={(urlImage) => openImage(urlImage)}
                 />
               </View>
               <View style={styles.purchasePanel}>
                 <View style={styles.purchaseHeader}>
-                  <View>
+                  <View style={styles.priceBlock}>
                     <Text style={styles.metaLabel}>Giá bán</Text>
-                    <Text style={styles.productPrice}>
-                      {formatMoney(product?.sale_price ? product?.sale_price : null)}
+                    <Text
+                      style={styles.productPrice}
+                      numberOfLines={1}
+                    >
+                      {formatMoney(safeProduct?.sale_price ? safeProduct?.sale_price : null)}
                     </Text>
                   </View>
                   {!isProductCombo && (
-                    <AmountInput
-                      value={quantity.toString()}
-                      keyboardType='numeric'
-                      onChangeText={(text) => {
-                        if (!isNaN(text)) {
-                          if (Number(text) <= 10000000) {
-                            setQuantity(Number(text))
-                          } else {
-                            setQuantity(10000000)
-                            setMessage(`Không được quá ${formatMoney(10000000, { unit: '' })} sản phẩm`)
-                            setOpenMessage(true)
-                            setTimeout(() => {
-                              setOpenMessage(false)
-                            }, 1000)
+                    <View style={styles.amountBlock}>
+                      <AmountInput
+                        value={quantity.toString()}
+                        keyboardType='numeric'
+                        onChangeText={(text) => {
+                          if (!isNaN(text)) {
+                            if (Number(text) <= 10000000) {
+                              setQuantity(Number(text))
+                            } else {
+                              setQuantity(10000000)
+                              setMessage(`Không được quá ${formatMoney(10000000, { unit: '' })} sản phẩm`)
+                              setOpenMessage(true)
+                              setTimeout(() => {
+                                setOpenMessage(false)
+                              }, 1000)
+                            }
                           }
-                        }
-                      }}
-                      onEndEditing={() => {
-                        const qty = Number(quantity)
-                        if (qty > 0) {
+                        }}
+                        onEndEditing={() => {
+                          const qty = Number(quantity)
+                          if (qty > 0) {
                             const productQty = safeProduct.qty || 0
-                              if (qty - productQty > 0) {
-                                addProd(qty - productQty)
-                              } else if (qty - productQty < 0) {
-                                subProd(productQty - qty)
-                              }
-                        } else {
-                          setQuantity(safeProduct.qty || 1)
-                        }
-                      }}
-                      onMinus={() => subProd(1)}
-                      onPlus={() => addProd(1)}
-                    />
+                            if (qty - productQty > 0) {
+                              addProd(qty - productQty)
+                            } else if (qty - productQty < 0) {
+                              subProd(productQty - qty)
+                            }
+                          } else {
+                            setQuantity(safeProduct.qty || 1)
+                          }
+                        }}
+                        onMinus={() => subProd(1)}
+                        onPlus={() => addProd(1)}
+                      />
+                    </View>
                   )}
                 </View>
-                {product?.price != product?.sale_price
+                {hasDiscount
                   ? <View style={styles.discountRow}>
-                    <Text style={styles.discount}>{formatMoney(product?.price, { unit: 'đ', space: false })}</Text>
-                    <Text style={styles.discountPercent}>-{(100 - (Number(product?.sale_price) / Number(product?.price)) * 100).toFixed(1)}%</Text>
+                    <Text style={styles.discount}>{formatMoney(safeProduct?.price, { unit: 'đ', space: false })}</Text>
+                    <Text style={styles.discountPercent}>-{(100 - (Number(safeProduct?.sale_price) / Number(safeProduct?.price)) * 100).toFixed(1)}%</Text>
                   </View>
                   : null}
                 {!isProductCombo && (
@@ -311,12 +331,12 @@ const ProductDetailScreen = (props) => {
                   addProduct={addProduct}
                   distributorId={distributorId}
                   navigation={props.navigation}
-                  product={product}
+                  product={safeProduct}
                 />
                 <Voucher
                   navigation={props.navigation}
                   distributorId={distributorId}
-                  product={product}
+                  product={safeProduct}
                 />
               </AppSection>
               <AppSection title="Sản phẩm liên quan">
@@ -324,24 +344,24 @@ const ProductDetailScreen = (props) => {
                   scrollToTop={scrollToTop}
                   distributorId={distributorId}
                   navigation={props.navigation}
-                  product={product}
+                  product={safeProduct}
                 />
                 <TopProduct
                   scrollToTop={scrollToTop}
                   distributorId={distributorId}
                   navigation={props.navigation}
-                  product={product}
+                  product={safeProduct}
                 />
               </AppSection>
               <AppSection title="Thông tin sản phẩm">
-                <ProductDescription product={product} />
+                <ProductDescription product={safeProduct} />
               </AppSection>
               <AppSection title="Gợi ý cho bạn">
                 <RecommendProduct
                   scrollToTop={scrollToTop}
                   distributorId={distributorId}
                   navigation={props.navigation}
-                  product={product}
+                  product={safeProduct}
                 />
               </AppSection>
             </ScrollView>}

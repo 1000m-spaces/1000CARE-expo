@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.textColor2,
     fontFamily: Fonts.bold,
-    fontWeight: '700',
+    fontWeight: '600',
     lineHeight: 22,
     fontSize: 14,
   },
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: 12,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   listContainer: {
     backgroundColor: 'white',

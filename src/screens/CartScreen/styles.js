@@ -2,19 +2,23 @@ import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
 import Colors from '~/common/Colors/Colors'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, brandShadow, liquidGlass } from '~/design-system/tokens'
 
 const styles = StyleSheet.create({
   mainContainer: { 
     flex:1,
     display: 'flex',
     justifyContent:'space-between',
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   
   listItem: {
     marginVertical: s(12),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    borderRadius: s(22),
+    ...liquidGlass.shadow,
   },
   checkoutHero: {
     marginHorizontal: s(16),
@@ -23,11 +27,13 @@ const styles = StyleSheet.create({
     borderRadius: s(28),
     paddingHorizontal: s(18),
     paddingVertical: s(18),
-    backgroundColor: brandColors.tealDark,
-    minHeight: s(150),
+    backgroundColor: liquidGlass.backgroundTint,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    minHeight: s(142),
     justifyContent: 'center',
     position: 'relative',
-    ...brandShadow.teal,
+    ...liquidGlass.shadow,
   },
   backButton: {
     position: 'absolute',
@@ -38,46 +44,56 @@ const styles = StyleSheet.create({
     borderRadius: s(15),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.14)',
+    backgroundColor: liquidGlass.backgroundStrong,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.16)',
+    borderColor: liquidGlass.borderTint,
+    shadowColor: liquidGlass.shadow.color,
+    shadowOpacity: 0.06,
+    shadowRadius: s(14),
+    shadowOffset: { width: 0, height: s(8) },
+    elevation: 3,
   },
   checkoutCopy: {
     alignItems: 'center',
     paddingHorizontal: s(56),
   },
   checkoutEyebrow: {
+    fontFamily: Fonts.bold,
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: 'normal',
     letterSpacing: 1.6,
-    color: brandColors.goldAccent,
+    color: brandColors.tealPrimary,
     textAlign: 'center',
   },
   checkoutTitle: {
     marginTop: s(5),
+    fontFamily: Fonts.bold,
     fontSize: fs(24),
     lineHeight: fs(30),
-    fontWeight: '900',
-    color: brandColors.surface,
+    fontWeight: 'normal',
+    color: brandColors.textDark,
     textAlign: 'center',
   },
   checkoutSubtitle: {
     marginTop: s(7),
+    fontFamily: Fonts.base,
     fontSize: fs(12),
     lineHeight: fs(18),
-    fontWeight: '600',
-    color: 'rgba(255,255,255,0.68)',
+    fontWeight: 'normal',
+    color: brandColors.muted,
     textAlign: 'center',
   },
 
   bottomContainer: {
     paddingVertical: s(18),
     paddingTop: s(20),
-    paddingBottom: s(18),
-    backgroundColor: brandColors.surface,
+    paddingBottom: s(16),
+    backgroundColor: liquidGlass.backgroundStrong,
     alignSelf: 'flex-end',
-    ...brandShadow.soft,
+    borderTopWidth: 1,
+    borderTopColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
 
   nextStepBtnContainer: {
@@ -111,8 +127,8 @@ const styles = StyleSheet.create({
     padding: 0,
     paddingHorizontal: 0,
     borderRadius: s(20),
-    backgroundColor: brandColors.surface,
-    borderColor: brandColors.tealPrimary,
+    backgroundColor: liquidGlass.background,
+    borderColor: liquidGlass.border,
     borderWidth: 1,
   },
 
@@ -124,7 +140,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent:'space-between',
-    marginBottom: s(12),
+    marginBottom: s(10),
     marginHorizontal: s(18),
   },
 
@@ -137,31 +153,34 @@ const styles = StyleSheet.create({
   },
 
   priceText: {
+    fontFamily: Fonts.bold,
     fontSize: fs(18),
     color: brandColors.goldAccent,
   },
 
   pointText: {
+    fontFamily: Fonts.bold,
     fontSize: fs(18),
     color: Colors.red,
   },
 
   totalText: {
+    fontFamily: Fonts.base,
     color: brandColors.textDark,
     fontSize: fs(14),
   },
 
   listProductContainer: {
     flex: 2,
-    backgroundColor: brandColors.background,
-    marginTop: s(6),
+    backgroundColor: 'transparent',
+    marginTop: s(2),
   },
 
   addressContainer: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
     marginTop: s(6),
     paddingBottom: s(6),
   },
@@ -170,7 +189,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: s(18),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
+    borderTopLeftRadius: s(22),
+    borderTopRightRadius: s(22),
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
     justifyContent: 'space-between',
   },
 
@@ -179,12 +202,16 @@ const styles = StyleSheet.create({
     marginTop: 1,
     padding: s(18),
     flexDirection: 'column',
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
+    borderBottomLeftRadius: s(22),
+    borderBottomRightRadius: s(22),
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
   },
 
   addressName: {
     color: brandColors.textDark,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: fs(14),
   },
@@ -196,7 +223,7 @@ const styles = StyleSheet.create({
 
   itemSeparator: {
     height: s(8),
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
 
   mt6: {
@@ -211,7 +238,7 @@ const styles = StyleSheet.create({
 
   addressText: {
     color: brandColors.muted,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: fs(14),
   },
@@ -221,13 +248,13 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: fs(12),
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   listHeader: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
     marginBottom: s(2),
     padding: s(18),
   },
@@ -244,7 +271,7 @@ const styles = StyleSheet.create({
     fontSize: fs(14),
   },
 
-  dialogDeleteContainer: { backgroundColor: brandColors.surface, padding: s(16), borderRadius: s(20) },
+  dialogDeleteContainer: { backgroundColor: liquidGlass.backgroundStrong, padding: s(16), borderRadius: s(24), borderWidth: 1, borderColor: liquidGlass.border, ...liquidGlass.shadow },
   messageDeleteProduct: {
     textAlign: 'center',
     fontSize: fs(14),

@@ -110,13 +110,14 @@ export const requestGetProductsHotDeal = (distributorId, page, size, loadMore) =
   },
 })
 
-export const requestGetProductPriceSock = (distributorId, size, page, loadMore) => ({
+export const requestGetProductPriceSock = (distributorId, size, page, loadMore, scope = 'list') => ({
   type: NEOMED.GET_PRODUCT_PRICE_SOCK_REQUEST,
   payload: {
     distributorId,
     size,
     page,
     loadMore,
+    scope,
   },
 })
 

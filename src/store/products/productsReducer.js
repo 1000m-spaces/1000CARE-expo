@@ -14,6 +14,7 @@ const initialState = {
   listProductsOfTrademark: [],
   listProductsHotDeal: [],
   listProductPriceSock: [],
+  listProductPriceSockHome: [],
   listProductsBestSeller: [],
   listProductsProposeByDistributor: {},
   listProductsByDistributor: {},
@@ -233,17 +234,33 @@ export default (state = initialState, { type, payload }) => {
       if (payload.loadMore) {
         listProductPriceSock = [...state.listProductPriceSock, ...listProductPriceSock]
       }
+      const currentPriceSockHome = state.listProductPriceSockHome?.length > 0
+        ? state.listProductPriceSockHome
+        : state.listProductPriceSock
+      const nextPriceSockHome = listProductPriceSock.length > 0 ? listProductPriceSock : currentPriceSockHome
+      if (payload.scope === 'home') {
+        return {
+          ...state,
+          status: Status.SUCCESS,
+          listProductPriceSock,
+          listProductPriceSockHome: nextPriceSockHome,
+        }
+      }
       return {
         ...state,
         status: Status.SUCCESS,
         listProductPriceSock,
+        listProductPriceSockHome: nextPriceSockHome,
       }
     case NEOMED.GET_PRODUCT_PRICE_SOCK_FAILURE:
       return {
         ...state,
         status: Status.ERROR,
         errorMsg: payload.errorMsg,
-        listProductPriceSock: [],
+        listProductPriceSock: payload?.scope === 'home' ? state.listProductPriceSock : [],
+        listProductPriceSockHome: state.listProductPriceSockHome?.length > 0
+          ? state.listProductPriceSockHome
+          : state.listProductPriceSock,
       }
     case NEOMED.GET_PROPOSE_PRODUCT_SUCCESS:
       let { listProductsProposeByDistributor } = state

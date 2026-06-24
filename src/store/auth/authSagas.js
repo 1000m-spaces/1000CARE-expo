@@ -185,6 +185,9 @@ function* refreshTokenFunc({ payload }) {
     })
   } catch (error) {
     console.log(error)
+    APINeoMed.updateToken('')
+    APINeoMed.Authentication.setToken('')
+    yield asyncStorage.clearAuthSession()
     yield put({
       type: NEOMED.REFRESH_TOKEN_FAILURE,
       payload: { errorMsg: error },

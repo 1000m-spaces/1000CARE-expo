@@ -51,6 +51,6 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     textAlignVertical: 'center',
     textAlign: 'center',
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 })

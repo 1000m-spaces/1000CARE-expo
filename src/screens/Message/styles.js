@@ -27,17 +27,17 @@ const styles = StyleSheet.create({
         height: "100%"
     },
     label : {
-        fontWeight: 'bold',
+        fontWeight: '600',
         fontSize: 15,
         color : 'gray'
     },
     touchableAdmin: {
-        fontWeight: "bold",
+        fontWeight: "600",
         borderTopLeftRadius: 4,
         borderBottomLeftRadius: 4
     },
-    txtTouchableAdmin: { color: "#949799", fontWeight: "bold" },
-    txtTouchableUser: { fontWeight: "400", color: "#949799" },
+    txtTouchableAdmin: { color: "#949799", fontWeight: "600" },
+    txtTouchableUser: { fontWeight: "normal", color: "#949799" },
     img_space: {
         height: 30,
         resizeMode: "contain",

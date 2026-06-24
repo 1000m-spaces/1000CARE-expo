@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#8C8C8C',
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   wrapMaximum: {
     display: 'flex',
@@ -46,13 +46,13 @@ const styles = StyleSheet.create({
   labelMaximum: {
     color: '#8C8C8C',
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   priceMaximum: {
     marginLeft: 2,
     color: '#595959',
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 })
 

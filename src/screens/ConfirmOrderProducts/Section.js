@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   titleSection: {
     fontSize: 14,
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: 'Roboto',
     color: '#595959',
   },
   bodySection: {

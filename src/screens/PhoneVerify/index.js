@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import Header from '~/common/Header/index'
 import { back } from '~/assets/constants'
 import strings from '~/i18n'
-import { Button, TextInput } from '~/common/index'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './styles'
 import ErrorView from '~/common/ErrorView/index'
-import Colors from '~/common/Colors/Colors'
 import { signUp, resetSignUp, resetConfirmSignUp } from '~/store/actions'
 import { getSignUpStatus, getConfirmSignUpStatus, getSignUpError } from '~/store/selector'
 import Status from '~/common/Status/Status'
 import { NAVIGATION_CONFIRM } from '~/navigation/routes'
+import AppBackground from '~/design-system/AppBackground'
+import PremiumInput from '~/design-system/PremiumInput'
+import PremiumButton from '~/design-system/PremiumButton'
 
 const PhoneVerify = ({ navigation, route }) => {
   const dispatch = useDispatch()
@@ -46,43 +47,30 @@ const PhoneVerify = ({ navigation, route }) => {
   }, [confirmSignupStatus])
 
   return (
-
-    <SafeAreaView
-      style={styles.container}
-    >
-
-      <View style={styles.container}>
+    <AppBackground>
+      <View style={styles.screen}>
         <Header
           title={title ? title : strings.phoneVerify.title}
           leftAction={() => navigation.pop()}
           iconLeft={back}
         />
         <View style={styles.containerConfirm}>
-          <Text style={styles.message}>{message ? message : strings.phoneVerify.message}</Text>
-          <View
-            style={styles.phoneContainer}
-          >
-            <View
-              style={[styles.formItem]}
-            >
-              <TextInput
-                inputContainerStyle={styles.inputContainerStyle}
-                labelStyle={styles.labelStyle}
-                keyboardType='numeric'
-                placeholderTextColor={Colors.textColor3}
-                placeholder={strings.phoneVerify.placeHolderNumberPhone}
-                value={phone}
-                onChangeText={text => setPhone(text)}
-              />
-            </View>
+          <View style={styles.card}>
+            <Text style={styles.title}>{title ? title : strings.phoneVerify.title}</Text>
+            <Text style={styles.message}>{message ? message : strings.phoneVerify.message}</Text>
+            <PremiumInput
+              label="Số điện thoại"
+              keyboardType="numeric"
+              placeholder={strings.phoneVerify.placeHolderNumberPhone}
+              value={phone}
+              onChangeText={text => setPhone(text)}
+            />
+            <PremiumButton
+              text={strings.phoneVerify.confirm}
+              style={styles.confirmButton}
+              onPress={signup}
+            />
           </View>
-          <Button
-            text={strings.phoneVerify.confirm}
-            styleButton={{ borderRadius: 35 }}
-            styleText={{ fontWeight: '100' }}
-            styleView={styles.buttonConfirm}
-            onPressEvent={signup}
-          />
         </View>
         <ErrorView
           error={signUpError}
@@ -93,9 +81,7 @@ const PhoneVerify = ({ navigation, route }) => {
           }}
         />
       </View>
-
-    </SafeAreaView>
-
+    </AppBackground>
   )
 }
 export default PhoneVerify

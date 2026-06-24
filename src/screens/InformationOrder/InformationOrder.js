@@ -23,8 +23,8 @@ const InformationOrder = props => {
         return(
             <View style={{flexDirection:'row',padding:10,justifyContent:'space-between',backgroundColor:'white'}}>
                 <Text numberOfLines={1} style={{width:dimension.common.WINDOW_WIDTH*0.35,fontSize:12}}>{item.name}</Text>
-                <Text style={{fontWeight:'bold'}}>{item.money1}<Text style={{fontWeight:"normal",fontSize:12}}> đ x9</Text></Text>
-                <Text style={{fontWeight:'bold'}}>{item.money2}</Text>
+                <Text style={{fontWeight:'600'}}>{item.money1}<Text style={{fontWeight:"normal",fontSize:12}}> đ x9</Text></Text>
+                <Text style={{fontWeight:'600'}}>{item.money2}</Text>
             </View>
         );
     });
@@ -42,7 +42,7 @@ const InformationOrder = props => {
         <View style={{flex:1,backgroundColor:'#EAEBF0'}}>
             <TitleBar title={'Thông tin đơn hàng'} isShowBtn={true} />
             <View style={{backgroundColor:'white',padding:10, marginBottom:15}}>
-                <Text style={{fontSize:16,fontWeight:'bold'}}>Danh sách sản phẩm</Text>
+                <Text style={{fontSize:16,fontWeight:'600'}}>Danh sách sản phẩm</Text>
             </View>
             <View style={{height:dimension.common.WINDOW_HEIGHT*0.26}}>
                 <ScrollView>

@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '~/common';
 import { s, fs } from '../utils/responsive';
 import { brandColors, brandGradients, brandShadow } from './tokens';
+import { Fonts } from '~/assets/config';
 
 const { width } = Dimensions.get('window');
 
@@ -65,15 +66,17 @@ const styles = StyleSheet.create({
   },
   title: {
     color: brandColors.surface,
+    fontFamily: Fonts.bold,
     fontSize: fs(22),
-    fontWeight: '800',
+    fontWeight: 'normal',
     lineHeight: s(28),
   },
   subtitle: {
     color: 'rgba(255, 255, 255, 0.88)',
+    fontFamily: Fonts.base,
     fontSize: fs(14),
     marginTop: s(6),
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   actionButton: {
     backgroundColor: brandColors.surface,
@@ -84,8 +87,9 @@ const styles = StyleSheet.create({
   },
   actionText: {
     color: brandColors.tealPrimary,
+    fontFamily: Fonts.bold,
     fontSize: fs(13),
-    fontWeight: '700',
+    fontWeight: 'normal',
   },
   cardImage: {
     position: 'absolute',

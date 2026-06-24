@@ -22,7 +22,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   all: {
     color: Colors.systemColor2,
@@ -30,7 +30,7 @@ export default StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: 12,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   allContainer: {
     position: 'absolute',

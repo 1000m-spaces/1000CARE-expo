@@ -209,6 +209,7 @@ function* getProductsByTrademarkId({ payload }) {
       payload: {
         listProducts: data.products,
         loadMore: payload.loadMore,
+        scope: payload.scope,
       },
     })
   } catch (error) {
@@ -288,7 +289,7 @@ function* getProductPriceSock({ payload }) {
   } catch (error) {
     yield put({
       type: NEOMED.GET_PRODUCT_PRICE_SOCK_FAILURE,
-      payload: { errorMsg: error },
+      payload: { errorMsg: error, scope: payload.scope },
     })
   }
 }

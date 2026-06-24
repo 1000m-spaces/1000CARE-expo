@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#DFDFDF',
     textAlign: 'right',
-    fontWeight: 'bold',
+    fontWeight: '600',
     minWidth: 100,
     paddingBottom: 0,
   },

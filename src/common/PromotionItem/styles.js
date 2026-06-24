@@ -32,7 +32,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: '700',
+    fontWeight: '600',
     marginLeft: 12,
   },
   promotion: {
@@ -42,7 +42,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
     marginLeft: 12,
   },
   promotionContainer: {
@@ -64,7 +64,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
     marginLeft: 12,
   },
   promotionNote: {
@@ -75,7 +75,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 12,
     lineHeight: 18,
-    fontWeight: '400',
+    fontWeight: 'normal',
     fontStyle: 'italic',
     marginLeft: 12,
   },
@@ -100,7 +100,7 @@ export default StyleSheet.create({
     fontSize: 12,
     lineHeight: 20,
     width: DIMENS.common.WINDOW_WIDTH - 50 - 80 - 55,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   productQuantity:{
     color: Colors.textColor3,
@@ -109,7 +109,7 @@ export default StyleSheet.create({
     lineHeight: 20,
     marginTop: 2,
     width: 176,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   productInfo: {
     marginLeft: 6,

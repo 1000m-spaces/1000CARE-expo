@@ -32,7 +32,9 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>13</string>
+    <string>15</string>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
     <key>LSMinimumSystemVersion</key>
     <string>12.0</string>
     <key>LSRequiresIPhoneOS</key>
@@ -44,8 +46,26 @@
       <key>NSAllowsLocalNetworking</key>
       <true/>
     </dict>
+    <key>NSCameraUsageDescription</key>
+    <string>1000CARE cần truy cập camera để chụp ảnh trực tiếp làm ảnh đại diện hoặc gửi đính kèm.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your microphone</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>1000CARE cần quyền lưu ảnh vào thư viện để bạn có thể lưu các tài liệu hoặc hình ảnh từ ứng dụng.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>1000CARE cần truy cập thư viện ảnh của bạn để chọn ảnh đại diện và gửi hình ảnh đính kèm.</string>
     <key>RCTNewArchEnabled</key>
     <true/>
+    <key>UIAppFonts</key>
+    <array>
+      <string>Quicksand-Bold.ttf</string>
+      <string>Quicksand-Light.ttf</string>
+      <string>Quicksand-Medium.ttf</string>
+      <string>Quicksand-Regular.ttf</string>
+      <string>Quicksand-SemiBold.ttf</string>
+      <string>Roboto.ttf</string>
+      <string>XanhDisplay2.0-Regular.ttf</string>
+    </array>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>
@@ -71,14 +91,6 @@
     <key>UIUserInterfaceStyle</key>
     <string>Light</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
-    <false/>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>1000CARE cần truy cập thư viện ảnh của bạn để chọn ảnh đại diện và gửi hình ảnh đính kèm.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>1000CARE cần truy cập camera để chụp ảnh trực tiếp làm ảnh đại diện hoặc gửi đính kèm.</string>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>1000CARE cần quyền lưu ảnh vào thư viện để bạn có thể lưu các tài liệu hoặc hình ảnh từ ứng dụng.</string>
-    <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
   </dict>
 </plist>

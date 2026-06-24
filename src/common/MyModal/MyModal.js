@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: minWidthDevice ? 15 : 18,
     marginLeft: minWidthDevice ? 25 : 15,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   diamond_bg: {
     width: 80,
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     resizeMode: 'stretch',
   },
-  diamond_label: {color: Colors.diamond_label, fontWeight: 'bold'},
-  diamond: {color: Colors.white, fontWeight: 'bold'},
+  diamond_label: {color: Colors.diamond_label, fontWeight: '600'},
+  diamond: {color: Colors.white, fontWeight: '600'},
   btn_close: {position: 'absolute', right: 18, top: -15, zIndex: 100},
   img_close: {width: 40, height: 40, resizeMode: 'contain'},
 });

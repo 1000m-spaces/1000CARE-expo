@@ -107,7 +107,7 @@ const StepThree = ({ amountLoan, setAmountLoan, loanProposalsDetail, setAccepted
           label={''}
           value={'Số tiền gốc hàng tháng = 30% x Dư nợ thực tế'}
           styleValue={{
-            fontWeight: '700',
+            fontWeight: '600',
             color: Colors.textColor1,
           }}
         />

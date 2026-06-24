@@ -2,19 +2,23 @@ import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
 import Colors from '~/common/Colors/Colors'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 export default StyleSheet.create({
   productContainer: {
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.background,
     flexDirection: 'row',
     marginHorizontal: s(16),
-    marginBottom: s(10),
+    marginBottom: s(12),
     padding: s(12),
     borderRadius: s(22),
     borderWidth: 1,
-    borderColor: brandColors.borderSoft,
-    ...brandShadow.soft,
+    borderColor: liquidGlass.border,
+    shadowColor: liquidGlass.shadow.color,
+    shadowOpacity: 0.055,
+    shadowRadius: s(22),
+    shadowOffset: { width: 0, height: s(10) },
+    elevation: 4,
   },
   logo: {
     width: s(88),
@@ -26,7 +30,7 @@ export default StyleSheet.create({
     width: s(96),
     height: s(104),
     borderRadius: s(18),
-    backgroundColor: brandColors.background,
+    backgroundColor: 'rgba(238,251,252,0.72)',
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: s(8),
@@ -38,7 +42,9 @@ export default StyleSheet.create({
     width: s(30),
     height: s(30),
     borderRadius: s(15),
-    backgroundColor: brandColors.background,
+    backgroundColor: liquidGlass.backgroundStrong,
+    borderWidth: 1,
+    borderColor: liquidGlass.borderTint,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -67,13 +73,13 @@ export default StyleSheet.create({
   price: {
     color: brandColors.goldAccent,
     fontSize: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
   },
   
   salePrice: {
     color: brandColors.goldAccent,
     fontSize: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
   },
   discount: {
     color: brandColors.danger,
@@ -114,8 +120,8 @@ export default StyleSheet.create({
   },
   productName:{
     color: brandColors.textDark,
-    fontSize: fs(14),
-    fontWeight: '800',
+    fontSize: fs(13),
+    fontWeight: '600',
     lineHeight: fs(19),
   },
   inputContainerStyle: {
@@ -153,10 +159,10 @@ export default StyleSheet.create({
   },
   priceLabel: {
     flexDirection: 'row',
-    fontSize: fs(12),
-    fontWeight: '500',
+    fontSize: fs(11),
+    fontWeight: 'normal',
     marginRight: s(6),
-    fontFamily: Fonts.meidum,
+    fontFamily: Fonts.medium,
     color: brandColors.muted,
   },
   promotionLabel: {

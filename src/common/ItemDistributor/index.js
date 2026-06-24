@@ -4,8 +4,11 @@ import { Image } from '~/common/index'
 import { logoNeoMed } from '~/assets/constants'
 import { DIMENS } from '~/constants/index'
 import { s, fs } from '~/utils/responsive'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import LiquidGlassView from '~/design-system/LiquidGlassView'
+import { Fonts } from '~/assets/config'
 
-const ItemDistributor = ({ data, onItemPress, selected }) => {
+const ItemDistributor = ({ data, onItemPress, selected, itemWidth }) => {
   let imageSource = { uri: data.logo || data.images }
   if (!imageSource.uri) {
     imageSource = logoNeoMed
@@ -22,7 +25,10 @@ const ItemDistributor = ({ data, onItemPress, selected }) => {
       }}
       activeOpacity={0.8}
     >
-      <View style={[styles.container, selected && styles.containerSelected, isPending && styles.containerPending]}>
+      <LiquidGlassView
+        intensity="regular"
+        style={[styles.container, itemWidth && { width: itemWidth, minHeight: itemWidth * 0.92, marginHorizontal: 0 }, selected && styles.containerSelected, isPending && styles.containerPending]}
+      >
         {isPending && (
           <View style={styles.overlay}>
             <Text style={styles.pending}>{'Sắp ra mắt'}</Text>
@@ -39,7 +45,7 @@ const ItemDistributor = ({ data, onItemPress, selected }) => {
           {data.nick_name ? data.nick_name : data.name}
         </Text>
         {selected && <View style={styles.activeIndicator} />}
-      </View>
+      </LiquidGlassView>
     </TouchableOpacity>
   )
 }
@@ -50,30 +56,22 @@ const styles = StyleSheet.create({
   container: {
     width: ItemWidth,
     minHeight: ItemWidth * 0.9,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255,255,255,0.42)',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: s(16),
+    borderRadius: s(24),
     marginHorizontal: s(5),
     marginBottom: s(8),
     paddingVertical: s(12),
     paddingHorizontal: s(6),
-    borderWidth: 1.5,
-    borderColor: '#EDF2F7',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.78)',
+    ...liquidGlass.shadow,
     overflow: 'hidden',
   },
   containerSelected: {
-    borderColor: '#0B7B8A',
-    backgroundColor: '#F0FAFA',
-    shadowColor: '#0B7B8A',
-    shadowOpacity: 0.12,
-    shadowRadius: 10,
-    elevation: 4,
+    borderColor: 'rgba(11,123,138,0.28)',
+    backgroundColor: 'rgba(224,244,246,0.62)',
   },
   containerPending: {
     opacity: 0.7,
@@ -81,28 +79,29 @@ const styles = StyleSheet.create({
   imageWrapper: {
     width: s(52),
     height: s(52),
-    borderRadius: s(12),
-    backgroundColor: '#F7FAFC',
+    borderRadius: s(18),
+    backgroundColor: 'rgba(255,255,255,0.38)',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: s(8),
   },
   image: {
-    width: s(40),
-    height: s(40),
+    width: s(48),
+    height: s(48),
     resizeMode: 'contain',
   },
   label: {
+    fontFamily: Fonts.bold,
     fontSize: fs(11),
-    color: '#4A5568',
-    fontWeight: '600',
+    color: brandColors.textDark,
+    fontWeight: 'normal',
     textAlign: 'center',
     lineHeight: s(16),
     marginHorizontal: s(2),
   },
   labelSelected: {
-    color: '#0B7B8A',
-    fontWeight: '700',
+    color: brandColors.tealPrimary,
+    fontWeight: 'normal',
   },
   activeIndicator: {
     position: 'absolute',
@@ -110,9 +109,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: s(3),
-    backgroundColor: '#0B7B8A',
-    borderBottomLeftRadius: s(16),
-    borderBottomRightRadius: s(16),
+    backgroundColor: brandColors.tealPrimary,
+    borderBottomLeftRadius: s(24),
+    borderBottomRightRadius: s(24),
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -124,7 +123,8 @@ const styles = StyleSheet.create({
   },
   pending: {
     color: '#FFFFFF',
-    fontWeight: '700',
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
     fontSize: fs(10),
     textAlign: 'center',
     paddingHorizontal: s(4),

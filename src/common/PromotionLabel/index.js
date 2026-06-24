@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   value: {
     color: '#FFFFFF',
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '600',
     position: 'absolute',
   },
 })

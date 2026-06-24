@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   name: {
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: '#595959',
   },
   fullName: {

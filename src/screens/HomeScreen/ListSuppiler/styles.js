@@ -1,29 +1,33 @@
 import { StyleSheet } from 'react-native'
 import Colors from '~/common/Colors/Colors'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { s } from '~/utils/responsive'
 
 export default StyleSheet.create({
   categories: {
-    height: 75,
-    backgroundColor: 'white',
+    minHeight: s(72),
+    backgroundColor: liquidGlass.backgroundTint,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingLeft: 18,
+    paddingLeft: s(18),
+    borderBottomWidth: 1,
+    borderBottomColor: liquidGlass.border,
   },
   listSupplierColumn: {
     zIndex: 10,
-    width: 100,
+    width: s(100),
     flexGrow: 0,
-    backgroundColor: 'rgba(0, 149, 217, 0.08)',
+    backgroundColor: 'rgba(231, 250, 252, 0.72)',
     marginRight: 1,
   },
   listSupplier: {
     flexGrow: 0,
-    backgroundColor: Colors.white,
-    marginTop: 6,
-    marginBottom: 6,
+    backgroundColor: 'transparent',
+    marginTop: s(6),
+    marginBottom: s(6),
   },
   itemSeparator: {
     height: 1,
-    backgroundColor: Colors.gray,
+    backgroundColor: brandColors.borderSoft || Colors.gray,
   },
 })

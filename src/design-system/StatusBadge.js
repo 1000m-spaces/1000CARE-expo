@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { s, fs } from '~/utils/responsive';
 import { brandColors } from './tokens';
+import { Fonts } from '~/assets/config';
 
 const variants = {
   success: {
@@ -48,8 +49,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
+    fontFamily: Fonts.bold,
     fontSize: fs(10),
-    fontWeight: '800',
+    fontWeight: 'normal',
     textTransform: 'uppercase',
   },
 });

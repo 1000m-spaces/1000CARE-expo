@@ -5,6 +5,8 @@ import Colors from '~/common/Colors/Colors'
 import { Image } from '~/common/index'
 import dimens from '~/constants/dimens'
 import { DIMENS } from '~/constants/index'
+import { brandColors, brandShadow } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 const HotDealItem = ({ data, onClick }) => {
   const isPending = data.distributor?.status === 2
@@ -31,7 +33,7 @@ const HotDealItem = ({ data, onClick }) => {
       <Image
         style={styles.image}
         source={{ uri: data.images }}
-        resizeMode={'stretch'}
+        resizeMode={'cover'}
         heightImage={Number(1.5 * DIMENS.common.WINDOW_WIDTH * 2 / 3).toFixed(0)}
         widthImage={Number(1.5 * DIMENS.common.WINDOW_WIDTH).toFixed(0)}
       />
@@ -55,42 +57,41 @@ const HotDealItem = ({ data, onClick }) => {
 
 const styles = StyleSheet.create({
   wrap: {
-    width: dimens.common.WINDOW_WIDTH - 10,
-    height: (dimens.common.WINDOW_WIDTH - 10) * 0.5,
-    backgroundColor: 'white',
-    marginTop: 12,
+    width: dimens.common.WINDOW_WIDTH - s(32),
+    height: (dimens.common.WINDOW_WIDTH - s(32)) * 0.5,
+    backgroundColor: brandColors.surface,
+    marginTop: s(12),
+    borderRadius: s(18),
+    overflow: 'hidden',
     position: 'relative',
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    ...brandShadow.soft,
   },
   image: {
     width: '100%',
     height: '100%',
   },
   button: {
-    width: 150,
-    height: 36,
-    backgroundColor: '#0B7B8A',
-
-    borderRadius: 18,
-
-    shadowColor: '#10FAFB',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 2,
+    minWidth: s(132),
+    height: s(38),
+    backgroundColor: brandColors.tealPrimary,
+    borderRadius: s(19),
 
     position: 'absolute',
     zIndex: 9,
-    right: 18,
-    bottom: 18,
+    right: s(14),
+    bottom: s(14),
 
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   textButton: {
-    fontSize: 14,
-    lineHeight: 16,
-    color: '#FFF',
+    fontSize: fs(13),
+    lineHeight: fs(16),
+    color: brandColors.surface,
+    fontWeight: '600',
   },
   overlay: {
     width: '100%',

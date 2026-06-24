@@ -1,8 +1,6 @@
 import { StyleSheet } from 'react-native'
-import { Fonts } from '~/assets/config'
-import Colors from '~/common/Colors/Colors'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 export default StyleSheet.create({
   hero: {
@@ -10,59 +8,71 @@ export default StyleSheet.create({
     marginTop: s(12),
     borderRadius: s(26),
     padding: s(18),
-    backgroundColor: brandColors.tealPrimary,
-    ...brandShadow.teal,
+    backgroundColor: liquidGlass.backgroundTint,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
   },
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.5,
-    color: 'rgba(255,255,255,0.7)',
+    color: brandColors.tealPrimary,
   },
   heroTitle: {
     marginTop: s(6),
     fontSize: fs(24),
     lineHeight: fs(30),
-    fontWeight: '900',
-    color: brandColors.surface,
+    fontWeight: '600',
+    color: brandColors.textDark,
   },
   heroSubtitle: {
     marginTop: s(8),
     fontSize: fs(12),
     lineHeight: fs(18),
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.72)',
+    color: brandColors.muted,
   },
   tabHeaderContainer: {
     flexDirection: 'row',
-    justifyContent:'space-around',
+    justifyContent:'space-between',
     marginTop: s(10),
     marginHorizontal: s(16),
-    borderRadius: s(18),
-    backgroundColor: brandColors.tealLight,
+    borderRadius: s(22),
+    backgroundColor: liquidGlass.background,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    ...liquidGlass.shadow,
     padding: s(4),
+    columnGap: s(8),
   },
   tabHeader: {
-    justifyContent:'center',
     flex:1,
+    minWidth: 0,
+    minHeight: s(42),
+    borderRadius: s(18),
     alignItems: 'center',
-    height: s(48),
-    backgroundColor: 'transparent',
-    borderRadius: s(14),
+    justifyContent: 'center',
+    paddingHorizontal: s(8),
   },
-  selected: {
-    backgroundColor: brandColors.surface,
-    ...brandShadow.soft,
+  tabHeaderSelected: {
+    backgroundColor: brandColors.tealPrimary,
+    ...liquidGlass.shadow,
   },
-  textSelected: {
-    fontFamily: Fonts.medium,
-    color: brandColors.tealPrimary,
-    fontSize: fs(14),
-    fontWeight: '800',
+  tabHeaderText: {
+    color: brandColors.muted,
+    fontSize: fs(12),
+    lineHeight: fs(18),
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  tabHeaderTextSelected: {
+    color: brandColors.surface,
+    fontWeight: '600',
   },
   voucherContainer: {
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
     marginTop: s(10),
   },
 })

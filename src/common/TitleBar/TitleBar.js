@@ -73,13 +73,13 @@ const styles = StyleSheet.create({
     // marginBottom: "0%",
     color: Colors.title,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   title2:{
     marginTop: 7,
     color: Colors.title,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 })
 

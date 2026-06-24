@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
 import Colors from '~/common/Colors/Colors'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 const styles = StyleSheet.create({
   container: {
@@ -22,44 +22,54 @@ const styles = StyleSheet.create({
     marginTop: s(14),
     borderRadius: s(28),
     padding: s(20),
-    backgroundColor: brandColors.tealDark,
-    ...brandShadow.teal,
+    backgroundColor: liquidGlass.backgroundTint,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    shadowColor: liquidGlass.shadow.color,
+    shadowOpacity: liquidGlass.shadow.opacity,
+    shadowRadius: liquidGlass.shadow.radius,
+    shadowOffset: liquidGlass.shadow.offset,
+    elevation: liquidGlass.shadow.elevation,
   },
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.6,
-    color: brandColors.goldAccent,
+    color: brandColors.tealPrimary,
   },
   heroTitle: {
     marginTop: s(6),
     fontSize: fs(26),
     lineHeight: fs(32),
-    fontWeight: '900',
-    color: brandColors.surface,
+    fontWeight: '600',
+    color: brandColors.textDark,
   },
   heroSubtitle: {
     marginTop: s(8),
     fontSize: fs(13),
     lineHeight: fs(20),
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.7)',
+    color: brandColors.muted,
   },
   infoCard: {
     marginHorizontal: s(16),
     marginTop: s(14),
     borderRadius: s(24),
     padding: s(18),
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.backgroundTint,
     borderWidth: 1,
-    borderColor: brandColors.borderSoft,
-    ...brandShadow.soft,
+    borderColor: liquidGlass.border,
+    shadowColor: liquidGlass.shadow.color,
+    shadowOpacity: liquidGlass.shadow.opacity,
+    shadowRadius: liquidGlass.shadow.radius,
+    shadowOffset: liquidGlass.shadow.offset,
+    elevation: liquidGlass.shadow.elevation,
   },
   sectionEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.5,
     color: brandColors.tealPrimary,
   },
@@ -67,7 +77,7 @@ const styles = StyleSheet.create({
     marginTop: s(5),
     fontSize: fs(20),
     lineHeight: fs(26),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.textDark,
   },
   sectionBody: {
@@ -80,7 +90,7 @@ const styles = StyleSheet.create({
     marginBottom: s(7),
     fontSize: fs(12),
     lineHeight: fs(16),
-    fontWeight: '800',
+    fontWeight: '600',
     color: brandColors.textDark,
   },
   fieldInput: {
@@ -88,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: s(16),
     borderWidth: 1,
     borderColor: brandColors.border,
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.backgroundTint,
   },
   fieldInputText: {
     color: brandColors.textDark,
@@ -111,13 +121,13 @@ const styles = StyleSheet.create({
     borderRadius: s(16),
     borderWidth: 1,
     borderColor: brandColors.border,
-    backgroundColor: brandColors.background,
+    backgroundColor: liquidGlass.backgroundTint,
     paddingHorizontal: s(16),
     justifyContent: 'center',
   },
   readonlyText: {
     fontSize: fs(14),
-    fontWeight: '700',
+    fontWeight: '600',
     color: brandColors.textDark,
   },
   selectInput: {
@@ -125,9 +135,16 @@ const styles = StyleSheet.create({
     borderRadius: s(16),
     borderWidth: 1,
     borderColor: brandColors.border,
-    backgroundColor: brandColors.surface,
+    backgroundColor: liquidGlass.backgroundTint,
     justifyContent: 'center',
     paddingHorizontal: s(12),
+  },
+  selectInnerInput: {
+    minHeight: s(50),
+    borderWidth: 0,
+    borderRadius: 0,
+    borderColor: 'transparent',
+    backgroundColor: 'transparent',
   },
   deleteButton: {
     alignSelf: 'center',
@@ -200,7 +217,7 @@ const styles = StyleSheet.create({
   textDelete: {
     color: brandColors.danger,
     fontSize: fs(13),
-    fontWeight: '900',
+    fontWeight: '600',
   },
   mainContainer: { 
     flex:1,
@@ -240,7 +257,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: brandColors.textDark,
     fontSize: fs(14),
-    fontWeight: '700',
+    fontWeight: '600',
   },
   
 })

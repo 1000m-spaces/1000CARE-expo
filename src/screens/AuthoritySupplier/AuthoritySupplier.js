@@ -188,7 +188,7 @@ const AuthoritySupplier = (props) => {
       <View style={styles.hero}>
         <Text style={styles.heroEyebrow}>SUPPLIER AUTHORITY</Text>
         <Text style={styles.heroTitle}>Ủy quyền nhà cung cấp</Text>
-        <Text style={styles.heroSubtitle}>Cho phép nhà cung cấp đã chọn tạo đơn hàng hỗ trợ nhà thuốc của bạn.</Text>
+        <Text style={styles.heroSubtitle}>Cho phép nhà cung cấp đã chọn tạo đơn hàng hỗ trợ cửa hàng của bạn.</Text>
       </View>
       <View style={styles.searchPanel}>
         <InputSearchSupplier isEmpty={searchDistributor.length === 0} />
@@ -217,7 +217,7 @@ const AuthoritySupplier = (props) => {
         />
         <Text numberOfLines={3} style={styles.consentText}>Tôi đồng ý <Text onPress={()=>setModalAuthority(true)} style={styles.consentLink}>uỷ quyền</Text> cho các nhà cung cấp đã chọn.</Text>
       </View>
-      {isLoading && <LoadingView />}
+      {isLoading && <LoadingView variant="list" />}
       <ErrorView
         error={errorAddAuthorized}
         isOpen={errorAddAuthorized === Status.ERROR ? true : false }

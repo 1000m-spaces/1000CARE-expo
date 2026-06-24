@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     height: '100%',
     fontSize: 15,
     color: '#2D3748',
-    fontWeight: '500',
+    fontWeight: 'normal',
     paddingRight: 10,
   },
   clearButton: {

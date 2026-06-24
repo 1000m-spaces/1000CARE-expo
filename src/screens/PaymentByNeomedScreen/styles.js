@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     color: Colors.priceColor,
     lineHeight: 22,
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   titleItem:{
     color: Colors.textColor3,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     color: Colors.priceColor,
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 })
 

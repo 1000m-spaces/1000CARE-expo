@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     color: Colors.textColor2,
     fontFamily: Fonts.medium,
     marginTop: 2, 
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: 14,
     lineHeight: 26,
     marginRight: 30,

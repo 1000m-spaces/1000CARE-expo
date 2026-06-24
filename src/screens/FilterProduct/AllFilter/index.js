@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { SafeAreaView, ScrollView, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { back } from '~/assets/constants'
 import _ from 'lodash'
-import Colors from '~/common/Colors/Colors'
 import Header from '~/common/Header/index'
 import Group from '../Group'
 import InputSearch from './InputSearch'
 import { Button, Text } from '~/common/index'
 import styles from './styles'
+import AppBackground from '~/design-system/AppBackground'
+import { brandColors } from '~/design-system/tokens'
 
 const AllFilter = ({ navigation, route }) => {
   const { clickItem, data, title = 'Nhà cung cấp', subTitle } = route.params
@@ -46,7 +47,7 @@ const AllFilter = ({ navigation, route }) => {
   }, 10)
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
+    <AppBackground>
       <Header
         leftAction={() => navigation.pop()}
         iconLeft={back}
@@ -60,27 +61,21 @@ const AllFilter = ({ navigation, route }) => {
         textSearch={searchQuery}
         placeholder={'Nhập tên ' + title}
       />
-      <View
-        style={{
-          marginHorizontal: 16,
-          marginVertical: 12,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}
-      >
+      <View style={styles.actionBar}>
         <Text
           style={styles.subTitle}
         >{subTitle}</Text>
         <Button
           text={'Áp dụng'}
           styleButton={{ 
-            borderRadius: 50, 
-            paddingVertical: 4,
+            borderRadius: 16,
+            paddingVertical: 8,
+            backgroundColor: brandColors.tealPrimary,
           }}
           styleText={{ 
             fontSize: 14,
-            fontWeight:'700',
+            fontWeight:'600',
+            color: brandColors.surface,
           }}
           styleView={{
             paddingHorizontal: 0,
@@ -94,7 +89,11 @@ const AllFilter = ({ navigation, route }) => {
           }}
         />
       </View>
-      <ScrollView style={{ backgroundColor: Colors.white, marginTop: 6 }}>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <Group
           data={listData || []}
           showAll={true}
@@ -109,7 +108,7 @@ const AllFilter = ({ navigation, route }) => {
           }}
         />
       </ScrollView>
-    </SafeAreaView>
+    </AppBackground>
   )
   
 }

@@ -34,14 +34,14 @@ export default StyleSheet.create({
     color: Colors.priceColor,
     fontSize: 24,
     lineHeight: 26,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
   unit: {
     color: Colors.priceColor,
     fontSize: 12,
     lineHeight: 26,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   max: {
@@ -49,22 +49,22 @@ export default StyleSheet.create({
     fontSize: 12,
     lineHeight: 20,
     fontFamily: Fonts.medium,
-    fontWeight: '400',
+    fontWeight: 'normal',
   },
 
   maxAmount: {
     color: Colors.textColor3,
     fontSize: 12,
     lineHeight: 20,
-    fontFamily: 'medium',
-    fontWeight: '500',
+    fontFamily: Fonts.medium,
+    fontWeight: 'normal',
   },
 
   borrowAmount: {
     color: Colors.textColor3,
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
   titleInformationContainer: {
@@ -93,14 +93,14 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   interestRateValue: {
     color: Colors.textColor1,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   termsContainer: {
@@ -116,7 +116,7 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginBottom: 18,
   },
   
@@ -124,7 +124,7 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
     marginBottom: 12,
   },
 
@@ -141,7 +141,7 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: '700',
+    fontWeight: '600',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -153,7 +153,7 @@ export default StyleSheet.create({
     fontSize: 12,
     lineHeight: 20,
     height: 20,
-    fontWeight: 'bold',
+    fontWeight: '600',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -171,7 +171,7 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 22,
     lineHeight: 22,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
   termItemValue: {
@@ -179,6 +179,6 @@ export default StyleSheet.create({
     color: Colors.textColor2,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 })

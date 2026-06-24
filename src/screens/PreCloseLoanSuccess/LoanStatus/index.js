@@ -47,14 +47,14 @@ const styles = StyleSheet.create({
     color: Colors.priceColor,
     fontSize: 24,
     lineHeight: 26,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
   unit: {
     color: Colors.priceColor,
     fontSize: 12,
     lineHeight: 26,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   bigCircle: {
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   loadTitle: {
     marginTop: 12,
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 })
 

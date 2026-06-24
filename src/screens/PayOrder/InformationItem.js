@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: 'normal',
     color: '#8C8C8C',
   },
   value: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: 'normal',
     color: '#595959',
   },
 })

@@ -1,25 +1,28 @@
 import { StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 export default StyleSheet.create({
   tabBarIndicator: {
-    backgroundColor: Colors.tabBarUnderline,
+    backgroundColor: brandColors.tealPrimary,
+    height: 3,
+    borderRadius: 3,
   },
 
   tabBarContainer: {
-    backgroundColor: Colors.white,
-    color: Colors.white,
+    backgroundColor: liquidGlass.background,
+    color: brandColors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.white,
+    borderBottomColor: liquidGlass.border,
     elevation: 0,
+    shadowOpacity: 0,
   },
 
   tabBarLabelActive: {
-    color: Colors.tabBarUnderline,
+    color: brandColors.tealPrimary,
   },
 
   tabBarLabelInactive: {
-    color: Colors.textColor3,
+    color: brandColors.mutedLight,
   },
 
   tabBarHeaderContainer: {
@@ -42,7 +45,7 @@ export default StyleSheet.create({
   },
 
   badge: {
-    backgroundColor: Colors.red,
+    backgroundColor: brandColors.danger,
     marginLeft: 6,
     paddingHorizontal: 5,
     paddingVertical: 2,

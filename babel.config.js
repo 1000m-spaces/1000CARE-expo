@@ -24,6 +24,7 @@ module.exports = function(api) {
             'react-native-image-picker': './src/utils/image-picker-shim.js',
             'react-native-config': './src/utils/config-shim.js',
             'react-native-simple-toast': './src/utils/toast-shim.js',
+            'react-native-view-overflow': './src/utils/view-overflow-shim.js',
           },
         },
       ],

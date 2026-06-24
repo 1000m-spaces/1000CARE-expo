@@ -13,8 +13,6 @@ import { Text } from '~/common/index'
 import styles from './styles'
 import Status from '~/common/Status/Status'
 import ErrorView from '~/common/ErrorView/index'
-import Colors from '~/common/Colors/Colors'
-import { Fonts } from '~/assets/config'
 import { brandColors } from '~/design-system/tokens'
 
 const Voucher = ({ navigation, route }) => {
@@ -52,22 +50,6 @@ const Voucher = ({ navigation, route }) => {
       dispatch(requestGetListVoucherByCustomer(null, status, currentPage, 10, loadMore))
     } else {
       dispatch(requestGetListVoucherValidByCustomer(distributorId, orderAmount, currentPage, 10, loadMore, payment_method))
-    }
-  }
-
-  const seleted = (s) => {
-    if (s === status) {
-      return styles.selected
-    }
-    return {}
-  }
-
-  const textSeleted = (s) => {
-    if (s === status) {
-      return styles.textSelected
-    }
-    return {
-      fontFamily: Fonts.medium,
     }
   }
 
@@ -147,36 +129,25 @@ const Voucher = ({ navigation, route }) => {
           <View
             style={styles.tabHeaderContainer}
           >
-            <TouchableOpacity
-              style={[styles.tabHeader, seleted('assigned')]}
-              onPress={() => {
-                setStatus('assigned')
-              }}
-            >
-              <Text
-                style={[textSeleted('assigned')]}
-              >Có sẵn</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.tabHeader, seleted('claimed')]}
-              onPress={() => {
-                setStatus('claimed')
-              }}
-            >
-              <Text
-                style={[textSeleted('claimed')]}
-              >Đã sử dụng</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.tabHeader, seleted('disabled')]}
-              onPress={() => {
-                setStatus('disabled')
-              }}
-            >
-              <Text
-                style={[textSeleted('disabled')]}
-              >Hết hạn</Text>
-            </TouchableOpacity>
+            {[
+              { key: 'assigned', label: 'Có sẵn' },
+              { key: 'claimed', label: 'Đã sử dụng' },
+              { key: 'disabled', label: 'Hết hạn' },
+            ].map(item => {
+              const selected = item.key === status
+              return (
+                <TouchableOpacity
+                  key={item.key}
+                  activeOpacity={0.82}
+                  onPress={() => setStatus(item.key)}
+                  style={[styles.tabHeader, selected && styles.tabHeaderSelected]}
+                >
+                  <Text style={[styles.tabHeaderText, selected && styles.tabHeaderTextSelected]}>
+                    {item.label}
+                  </Text>
+                </TouchableOpacity>
+              )
+            })}
           </View>
         )
       }

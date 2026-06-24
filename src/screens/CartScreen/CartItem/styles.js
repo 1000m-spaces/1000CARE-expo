@@ -1,31 +1,33 @@
 import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
 import Colors from '~/common/Colors/Colors'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 const styles = StyleSheet.create({
   mainContainer: { 
     flex:1,
     display: 'flex',
     justifyContent:'space-between',
-    backgroundColor: Colors.backgroundColor,
-    marginBottom: 9,
+    backgroundColor: 'transparent',
+    marginBottom: s(12),
   },
   
   titleContainer: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: 6,
-    paddingHorizontal: 18,
-    paddingTop: 18,
-    backgroundColor: Colors.white,
+    marginTop: s(6),
+    paddingHorizontal: s(18),
+    paddingTop: s(18),
+    backgroundColor: liquidGlass.background,
     justifyContent: 'space-between',
   },
   title: {
-    color: Colors.textColor2,
+    color: brandColors.textDark,
     fontFamily: Fonts.bold,
-    fontWeight: '700',
+    fontWeight: '600',
     lineHeight: 22,
-    fontSize: 14,
+    fontSize: fs(14),
   },
 
   amountItemContainer: {
@@ -33,9 +35,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 18,
-    paddingVertical: 9,
-    backgroundColor: Colors.white,
+    paddingHorizontal: s(18),
+    paddingVertical: s(9),
+    backgroundColor: liquidGlass.background,
   },
 
   label: {
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     color: Colors.systemColor2,
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
   priceContainer: {
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
 
   listProductContainer: {
     flex: 2,
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: 'transparent',
     marginTop: 6,
   },
 
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: 'transparent',
     marginTop: 6,
     paddingBottom: 6,
   },
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: 18,
-    backgroundColor: Colors.white,
+    backgroundColor: liquidGlass.background,
     justifyContent: 'space-between',
   },
 
@@ -111,12 +113,12 @@ const styles = StyleSheet.create({
     marginTop: 1,
     padding: 18,
     flexDirection: 'column',
-    backgroundColor: Colors.white,
+    backgroundColor: liquidGlass.background,
   },
 
   addressName: {
     color: Colors.textColor1,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: 14,
   },
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
 
   itemSeparator: {
     height: 6,
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: 'transparent',
   },
 
   mt6: {
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
 
   addressText: {
     color: Colors.textColor2,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: 14,
   },
@@ -153,30 +155,43 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: 12,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   listHeader: {
     display: 'flex',
-    // flexDirection: 'row',
-    backgroundColor: Colors.white,
-    marginBottom: 2, 
-    padding: 18,
-    paddingHorizontal: 28,
+    backgroundColor: liquidGlass.backgroundTint,
+    borderWidth: 1,
+    borderColor: liquidGlass.border,
+    borderRadius: s(22),
+    marginHorizontal: s(16),
+    marginBottom: s(10),
+    padding: s(14),
+    paddingHorizontal: s(16),
+    shadowColor: liquidGlass.shadow.color,
+    shadowOpacity: 0.04,
+    shadowRadius: s(18),
+    shadowOffset: { width: 0, height: s(8) },
+    elevation: 3,
   },
   textOrderLimit: {
-    color:'red',
+    marginTop: s(8),
+    color: brandColors.danger,
+    fontSize: fs(12),
+    fontWeight: '600',
   },
   textListHeader: {
-    marginLeft: 6,
-    color: Colors.textColor2,
-    fontSize: 14,
+    flex: 1,
+    marginLeft: s(6),
+    color: brandColors.muted,
+    fontSize: fs(13),
+    fontWeight: '600',
   },
 
   textInfoListHeader: {
     fontFamily: Fonts.bold,
-    color: Colors.textColor3,
-    fontSize: 14,
+    color: brandColors.textDark,
+    fontSize: fs(13),
   },
 })
 

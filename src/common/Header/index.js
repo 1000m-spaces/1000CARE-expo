@@ -4,13 +4,14 @@ import { TouchableOpacity } from 'react-native'
 import { View, Text } from 'react-native'
 import { close } from '~/assets/constants'
 import CartHeaderButton from '../CartHeaderButton/CartHeaderButton'
+import LiquidGlassView from '~/design-system/LiquidGlassView'
 
 import styles from './styles'
 import Colors from '../Colors/Colors'
 
 const Header = ({ showLeft = true, showRight = false, leftAction, iconLeft = close, iconRight = 'checkmark-done-sharp', rightAction, title, navigation, cart = false, headerContainerStyles = {}, titleStyles = {}, customTitle = null }) => {
   return (
-    <View style={[styles.headerContainer, headerContainerStyles]}>
+    <LiquidGlassView intensity="regular" style={[styles.headerContainer, headerContainerStyles]}>
       {
         showLeft && leftAction && (
           <TouchableOpacity
@@ -60,11 +61,11 @@ const Header = ({ showLeft = true, showRight = false, leftAction, iconLeft = clo
               color={Colors.systemColor2}
               size={26}
             /> */}
-            <Text style={{ color:'white' }}>Lưu</Text>
+            <Text style={styles.buttonReadAllNotiText}>Lưu</Text>
           </TouchableOpacity>
         ) : null
       }
-    </View>
+    </LiquidGlassView>
   )
 }
 

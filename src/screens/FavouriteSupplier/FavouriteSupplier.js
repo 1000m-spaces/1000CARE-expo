@@ -99,7 +99,7 @@ const FavouriteSupplier = (props) => {
           )
         }}
       />
-      {isLoading && <LoadingView />}
+      {isLoading && <LoadingView variant="list" />}
       <ErrorView
         error={errorAddFavourite}
         isOpen={errorAddFavourite ? true : false}

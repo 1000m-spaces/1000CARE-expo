@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FEFFFE"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.m1000.healthcare",
-      "buildNumber": "13",
+      "buildNumber": "15",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "1000CARE cần truy cập thư viện ảnh của bạn để chọn ảnh đại diện và gửi hình ảnh đính kèm.",
         "NSCameraUsageDescription": "1000CARE cần truy cập camera để chụp ảnh trực tiếp làm ảnh đại diện hoặc gửi đính kèm.",
@@ -29,7 +29,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FEFFFE"
       },
       "package": "com.m1000.healthcare",
       "runtimeVersion": "1.0.0"

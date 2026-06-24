@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FlatList, View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 import { Image, Text } from '~/common/index'
 import ProductItemScrollHorizontal from '~/common/ProductItemScrollHorizontal/ProductItemScrollHorizontal'
 import { check_info } from '~/assets/constants'
@@ -40,6 +40,29 @@ const TopProduct = ({ navigation, product, distributorId, scrollToTop }) => {
 
   const innerProducts = Array.isArray(safeProducts[0]?.products) ? safeProducts[0].products.filter((_, idx) => idx < 12) : []
   const pages = Array.from({ length: Math.max(1, Math.ceil(innerProducts.length / 6)) }, (_, i) => i + 1)
+  const renderProduct = (item, index) => (
+    <View
+      key={(item?.product_id ?? item?.id ?? index).toString()}
+      style={styles.productCell}
+    >
+      <ProductItemScrollHorizontal
+        navigation={navigation}
+        data={item}
+        onNavigate={scrollToTop}
+        distributorId={item.distributor_id}
+        type={1}
+        onMessage={(msg) => onShowMessage(msg)}
+        onAdd={() => {
+          console.log('item', item)
+          setMessage('Thêm sản phẩm thành công')
+          setOpenMessage(true)
+          setTimeout(() => {
+            setOpenMessage(false)
+          }, 1000)
+        }}
+      />
+    </View>
+  )
 
   return (
     <>
@@ -106,39 +129,22 @@ const TopProduct = ({ navigation, product, distributorId, scrollToTop }) => {
         >
           {
             pages.map((value) => {
+              const pageProducts = innerProducts.filter((_, id) => (value - 1) * 6 <= id && id < value * 6)
+              const rows = Array.from({ length: Math.ceil(pageProducts.length / 3) }, (_, index) => pageProducts.slice(index * 3, index * 3 + 3))
               return (
-                <FlatList
+                <View
                   key={`page-${value}`}
-                  data={innerProducts.filter((_, id) => (value - 1) * 6 <= id && id < value * 6)}
-                  numColumns={3}
-                  showsHorizontalScrollIndicator={false}
-                  renderItem={({ item }) => {
-                    return (
-                      <ProductItemScrollHorizontal
-                        navigation={navigation}
-                        data={item}
-                        onNavigate={scrollToTop}
-                        distributorId={item.distributor_id}
-                        type={1}
-                        onMessage={(msg) => onShowMessage(msg)}
-                        onAdd={() => {
-                          console.log('item', item)
-                          setMessage('Thêm sản phẩm thành công')
-                          setOpenMessage(true)
-                          setTimeout(() => {
-                            setOpenMessage(false)
-                          }, 1000)
-                        }}
-                      />
-                    )
-                  }}
-                  keyExtractor={(item, index) => (item?.product_id ?? item?.id ?? index).toString()}
-                  ItemSeparatorComponent={() => {
-                    return (
-                      <View style={{ width: 6 }} />
-                    )
-                  }}
-                />
+                  style={styles.productGrid}
+                >
+                  {rows.map((row, rowIndex) => (
+                    <View
+                      key={`row-${rowIndex}`}
+                      style={styles.productRow}
+                    >
+                      {row.map(renderProduct)}
+                    </View>
+                  ))}
+                </View>
               )
             })
           }

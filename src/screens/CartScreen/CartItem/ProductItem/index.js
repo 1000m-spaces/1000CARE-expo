@@ -292,7 +292,7 @@ const ProductItem = ({ product, distributorId, productInCart, setOpenDialogWaiti
             <Text
               style={{
                 color: Colors.white,
-                fontWeight: '700',
+                fontWeight: '600',
                 fontSize: 28,
                 lineHeight: 34,
                 fontFamily: Fonts.bold,

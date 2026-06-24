@@ -91,7 +91,7 @@ const ConfirmOrderProducts = ({ navigation, route }) => {
           styleValue={{
             color: '#CCCCCC',
             fontSize: 12,
-            fontFamily: 'Quicksand-Medium',
+            fontFamily: 'Roboto',
             textDecorationLine: 'line-through',
           }}
           styleLabel={{ textDecorationLine: 'line-through' }}
@@ -102,7 +102,7 @@ const ConfirmOrderProducts = ({ navigation, route }) => {
           styleValue={{
             color: '#FF9900',
             fontSize: 14,
-            fontFamily: 'Quicksand-Bold',
+            fontFamily: 'Roboto',
           }}
         />
       </SummarySection>

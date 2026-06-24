@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 16,
     color: Colors.textColor2,
-    fontWeight: '700',
+    fontWeight: '600',
   },
 
 })

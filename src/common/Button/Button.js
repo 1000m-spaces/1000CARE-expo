@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { s, fs } from '~/utils/responsive'
 import { brandShadow } from '~/design-system/tokens'
+import { Fonts } from '~/assets/config'
 
 const Button = ({ text, onPressEvent, styleView, styleButton, styleText, disabled=false }) => {
   return (
@@ -40,8 +41,9 @@ const styles = StyleSheet.create({
   loading: { position: 'absolute', left: 20 },
   text: {
     color: Colors.white,
+    fontFamily: Fonts.bold,
     fontSize: fs(16),
-    fontWeight: '800',
+    fontWeight: 'normal',
     textAlign: 'center',
     letterSpacing: 0,
   },

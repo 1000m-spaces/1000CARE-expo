@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   numberMoney: {
     color: Colors.priceColor,
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: 18,
   },
   textUnit: {
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   textPay: {
-    fontWeight: '100',
+    fontWeight: 'normal',
   },
   viewButton: {
     paddingHorizontal: 0,

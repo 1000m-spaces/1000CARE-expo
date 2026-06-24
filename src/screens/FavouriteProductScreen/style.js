@@ -25,10 +25,10 @@ export default StyleSheet.create({
     fontSize: 14,
     lineHeight: 22,
     color: Colors.textColor3,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   tabTitleSelected: {
     color: Colors.systemColor2,
-    fontWeight: '700',
+    fontWeight: '600',
   },
 })

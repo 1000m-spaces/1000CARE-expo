@@ -59,11 +59,11 @@ const stylesUser = StyleSheet.create({
         justifyContent: "center",
     },
     username: {
-        fontWeight: "400",
+        fontWeight: "normal",
         fontSize: 16,
     },
     noRead: {
-        fontWeight: "700",
+        fontWeight: "600",
     },
     contentMsg: {
         fontSize: 13,
@@ -79,7 +79,7 @@ const stylesUser = StyleSheet.create({
     },
     textUserReceive: {
         paddingLeft: 8,
-        fontWeight: "700",
+        fontWeight: "600",
         fontSize: 16,
         textAlign: "left",
         width: "100%",
@@ -135,7 +135,7 @@ const stylesUser = StyleSheet.create({
     },
     textButton: {
         color: "#fff",
-        fontWeight: "700",
+        fontWeight: "600",
         fontSize: 16,
     },
     view_new_message: {

@@ -31,6 +31,7 @@ config.resolver = {
     'react-native-image-picker': path.resolve(__dirname, 'src/utils/image-picker-shim.js'),
     'react-native-config': path.resolve(__dirname, 'src/utils/config-shim.js'),
     'react-native-simple-toast': path.resolve(__dirname, 'src/utils/toast-shim.js'),
+    'react-native-view-overflow': path.resolve(__dirname, 'src/utils/view-overflow-shim.js'),
   },
 };
 

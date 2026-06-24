@@ -31,6 +31,7 @@ import Colors from '~/common/Colors/Colors'
 import { Fonts } from '~/assets/config'
 
 import CustomTabBar from '../../navigation/CustomTabBar'
+import { TabBarVisibilityProvider } from '~/navigation/TabBarVisibilityContext'
 
 const Tab = createBottomTabNavigator()
 const MainScreen = ({ navigation }) => {
@@ -53,30 +54,31 @@ const MainScreen = ({ navigation }) => {
   }
 
   return (
-    <Tab.Navigator
-      lazy
-      tabBar={props => <CustomTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-      }}
-      initialRouteName={NAVIGATION_TO_HOME_SCREEN}
-    >
+    <TabBarVisibilityProvider>
+      <Tab.Navigator
+        lazy
+        tabBar={props => <CustomTabBar {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}
+        initialRouteName={NAVIGATION_TO_HOME_SCREEN}
+      >
 
-      <Tab.Screen
-        name={NAVIGATION_TO_HOME_SCREEN}
-        component={HomeScreen}
-        options={{ title: 'Trang chủ' }}
-        listeners={({ navigation, route }) => ({
-          tabPress: e => {
-            dispatch(setSelectedDistri({
-              id: -1,
-              logo: null,
-              name: 'Neomed',
-              currentScreen: 'home',
-            }))
-          },
-        })}
-      />
+        <Tab.Screen
+          name={NAVIGATION_TO_HOME_SCREEN}
+          component={HomeScreen}
+          options={{ title: 'Trang chủ' }}
+          listeners={({ navigation, route }) => ({
+            tabPress: e => {
+              dispatch(setSelectedDistri({
+                id: -1,
+                logo: null,
+                name: 'Neomed',
+                currentScreen: 'home',
+              }))
+            },
+          })}
+        />
         <Tab.Screen
           name={NAVIGATION_ORDERS_SCREEN}
           component={OrdersScreen}
@@ -103,7 +105,8 @@ const MainScreen = ({ navigation }) => {
         component={ProfileScreen}
         options={{ title: 'Tài khoản' }}
       />
-    </Tab.Navigator>
+      </Tab.Navigator>
+    </TabBarVisibilityProvider>
   )
 }
 
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 10,
-    fontFamily: Fonts.meidum,
+    fontFamily: Fonts.medium,
   },
   tinyLogo: {
     width: 10,

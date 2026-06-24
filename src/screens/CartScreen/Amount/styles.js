@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
 import Colors from '~/common/Colors/Colors'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 const styles = StyleSheet.create({
   mainContainer: { 
@@ -16,10 +18,10 @@ const styles = StyleSheet.create({
   },
 
   bottomContainer: {
-    paddingVertical: 18,
-    paddingTop: 20,
-    paddingBottom: 18,
-    backgroundColor: Colors.white,
+    paddingVertical: s(18),
+    paddingTop: s(20),
+    paddingBottom: s(18),
+    backgroundColor: liquidGlass.backgroundStrong,
     alignSelf: 'flex-end',
   },
 
@@ -28,20 +30,20 @@ const styles = StyleSheet.create({
     margin: 0, 
     padding: 0,
     alignItems: 'center', 
-    paddingHorizontal: 18,
+    paddingHorizontal: s(18),
   },
 
   nextStepBtn: {
-    height: 50,
+    height: s(56),
     width: '100%',
     padding: 0,
     paddingHorizontal: 0,
-    borderRadius: 50,
-    backgroundColor: Colors.systemColor2,
+    borderRadius: s(20),
+    backgroundColor: brandColors.tealPrimary,
   },
 
   nextStepBtnDisable: {
-    backgroundColor: Colors.gray,
+    backgroundColor: brandColors.mutedLight,
   },
 
   buyBtnContainer: {
@@ -49,30 +51,30 @@ const styles = StyleSheet.create({
     margin: 0, 
     padding: 0,
     alignItems: 'center', 
-    paddingHorizontal: 18,
+    paddingHorizontal: s(18),
   },
 
   buyBtn: {
-    height: 50,
+    height: s(56),
     width: '100%',
     padding: 0,
     paddingHorizontal: 0,
-    borderRadius: 50,
-    backgroundColor: Colors.white,
-    borderColor: Colors.systemColor2,
+    borderRadius: s(20),
+    backgroundColor: liquidGlass.background,
+    borderColor: liquidGlass.borderTint,
     borderWidth: 1,
   },
 
   buyBtnText: {
-    color: Colors.systemColor2,
+    color: brandColors.tealPrimary,
   },
 
   priceContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent:'space-between',
-    marginBottom: 12,
-    marginHorizontal: 18,
+    marginBottom: s(12),
+    marginHorizontal: s(18),
   },
 
   pointContainer: {
@@ -84,17 +86,17 @@ const styles = StyleSheet.create({
   },
 
   priceText: {
-    fontSize: 18,
-    color: Colors.priceColor,
+    fontSize: fs(20),
+    color: brandColors.goldAccent,
     fontFamily: Fonts.bold,
     textDecorationLine: 'none',
   },
 
   originPrice: {
     marginLeft: 2,
-    fontSize: 12,
-    color: '#CCCCCC',
-    lineHeight: 20,    
+    fontSize: fs(12),
+    color: brandColors.mutedLight,
+    lineHeight: fs(20),
     textDecorationLine: 'line-through',
   },
 
@@ -106,9 +108,9 @@ const styles = StyleSheet.create({
   },
 
   totalText: {
-    color: Colors.textColor2,
+    color: brandColors.muted,
     fontFamily: Fonts.medium,
-    fontSize: 14,
+    fontSize: fs(14),
   },
 
   listProductContainer: {
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
   addressName: {
     color: Colors.textColor1,
     fontFamily: Fonts.bold,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: 14,
   },
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
   addressText: {
     color: Colors.textColor2,
     fontFamily: Fonts.medium,
-    fontWeight: '500',
+    fontWeight: 'normal',
     lineHeight: 22,
     fontSize: 14,
   },
@@ -184,7 +186,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: 12,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 
   listHeader: {

@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.5,
     color: brandColors.goldAccent,
   },
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     marginTop: s(6),
     fontSize: fs(24),
     lineHeight: fs(30),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.surface,
   },
   heroSubtitle: {

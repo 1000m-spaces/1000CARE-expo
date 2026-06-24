@@ -111,7 +111,7 @@ export default StyleSheet.create({
   },
   title: {
     color: Colors.textColor1,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginBottom: 6,
     marginRight: 18,
     fontSize: 16,
@@ -119,12 +119,12 @@ export default StyleSheet.create({
   pack: {
     color: Colors.textColor2,
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
     lineHeight: 22,
   },
   sectiontitle: {
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#595959',
   },
   swiperConatainer: {
@@ -149,7 +149,7 @@ export default StyleSheet.create({
   productPrice: {
     color: Colors.priceColor,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   actionCountContainer: {
     display: 'flex',
@@ -177,7 +177,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 12,
   },
   chevronIcon: {
@@ -190,7 +190,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 18,
     marginHorizontal: 18,
   },
@@ -206,7 +206,7 @@ export default StyleSheet.create({
   tabSelected: {
     backgroundColor: Colors.white,
     color: Colors.systemColor2,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   tabContainer: {
     display: 'flex',
@@ -221,7 +221,7 @@ export default StyleSheet.create({
     color: Colors.textColor1,
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: 14,
     lineHeight: 22,
   },

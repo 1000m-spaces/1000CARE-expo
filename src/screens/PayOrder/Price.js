@@ -22,14 +22,14 @@ const styles = StyleSheet.create({
   },
   textPrice: {
     color: Colors.priceColor,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   textUnit: {
     marginLeft: 2,
     marginBottom: 1,
 
     color: Colors.priceColor,
-    fontWeight: '500',
+    fontWeight: 'normal',
     textTransform: 'uppercase',
   },
 })

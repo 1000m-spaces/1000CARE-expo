@@ -3,12 +3,14 @@ import { View, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import {
   resetStatusAddCart, getDistributorsActive, requestGetTrademarksAdvertisement, requestGetProductBestSeller, requestGetProductsHotDeal, getInfo,
   requestGetListAdsBannerHomeNeomedByDistributor, loadNccFavorite, setSelectedDistri, requestGetProductPriceSock, openAppTheFirst, getCheckOnlinePharmacy, requestGetPharmacyInfo,
 } from '~/store/actions';
-import { getAuthStore, getAddItemStatus, getSelectedDistri, getPharmacyInfo, getIsLoadNccFavorite, getVersionNew, getForceUpdate, getUpdate, getOpenAppTheFirst } from '~/store/selector';
+import { getAuthStore, getAddItemStatus, getSelectedDistri, getPharmacyInfo, getIsLoadNccFavorite, getVersionNew, getForceUpdate, getUpdate, getOpenAppTheFirst, getListProductPriceSockHome } from '~/store/selector';
 import { getListItem } from '~/store/cart/cartSelectors';
 import ItemDistributorTab from '~/common/ItemDistributorTab';
 import ListDistributor from './ListDistributor';
@@ -28,9 +30,11 @@ import PremiumCard from '~/design-system/PremiumCard';
 import PremiumButton from '~/design-system/PremiumButton';
 import { brandColors } from '~/design-system/tokens';
 import { showToast } from '~/utils/toast';
+import LiquidGlassView from '~/design-system/LiquidGlassView';
+import { s } from '~/utils/responsive';
 // import { NetworkContext } from '../../network/NetworkProvider'
 
-const appLogo = require('../../../assets/icon.png');
+const HOME_HEADER_SCROLL_INSET = s(78);
 
 const HomeCartButton = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -58,8 +62,10 @@ const HomeCartButton = ({ navigation }) => {
   };
 
   return (
-    <TouchableOpacity activeOpacity={0.84} style={styles.cartPill} onPress={onPress}>
-      <Icon type="feather" name="shopping-cart" color={brandColors.surface} size={24} />
+    <TouchableOpacity activeOpacity={0.84} style={styles.cartTouch} onPress={onPress}>
+      <LiquidGlassView intensity="regular" style={styles.cartPill}>
+        <Icon type="feather" name="shopping-cart" color={brandColors.tealDark} size={24} />
+      </LiquidGlassView>
       <View style={styles.cartBadge}>
         <Text style={styles.cartBadgeText}>{count}</Text>
       </View>
@@ -68,51 +74,30 @@ const HomeCartButton = ({ navigation }) => {
 };
 
 const MarketplaceHeader = ({ navigation, selectedDistri }) => {
-  const isSupplierMode = selectedDistri?.id !== -1;
-  const supplierName = selectedDistri?.name || '1000CARE';
-
   return (
     <View style={styles.marketHeader}>
+      <LinearGradient
+        pointerEvents="none"
+        colors={['rgba(238,252,253,1)', 'rgba(238,252,253,0.9)', 'rgba(238,252,253,0)']}
+        locations={[0, 0.72, 1]}
+        style={styles.marketHeaderScrim}
+      />
       <View style={styles.marketHeaderTop}>
-        <View style={styles.brandMark}>
-          <Image source={appLogo} style={styles.brandLogo} resizeMode="cover" />
-        </View>
-        <View style={styles.brandCopy}>
-          <Text style={styles.headerEyebrow}>1000CARE MARKET</Text>
-          <Text style={styles.headerTitle} numberOfLines={1}>{isSupplierMode ? supplierName : 'Sức khỏe trong tầm tay'}</Text>
-        </View>
+        <TouchableOpacity
+          activeOpacity={0.86}
+          style={styles.searchTouch}
+          onPress={() => navigation.navigate(NAVIGATION_TO_SEARCH)}
+        >
+          <View style={styles.searchDock}>
+            <View style={styles.searchIconBubble}>
+              <Icon type="feather" name="search" color={brandColors.tealDark} size={20} />
+            </View>
+            <View style={styles.searchTextWrap}>
+              <Text style={styles.searchText}>Tìm sản phẩm</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
         <HomeCartButton navigation={navigation} />
-      </View>
-
-      <TouchableOpacity
-        activeOpacity={0.86}
-        style={styles.searchDock}
-        onPress={() => navigation.navigate(NAVIGATION_TO_SEARCH)}
-      >
-        <View style={styles.searchIconBubble}>
-          <Icon type="feather" name="search" color={brandColors.surface} size={18} />
-        </View>
-        <View style={styles.searchTextWrap}>
-          <Text style={styles.searchLabel}>Tìm nhanh</Text>
-          <Text style={styles.searchText}>Sản phẩm, thương hiệu, nhà thuốc</Text>
-        </View>
-      </TouchableOpacity>
-
-      <View style={styles.headerMetrics}>
-        <View style={styles.metricItem}>
-          <Text style={styles.metricValue}>24/7</Text>
-          <Text style={styles.metricLabel}>Hỗ trợ</Text>
-        </View>
-        <View style={styles.metricDivider} />
-        <View style={styles.metricItem}>
-          <Text style={styles.metricValue}>1000+</Text>
-          <Text style={styles.metricLabel}>Sản phẩm</Text>
-        </View>
-        <View style={styles.metricDivider} />
-        <View style={styles.metricItem}>
-          <Text style={styles.metricValue}>GMP</Text>
-          <Text style={styles.metricLabel}>Chuẩn chọn</Text>
-        </View>
       </View>
     </View>
   );
@@ -133,6 +118,7 @@ const HomeScreen = ({ navigation }) => {
   const forceUpdate = useSelector(state => getForceUpdate(state));
   const isUpdate = useSelector(state => getUpdate(state));
   const isOpenAppTheFirst = useSelector(state => getOpenAppTheFirst(state));
+  const priceSockHome = useSelector(state => getListProductPriceSockHome(state));
 
   const [selectedDistri, setSelectDistri] = useState(currentDistri);
   const versionApp = packageJson.version;
@@ -155,9 +141,17 @@ const HomeScreen = ({ navigation }) => {
     dispatch(requestGetTrademarksAdvertisement(0, 1, 1, 200, false));
     dispatch(requestGetProductBestSeller(0, 1, 20, false));
     dispatch(requestGetProductsHotDeal(0, 1, 20, false));
-    dispatch(requestGetProductPriceSock(null, 20, 1, false));
+    dispatch(requestGetProductPriceSock(null, 20, 1, false, 'home'));
     skipForceUpdate();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!Array.isArray(priceSockHome) || priceSockHome.length === 0) {
+        dispatch(requestGetProductPriceSock(null, 20, 1, false, 'home'));
+      }
+    }, [dispatch, priceSockHome]),
+  );
 
   useEffect(() => {
     if (isOpenAppTheFirst == 0) {
@@ -277,164 +271,167 @@ const HomeScreen = ({ navigation }) => {
   // }
 
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: brandColors.tealDark }}>
-      <View style={styles.container}>
-        <MarketplaceHeader navigation={navigation} selectedDistri={selectedDistri} />
-        <View style={{ flex: 1 }}>
-          {
-            selectedDistri?.id !== -1 && (
-              <>
-                <FlatList
-                  style={styles.listDistributors}
-                  contentContainerStyle={styles.distributors}
-                  data={listDistributorsDisplay}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  renderItem={({ item }) => {
-                    return (
-                      <ItemDistributorTab
-                        onItemPress={async () => onTabPress(item)}
-                        selected={item?.id === selectedDistri?.id}
-                        data={item}
-                      />
-                    );
-                  }}
-                  keyExtractor={keyExtractorDistri}
-                />
-                <View style={{ paddingHorizontal: 20 }}>
-                   <PremiumCard 
-                      title="Chăm sóc sức khỏe 1000CARE" 
+    <View style={styles.backgroundImage}>
+      <SafeAreaView edges={['top']} style={styles.safeArea}>
+        <View style={styles.container}>
+          <View style={[styles.contentLayer, selectedDistri?.id !== -1 && styles.supplierContentLayer]}>
+            {
+              selectedDistri?.id !== -1 && (
+                <>
+                  <FlatList
+                    style={styles.listDistributors}
+                    contentContainerStyle={styles.distributors}
+                    data={listDistributorsDisplay}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item }) => {
+                      return (
+                        <ItemDistributorTab
+                          onItemPress={async () => onTabPress(item)}
+                          selected={item?.id === selectedDistri?.id}
+                          data={item}
+                        />
+                      );
+                    }}
+                    keyExtractor={keyExtractorDistri}
+                  />
+                  <View style={{ paddingHorizontal: 20 }}>
+                    <PremiumCard
+                      title="Mua sắm cùng 1000CARE"
                       subtitle="Đặt hàng nhanh chóng, hỗ trợ 24/7"
                       onPress={() => console.log('Premium Card Pressed')}
-                   />
-                </View>
-                {
-                  selectedDistri?.product_display_type === 1 ? (
-                    <ListAllProduct
-                      navigation={navigation}
-                      distributorId={selectedDistri?.id}
-                      onMessage={(msg) => onShowMessage(msg)}
-                      onFavorClick={(isAdd) => {
-                        if (isAdd) {
-                          setMessage('Đã thêm sản phẩm yêu thích');
-                        } else {
-                          setMessage('Đã xóa sản phẩm yêu thích');
-                        }
-                        setOpenMessage(true);
-                        setTimeout(() => {
-                          setOpenMessage(false);
-                        }, 1000);
-                      }}
-                      onAddProduct={() => {
-                        setMessage('Thêm sản phẩm thành công');
-                        setOpenMessage(true);
-                        setTimeout(() => {
-                          setOpenMessage(false);
-                        }, 1000);
-                      }}
                     />
-                  ) : (
-                    <DistributorData
-                      selectedDistri={selectedDistri}
-                      navigation={navigation}
-                    />
-                  )
-                }
-              </>
-            )
-          }
-          {
-            selectedDistri?.id === -1 && (
-              <>
-                <ListDistributor
-                  navigation={navigation}
-                  onItemPress={(item) => {
-                    onTabPress(item);
-                  }}
-                  selectedDistri={selectedDistri}
-                  onMessage={(msg) => onShowMessage(msg)}
-                  onFavorClick={(isAdd) => {
-                    if (isAdd) {
-                      setMessage('Đã thêm sản phẩm yêu thích');
-                    } else {
-                      setMessage('Đã xóa sản phẩm yêu thích');
-                    }
-                    setOpenMessage(true);
-                    setTimeout(() => {
-                      setOpenMessage(false);
-                    }, 1000);
-                  }}
-                  onAddProduct={() => {
-                    setMessage('Thêm sản phẩm thành công');
-                    setOpenMessage(true);
-                    setTimeout(() => {
-                      setOpenMessage(false);
-                    }, 1000);
-                  }}
-                />
-              </>
-            )
-          }
-        </View>
-      </View>
-      <ErrorView
-        error={message}
-        isOpen={openMessage}
-        icon={check_info}
-        onClose={() => setOpenMessage(false)}
-      />
-      <Modal
-        onBackdropPress={() => { }}
-        transparent={true}
-        isVisible={(isUpdate == true && isSkip == 'false') || (isUpdate == true && forceUpdate == true)}
-      >
-        <View style={styles.viewContent}>
-          {/* <TouchableOpacity style={styles.buttonUpdate}>
-            <Text style={styles.textUpdate}>Update Version</Text>
-          </TouchableOpacity> */}
-          {/* <TouchableOpacity style={styles.buttonUpdate}>
-            <Text style={styles.textUpdate}>Bỏ qua</Text>
-          </TouchableOpacity> */}
-          <View>
-            <Image
-              style={styles.image}
-              source={require('~/assets/configNeoMed/logoNeoMed.png')}
-            />
-            <Text style={styles.textVerApp}>Version: {versionApp}</Text>
+                  </View>
+                  {
+                    selectedDistri?.product_display_type === 1 ? (
+                      <ListAllProduct
+                        navigation={navigation}
+                        distributorId={selectedDistri?.id}
+                        onMessage={(msg) => onShowMessage(msg)}
+                        onFavorClick={(isAdd) => {
+                          if (isAdd) {
+                            setMessage('Đã thêm sản phẩm yêu thích');
+                          } else {
+                            setMessage('Đã xóa sản phẩm yêu thích');
+                          }
+                          setOpenMessage(true);
+                          setTimeout(() => {
+                            setOpenMessage(false);
+                          }, 1000);
+                        }}
+                        onAddProduct={() => {
+                          setMessage('Thêm sản phẩm thành công');
+                          setOpenMessage(true);
+                          setTimeout(() => {
+                            setOpenMessage(false);
+                          }, 1000);
+                        }}
+                      />
+                    ) : (
+                      <DistributorData
+                        selectedDistri={selectedDistri}
+                        navigation={navigation}
+                      />
+                    )
+                  }
+                </>
+              )
+            }
+            {
+              selectedDistri?.id === -1 && (
+                <>
+                  <ListDistributor
+                    navigation={navigation}
+                    topInset={HOME_HEADER_SCROLL_INSET}
+                    onItemPress={(item) => {
+                      onTabPress(item);
+                    }}
+                    selectedDistri={selectedDistri}
+                    onMessage={(msg) => onShowMessage(msg)}
+                    onFavorClick={(isAdd) => {
+                      if (isAdd) {
+                        setMessage('Đã thêm sản phẩm yêu thích');
+                      } else {
+                        setMessage('Đã xóa sản phẩm yêu thích');
+                      }
+                      setOpenMessage(true);
+                      setTimeout(() => {
+                        setOpenMessage(false);
+                      }, 1000);
+                    }}
+                    onAddProduct={() => {
+                      setMessage('Thêm sản phẩm thành công');
+                      setOpenMessage(true);
+                      setTimeout(() => {
+                        setOpenMessage(false);
+                      }, 1000);
+                    }}
+                  />
+                </>
+              )
+            }
           </View>
-          {forceUpdate == true ?
-            <PremiumButton
-              text={`Cập nhật phiên bản ${versionNew}`}
-              onPress={() => {
-                asyncStorage.setSkipForceUpdate('false');
-              }}
-            />
-            : <View style={{ flexDirection: 'column', width: '100%' }}>
+          <MarketplaceHeader navigation={navigation} selectedDistri={selectedDistri} />
+        </View>
+        <ErrorView
+          error={message}
+          isOpen={openMessage}
+          icon={check_info}
+          onClose={() => setOpenMessage(false)}
+        />
+        <Modal
+          onBackdropPress={() => { }}
+          transparent={true}
+          isVisible={(isUpdate == true && isSkip == 'false') || (isUpdate == true && forceUpdate == true)}
+        >
+          <View style={styles.viewContent}>
+            {/* <TouchableOpacity style={styles.buttonUpdate}>
+              <Text style={styles.textUpdate}>Update Version</Text>
+            </TouchableOpacity> */}
+            {/* <TouchableOpacity style={styles.buttonUpdate}>
+              <Text style={styles.textUpdate}>Bỏ qua</Text>
+            </TouchableOpacity> */}
+            <View>
+              <Image
+                style={styles.image}
+                source={require('~/assets/configNeoMed/logoNeoMed.png')}
+              />
+              <Text style={styles.textVerApp}>Version: {versionApp}</Text>
+            </View>
+            {forceUpdate == true ?
               <PremiumButton
-                text={`Cập nhật ngay (${versionNew})`}
+                text={`Cập nhật phiên bản ${versionNew}`}
                 onPress={() => {
                   asyncStorage.setSkipForceUpdate('false');
-                  if (Platform.OS === 'android') {
-                    Linking.openURL('https://play.google.com/store/apps/details?id=com.ciaolink.neomed');
-                  } else {
-                    Linking.openURL('https://apps.apple.com/vn/app/neo-med/id1540253107');
-                  }
                 }}
               />
-              <TouchableOpacity 
-                onPress={() => {
-                  asyncStorage.setSkipForceUpdate('true');
-                  setSkip(true);
-                }}
-                style={{ marginTop: 10, alignItems: 'center' }}
-              >
-                <Text style={{ color: brandColors.muted }}>Để sau</Text>
-              </TouchableOpacity>
-            </View>
-          }
-        </View>
-      </Modal>
-    </SafeAreaView>
+              : <View style={{ flexDirection: 'column', width: '100%' }}>
+                <PremiumButton
+                  text={`Cập nhật ngay (${versionNew})`}
+                  onPress={() => {
+                    asyncStorage.setSkipForceUpdate('false');
+                    if (Platform.OS === 'android') {
+                      Linking.openURL('https://play.google.com/store/apps/details?id=com.ciaolink.neomed');
+                    } else {
+                      Linking.openURL('https://apps.apple.com/vn/app/neo-med/id1540253107');
+                    }
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    asyncStorage.setSkipForceUpdate('true');
+                    setSkip(true);
+                  }}
+                  style={{ marginTop: 10, alignItems: 'center' }}
+                >
+                  <Text style={{ color: brandColors.muted }}>Để sau</Text>
+                </TouchableOpacity>
+              </View>
+            }
+          </View>
+        </Modal>
+      </SafeAreaView>
+    </View>
   );
 };
 export default HomeScreen;

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import Colors from '~/common/Colors/Colors'
+import { brandColors, liquidGlass } from '~/design-system/tokens'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -7,10 +8,11 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 12,
-    borderColor: Colors.white,
+    borderRadius: 24,
+    borderColor: liquidGlass.border,
     justifyContent: 'center',
-    backgroundColor: Colors.white,
+    backgroundColor: liquidGlass.backgroundStrong,
+    ...liquidGlass.shadow,
   },
   closeBtnContainer: {
     alignSelf: 'flex-end',
@@ -26,19 +28,19 @@ const styles = StyleSheet.create({
   },
   contentTitle: {
     marginTop: 18,
-    color: Colors.textColor2,
+    color: brandColors.textDark,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
     textAlign: 'center',
   },
   message: {
-    color: Colors.textColor3,
+    color: brandColors.muted,
     fontSize: 12,
     textAlign: 'center',
     marginTop: 6,
   },
   bigCircle: {
-    backgroundColor: 'rgba(0, 149, 217, 0.25)',
+    backgroundColor: 'rgba(11,123,138,0.14)',
     borderRadius: 100,
     height: 100,
     width: 100,
@@ -47,7 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   smallCircle: {
-    backgroundColor: Colors.systemColor2,
+    backgroundColor: brandColors.tealPrimary,
     borderRadius: 80,
     height: 80,
     width: 80,
@@ -61,10 +63,10 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 12,
-    borderColor: Colors.white,
+    borderRadius: 24,
+    borderColor: 'rgba(255,255,255,0.38)',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: 'rgba(10,47,56,0.76)',
   },
   image: {
     width: 42,

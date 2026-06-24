@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+const AUTH_SCHEMA_KEY = 'auth_session_schema'
+const AUTH_KEYS = ['user', 'token', 'refresh_token']
+
 const setUser = async (user) => {
   try {
     await AsyncStorage.setItem('user', JSON.stringify(user))
@@ -75,6 +78,31 @@ const clearAll = async () => {
   console.log('Done.')
 }
 
+const clearAuthSession = async () => {
+  try {
+    await AsyncStorage.multiRemove(AUTH_KEYS)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const getAuthSessionSchema = async () => {
+  try {
+    return await AsyncStorage.getItem(AUTH_SCHEMA_KEY)
+  } catch (e) {
+    console.log(e)
+  }
+  return null
+}
+
+const setAuthSessionSchema = async (schema) => {
+  try {
+    await AsyncStorage.setItem(AUTH_SCHEMA_KEY, schema)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 const setSkipForceUpdate = async (skip) => {
   try {
     await AsyncStorage.setItem('skipForceUpdate', skip)
@@ -105,6 +133,9 @@ export default {
   getRefreshToken,
   setRefreshToken,
   clearAll,
+  clearAuthSession,
+  getAuthSessionSchema,
+  setAuthSessionSchema,
   getSkipForceUpdate,
   setSkipForceUpdate,
 }

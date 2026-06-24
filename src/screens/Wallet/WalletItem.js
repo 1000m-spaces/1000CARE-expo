@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   balance: {
     fontSize: 14,
     color: Colors.priceColor,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 
 })

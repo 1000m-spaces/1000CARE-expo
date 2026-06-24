@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   textHeader: {
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: '700',
+    fontWeight: '600',
     color: Colors.textColor2,
   },
   headerDAP: {
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     // color: Colors.textColor2,
     color: 'black',
-    fontWeight: '700',
+    fontWeight: '600',
     flex: 3,
   },
   buttonAll: {
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   textButton: {
     fontSize: 12,
     lineHeight: 15,
-    fontWeight: '700',
+    fontWeight: '600',
     color: Colors.systemColor2,
   },
   listProductsContainer: {
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: Colors.priceColor,
     lineHeight: 20,
   },

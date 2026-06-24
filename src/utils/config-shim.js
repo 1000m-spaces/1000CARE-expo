@@ -3,11 +3,11 @@ const Config = {
   MEILISEARCH_HOST: 'http://123.31.29.208:7700',
   MEILISEARCH_API_KEY: 'Dsb31Nn41I53vBR8luMCI003aWMcz3rS5/hZGhTCzM8=',
   
-  // API Paths - Updated from screenshot (.env.dev)
-  BASEPATH: 'https://dev-api-healthcare.1000m.vn/v1',
-  BASE_ACCOUNT_PATH: 'https://dev-api-healthcare.1000m.vn',
-  BASE_REGISTER_PATH: 'https://dev-api-healthcare.1000m.vn/api/v1',
-  BASE_AUTH_PATH: 'https://dev-api-healthcare.1000m.vn/api/v1',
+  // API Paths
+  BASEPATH: 'https://api-healthcare.1000m.vn/v1',
+  BASE_ACCOUNT_PATH: 'https://api-healthcare.1000m.vn',
+  BASE_REGISTER_PATH: 'https://api-healthcare.1000m.vn/api/v1',
+  BASE_AUTH_PATH: 'https://api-healthcare.1000m.vn/api/v1',
   
   // CodePush - Updated from screenshot
   IOS_CODEPUSH_KEY: '_7rfyVYTF18hcxo09z4PcEc7PIGebAndXA09E',

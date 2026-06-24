@@ -46,27 +46,27 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bold,
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   textMessage: { 
     marginTop: 2,
     color: Colors.textColor2,
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: '400',
+    fontWeight: 'normal',
   },
   priceText: { 
     color: Colors.priceColor,
     fontSize: 18,
     lineHeight: 26,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   styleValue: {
     color: Colors.textColor2,
     fontSize: 14,
     fontFamily: Fonts.medium,
     lineHeight: 22,
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
 })
 

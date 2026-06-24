@@ -19,6 +19,7 @@ import Colors from '~/common/Colors/Colors'
 import { getAddCartInfoStatus, getAddItemStatus } from '~/store/selector'
 import Status from '~/common/Status/Status'
 import DialogInfo from '~/common/DialogInfo/index'
+import { brandColors } from '~/design-system/tokens'
 
 const orderStatuses = [
   'Không xác định',
@@ -126,6 +127,7 @@ const OrderDetailScreen = ({ navigation, route }) => {
     <SafeAreaView
       style={{
         flex: 1,
+        backgroundColor: brandColors.background,
       }}
     >
       <Header
@@ -137,7 +139,7 @@ const OrderDetailScreen = ({ navigation, route }) => {
           navigation.goBack()
         }}
       />
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
         <DetailOrderBox>
           <TitleDetailOrderBox
             urlIcon={exception}

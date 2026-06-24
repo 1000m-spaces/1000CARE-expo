@@ -36,7 +36,7 @@ const GenericTemplate = ({
       <ViewGroup ref={component => assignRef?.(component)} {...props}>
         {!refreshControl &&
           (status === Status.DEFAULT || status === Status.LOADING) && (
-            <LoadingView />
+            <LoadingView variant="list" />
           )}
         {status === Status.ERROR && (
           <MessageView type="error" message={errorMessage} />

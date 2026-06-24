@@ -26,7 +26,7 @@ export default StyleSheet.create({
   metaLabel: {
     color: brandColors.mutedLight,
     fontSize: fs(10),
-    fontWeight: '800',
+    fontWeight: '600',
     textTransform: 'uppercase',
     marginBottom: s(4),
   },
@@ -57,7 +57,7 @@ export default StyleSheet.create({
   distributorName: {
     color: brandColors.textDark,
     fontSize: fs(14),
-    fontWeight: '800',
+    fontWeight: '600',
   },
   footerRow: {
     flexDirection: 'row',
@@ -75,23 +75,23 @@ export default StyleSheet.create({
   price: {
     color: brandColors.goldAccent,
     fontSize: fs(17),
-    fontWeight: '900',
+    fontWeight: '600',
   },
   salePrice: {
     color: brandColors.goldAccent,
     fontSize: fs(17),
-    fontWeight: '900',
+    fontWeight: '600',
   },
   orderTransId:{
     color: brandColors.textDark,
     fontSize: fs(18),
-    fontWeight: '900',
+    fontWeight: '600',
   },
   orderTime: {
     marginTop: s(4),
     color: brandColors.muted,
     fontSize: fs(12),
-    fontWeight: '500',
+    fontWeight: 'normal',
   },
   reOrderBtnContainer: {
     flexDirection: 'row',
@@ -135,18 +135,18 @@ export default StyleSheet.create({
     fontSize: fs(11),
     lineHeight: fs(18),
     color: brandColors.tealPrimary,
-    fontWeight: '900',
+    fontWeight: '600',
   },
   cancelText: {
     fontSize: fs(11),
     lineHeight: fs(18),
     color: brandColors.danger,
-    fontWeight: '900',
+    fontWeight: '600',
   },
   confirmText: {
     fontSize: fs(11),
     lineHeight: fs(18),
     color: brandColors.success,
-    fontWeight: '900',
+    fontWeight: '600',
   },
 })

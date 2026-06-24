@@ -4,7 +4,7 @@ import { Image } from '~/common/index';
 import Modal from 'react-native-modal';
 
 import styles from './styles';
-import { close, close_white, shopping_cart_white, successPay, loadingPay } from '~/assets/constants';
+import { close, close_white, shopping_cart_white, successPay } from '~/assets/constants';
 import Colors from '~/common/Colors/Colors';
 import strings from '~/i18n';
 import {
@@ -12,6 +12,10 @@ import {
 } from '~/assets/constants';
 
 const DialogInfo = ({ isOpen, isError, closeModal, isLoading, isOrder, message, icon = info, custom = false, children }) => {
+  if (isLoading) {
+    return null;
+  }
+
   const bodyComponent = () => {
     if (isError) {
       return (
@@ -50,10 +54,10 @@ const DialogInfo = ({ isOpen, isError, closeModal, isLoading, isOrder, message, 
           style={styles.contentContainer}
         >
           <View
-            style={[styles.bigCircle, isLoading ? {} : isError ? { backgroundColor: 'rgba(245, 34, 45, 0.25)' } : { backgroundColor: 'rgba(77, 221, 138, 0.5)' }]}
+            style={[styles.bigCircle, isError ? { backgroundColor: 'rgba(245, 34, 45, 0.25)' } : { backgroundColor: 'rgba(77, 221, 138, 0.5)' }]}
           >
             <View
-              style={[styles.smallCircle, isLoading ? {} : isError ? { backgroundColor: Colors.errorColor } : { backgroundColor: '#4DDD8A' }]}
+              style={[styles.smallCircle, isError ? { backgroundColor: Colors.errorColor } : { backgroundColor: '#4DDD8A' }]}
             >
               {isOrder ?
                 <Image
@@ -63,12 +67,14 @@ const DialogInfo = ({ isOpen, isError, closeModal, isLoading, isOrder, message, 
                 :
                 <Image
                   resizeMode={'contain'}
-                  source={isLoading ? loadingPay : isError ? close_white : successPay}
+                  source={isError ? close_white : successPay}
                 />
               }
             </View>
           </View>
-          <Text style={styles.contentTitle}>{isLoading ? strings.Confirm.checkLoading : isError ? strings.Confirm.messageCheckoutFailed : strings.Confirm.messageSuccess}</Text>
+          {!isLoading && (
+            <Text style={styles.contentTitle}>{isError ? strings.Confirm.messageCheckoutFailed : strings.Confirm.messageSuccess}</Text>
+          )}
         </View>
       </View>
     );

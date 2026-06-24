@@ -73,12 +73,12 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: Colors.textColor2,
   },
   valueActive: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: Colors.white,
   },
   imageChoose: {

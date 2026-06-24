@@ -4,6 +4,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { Image } from '~/common/index'
 import { plus_2, heart, heart_red } from '../../assets/constants'
+import placeholder from '~/assets/images/placeholder.png'
 
 import { getListItem as getProductInCart } from '~/store/cart/cartSelectors'
 
@@ -16,6 +17,9 @@ import { getAuthStore } from '~/store/selector'
 import strings from '~/i18n'
 import { Fonts } from '~/assets/config'
 import dimens from '~/constants/dimens'
+import { getProductImage } from '~/utils/image'
+import { s, fs } from '~/utils/responsive'
+import { brandColors, brandShadow, liquidGlass } from '~/design-system/tokens'
 
 const ProductItemListView = ({ navigation, data, distributorId, addButton = true, combo = false, goBack, onFavorClick, onAdd, onMessage, onNavigate }) => {
   const { isLoggedIn } = useSelector(state => getAuthStore(state))
@@ -100,6 +104,8 @@ const ProductItemListView = ({ navigation, data, distributorId, addButton = true
   }
 
   const isPending = data.distributor?.status === 2
+  const supplierName = data?.distributor?.nick_name || data?.distributor?.name || ''
+  const hasDiscount = data.sale_price !== data.price
 
   return (
     <TouchableOpacity
@@ -136,89 +142,44 @@ const ProductItemListView = ({ navigation, data, distributorId, addButton = true
             </View>
           )
         }
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '80%',
-          }}
-        >
-          <View style={styles.productNameContainer}>
+        <View style={styles.imageWrap}>
+          <Image
+            source={getProductImage(data, 'xl', placeholder)}
+            resizeMode={'contain'}
+            widthImage={s(68)}
+            heightImage={s(68)}
+            style={styles.productImage}
+          />
+        </View>
+        <View style={styles.infoBlock}>
+          <Text
+            style={styles.productName}
+            numberOfLines={2}
+            ellipsizeMode='tail'
+          >{data.name}</Text>
+          {!!supplierName && (
             <Text
-              style={styles.productName}
+              style={styles.supplier}
               numberOfLines={1}
               ellipsizeMode='tail'
-            >{data.name}</Text>
-            {/* <Text
-              style={[styles.productName, {
-                lineHeight: 18,
-                height: 18,
-                marginTop: 4,
-              }]}
+            >{supplierName}</Text>
+          )}
+          <View style={styles.priceContainer}>
+            <Text
+              style={styles.price}
               numberOfLines={1}
               ellipsizeMode='tail'
-            >{data.packing_specs}</Text> */}
-          </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flex: 2,
-              }}
-            >
+            >{formatMoney(data.sale_price, { unit: 'đ', space: false })}</Text>
+            {hasDiscount && (
               <Text
-                style={styles.price}
+                style={styles.discount}
                 numberOfLines={1}
                 ellipsizeMode='tail'
-              >{formatMoney(data.sale_price, { unit: 'đ', space: false })}
-              </Text>
-              {
-                data.sale_price !== data.price && (
-                  <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                    <Text
-                      style={styles.discount}
-                      numberOfLines={1}
-                      ellipsizeMode='tail'
-                    >{formatMoney(data.price, { unit: 'đ', space: false })}</Text>
-                  </View>
-                )
-              }
-            </View>
-            <View
-              style={{
-                borderLeftWidth: 1,
-                borderLeftColor: '#BDBDBD',
-                flex: 1,
-                paddingLeft: 8,
-              }}
-            >
-              <Text
-                style={{
-                  color: '#071F77',
-                  fontSize: 14,
-                  textAlign: 'left',
-                }}
-                numberOfLines={1}
-                ellipsizeMode='tail'
-              >{data?.distributor?.nick_name ? data?.distributor?.nick_name : data?.distributor?.name}</Text>
-            </View>
+              >{formatMoney(data.price, { unit: 'đ', space: false })}</Text>
+            )}
           </View>
         </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            marginRight: 4,
-          }}
-        >
+        <View style={styles.actionColumn}>
           {
             addButton && (
               <TouchableOpacity
@@ -237,10 +198,7 @@ const ProductItemListView = ({ navigation, data, distributorId, addButton = true
             style={styles.favorContainer}
           >
             <Image
-              style={{
-                height: 25,
-                width: 25,
-              }}
+              style={styles.favorIcon}
               resizeMode={'contain'}
               source={data.is_wishlist ? heart_red : heart}
               tintColor={Colors.errorColor}
@@ -273,66 +231,100 @@ const styles = StyleSheet.create({
   },
   productContainer: {
     flexDirection: 'row',
-    display: 'flex',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.white,
-    marginHorizontal: 5,
-    marginVertical: 2,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    alignItems: 'center',
+    backgroundColor: liquidGlass.backgroundStrong,
+    marginHorizontal: s(16),
+    marginVertical: s(6),
+    paddingVertical: s(10),
+    paddingHorizontal: s(10),
     borderWidth: 1,
-    borderColor: '#F1F1F1',
-    borderRadius: 6,
-    width: dimens.common.WINDOW_WIDTH - 18,
+    borderColor: liquidGlass.border,
+    borderRadius: s(16),
+    width: dimens.common.WINDOW_WIDTH - s(32),
+    ...brandShadow.soft,
+  },
+  imageWrap: {
+    width: s(78),
+    height: s(78),
+    borderRadius: s(12),
+    backgroundColor: 'rgba(255,255,255,0.78)',
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  productImage: {
+    width: s(68),
+    height: s(68),
+  },
+  infoBlock: {
+    flex: 1,
+    minHeight: s(78),
+    paddingHorizontal: s(10),
+    justifyContent: 'space-between',
+  },
+  actionColumn: {
+    width: s(38),
+    minHeight: s(78),
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   buttonAddContainer: {
-    backgroundColor: Colors.systemColor2,
-    width: 25,
-    height: 25,
-    borderRadius: 22,
-    display: 'flex',
+    backgroundColor: brandColors.tealPrimary,
+    width: s(34),
+    height: s(34),
+    borderRadius: s(17),
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'flex-end',
   },
   buttonAdd: {
-    width: 12,
-    height: 12,
-    borderRadius: 22,
-  },
-  productNameContainer: {
-    marginTop: 1,
-    marginBottom: 4,
+    width: s(15),
+    height: s(15),
   },
   productName: {
-    fontSize: 14,
-    color: Colors.textColor2,
-    textTransform: 'uppercase',
-    lineHeight: 18,
-    height: 18,
-    flex: 2,
+    fontSize: fs(13),
+    color: brandColors.textDark,
+    lineHeight: fs(18),
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
   },
   priceContainer: {
-    marginTop: 1,
     flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
   price: {
-    fontSize: 14,
-    marginTop: 1,
-    fontWeight: 'bold',
-    color: Colors.priceColor,
-    lineHeight: 20,
+    fontFamily: Fonts.bold,
+    fontSize: fs(15),
+    fontWeight: 'normal',
+    color: brandColors.goldAccent,
+    lineHeight: fs(20),
   },
   favorContainer: {
-    marginTop: 4,
-    width: 26,
-    height: 26,
+    width: s(34),
+    height: s(34),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  favorIcon: {
+    height: s(27),
+    width: s(27),
+  },
+  supplier: {
+    marginTop: s(3),
+    fontFamily: Fonts.base,
+    fontSize: fs(11),
+    lineHeight: fs(15),
+    color: brandColors.muted,
+    fontWeight: 'normal',
   },
   discount: {
-    fontSize: 12,
-    color: '#CCCCCC',
-    fontWeight: '500',
-    lineHeight: 20,
+    marginLeft: s(5),
+    fontSize: fs(11),
+    color: brandColors.mutedLight,
+    fontWeight: 'normal',
+    lineHeight: fs(18),
     textDecorationLine: 'line-through',
   },
 })

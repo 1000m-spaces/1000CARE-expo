@@ -8,6 +8,10 @@ import { heart, heart_red } from '~/assets/constants'
 import SliderBox from '~/common/SliderBox/index'
 import placeholder from '~/assets/images/placeholder.png'
 import { getProductImages } from '~/utils/image'
+import dimension from '~/constants/dimens'
+import { s } from '~/utils/responsive'
+
+const DETAIL_IMAGE_WIDTH = dimension.common.WINDOW_WIDTH - s(32)
 
 const ProductInfo = ({ product, favorClick, openImage }) => {
   const safeProduct = product || {}
@@ -27,6 +31,7 @@ const ProductInfo = ({ product, favorClick, openImage }) => {
           inactiveDotColor={Colors.disabledText}
           autoplay={true}
           circleLoop
+          parentWidth={DETAIL_IMAGE_WIDTH}
           items={images.map(i => ({ image: i }))}
           onCurrentItemPressed={() => { }}
           ImageComponentStyle={styles.swiperItem}

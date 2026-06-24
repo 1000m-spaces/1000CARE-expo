@@ -20,7 +20,7 @@ export default StyleSheet.create({
   heroEyebrow: {
     fontSize: fs(10),
     lineHeight: fs(14),
-    fontWeight: '900',
+    fontWeight: '600',
     letterSpacing: 1.5,
     color: brandColors.goldAccent,
   },
@@ -28,7 +28,7 @@ export default StyleSheet.create({
     marginTop: s(6),
     fontSize: fs(24),
     lineHeight: fs(30),
-    fontWeight: '900',
+    fontWeight: '600',
     color: brandColors.surface,
   },
   heroSubtitle: {
@@ -139,13 +139,13 @@ export default StyleSheet.create({
 
   amount: {
     color: brandColors.textDark,
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: fs(16),
     lineHeight: fs(24),
   },
   amountUnit: {
     color: brandColors.muted,
-    fontWeight: '500',
+    fontWeight: 'normal',
     fontSize: fs(12),
     lineHeight: fs(20),
   },
@@ -153,13 +153,13 @@ export default StyleSheet.create({
     color: Colors.textColor4,
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: '400',
+    fontWeight: 'normal',
   },
   point: {
     color: Colors.textColor4,
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   bankInfoContainer: {
     backgroundColor: brandColors.surface,
@@ -171,21 +171,21 @@ export default StyleSheet.create({
   bankTitle: {
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontFamily: Fonts.bold,
     color: brandColors.muted,
   },
   bankBalance: {
     fontSize: 18,
     lineHeight: 26,
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontFamily: Fonts.bold,
     color: brandColors.goldAccent,
   },
   title: {
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: brandColors.textDark,
     padding: s(18),
   },

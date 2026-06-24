@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   numberMoney: {
     color: Colors.priceColor,
     fontFamily: Fonts.bold,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginTop: 6,
     fontSize: 14,
   },
