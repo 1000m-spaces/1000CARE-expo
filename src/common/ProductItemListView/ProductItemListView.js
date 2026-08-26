@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { TouchableOpacity } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Image } from '~/common/index'
 import { plus_2, heart, heart_red } from '../../assets/constants'
 import placeholder from '~/assets/images/placeholder.png'
@@ -108,7 +108,7 @@ const ProductItemListView = ({ navigation, data, distributorId, addButton = true
   const hasDiscount = data.sale_price !== data.price
 
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={() => {
         if (isPending) {
           return
@@ -182,7 +182,7 @@ const ProductItemListView = ({ navigation, data, distributorId, addButton = true
         <View style={styles.actionColumn}>
           {
             addButton && (
-              <TouchableOpacity
+              <PressScale
                 onPress={() => addItem()}
                 style={styles.buttonAddContainer}
               >
@@ -190,10 +190,10 @@ const ProductItemListView = ({ navigation, data, distributorId, addButton = true
                   source={plus_2}
                   style={styles.buttonAdd}
                 />
-              </TouchableOpacity>
+              </PressScale>
             )
           }
-          <TouchableOpacity
+          <PressScale
             onPress={() => favorClick()}
             style={styles.favorContainer}
           >
@@ -203,10 +203,10 @@ const ProductItemListView = ({ navigation, data, distributorId, addButton = true
               source={data.is_wishlist ? heart_red : heart}
               tintColor={Colors.errorColor}
             />
-          </TouchableOpacity>
+          </PressScale>
         </View>
       </View>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 

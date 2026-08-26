@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { TouchableOpacity } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Image } from '~/common/index'
 import { plus_2, heart, heart_red } from '../../assets/constants'
 import placeholder from '~/assets/images/placeholder.png'
@@ -178,22 +178,20 @@ const ProductItemScrollHorizontal = ({ navigation, data, distributorId, type, ad
             </View>
             <View style={styles.actionColumn}>
               {addButton && isLoggedIn && (
-                <TouchableOpacity
+                <PressScale
                   onPress={() => addItem()}
                   style={styles.buttonAddContainer}
-                  activeOpacity={0.82}
                 >
                   <Image
                     source={plus_2}
                     style={styles.buttonAdd}
                   />
-                </TouchableOpacity>
+                </PressScale>
               )}
               {isLoggedIn && type === 2 && (
-                <TouchableOpacity
+                <PressScale
                   onPress={() => favorClick()}
                   style={styles.favorContainer}
-                  activeOpacity={0.82}
                 >
                   <Image
                     style={styles.favorIcon}
@@ -201,7 +199,7 @@ const ProductItemScrollHorizontal = ({ navigation, data, distributorId, type, ad
                     source={data.is_wishlist ? heart_red : heart}
                     tintColor={Colors.errorColor}
                   />
-                </TouchableOpacity>
+                </PressScale>
               )}
             </View>
           </View>
@@ -263,7 +261,7 @@ const ProductItemScrollHorizontal = ({ navigation, data, distributorId, type, ad
   }
 
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={() => {
         if (isPending) {
           return
@@ -294,7 +292,7 @@ const ProductItemScrollHorizontal = ({ navigation, data, distributorId, type, ad
           view2()
         )
       }
-    </TouchableOpacity >
+    </PressScale>
   )
 }
 
