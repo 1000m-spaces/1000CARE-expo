@@ -1,12 +1,13 @@
 import React from 'react'
 import styles from './styles'
-import { View, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 
 import { address_point } from '~/assets/constants'
 import { Image, Text } from '~/common/index'
 import { NAVIGATION_ADDRESS_CHOOSE_SCREEN } from '~/navigation/routes'
 import { getListItem } from '~/store/selector'
 import { useSelector } from 'react-redux'
+import PressScale from '~/design-system/PressScale'
 
 const Address = ({ navigation }) => {
   const cartData = useSelector((state) => getListItem(state))
@@ -32,7 +33,7 @@ const Address = ({ navigation }) => {
             Địa chỉ nhận hàng
           </Text>
         </View>
-        <TouchableOpacity
+        <PressScale
           onPress={() => navigation.navigate(NAVIGATION_ADDRESS_CHOOSE_SCREEN, {
             chooseAddress: true,
           })}
@@ -44,7 +45,7 @@ const Address = ({ navigation }) => {
               cartData?.shipping_address ? 'Thay đổi' : 'Chọn'
             }
           </Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
       {
         checkValidAddress() ? (

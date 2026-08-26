@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, TouchableOpacity, FlatList } from 'react-native'
+import { View, FlatList } from 'react-native'
 import styles from './styles'
 import { Text } from '~/common/index'
 import PromotionItem from '~/common/PromotionItem/index'
 import { NAVIGATION_LIST_PROMOTIONS } from '~/navigation/routes'
+import PressScale from '~/design-system/PressScale'
 
 const Promotions = ( { navigation, promotionData, distributorId, paymentType, promotionProductIds, mode }) => {
   console.log('BIENBUONBUCCCCCCCCCC:', mode, promotionData)
@@ -22,7 +23,7 @@ const Promotions = ( { navigation, promotionData, distributorId, paymentType, pr
             </Text>
             {
               promotionData && promotionData.length > 0 && (
-                <TouchableOpacity
+                <PressScale
                   onPress={() => {
                     navigation.navigate(NAVIGATION_LIST_PROMOTIONS, {
                       listPromotions: promotionData,
@@ -34,7 +35,7 @@ const Promotions = ( { navigation, promotionData, distributorId, paymentType, pr
                   >
                   Xem tất cả
                   </Text>
-                </TouchableOpacity>
+                </PressScale>
               )}
           </View>
         )

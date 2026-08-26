@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { SafeAreaView, View, TouchableOpacity, ScrollView } from 'react-native'
+import { SafeAreaView, View, ScrollView } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { useDispatch, useSelector } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -20,7 +21,7 @@ import placeholder from '~/assets/images/placeholder.png'
 
 const ProductItem = ({ product, onClick, onCheck }) => {
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={onClick}
       style={styles.productContainer}
     >
@@ -59,7 +60,7 @@ const ProductItem = ({ product, onClick, onCheck }) => {
           />
         )
       }
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
