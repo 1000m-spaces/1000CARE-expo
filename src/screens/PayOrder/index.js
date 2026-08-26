@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 
 import { back } from '~/assets/constants'
 import PaymentInformation from './PaymentInformation'
@@ -122,7 +123,7 @@ const PayOrder = ({ navigation, route }) => {
           </SectionInformation>
           <View style={styles.containerProfile}>
             <Text style={[styles.titleSection]}>{'Nguồn tiền thanh toán'}</Text>
-            <TouchableOpacity
+            <PressScale
               onPress={() => {
                 onPaid('MBW', infoAccount.balanceWallet)
               }}
@@ -138,8 +139,8 @@ const PayOrder = ({ navigation, route }) => {
                   )
                 }
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </PressScale>
+            <PressScale
               onPress={() => {
                 if (loanInfo?.Status === 'loan.link') {
                   onPaid('MBL', loanInfo?.Info?.limitAmount)
@@ -157,7 +158,7 @@ const PayOrder = ({ navigation, route }) => {
                   )
                 }
               </View>
-            </TouchableOpacity>
+            </PressScale>
           </View>
         </View>
         <DialogInfo
