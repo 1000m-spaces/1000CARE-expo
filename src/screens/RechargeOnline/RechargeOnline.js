@@ -1,9 +1,10 @@
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { Image } from '~/common/index'
 import TitleBar from '../../common/TitleBar/TitleBar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Point, logoGiftPoint } from '../../assets/constants';
+import PressScale from '~/design-system/PressScale';
 const data = [
     {image:logoGiftPoint},{image:logoGiftPoint},{image:logoGiftPoint},{image:logoGiftPoint},
     {image:logoGiftPoint},{image:logoGiftPoint},{image:logoGiftPoint},{image:logoGiftPoint},
@@ -12,9 +13,9 @@ const data = [
 const RechargeOnline = props => {
     const renderList = data.map((item,index) => {
         return(
-            <TouchableOpacity style={{marginBottom:10,justifyContent:'center',alignItems:'center'}}>
+            <PressScale style={{marginBottom:10,justifyContent:'center',alignItems:'center'}}>
                 <Image source={logoGiftPoint} />
-            </TouchableOpacity>
+            </PressScale>
         );
     });
     return(
@@ -30,18 +31,18 @@ const RechargeOnline = props => {
                 </View>
                 <Text style={{marginLeft:10,color:'#0B7B8A',fontSize:16}}>9686262868682826</Text>
                 <View style={{flexDirection:'row',justifyContent:'space-between',margin:20}}>
-                    <TouchableOpacity style={{alignItems:'center'}}>
+                    <PressScale style={{alignItems:'center'}}>
                         <Image resizeMode={'contain'} source={Point} style={{height:35,width:35}} />
                         <Text>Nạp tiền</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{alignItems:'center'}}>
+                    </PressScale>
+                    <PressScale style={{alignItems:'center'}}>
                         <Image resizeMode={'contain'} source={Point} style={{height:35,width:35}} />
                         <Text>Rút tiền</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{alignItems:'center'}}>
+                    </PressScale>
+                    <PressScale style={{alignItems:'center'}}>
                         <Image resizeMode={'contain'} source={Point} style={{height:35,width:35}} />
                         <Text>Giao dịch</Text>
-                    </TouchableOpacity>
+                    </PressScale>
                 </View>
             </View>
             <View style={{marginTop:15,flex:1,padding:10,backgroundColor:'white'}}>

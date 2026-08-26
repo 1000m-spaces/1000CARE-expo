@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
+import PressScale from '~/design-system/PressScale';
 import { Image } from '~/common/index'
 import Header from '~/common/Header/index';
 import { back } from '~/assets/constants';
@@ -51,13 +52,13 @@ const RechargeScreen = props => {
                 />
             </View>
             <View style={styles.viewAddBank}>
-                <TouchableOpacity style={styles.viewAdd}>
+                <PressScale style={styles.viewAdd}>
                     <Image style={styles.image} source={Add} />
-                </TouchableOpacity>
+                </PressScale>
                 <Text style={styles.textAdd}>Thêm liên kết</Text>
-                <TouchableOpacity style={styles.buttonChevron}>
+                <PressScale style={styles.buttonChevron}>
                     <Image style={styles.chevron} source={Chevron} />
-                </TouchableOpacity>
+                </PressScale>
             </View>
         </View>
     );

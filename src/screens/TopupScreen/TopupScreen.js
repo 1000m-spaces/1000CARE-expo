@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native'
+import { View, SafeAreaView, FlatList } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import Colors from '~/common/Colors/Colors'
 import { requestTopup, resetConfirmTopup, resetReqTopup, getBalance } from '~/store/actions'
 import { getReqTopupErr, getReqTopupStatus, getConfirmTopupStatus, getUserId } from '~/store/selector'
@@ -225,7 +226,7 @@ const TopupScreen = (props) => {
               <Text style={styles.point}>{formatMoney(seletedItem?.point || 0, { unit: 'điểm' })}</Text>
             </View>
           </View>
-          <TouchableOpacity
+          <PressScale
             style={styles.priceContainer}
             onPress={() => {
               if (currentCampaign !== null && currentCampaign !== undefined) {
@@ -249,7 +250,7 @@ const TopupScreen = (props) => {
                 )
               }
             </Text>
-          </TouchableOpacity>
+          </PressScale>
           <Button
             styleView={styles.nextStepBtnContainer}
             styleButton={styles.nextStepBtn}
@@ -273,7 +274,7 @@ const TopupScreen = (props) => {
           <View
             style={styles.dialogContainer}
           >
-            <TouchableOpacity
+            <PressScale
               style={styles.closeBtnContainer}
               onPress={() => {
                 setShowDialog(false)
@@ -285,7 +286,7 @@ const TopupScreen = (props) => {
                 resizeMode={'contain'}
                 source={close}
               />
-            </TouchableOpacity>
+            </PressScale>
             <TextInput
               containerStyle={styles.inputAmountContainer}
               labelStyle={{

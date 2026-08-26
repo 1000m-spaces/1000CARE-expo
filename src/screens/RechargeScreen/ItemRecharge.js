@@ -4,10 +4,10 @@ import {
   View,
   Text,
   Dimensions,
-  TouchableOpacity,
 } from 'react-native';
 import {Image} from '~/common/index';
 import Chevron from '~/assets/configNeoMed/bank/Chevron_Right.png';
+import PressScale from '~/design-system/PressScale';
 const fullWith = Dimensions.get('window').width;
 
 const ItemRecharge = props => {
@@ -25,9 +25,9 @@ const ItemRecharge = props => {
         <Text style={styles.name}>{data.name}</Text>
         <Text style={styles.fullName}>{data.fullName}</Text>
       </View>
-      <TouchableOpacity style={styles.buttonChevron}>
+      <PressScale style={styles.buttonChevron}>
         <Image style={styles.chevron} source={Chevron} />
-      </TouchableOpacity>
+      </PressScale>
     </View>
   );
 };

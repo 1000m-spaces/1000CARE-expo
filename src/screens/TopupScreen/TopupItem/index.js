@@ -1,8 +1,8 @@
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
 import { View, Text } from 'react-native'
 import strings from '~/i18n'
 import { formatMoney } from '~/utils/index'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
 
@@ -13,7 +13,7 @@ const TopupItem = ({ data, onClick, seleted }) => {
     return styles.wrap
   }
   return (
-    <TouchableOpacity
+    <PressScale
       style={getConatinerStyle()}
       onPress={() => onClick(data)}
     >
@@ -34,7 +34,7 @@ const TopupItem = ({ data, onClick, seleted }) => {
           </>
         )
       }
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
