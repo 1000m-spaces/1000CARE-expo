@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Image } from '~/common/index'
 import { avt_dafault } from '../../assets/constants'
 import { s, fs } from '~/utils/responsive'
@@ -7,7 +7,7 @@ import { brandColors, brandShadow } from '~/design-system/tokens'
 
 const InformationUser = ({ user, navigation }) => {
   return (
-    <TouchableOpacity
+    <View
       style={styles.wrapper}
     >
       <View style={styles.topRow}>
@@ -33,7 +33,7 @@ const InformationUser = ({ user, navigation }) => {
           <Text style={styles.memberBadgeText}>ACTIVE</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 

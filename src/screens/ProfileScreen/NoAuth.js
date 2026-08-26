@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
 } from 'react-native'
 import { Image } from '~/common/index'
 import strings from '~/i18n'
@@ -11,6 +10,7 @@ import { NAVIGATION_PHONE_VERIFY, NAVIGATION_TO_LOGIN_SCREEN } from '~/navigatio
 import { user } from '../../assets/constants'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, brandShadow } from '~/design-system/tokens'
+import PressScale from '~/design-system/PressScale'
 
 const NoAuth = ({ navigation }) => {
   return (
@@ -31,12 +31,12 @@ const NoAuth = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.btnGroup}>
-        <TouchableOpacity
+        <PressScale
           style={styles.btnSignIn}
           onPress={() => navigation.navigate(NAVIGATION_TO_LOGIN_SCREEN)}
         >
           <Text style={styles.textSignIn}>{strings.profileScreen.noAuth.login}</Text>
-        </TouchableOpacity>
+        </PressScale>
         {/* <TouchableOpacity
           style={styles.btnSignUp}
           onPress={() => navigation.navigate(NAVIGATION_PHONE_VERIFY, { title: strings.profileScreen.noAuth.register') })}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { Image, Icon } from '~/common/index'
 import { user } from '~/assets/constants'
 import strings from '~/i18n'
@@ -8,6 +8,7 @@ import { getListNoti } from '~/store/actions'
 import { useDispatch } from 'react-redux'
 import { s, fs } from '~/utils/responsive'
 import { brandColors } from '~/design-system/tokens'
+import PressScale from '~/design-system/PressScale'
 
 const MenuItem = ({ data, navigation, isLoggedIn, onShowMessage, lengthNotiNonRead }) => {
   const dispatch = useDispatch()
@@ -15,7 +16,7 @@ const MenuItem = ({ data, navigation, isLoggedIn, onShowMessage, lengthNotiNonRe
     dispatch(getListNoti(10, 1, false))
   }
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={() => {
         if (!data.isClickAvailable) {
           return
@@ -65,7 +66,7 @@ const MenuItem = ({ data, navigation, isLoggedIn, onShowMessage, lengthNotiNonRe
         </View>
         <Text style={styles.text}>{data.text}</Text>
       </View>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
