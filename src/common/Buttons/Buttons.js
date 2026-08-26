@@ -2,24 +2,24 @@ import React from "react";
 import Colors from "../../common/Colors/Colors";
 import {
   StyleSheet,
-  TouchableOpacity,
   Text,
   View
 } from "react-native";
 import { s, fs } from '~/utils/responsive'
-import { brandShadow } from '~/design-system/tokens'
+import { brandShadow, radiusScale } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
+import PressScale from '~/design-system/PressScale'
 
 const Buttons = props => {
   const {text, onPressEvent, styleView, styleButton, styleText } = props;
   return (
     <View style={[styles.container,styleView]}>
-      <TouchableOpacity
+      <PressScale
         style={[styles.btn_container,styleButton]}
         onPress={onPressEvent}
       >
           <Text style={[styles.text,styleText]}>{text}</Text>
-      </TouchableOpacity>
+      </PressScale>
     </View>
   );
 };
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingVertical: s(12),
     paddingHorizontal: s(24),
     backgroundColor: Colors.colorMain,
-    borderRadius: s(16),
+    borderRadius: s(radiusScale.xxl),
     ...brandShadow.teal,
   },
   container: {

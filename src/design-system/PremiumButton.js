@@ -1,15 +1,15 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { s, fs } from '../utils/responsive';
-import { brandColors, brandGradients, brandShadow } from './tokens';
+import { brandColors, brandGradients, brandShadow, radiusScale } from './tokens';
 import { Fonts } from '~/assets/config';
+import PressScale from './PressScale';
 
 const PremiumButton = ({ text, onPress, style, textStyle, colors = brandGradients.primary, disabled }) => {
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={onPress}
-      activeOpacity={0.78}
       style={[styles.container, disabled && styles.disabled, style]}
       disabled={disabled}
     >
@@ -21,13 +21,13 @@ const PremiumButton = ({ text, onPress, style, textStyle, colors = brandGradient
       >
         <Text style={[styles.text, textStyle]}>{text}</Text>
       </LinearGradient>
-    </TouchableOpacity>
+    </PressScale>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: s(16),
+    borderRadius: s(radiusScale.xxl),
     overflow: 'hidden',
     marginVertical: s(8),
     ...brandShadow.teal,
