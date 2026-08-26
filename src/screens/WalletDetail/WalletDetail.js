@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, Text, ImageBackground, FlatList, TouchableOpacity, SafeAreaView } from 'react-native'
+import { View, Text, ImageBackground, FlatList, SafeAreaView } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Image } from '~/common/index'
 import bank from '~/assets/configNeoMed/Wallet/bank.png'
 import backgroundWallet from '~/assets/configNeoMed/Wallet/backgroundWallet.png'
@@ -98,7 +99,7 @@ const WalletDetail = ({ navigation, route }) => {
       <View style={styles.viewSpace} />
       <View style={styles.viewSelect}>
         <View style={{ alignItems: 'center' }}>
-          <TouchableOpacity
+          <PressScale
             onPress={() => {
               navigation.navigate(NAVIGATION_LIST_BANK_ACCOUNT, {
                 distributor: distributor,
@@ -110,17 +111,17 @@ const WalletDetail = ({ navigation, route }) => {
             style={styles.buttonSelect}
           >
             <Image source={Money} />
-          </TouchableOpacity>
+          </PressScale>
           <Text style={styles.textSelect}>{strings.wallet.recharge}</Text>
         </View>
         <View style={{ alignItems: 'center' }}>
-          <TouchableOpacity style={styles.buttonSelect}>
+          <PressScale style={styles.buttonSelect}>
             <Image source={lend} />
-          </TouchableOpacity>
+          </PressScale>
           <Text style={styles.textSelect}>{strings.wallet.borrow}</Text>
         </View>
         <View style={{ alignItems: 'center' }}>
-          <TouchableOpacity
+          <PressScale
             style={styles.buttonSelect}
             onPress={() => {
               navigation.navigate(NAVIGATION_TRANSACTION_HISTORY, {
@@ -129,7 +130,7 @@ const WalletDetail = ({ navigation, route }) => {
             }}
           >
             <Image source={deal} />
-          </TouchableOpacity>
+          </PressScale>
           <Text style={styles.textSelect}>{strings.wallet.deal}</Text>
         </View>
       </View>

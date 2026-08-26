@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { Image } from '~/common/index'
 import { Icon } from '~/common'
 import Colors from '~/common/Colors/Colors'
 import { formatMoney, formatNumber } from '~/utils/format'
+import PressScale from '~/design-system/PressScale'
 
 const WalletItem = ({ data, type, onItemPress }) => {
 
@@ -33,7 +34,7 @@ const WalletItem = ({ data, type, onItemPress }) => {
   }
 
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={() => {
         if(onItemPress) {
           onItemPress(data)
@@ -61,8 +62,8 @@ const WalletItem = ({ data, type, onItemPress }) => {
         />
 
       </View>
-        
-    </TouchableOpacity>
+
+    </PressScale>
   )
 }
 

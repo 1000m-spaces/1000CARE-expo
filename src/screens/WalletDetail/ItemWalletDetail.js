@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Image } from '~/common/index'
 import dropdown from '~/assets/configNeoMed/Wallet/dropdown.png'
 import Colors from '~/common/Colors/Colors'
 import { CheckBox } from '~/common/index'
 import { formatMoney } from '~/utils/format'
+import PressScale from '~/design-system/PressScale'
 
 const ItemWalletDetail = props => {
   const { code,textMethod,money,checkBoxAll } = props
@@ -14,25 +15,24 @@ const ItemWalletDetail = props => {
   },[checkBoxAll])
 
   return(
-    <TouchableOpacity
-      activeOpacity={0.5}
+    <PressScale
       style={styles.container}
       onPress={()=> setCheckBox(!checkBox)}
     >
-      <CheckBox 
+      <CheckBox
         checked={checkBox}
       />
       <View style={styles.viewPay}>
         <Text style={styles.textPay}>{textMethod}: {code}</Text>
         <Text style={styles.numberMoney}>{formatMoney(money, { unit: '' })}<Text style={styles.textUnit}>VNĐ</Text></Text>
       </View>
-      <TouchableOpacity style={styles.buttonRight}>
+      <View style={styles.buttonRight}>
         <Image
           style={styles.styleImage}
           source={dropdown}
         />
-      </TouchableOpacity>
-    </TouchableOpacity>
+      </View>
+    </PressScale>
   )
 }
 export default ItemWalletDetail
