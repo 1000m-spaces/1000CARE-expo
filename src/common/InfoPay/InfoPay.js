@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimensions, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { Dimensions, View, Text, StyleSheet } from 'react-native'
 import { Image } from '~/common/index'
 import dropdown from '~/assets/configNeoMed/Wallet/dropdown.png'
 const fullWith = Dimensions.get('window').width
@@ -7,8 +7,7 @@ const fullWith = Dimensions.get('window').width
 const InfoPay = props => {
   const { code, money,textMethod,textInfo,textMoney } = props
   return(
-    <TouchableOpacity
-      activeOpacity={0.5}
+    <View
       style={styles.container}
     >
       <View style={styles.viewPay}>
@@ -19,13 +18,13 @@ const InfoPay = props => {
         <Text style={styles.textCode}>{textMoney}:</Text>
         <Text style={{ color: parseInt(money,10)>=0?'#4DDD8A':'red' }}>{money}</Text>
       </View>
-      <TouchableOpacity style={styles.buttonRight}>
+      <View style={styles.buttonRight}>
         <Image
           style={styles.styleImage}
           source={dropdown}
         />
-      </TouchableOpacity>
-    </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 export default InfoPay

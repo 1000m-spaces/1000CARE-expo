@@ -1,10 +1,10 @@
 import React from 'react'
 import { Icon, Image } from '~/common/index'
-import { TouchableOpacity } from 'react-native'
 import { View, Text } from 'react-native'
 import { close } from '~/assets/constants'
 import CartHeaderButton from '../CartHeaderButton/CartHeaderButton'
 import LiquidGlassView from '~/design-system/LiquidGlassView'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
 import Colors from '../Colors/Colors'
@@ -14,7 +14,7 @@ const Header = ({ showLeft = true, showRight = false, leftAction, iconLeft = clo
     <LiquidGlassView intensity="regular" style={[styles.headerContainer, headerContainerStyles]}>
       {
         showLeft && leftAction && (
-          <TouchableOpacity
+          <PressScale
             style={styles.backBtn}
             onPress={leftAction}
           >
@@ -22,7 +22,7 @@ const Header = ({ showLeft = true, showRight = false, leftAction, iconLeft = clo
               resizeMode={'contain'}
               source={iconLeft}
             />
-          </TouchableOpacity>
+          </PressScale>
         )
       }
       <View style={styles.titleContainer}>
@@ -51,7 +51,7 @@ const Header = ({ showLeft = true, showRight = false, leftAction, iconLeft = clo
             size={26}
           />
         ) : showRight ? (
-          <TouchableOpacity
+          <PressScale
             onPress={rightAction}
             style={styles.buttonReadAllNoti}
           >
@@ -62,7 +62,7 @@ const Header = ({ showLeft = true, showRight = false, leftAction, iconLeft = clo
               size={26}
             /> */}
             <Text style={styles.buttonReadAllNotiText}>Lưu</Text>
-          </TouchableOpacity>
+          </PressScale>
         ) : null
       }
     </LiquidGlassView>
