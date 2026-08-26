@@ -1,11 +1,12 @@
 import React from 'react'
 import { useState } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 import { Image, Text } from '~/common/index'
 import RadioButtonGroup from '~/common/RadioButtonGroup/RadioButtonGroup'
 import styles from './styles'
 import { plus_2 } from '~/assets/constants'
 import RelationshipInfo from './RelationshipInfo'
+import PressScale from '~/design-system/PressScale'
 
 const ListRelationshipInfo = ({ listRelationShip, setListRelationShip }) => {
   const [show, setShow] = useState(!!listRelationShip && listRelationShip.length > 0)
@@ -76,15 +77,15 @@ const ListRelationshipInfo = ({ listRelationShip, setListRelationShip }) => {
                 )
               })
             }
-            <TouchableOpacity
+            <PressScale
               style={styles.addButtonContainer}
               onPress={() => setListRelationShip([...listRelationShip, {}])}
             >
-              <Image 
+              <Image
                 style={styles.addButton}
                 source={plus_2}
               />
-            </TouchableOpacity>
+            </PressScale>
           </>
         )
       }

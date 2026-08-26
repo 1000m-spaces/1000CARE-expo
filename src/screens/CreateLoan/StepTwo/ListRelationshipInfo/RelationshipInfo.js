@@ -1,8 +1,9 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Colors from '~/common/Colors/Colors'
 import { ModalSelect, Text, TextInput } from '~/common/index'
 import { RELATIONSHIP_TYPE } from '~/constants/constants'
+import PressScale from '~/design-system/PressScale'
 
 const relationShip = [
   {
@@ -53,17 +54,17 @@ const RelationshipInfo = ({ index, onChange, data, onDelete }) => {
         <Text>
           {`Người liên quan ${index}`}
         </Text>
-        <TouchableOpacity 
+        <PressScale
           onPress={onDelete}
         >
-          <Text 
+          <Text
             style={{
               color: Colors.red,
             }}
           >
         Xóa
           </Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
       <TextInput
         inputContainerStyle={styles.inputContainerStyle}

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { FlatList, Linking, TouchableOpacity, View } from 'react-native'
+import { FlatList, Linking, View } from 'react-native'
 import { CheckBox, Text } from '~/common/index'
 import { formatMoney } from '~/utils/format'
 import DialogTerm from './DialogTerm/index'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
 
@@ -47,7 +48,7 @@ const StepOne = ({ loanProposalsDetail, acceptedTerm, setAcceptedTerm }) => {
           data={termData}
           renderItem={({ item }) => renderRow(item)}
         />
-        <TouchableOpacity
+        <PressScale
           style={styles.checkBoxContainer}
           onPress={() => setAcceptedTerm(!acceptedTerm)}
         >
@@ -56,12 +57,12 @@ const StepOne = ({ loanProposalsDetail, acceptedTerm, setAcceptedTerm }) => {
             onPress={() => setAcceptedTerm(!acceptedTerm)}
           />
           <Text style={styles.checkBoxMessage}>Tôi đã đọc, hiểu và đồng ý với</Text>
-          <TouchableOpacity
+          <PressScale
             onPress={() => {
               Linking.openURL('https://storage.googleapis.com/neomed.vn/docs/contracts/mbbank/THE_LE_SAN_PHAM_VAY_SAN_XUAT_KINH_DOANH.pdf')
             }}
-          ><Text style={styles.termMessage}>thể lệ sản phẩm</Text></TouchableOpacity>
-        </TouchableOpacity>
+          ><Text style={styles.termMessage}>thể lệ sản phẩm</Text></PressScale>
+        </PressScale>
       </View>
       <DialogTerm
         isOpen={openDialogTerm}

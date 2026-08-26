@@ -1,11 +1,12 @@
 import React from 'react'
-import { FlatList, Text, View, TouchableOpacity } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import { Image } from '~/common/index'
 import Modal from 'react-native-modal'
 import {
   close,
 } from '~/assets/constants'
 import styles from './styles'
+import PressScale from '~/design-system/PressScale'
 
 const termData = [
   'Sản phẩm Vay siêu nhanh từ thẻ tín dụng: Là sản phẩm cho vay mục đích tiêu dùng cá nhân dành cho Khách hàng cá nhân có thẻ tín dụng do MB phát hành. Theo đó, căn cứ vào đề nghị vay vốn của Khách hàng qua (các) kênh số, giá trị Hạn mức thẻ Khách hàng đã được cấp, MB thực hiện cho khách hàng vay tối đa 75% giá trị hạn mức thẻ, đảm bảo',
@@ -46,15 +47,15 @@ const DialogTerm = ({ isOpen, onClose }) => {
           >
             Thể lệ sản phẩm
           </Text>
-          <TouchableOpacity
+          <PressScale
             onPress={onClose}
           >
-            <Image 
+            <Image
               style={styles.image}
               resizeMode={'contain'}
               source={close}
             />
-          </TouchableOpacity>
+          </PressScale>
         </View>
         <View>
           <FlatList 
