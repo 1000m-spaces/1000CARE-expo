@@ -4,9 +4,9 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 import Header from '~/common/Header/index';
+import PressScale from '~/design-system/PressScale';
 import styles from './styles';
 import { back } from '~/assets/constants';
 import strings from '~/i18n';
@@ -31,7 +31,7 @@ const ACCOUNT_TYPE = {
 
 const BankItem = ({ logo, title, amount, onClick, key }) => {
   return (
-    <TouchableOpacity style={styles.itemContainer} onPress={onClick} key={key}>
+    <PressScale style={styles.itemContainer} onPress={onClick} key={key}>
       <View style={styles.logoItemContainer}>
         <Image style={styles.logoItem} resizeMode={'contain'} source={logo} />
       </View>
@@ -39,7 +39,7 @@ const BankItem = ({ logo, title, amount, onClick, key }) => {
         <Text style={styles.titleItem}>{title}</Text>
         <Text style={styles.amount}>{amount}</Text>
       </View>
-    </TouchableOpacity>
+    </PressScale>
   );
 };
 

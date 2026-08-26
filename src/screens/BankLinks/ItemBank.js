@@ -4,10 +4,10 @@ import {
   View,
   Text,
   Dimensions,
-  TouchableOpacity,
 } from 'react-native';
 import {Image} from '~/common/index';
 import {log_mb_bank_landscape} from '~/assets/constants';
+import PressScale from '~/design-system/PressScale';
 const fullWith = Dimensions.get('window').width;
 
 const ItemBank = ({data}) => {
@@ -21,7 +21,7 @@ const ItemBank = ({data}) => {
     return '';
   };
   return (
-    <TouchableOpacity style={styles.container}>
+    <PressScale style={styles.container}>
       <View style={styles.viewImage}>
         <Image
           resizeMode={'contain'}
@@ -40,7 +40,7 @@ const ItemBank = ({data}) => {
           Stk: {numberAccount(data?.account_number)}
         </Text>
       </View>
-    </TouchableOpacity>
+    </PressScale>
   );
 };
 export default ItemBank;

@@ -1,11 +1,12 @@
 import React from 'react'
 
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { Image } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
 
 const ChooseItem = ({ data, navigation }) => {
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={() => {
         navigation.push(data.routePath)
       }}
@@ -26,7 +27,7 @@ const ChooseItem = ({ data, navigation }) => {
           source={require('../../assets/icons/next.png')}
         />
       </View>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
