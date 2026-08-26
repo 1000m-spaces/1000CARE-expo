@@ -1,9 +1,9 @@
 import React from 'react'
 import { Image } from '~/common/index'
-import { TouchableOpacity } from 'react-native'
 import { View } from 'react-native'
 import { back } from '~/assets/constants'
 import CartHeaderButton from '~/common/CartHeaderButton/CartHeaderButton'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
 
@@ -11,7 +11,7 @@ const Header = ({ navigation, goBack }) => {
 
   return (
     <View style={styles.headerContainer}>
-      <TouchableOpacity
+      <PressScale
         style={styles.backBtn}
         onPress={() => {
           if (goBack) {
@@ -24,7 +24,7 @@ const Header = ({ navigation, goBack }) => {
           resizeMode={'contain'}
           source={back}
         />
-      </TouchableOpacity>
+      </PressScale>
       <View style={styles.cartQuantityContainer}>
         <CartHeaderButton 
           navigation={navigation}

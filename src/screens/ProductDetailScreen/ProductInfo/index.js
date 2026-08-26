@@ -1,7 +1,8 @@
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 import Colors from '~/common/Colors/Colors'
 import { Image, Text } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
 import { heart, heart_red } from '~/assets/constants'
@@ -49,7 +50,7 @@ const ProductInfo = ({ product, favorClick, openImage }) => {
           >
             {safeProduct.name || null}
           </Text>
-          <TouchableOpacity
+          <PressScale
             onPress={() => favorClick && favorClick()}
             style={styles.iconWhitelistContainer}
           >
@@ -59,7 +60,7 @@ const ProductInfo = ({ product, favorClick, openImage }) => {
               source={safeProduct.is_wishlist ? heart_red : heart}
               tintColor={Colors.errorColor}
             />
-          </TouchableOpacity>
+          </PressScale>
         </View>
         <Text
           numberOfLines={1}

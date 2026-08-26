@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Modal, SafeAreaView, ScrollView, StatusBar, TouchableOpacity, View } from 'react-native'
+import { Modal, SafeAreaView, ScrollView, StatusBar, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { getErrorProductDetails, getProductDetails, getStatusProductDetail } from '~/store/products/productsSelector'
 import { requestGetProductDetails } from '~/store/products/productsActions'
 
@@ -374,7 +375,7 @@ const ProductDetailScreen = (props) => {
       >
         <SafeAreaView style={styles.modalContainer}>
           <ImageViewer imageUrls={image} />
-          <TouchableOpacity
+          <PressScale
             style={styles.buttonClose}
             onPress={() => setOpenModal(false)}
           >
@@ -384,7 +385,7 @@ const ProductDetailScreen = (props) => {
               color={'white'}
               size={30}
             />
-          </TouchableOpacity>
+          </PressScale>
         </SafeAreaView>
       </Modal>
       <ErrorView
