@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Image } from '~/common/index'
 import { s, fs } from '~/utils/responsive'
 import { brandColors } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
+import PressScale from '~/design-system/PressScale'
 
 const TitleDetailOrderBox = ({ urlIcon, title, route, navigation, params }) => {
   return (
@@ -19,14 +20,14 @@ const TitleDetailOrderBox = ({ urlIcon, title, route, navigation, params }) => {
         <Text style={styles.title}>{title}</Text>
       </View>
       {route ? (
-        <TouchableOpacity
+        <PressScale
           style={styles.viewDetailButton}
           onPress={() => {
             navigation.navigate(route, params)
           }}
         >
           <Text style={styles.textViewDetailButton}>Xem chi tiết</Text>
-        </TouchableOpacity>
+        </PressScale>
       ) : null}
     </View>
   )

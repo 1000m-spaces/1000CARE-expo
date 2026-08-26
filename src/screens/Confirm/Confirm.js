@@ -3,11 +3,11 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Linking,
   Platform,
 } from 'react-native';
 import { Image } from '~/common/index';
+import PressScale from '~/design-system/PressScale';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '~/common/Header/index';
 import { back } from '~/assets/constants';
@@ -571,10 +571,10 @@ const Confirm = ({ route, navigation }) => {
         {(type === 'LOGIN' || type === 'SIGNUP') && (
           <View style={styles.footer_views}>
             <Text style={styles.hotlineLabel}>{'Hotline:'}</Text>
-            <TouchableOpacity
+            <PressScale
               onPress={() => Linking.openURL('tel:096 649 2818')}>
               <Text style={styles.text_register_now}>{'096 649 2818'}</Text>
-            </TouchableOpacity>
+            </PressScale>
           </View>
         )}
         <DialogInfo

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 import strings from '~/i18n'
 import { formatMoney } from '~/utils/index'
 import { Image } from '~/common/index'
@@ -7,6 +7,10 @@ import { Image } from '~/common/index'
 import styles from './styles'
 import { NAVIGATION_ORDER_DETAIL_SCREEN } from '~/navigation/routes'
 import StatusBadge from '~/design-system/StatusBadge'
+import PressScale from '~/design-system/PressScale'
+
+// Ngoài danh sách chỉ hiện 3 số cuối của mã đơn — mã đầy đủ chỉ lộ ở trang chi tiết.
+const shortOrderId = orderId => `···${String(orderId ?? '').slice(-3)}`
 
 const orderStatuses = [
   'Không xác định', // 0
@@ -49,7 +53,7 @@ const OrderItem = ({ order, onPayment, navigation, goBack, onCancelOrder, buyAga
         : 'info'
 
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={() => navigation.navigate(NAVIGATION_ORDER_DETAIL_SCREEN, {
         goBack,
         order: {
@@ -64,7 +68,7 @@ const OrderItem = ({ order, onPayment, navigation, goBack, onCancelOrder, buyAga
         <View style={styles.orderCodeBlock}>
           <Text style={styles.metaLabel}>Mã đơn hàng</Text>
           <Text numberOfLines={1} ellipsizeMode="tail" style={styles.orderTransId}>
-            {order.order_id}
+            {shortOrderId(order.order_id)}
           </Text>
         </View>
         <StatusBadge text={statusText} variant={statusVariant} />
@@ -105,30 +109,30 @@ const OrderItem = ({ order, onPayment, navigation, goBack, onCancelOrder, buyAga
           }
         </View>
         <View style={styles.actionRow}>
-          <TouchableOpacity
+          <PressScale
             style={styles.buyAgainContainer}
             onPress={buyAgain}
           >
             <Text style={styles.buyAgainText}>{'ĐẶT LẠI'}</Text>
-          </TouchableOpacity>
+          </PressScale>
           {
             order?.order_status === 1 && (
-              <TouchableOpacity
+              <PressScale
                 style={styles.cancelContainer}
                 onPress={() => onCancelOrder(order.order_id)}
               >
                 <Text style={styles.cancelText}>{'HUỶ ĐƠN'}</Text>
-              </TouchableOpacity>
+              </PressScale>
             )
           }
           {
             order?.order_status === 28 && (
-              <TouchableOpacity
+              <PressScale
                 style={styles.cancelContainer}
                 onPress={confirmOrder}
               >
                 <Text style={styles.confirmText}>{'XÁC NHẬN'}</Text>
-              </TouchableOpacity>
+              </PressScale>
             )
           }
           {/* {
@@ -152,7 +156,7 @@ const OrderItem = ({ order, onPayment, navigation, goBack, onCancelOrder, buyAga
           } */}
         </View>
       </View>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
