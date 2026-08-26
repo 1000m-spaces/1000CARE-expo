@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { useDispatch, useSelector } from 'react-redux'
 import Header from '~/common/Header/index'
 import ProductItem from '~/common/ProductItem/ProductItem'
@@ -305,21 +306,21 @@ const ProductListScreen = ({ navigation, route }) => {
         cart={true}
         customTitle={type === 'propose' ? () => {
           return (
-            <TouchableOpacity
-              onPress={() =>{ 
+            <PressScale
+              onPress={() =>{
                 dispatch(setSelectedDistri(distributor))
                 navigation.navigate(NAVIGATION_TO_HOME_SCREEN)
               }}
               style={styles.titleContainer}
             >
-              <Text 
+              <Text
                 style={styles.title}
                 numberOfLines={1}
                 ellipsizeMode='tail'
               >
                 {distributor?.nick_name}
               </Text>
-            </TouchableOpacity>
+            </PressScale>
           )
         } : null}
         titleStyles={type === 'propose'? { marginLeft: -50 } : { marginLeft:0 }}
@@ -357,13 +358,12 @@ const ProductListScreen = ({ navigation, route }) => {
             <Text style={styles.activeFilterText} numberOfLines={1}>
               {`Đang lọc: ${activeDistributorName}`}
             </Text>
-            <TouchableOpacity
+            <PressScale
               onPress={clearPriceSockFilter}
               style={styles.clearFilterButton}
-              activeOpacity={0.78}
             >
               <Icon type="feather" name="x" color={brandColors.surface} size={14} />
-            </TouchableOpacity>
+            </PressScale>
           </View>
         </View>
       )}
