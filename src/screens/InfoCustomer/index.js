@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { View, TouchableOpacity, Text, ScrollView, SafeAreaView, PermissionsAndroid, Platform } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView, PermissionsAndroid, Platform } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Button, Image, ModalSelect, TextInput } from '~/common/index'
 import styles from './styles'
 import { getUpdatePharmacy, resetUpdatePharmacy, requestGetPharmacyInfo, deleteAccount, deleteAccountOtp, resetDeleteAccountOtp, logout, resetCart, getProvincesRequest, getDistrictsRequest, getWardsRequest } from '~/store/actions'
@@ -434,12 +435,12 @@ const InfoCustomer = props => {
             keyboardType="email-address"
           />
           <View style={styles.twoColumn}>
-            <TouchableOpacity style={[styles.field, styles.columnField]} onPress={showDatePicker} activeOpacity={0.84}>
+            <PressScale style={[styles.field, styles.columnField]} onPress={showDatePicker}>
               <Text style={styles.fieldLabel}>Ngày sinh</Text>
               <View style={styles.readonlyInput}>
                 <Text style={styles.readonlyText}>{isDate ? convertBirth(isDate, 'DD/MM/YYYY HH:mm:ss') : '__/__/____'}</Text>
               </View>
-            </TouchableOpacity>
+            </PressScale>
             <InfoField
               label="Số điện thoại"
               placeholder="Số điện thoại"
@@ -519,13 +520,13 @@ const InfoCustomer = props => {
           </View>
         </FormSection>
 
-        <TouchableOpacity
+        <PressScale
           style={styles.deleteButton}
           disabled={disable}
           onPress={() => deleteAccounts()}
         >
           <Text style={styles.textDelete}>Xóa tài khoản</Text>
-        </TouchableOpacity>
+        </PressScale>
       </KeyboardAwareScrollView>
       {/* <Button
         text={"Xóa tài khoản"}
@@ -548,7 +549,7 @@ const InfoCustomer = props => {
           <Text style={styles.titleModal}>Lựa chọn hình thức tải lên</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
             <View>
-              <TouchableOpacity
+              <PressScale
                 onPress={openCamera}
                 style={styles.selectCamera}
               >
@@ -556,11 +557,11 @@ const InfoCustomer = props => {
                   style={{ height: 25, width: 25 }}
                   source={camera}
                 />
-              </TouchableOpacity>
+              </PressScale>
               <Text style={styles.textSelect}>Chụp ảnh</Text>
             </View>
             <View>
-              <TouchableOpacity
+              <PressScale
                 onPress={openLibrary}
                 style={styles.selectCamera}
               >
@@ -568,7 +569,7 @@ const InfoCustomer = props => {
                   style={{ height: 25, width: 25 }}
                   source={pictureModal}
                 />
-              </TouchableOpacity>
+              </PressScale>
               <Text style={styles.textSelect}>Thư viện</Text>
             </View>
           </View>
