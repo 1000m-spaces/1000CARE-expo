@@ -1,11 +1,12 @@
 import React from 'react'
 
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Image } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
 
 const DistributorItem = ({ data, selected, changeDistrinutor }) => {
   return (
-    <TouchableOpacity
+    <PressScale
       style={[styles.wrapper, { borderColor: selected ? '#0B7B8A' : '#FFF' }]}
       onPress={() => changeDistrinutor(data.id)}
     >
@@ -13,7 +14,7 @@ const DistributorItem = ({ data, selected, changeDistrinutor }) => {
         style={styles.image}
         source={data.urlImage}
       />
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 

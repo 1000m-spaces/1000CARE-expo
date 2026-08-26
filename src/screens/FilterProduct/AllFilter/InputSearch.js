@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, TextInput, StyleSheet } from 'react-native'
 import { Icon } from '~/common'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, liquidGlass } from '~/design-system/tokens'
+import PressScale from '~/design-system/PressScale'
 
 const InputSearch = ({ textSearch, onChangeText, ref_input, placeholder = 'Nhập tên sản phẩm' }) => {
   const [value, setValue] = useState('')
@@ -32,7 +33,7 @@ const InputSearch = ({ textSearch, onChangeText, ref_input, placeholder = 'Nhậ
         color={brandColors.tealPrimary}
         size={20}
       />
-      <TouchableOpacity
+      <PressScale
         onPress={() => {
           onChangeText('')
           setValue('')
@@ -45,7 +46,7 @@ const InputSearch = ({ textSearch, onChangeText, ref_input, placeholder = 'Nhậ
           color={brandColors.mutedLight}
           size={20}
         />
-      </TouchableOpacity>
+      </PressScale>
     </View>
   )
 }

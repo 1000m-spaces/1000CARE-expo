@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 import _ from 'lodash'
 import { Icon, Text } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
 import { NAVIGATION_ALL_FILTER } from '~/navigation/routes'
@@ -89,7 +90,7 @@ const Group = ({
         }
         {
           !showAll && data?.length > 10 && (
-            <TouchableOpacity
+            <PressScale
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -111,7 +112,7 @@ const Group = ({
               }}
             >
               <Text style={styles.showMore}>{'Xem thêm lựa chọn'}</Text>
-            </TouchableOpacity>
+            </PressScale>
           )
         }
       </View>
