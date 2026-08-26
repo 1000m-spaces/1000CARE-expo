@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image, Animated, Easing, StyleSheet, TextInput } from 'react-native';
+import { View, Text, Image, Animated, Easing, StyleSheet, TextInput } from 'react-native';
+import PressScale from '~/design-system/PressScale';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -84,13 +85,12 @@ const LoginPhone = ({ navigation }) => {
         contentContainerStyle={styles.scrollContent}
       >
         <View style={styles.screen}>
-          <TouchableOpacity
+          <PressScale
             onPress={() => navigation.pop()}
             style={styles.backButton}
-            activeOpacity={0.78}
           >
             <Icon type="feather" name="chevron-left" color={brandColors.textDark} size={s(30)} />
-          </TouchableOpacity>
+          </PressScale>
 
           <Animated.View style={[styles.card, {
             opacity: fadeAnim,
@@ -119,8 +119,7 @@ const LoginPhone = ({ navigation }) => {
               />
             </View>
 
-            <TouchableOpacity
-              activeOpacity={0.82}
+            <PressScale
               onPress={onLoginPress}
               disabled={loading}
               style={[styles.loginButton, loading && styles.loginButtonDisabled]}
@@ -135,7 +134,7 @@ const LoginPhone = ({ navigation }) => {
                   {loading ? 'Đang xác thực...' : strings.common.login}
                 </Text>
               </LinearGradient>
-            </TouchableOpacity>
+            </PressScale>
 
             <Text style={styles.registerLine}>
               Bạn chưa có tài khoản?{' '}

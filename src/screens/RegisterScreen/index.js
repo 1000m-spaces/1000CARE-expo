@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
+import PressScale from '~/design-system/PressScale';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { resetLogin } from '~/store/auth/authActions';
@@ -106,11 +107,11 @@ const RegisterScreen = ({ navigation }) => {
         </View>
         <View style={styles.footer_views}>
           <Text style={styles.footerText}>{strings.registerScreen.have_account}</Text>
-          <TouchableOpacity onPress={() => navigation.pop()}>
+          <PressScale onPress={() => navigation.pop()}>
             <Text style={styles.text_register_now}>
               {strings.registerScreen.login_now}
             </Text>
-          </TouchableOpacity>
+          </PressScale>
         </View>
       </KeyboardAwareScrollView>
       <ErrorView
