@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { StatusBar, StyleSheet, FlatList, View, TouchableOpacity, SectionList } from 'react-native'
+import { StatusBar, StyleSheet, FlatList, View, SectionList } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { useDispatch, useSelector } from 'react-redux'
 import _ from 'lodash'
 
@@ -107,23 +108,23 @@ const Search = ({ navigation }) => {
   }
 
   const renderDistributorItem = ({ item }) => (
-    <TouchableOpacity
+    <PressScale
       style={styles.listItem}
       onPress={() => navigation.navigate('DistributorDetail', { distributor: item })}
     >
       <Text style={styles.listItemTitle}>{item.name || item.nick_name || 'N/A'}</Text>
       <Text style={styles.listItemSubtitle}>{item.address || ''}</Text>
-    </TouchableOpacity>
+    </PressScale>
   )
 
   const renderPharmacyItem = ({ item }) => (
-    <TouchableOpacity
+    <PressScale
       style={styles.listItem}
       onPress={() => navigation.navigate('PharmacyDetail', { pharmacy: item })}
     >
       <Text style={styles.listItemTitle}>{item.name || item.pharmacy_name || 'N/A'}</Text>
       <Text style={styles.listItemSubtitle}>{item.address || ''}</Text>
-    </TouchableOpacity>
+    </PressScale>
   )
 
   const getSectionData = () => {
@@ -186,30 +187,30 @@ const Search = ({ navigation }) => {
 
       <View style={styles.tabShell}>
       <View style={styles.tabContainer}>
-        <TouchableOpacity
+        <PressScale
           style={[styles.tabButton, tab === SEARCH_TABS.PRODUCT && styles.tabButtonActive]}
           onPress={() => onTabChange(SEARCH_TABS.PRODUCT)}
         >
           <Text style={[styles.tabText, tab === SEARCH_TABS.PRODUCT && styles.tabTextActive]}>Sản phẩm</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </PressScale>
+        <PressScale
           style={[styles.tabButton, tab === SEARCH_TABS.DISTRIBUTOR && styles.tabButtonActive]}
           onPress={() => onTabChange(SEARCH_TABS.DISTRIBUTOR)}
         >
           <Text style={[styles.tabText, tab === SEARCH_TABS.DISTRIBUTOR && styles.tabTextActive]}>Nhà phân phối</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </PressScale>
+        <PressScale
           style={[styles.tabButton, tab === SEARCH_TABS.PHARMACY && styles.tabButtonActive]}
           onPress={() => onTabChange(SEARCH_TABS.PHARMACY)}
         >
           <Text style={[styles.tabText, tab === SEARCH_TABS.PHARMACY && styles.tabTextActive]}>Cửa hàng</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </PressScale>
+        <PressScale
           style={[styles.tabButton, tab === SEARCH_TABS.ALL && styles.tabButtonActive]}
           onPress={() => onTabChange(SEARCH_TABS.ALL)}
         >
           <Text style={[styles.tabText, tab === SEARCH_TABS.ALL && styles.tabTextActive]}>Tất cả</Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
       </View>
 
