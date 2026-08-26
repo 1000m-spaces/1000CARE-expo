@@ -1,11 +1,12 @@
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 import { Image, Text } from '~/common/index'
 import styles from './styles'
 import { CheckBox } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
 const Item = ({ data,index,clickSelectDistri, pharmacyInfo }) => {
   return(
-    <TouchableOpacity
+    <PressScale
       style={styles.containerItem}
       onPress={() => clickSelectDistri(data)}
     >
@@ -41,7 +42,7 @@ const Item = ({ data,index,clickSelectDistri, pharmacyInfo }) => {
           />
         </View>
       }
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 export default Item

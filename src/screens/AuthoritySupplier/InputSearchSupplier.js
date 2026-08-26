@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, TextInput, StyleSheet } from 'react-native'
 import { Icon } from '../../common'
 import { getSearchDistributor, resetSearchDistributor } from '~/store/actions'
 import _ from 'lodash'
 import { s, fs } from '~/utils/responsive'
 import { brandColors } from '~/design-system/tokens'
+import PressScale from '~/design-system/PressScale'
 
 const InputSearchSupplier = ({ isEmpty }) => {
   const dispatch = useDispatch()
@@ -44,7 +45,7 @@ const InputSearchSupplier = ({ isEmpty }) => {
         color={'#8C8C8C'}
         size={20}
       />
-      <TouchableOpacity
+      <PressScale
         onPress={() => {
           searchTextChangeDelay('')
           setValue('')
@@ -57,7 +58,7 @@ const InputSearchSupplier = ({ isEmpty }) => {
           size={20}
           color={'#8C8C8C'}
         />
-      </TouchableOpacity>
+      </PressScale>
     </View>
   )
 }

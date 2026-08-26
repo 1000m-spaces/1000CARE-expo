@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Image, Text } from '~/common/index';
 import styles from './styles';
+import PressScale from '~/design-system/PressScale';
 
 const Item = ({data,index,clickSelectDistri,distriSelect, pharmacyInfo}) => {
   const [hidden, setHidden] = useState(true);
@@ -17,7 +18,7 @@ const Item = ({data,index,clickSelectDistri,distriSelect, pharmacyInfo}) => {
   },[distriSelect])
   
   return(
-    <TouchableOpacity style={styles.containerItem} onPress={() => clickSelectDistri(data)}>
+    <PressScale style={styles.containerItem} onPress={() => clickSelectDistri(data)}>
       <View style={styles.contentDistri}>
         <Image 
           source={{ uri: data.logo }}
@@ -38,7 +39,7 @@ const Item = ({data,index,clickSelectDistri,distriSelect, pharmacyInfo}) => {
       <View style={styles.viewCircle}>
         {!hidden &&<View style={styles.circleSelect}></View>}
       </View>
-    </TouchableOpacity>
+    </PressScale>
   );
 }
 export default Item;
