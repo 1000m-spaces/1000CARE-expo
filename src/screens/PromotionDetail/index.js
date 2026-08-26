@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback, useEffect, useState } from 'react'
-import { SafeAreaView, View, TouchableOpacity, ScrollView, Image as ImageConver } from 'react-native'
+import { SafeAreaView, View, ScrollView, Image as ImageConver } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import HTML from 'react-native-render-html'
 import { useDispatch, useSelector } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -87,7 +88,7 @@ const ProductItemCampaign = ({ product, onClick, chooseAble, onCheck, addItem, d
 
   }
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={onClick}
       style={styles.productContainer}
     >
@@ -113,7 +114,7 @@ const ProductItemCampaign = ({ product, onClick, chooseAble, onCheck, addItem, d
             <Text style={styles.price}>{formatMoney(product.price, { unit: 'đ' })}</Text>
           </View>
           {campaignType === 8 || campaignType === 10 && <View>
-            <TouchableOpacity
+            <PressScale
               onPress={addProd}
               style={styles.buttonAddContainer}
             >
@@ -121,7 +122,7 @@ const ProductItemCampaign = ({ product, onClick, chooseAble, onCheck, addItem, d
                 source={plus_2}
                 style={styles.buttonAdd}
               />
-            </TouchableOpacity>
+            </PressScale>
           </View>}
 
         </View>
@@ -135,7 +136,7 @@ const ProductItemCampaign = ({ product, onClick, chooseAble, onCheck, addItem, d
           />
         )
       }
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
@@ -345,7 +346,7 @@ const PromotionDetail = ({ navigation, route }) => {
           >
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.title}>Sản phẩm áp dụng</Text>
-              <TouchableOpacity
+              <PressScale
                 onPress={() => setExpand(!expand)}
               >
                 <SVG
@@ -354,7 +355,7 @@ const PromotionDetail = ({ navigation, route }) => {
                   name={expand ? 'chevron_up_outlined' : 'chevron_down_outlined'}
                   style={styles.chevronIcon}
                 />
-              </TouchableOpacity>
+              </PressScale>
             </View>
 
             {products?.length > 0 && !applyAllProducts ? (
