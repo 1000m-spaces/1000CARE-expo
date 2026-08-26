@@ -43,7 +43,8 @@
       }
     },
     "updates": {
-      "url": "https://u.expo.dev/d9111e9a-0fdb-479a-b481-3b7bfdafdf52"
+      "url": "https://u.expo.dev/d9111e9a-0fdb-479a-b481-3b7bfdafdf52",
+      "checkAutomatically": "ON_ERROR_RECOVERY"
     }
   }
 }

@@ -9,6 +9,7 @@ import {TextInput} from 'react-native';
 import {Host} from 'react-native-portalize';
 import {Fonts} from './assets/config';
 import * as Font from 'expo-font';
+import UpdatePrompt from './design-system/UpdatePrompt';
 
 const customTextInputProps = {
   allowFontScaling: false,
@@ -84,6 +85,7 @@ const App = () => {
           <ThemeProvider theme={theme}>
             <Host>
               <RootNavigator />
+              <UpdatePrompt />
             </Host>
           </ThemeProvider>
           {/* </PersistGate> */}
