@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { TouchableOpacity } from 'react-native'
 import { Image } from '~/common/index'
 import { plus_2, heart, heart_red } from '../../assets/constants'
+import PressScale from '~/design-system/PressScale'
 import placeholder from '~/assets/images/placeholder.png'
 
 import { getListItem as getProductInCart } from '~/store/cart/cartSelectors'
@@ -130,7 +130,7 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
   const discountPercent = hasDiscount ? Math.max(0, 100 - (Number(data.sale_price) / Number(data.price)) * 100).toFixed(1) : null
 
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={() => {
         if (isPending) {
           return
@@ -208,22 +208,20 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
                 </View>
                 <View style={styles.actionColumn}>
                   {addButton && (
-                    <TouchableOpacity
+                    <PressScale
                       onPress={() => addItem()}
                       style={styles.buttonAddContainer}
-                      activeOpacity={0.82}
                       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
                       <Image
                         source={plus_2}
                         style={styles.buttonAdd}
                       />
-                    </TouchableOpacity>
+                    </PressScale>
                   )}
-                  <TouchableOpacity
+                  <PressScale
                     onPress={() => favorClick()}
                     style={styles.favorContainer}
-                    activeOpacity={0.82}
                     hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                   >
                     <Image
@@ -232,7 +230,7 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
                       source={data.is_wishlist ? heart_red : heart}
                       tintColor={Colors.errorColor}
                     />
-                  </TouchableOpacity>
+                  </PressScale>
                 </View>
               </View>
             </View>
@@ -273,7 +271,7 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
           </View>
         )
       }
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
