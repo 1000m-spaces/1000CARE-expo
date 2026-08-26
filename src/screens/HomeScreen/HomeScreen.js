@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
-import { View, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
+import { View, FlatList, Image, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +31,7 @@ import PremiumButton from '~/design-system/PremiumButton';
 import { brandColors } from '~/design-system/tokens';
 import { showToast } from '~/utils/toast';
 import LiquidGlassView from '~/design-system/LiquidGlassView';
+import PressScale from '~/design-system/PressScale';
 import { s } from '~/utils/responsive';
 // import { NetworkContext } from '../../network/NetworkProvider'
 
@@ -62,14 +63,14 @@ const HomeCartButton = ({ navigation }) => {
   };
 
   return (
-    <TouchableOpacity activeOpacity={0.84} style={styles.cartTouch} onPress={onPress}>
+    <PressScale style={styles.cartTouch} onPress={onPress}>
       <LiquidGlassView intensity="regular" style={styles.cartPill}>
         <Icon type="feather" name="shopping-cart" color={brandColors.tealDark} size={24} />
       </LiquidGlassView>
       <View style={styles.cartBadge}>
         <Text style={styles.cartBadgeText}>{count}</Text>
       </View>
-    </TouchableOpacity>
+    </PressScale>
   );
 };
 
@@ -83,8 +84,7 @@ const MarketplaceHeader = ({ navigation, selectedDistri }) => {
         style={styles.marketHeaderScrim}
       />
       <View style={styles.marketHeaderTop}>
-        <TouchableOpacity
-          activeOpacity={0.86}
+        <PressScale
           style={styles.searchTouch}
           onPress={() => navigation.navigate(NAVIGATION_TO_SEARCH)}
         >
@@ -96,7 +96,7 @@ const MarketplaceHeader = ({ navigation, selectedDistri }) => {
               <Text style={styles.searchText}>Tìm sản phẩm</Text>
             </View>
           </View>
-        </TouchableOpacity>
+        </PressScale>
         <HomeCartButton navigation={navigation} />
       </View>
     </View>
@@ -417,7 +417,7 @@ const HomeScreen = ({ navigation }) => {
                     }
                   }}
                 />
-                <TouchableOpacity
+                <PressScale
                   onPress={() => {
                     asyncStorage.setSkipForceUpdate('true');
                     setSkip(true);
@@ -425,7 +425,7 @@ const HomeScreen = ({ navigation }) => {
                   style={{ marginTop: 10, alignItems: 'center' }}
                 >
                   <Text style={{ color: brandColors.muted }}>Để sau</Text>
-                </TouchableOpacity>
+                </PressScale>
               </View>
             }
           </View>
