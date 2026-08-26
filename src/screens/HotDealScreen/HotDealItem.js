@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Text, StyleSheet, View } from 'react-native'
 import { Fonts } from '~/assets/config'
 import Colors from '~/common/Colors/Colors'
 import { Image } from '~/common/index'
@@ -7,11 +7,12 @@ import dimens from '~/constants/dimens'
 import { DIMENS } from '~/constants/index'
 import { brandColors, brandShadow } from '~/design-system/tokens'
 import { s, fs } from '~/utils/responsive'
+import PressScale from '~/design-system/PressScale'
 
 const HotDealItem = ({ data, onClick }) => {
   const isPending = data.distributor?.status === 2
   return (
-    <TouchableOpacity
+    <PressScale
       style={styles.wrap}
       onPress={() => {
         if (!isPending && onClick) {
@@ -39,19 +40,16 @@ const HotDealItem = ({ data, onClick }) => {
       />
       {
         !isPending && (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => onClick(data)}
-          >
+          <View style={styles.button}>
             {data?.banner_type == 1
               ? <Text style={styles.textButton}>Đặt ngay</Text>
               : data?.banner_type == 2 ? <Text style={styles.textButton}>Nạp tiền</Text>
                 : <Text style={styles.textButton}>Xem chi tiết</Text>
             }
-          </TouchableOpacity>
+          </View>
         )
       }
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 

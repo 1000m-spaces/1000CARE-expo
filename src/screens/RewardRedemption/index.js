@@ -4,7 +4,6 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 import styles from './styles';
 import { right_arrow } from '~/assets/constants';
@@ -17,10 +16,11 @@ import { useEffect } from 'react';
 import { getBalance } from '~/store/actions';
 import { formatMoney, formatNumber } from '~/utils/format';
 import LoginRequired from '~/common/LoginRequired/index';
+import PressScale from '~/design-system/PressScale';
 
 const RewardItem = ({ logo, title, amount, onClick }) => {
   return (
-    <TouchableOpacity style={styles.itemContainer} onPress={onClick}>
+    <PressScale style={styles.itemContainer} onPress={onClick}>
       <View
         style={{
           display: 'flex',
@@ -37,7 +37,7 @@ const RewardItem = ({ logo, title, amount, onClick }) => {
       </View>
 
       <Image style={styles.iconChoose} source={right_arrow} />
-    </TouchableOpacity>
+    </PressScale>
   );
 };
 

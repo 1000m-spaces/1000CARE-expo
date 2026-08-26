@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native'
+import { FlatList, SafeAreaView, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 
 import Header from '~/common/Header/index'
 import { back } from '~/assets/constants'
@@ -136,16 +137,15 @@ const Voucher = ({ navigation, route }) => {
             ].map(item => {
               const selected = item.key === status
               return (
-                <TouchableOpacity
+                <PressScale
                   key={item.key}
-                  activeOpacity={0.82}
                   onPress={() => setStatus(item.key)}
                   style={[styles.tabHeader, selected && styles.tabHeaderSelected]}
                 >
                   <Text style={[styles.tabHeaderText, selected && styles.tabHeaderTextSelected]}>
                     {item.label}
                   </Text>
-                </TouchableOpacity>
+                </PressScale>
               )
             })}
           </View>
