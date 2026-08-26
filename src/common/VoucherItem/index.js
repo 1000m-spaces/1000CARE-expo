@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
-  TouchableOpacity,
 } from 'react-native'
 import { Image } from '~/common/index'
 import { getDateString } from '~/utils/date'
 import { formatMoneyString } from '~/utils/format'
 import styles from './styles'
+import PressScale from '~/design-system/PressScale'
 const listMethod = ['COD', 'NEOW', 'NEOWP', 'VQR']
 
 const VoucherItem = ({ data, type, onClick, listVoucherExpired, orgDistributorId }) => {
@@ -30,23 +30,23 @@ const VoucherItem = ({ data, type, onClick, listVoucherExpired, orgDistributorId
         ) : null
       }
       <View style={styles.row}>
-        <TouchableOpacity style={styles.saleOff}>
+        <View style={styles.saleOff}>
           <Text style={styles.textSaleOff}>{`Giảm ${data?.discount / 1000}k`}</Text>
-        </TouchableOpacity>
+        </View>
         {
           data.is_valid ? (
-            <TouchableOpacity
+            <PressScale
               style={styles.useButton}
               onPress={onClick}
             >
               <Text style={styles.textButton}>Sử dụng</Text>
-            </TouchableOpacity>
+            </PressScale>
           ) : (
-            <TouchableOpacity
+            <View
               style={styles.disableButton}
             >
               <Text style={styles.textButton}>Sử dụng</Text>
-            </TouchableOpacity>
+            </View>
           )
         }
       </View>
@@ -57,15 +57,15 @@ const VoucherItem = ({ data, type, onClick, listVoucherExpired, orgDistributorId
     'picked': (<View>
       <Text style={styles.timeVoucher}>{`HSD: ${getDateString(data?.end_date, 'DD/MM/yyyy')}`}</Text>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.saleOff}>
+        <View style={styles.saleOff}>
           <Text style={styles.textSaleOff}>{`Giảm ${data?.discount / 1000}k`}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </View>
+        <PressScale
           style={styles.deleteButton}
           onPress={onClick}
         >
           <Text style={styles.textButton}>Hủy chọn</Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         {method(data.payment_method)}
@@ -79,9 +79,9 @@ const VoucherItem = ({ data, type, onClick, listVoucherExpired, orgDistributorId
             <Text style={styles.textSaleOff}>{`Đơn hàng tối thiêu ${formatMoneyString(data?.order_limit)}`}</Text>
           ) : null
         }
-        <TouchableOpacity style={styles.saleOff}>
+        <View style={styles.saleOff}>
           <Text style={styles.textSaleOff}>{`Giảm ${data?.discount / 1000}k`}</Text>
-        </TouchableOpacity>
+        </View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {method(data.payment_method)}
         </View>
@@ -94,9 +94,9 @@ const VoucherItem = ({ data, type, onClick, listVoucherExpired, orgDistributorId
     </View>),
     'disabled': (<View>
       <Text style={styles.timeVoucher}>HSD: <Text style={styles.expired}>Đã hết hạn</Text></Text>
-      <TouchableOpacity style={styles.saleOff}>
+      <View style={styles.saleOff}>
         <Text style={styles.textSaleOff}>{`Giảm ${data?.discount / 1000}k`}</Text>
-      </TouchableOpacity>
+      </View>
     </View>),
   }
 
