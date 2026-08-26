@@ -20,7 +20,7 @@ import strings from '~/i18n'
 import { gift_fill } from '~/assets/constants'
 import { Fonts } from '~/assets/config'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
 
 const numColumns = 2
 const LAYOUTPADDING = 6 * 2
@@ -178,6 +178,34 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
                 heightImage={Number(1.5 * resolvedImageHeight).toFixed(0)}
                 source={getProductImage(data, 'xl', placeholder)}
               />
+              {hasDiscount && (
+                <View style={styles.discountBadge}>
+                  <Text style={styles.discountBadgeText}>-{discountPercent}%</Text>
+                </View>
+              )}
+              <PressScale
+                onPress={() => favorClick()}
+                style={styles.favorContainer}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <Image
+                  style={styles.favorIcon}
+                  resizeMode={'contain'}
+                  source={data.is_wishlist ? heart_red : heart}
+                  tintColor={Colors.errorColor}
+                />
+              </PressScale>
+              {
+                data.range_prices && data.range_prices.length > 0 && (
+                  <View style={styles.giftBadge}>
+                    <Image
+                      style={styles.giftBadgeIcon}
+                      source={gift_fill}
+                      tintColor={brandColors.surface}
+                    />
+                  </View>
+                )
+              }
             </View>
             <View style={styles.productInfoContainer}>
               <Text
@@ -185,11 +213,13 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
                 numberOfLines={2}
                 ellipsizeMode='tail'
               >{data.name}</Text>
-              <Text
-                style={styles.supplierName}
-                numberOfLines={1}
-                ellipsizeMode='tail'
-              >{supplierName}</Text>
+              {!!supplierName && (
+                <Text
+                  style={styles.supplierName}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                >{supplierName}</Text>
+              )}
               <View style={styles.priceRow}>
                 <View style={styles.priceTextBlock}>
                   <Text
@@ -200,49 +230,26 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
                     {formatMoney(data.sale_price, { unit: isPointPayment ? 'điểm' : 'đ', space: false })}
                   </Text>
                   {hasDiscount && (
-                    <View style={styles.discountRow}>
-                      <Text style={styles.discount}>{formatMoney(data.price, { unit: 'đ', space: false })}</Text>
-                      <Text style={styles.discountPercent}>-{discountPercent}%</Text>
-                    </View>
+                    <Text style={styles.discount} numberOfLines={1}>
+                      {formatMoney(data.price, { unit: 'đ', space: false })}
+                    </Text>
                   )}
                 </View>
-                <View style={styles.actionColumn}>
-                  {addButton && (
-                    <PressScale
-                      onPress={() => addItem()}
-                      style={styles.buttonAddContainer}
-                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    >
-                      <Image
-                        source={plus_2}
-                        style={styles.buttonAdd}
-                      />
-                    </PressScale>
-                  )}
+                {addButton && (
                   <PressScale
-                    onPress={() => favorClick()}
-                    style={styles.favorContainer}
-                    hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                    onPress={() => addItem()}
+                    style={styles.buttonAddContainer}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   >
                     <Image
-                      style={styles.favorIcon}
-                      resizeMode={'contain'}
-                      source={data.is_wishlist ? heart_red : heart}
-                      tintColor={Colors.errorColor}
+                      source={plus_2}
+                      style={styles.buttonAdd}
+                      tintColor={brandColors.surface}
                     />
                   </PressScale>
-                </View>
+                )}
               </View>
             </View>
-            {
-              data.range_prices && data.range_prices.length > 0 && (
-                <Image
-                  style={styles.promotionLabel}
-                  source={gift_fill}
-                  tintColor={Colors.systemColor2}
-                />
-              )
-            }
           </View>
         ) : (
           <View style={styles.imageColumnContainer}>
@@ -314,7 +321,7 @@ const styles = StyleSheet.create({
     margin: s(5),
     borderWidth: 1,
     borderColor: brandColors.borderSoft,
-    borderRadius: s(18),
+    borderRadius: s(radiusScale.xxl),
     overflow: 'hidden',
     ...brandShadow.soft,
   },
@@ -325,17 +332,20 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: IMAGE_CONTAINER_HEIGHT,
-    backgroundColor: brandColors.surface,
+    backgroundColor: brandColors.tealLight,
     alignItems: 'center',
     justifyContent: 'center',
     padding: s(8),
+    position: 'relative',
   },
   imageColumnContainer: {
-    backgroundColor: brandColors.surface,
+    backgroundColor: brandColors.tealLight,
     justifyContent: 'center',
     alignItems: 'center',
     width: PRODUCT_COLUMN_WIDTH,
     height: 120,
+    borderRadius: s(radiusScale.lg),
+    overflow: 'hidden',
   },
   productImage: {
     width: '100%',
@@ -367,16 +377,17 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bold,
     fontSize: fs(13),
     color: brandColors.textDark,
-    lineHeight: fs(17),
-    minHeight: fs(34),
+    lineHeight: fs(18),
+    minHeight: fs(36),
     fontWeight: 'normal',
+    letterSpacing: -0.1,
   },
   supplierName: {
     fontFamily: Fonts.base,
     color: brandColors.muted,
     fontSize: fs(11),
     lineHeight: fs(15),
-    marginTop: s(3),
+    marginTop: s(2),
   },
   productColumName: {
     fontFamily: Fonts.bold,
@@ -390,22 +401,21 @@ const styles = StyleSheet.create({
   },
   buttonAddContainer: {
     backgroundColor: brandColors.tealPrimary,
-    width: s(28),
-    height: s(28),
-    borderRadius: s(14),
+    width: s(30),
+    height: s(30),
+    borderRadius: s(radiusScale.pill),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'flex-end',
+    ...brandShadow.teal,
   },
   buttonAdd: {
-    width: s(12),
-    height: s(12),
-    borderRadius: s(12),
+    width: s(13),
+    height: s(13),
   },
   priceRow: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: s(8),
   },
@@ -425,22 +435,52 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   favorContainer: {
-    height: s(28),
-    width: s(28),
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-    marginTop: s(6),
+    position: 'absolute',
+    top: s(6),
+    right: s(6),
+    height: s(26),
+    width: s(26),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: 'rgba(255,255,255,0.86)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...brandShadow.soft,
   },
   favorIcon: {
-    height: s(22),
-    width: s(22),
+    height: s(15),
+    width: s(15),
   },
-  promotionLabel: {
-    height: 24,
-    width: 24,
+  discountBadge: {
     position: 'absolute',
-    top: 8,
-    right: 8,
+    top: s(6),
+    left: s(6),
+    backgroundColor: brandColors.danger,
+    borderRadius: s(radiusScale.pill),
+    paddingHorizontal: s(7),
+    paddingVertical: s(3),
+  },
+  discountBadgeText: {
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(10),
+    lineHeight: fs(12),
+    color: brandColors.surface,
+  },
+  giftBadge: {
+    position: 'absolute',
+    bottom: s(6),
+    left: s(6),
+    width: s(22),
+    height: s(22),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: brandColors.goldAccent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...brandShadow.soft,
+  },
+  giftBadgeIcon: {
+    width: s(12),
+    height: s(12),
   },
   priceContainer: {
     marginTop: 1,
@@ -448,11 +488,12 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: Fonts.bold,
-    fontSize: fs(14),
+    fontSize: fs(15),
     marginTop: 1,
     fontWeight: 'normal',
     color: brandColors.goldAccent,
     lineHeight: fs(19),
+    letterSpacing: -0.2,
   },
   salePriceContainer: {
     marginTop: 1,
@@ -461,30 +502,20 @@ const styles = StyleSheet.create({
   },
   salePrice: {
     fontFamily: Fonts.bold,
-    fontSize: fs(14),
+    fontSize: fs(15),
     fontWeight: 'normal',
     color: brandColors.goldAccent,
     lineHeight: fs(19),
-  },
-  discountRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: s(2),
+    letterSpacing: -0.2,
   },
   discount: {
+    marginTop: s(1),
     fontFamily: Fonts.base,
     fontSize: fs(10),
     color: brandColors.mutedLight,
     fontWeight: 'normal',
-    lineHeight: fs(14),
+    lineHeight: fs(13),
     textDecorationLine: 'line-through',
-  },
-  discountPercent: {
-    marginLeft: s(4),
-    color: brandColors.danger,
-    fontFamily: Fonts.bold,
-    fontSize: fs(10),
-    fontWeight: 'normal',
   },
   quantityContainer: {
     flexDirection: 'row',
