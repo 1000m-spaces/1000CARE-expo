@@ -1,12 +1,13 @@
 import React from 'react'
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { Image } from '~/common/index'
 import { delivered } from '~/assets/constants'
 import Colors from '~/common/Colors/Colors'
+import PressScale from '~/design-system/PressScale'
 
 const DeliveryItem = ({ address, onPress, onChange, onDelete, onDefault }) => {
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={onPress}
       style={styles.wrapper}
     >
@@ -36,7 +37,7 @@ const DeliveryItem = ({ address, onPress, onChange, onDelete, onDefault }) => {
           style={styles.buttonWrapper}
         >
           <View style={{flexDirection:'row'}}>
-            <TouchableOpacity
+            <PressScale
               onPress={onChange}
             >
               <Text
@@ -44,8 +45,8 @@ const DeliveryItem = ({ address, onPress, onChange, onDelete, onDefault }) => {
               >
               Thay đổi
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </PressScale>
+            <PressScale
               onPress={onDelete}
             >
               <Text
@@ -53,14 +54,14 @@ const DeliveryItem = ({ address, onPress, onChange, onDelete, onDefault }) => {
               >
               Xóa
               </Text>
-            </TouchableOpacity>
+            </PressScale>
           </View>
-          <TouchableOpacity onPress={onDefault}>
+          <PressScale onPress={onDefault}>
             <Text style={styles.defaultAddressText}>Đặt làm mặc định</Text>
-          </TouchableOpacity>
+          </PressScale>
         </View>
       </View>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
