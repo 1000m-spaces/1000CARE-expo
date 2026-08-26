@@ -1,6 +1,7 @@
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 import styles from './styles'
+import PressScale from '~/design-system/PressScale'
 import { Image, Text } from '~/common/index'
 import placeholder from '~/assets/images/placeholder.png'
 import { discount_icon } from '~/assets/constants'
@@ -46,13 +47,13 @@ const RangePrices = ({ onBuy, text, textAction = 'Mua ngay' }) => {
           numberOfLines={2}
           ellipsizeMode='tail'
         >{text}</Text>
-        <TouchableOpacity
+        <PressScale
           onPress={() => onBuy()}
         >
           <Text
             style={styles.buyNow}
           >{textAction}</Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
     </View>
   )
@@ -193,7 +194,7 @@ export const GiftOrder = ({ navigation, data, distributorId, paymentType, promot
                 }
                 {
                   mode !== 'order' && (
-                    <TouchableOpacity
+                    <PressScale
                       onPress={() => {
                         navigation.navigate(NAVIGATION_CHOOSE_GIFT_PROMOTION, {
                           promotion: { ...data, campaign_id: promotion?.id },
@@ -207,7 +208,7 @@ export const GiftOrder = ({ navigation, data, distributorId, paymentType, promot
                           marginTop: 5,
                         }]}
                       >Đổi quà tặng</Text>
-                    </TouchableOpacity>
+                    </PressScale>
                   )
                 }
               </>
@@ -215,7 +216,7 @@ export const GiftOrder = ({ navigation, data, distributorId, paymentType, promot
               <>
                 {
                   mode !== 'order' && (
-                    <TouchableOpacity
+                    <PressScale
                       onPress={() => {
                         navigation.navigate(NAVIGATION_CHOOSE_GIFT_PROMOTION, {
                           promotion: { ...data, campaign_id: promotion?.id },
@@ -229,7 +230,7 @@ export const GiftOrder = ({ navigation, data, distributorId, paymentType, promot
                           marginTop: 5,
                         }]}
                       >Chọn quà tặng</Text>
-                    </TouchableOpacity>
+                    </PressScale>
                   )
                 }
               </>
@@ -342,7 +343,7 @@ const PromotionItem = ({
   }
 
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={onClick}
       style={styles.container}
     >
@@ -366,7 +367,7 @@ const PromotionItem = ({
           getPromotionInfo((data?.items || []).find(item => item.is_order_valid))
         }
       </View>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 export default PromotionItem
