@@ -1,7 +1,8 @@
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { Image } from '~/common/index'
 import Modal from 'react-native-modal'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
 import { close, close_white, shopping_cart_white } from '~/assets/constants'
@@ -26,7 +27,7 @@ const StatusCheckoutDialog = ({ isOpen, isError, closeModal, orderId, distributo
       <View 
         style={styles.mainContainer}
       >
-        <TouchableOpacity
+        <PressScale
           style={styles.closeBtnContainer}
           onPress={closeModal}
         >
@@ -35,7 +36,7 @@ const StatusCheckoutDialog = ({ isOpen, isError, closeModal, orderId, distributo
             resizeMode={'contain'}
             source={close}
           />
-        </TouchableOpacity>
+        </PressScale>
         <View
           style={styles.contentContainer}
         >

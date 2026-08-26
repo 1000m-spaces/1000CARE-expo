@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, FlatList, StatusBar, TouchableOpacity } from 'react-native'
+import { View, FlatList, StatusBar } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
 import strings from '~/i18n'
@@ -244,8 +245,7 @@ const CartScreen = props => {
         barStyle="dark-content"
       />
       <View style={styles.checkoutHero}>
-        <TouchableOpacity
-          activeOpacity={0.82}
+        <PressScale
           style={styles.backButton}
           onPress={() => {
             dispatch(resetStatusCartInfo())
@@ -253,7 +253,7 @@ const CartScreen = props => {
           }}
         >
           <Icon type="feather" name="arrow-left" size={20} color={brandColors.tealPrimary} />
-        </TouchableOpacity>
+        </PressScale>
         <View style={styles.checkoutCopy}>
           <Text style={styles.checkoutEyebrow}>CHECKOUT</Text>
           <Text style={styles.checkoutTitle}>{strings.cartDetail.title}</Text>
