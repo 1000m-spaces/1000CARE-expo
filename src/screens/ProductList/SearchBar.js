@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { View, TouchableOpacity, TextInput, StyleSheet, FlatList } from 'react-native'
+import { View, TextInput, StyleSheet, FlatList } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Icon } from '~/common'
 import { Text } from '~/common/index'
 import { NAVIGATION_FILTER_PRODUCT } from '~/navigation/routes'
@@ -40,25 +41,25 @@ const SearchBar = ({ navigation, type, viewMode, setViewMode, onLoad, query, dis
           horizontal
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity
+              <PressScale
                 style={tabSelected === index ? styles.wrapperDisplayTabSelected : styles.wrapperDisplayTab}
                 onPress={() => handleTabChanged(item, index)}
               >
                 <Text style={tabSelected === index ? styles.titleTabSelected : styles.titleTab}>{item.name}</Text>
-                {item.icon && 
+                {item.icon &&
                   <Icon
                     type="font-awesome"
                     name={item.iconName}
                     color={item.iconName === 'filter' ? brandColors.tealPrimary : brandColors.goldAccent}
                     size={18}
                   />}
-              </TouchableOpacity>
+              </PressScale>
             )
           }}
         />
       </View> }
-      {type === 'priceSock' && 
-        <TouchableOpacity
+      {type === 'priceSock' &&
+        <PressScale
           onPress={() => navigation.navigate(NAVIGATION_FILTER_PRODUCT, {
             onLoad: onLoad,
             query,
@@ -93,10 +94,10 @@ const SearchBar = ({ navigation, type, viewMode, setViewMode, onLoad, query, dis
             color={brandColors.tealDark}
             size={22}
           />
-        </TouchableOpacity>}
+        </PressScale>}
       {
         (type === 'priceSock' || type === 'product_by_distributor') && (
-          <TouchableOpacity
+          <PressScale
             style={styles.wrapperDisplayIcon}
             onPress={() => {
               if (viewMode === 'list') {
@@ -123,7 +124,7 @@ const SearchBar = ({ navigation, type, viewMode, setViewMode, onLoad, query, dis
                 />
               )
             }
-          </TouchableOpacity>
+          </PressScale>
         )
       }
     </View>
