@@ -2,13 +2,13 @@ import React from 'react';
 import Modal from 'react-native-modal';
 import {
   View,
-  TouchableOpacity,
   Text,
   StyleSheet,
   Dimensions,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import Colors from '../Colors/Colors';
+import PressScale from '~/design-system/PressScale';
 
 const {height: screenHeight} = Dimensions.get('window');
 
@@ -43,14 +43,14 @@ const BottomSheet = ({
               ) : (
                 title
               )}
-              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+              <PressScale onPress={onClose} style={styles.closeButton}>
                 <Icon
                   name="close"
                   size={24}
                   color={Colors.gray}
                   type="material-community"
                 />
-              </TouchableOpacity>
+              </PressScale>
             </View>
           )}
         </View>

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Icon } from '../../common'
 import { NAVIGATION_TO_CART_SCREEN } from '~/navigation/routes'
 import { useDispatch, useSelector } from 'react-redux'
@@ -47,7 +48,7 @@ const CartHeaderButton = ({ navigation, color = brandColors.tealPrimary }) => {
   }
 
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={() => onPress()}
     >
       <LiquidGlassView intensity="regular" style={styles.cartLayout}>
@@ -62,7 +63,7 @@ const CartHeaderButton = ({ navigation, color = brandColors.tealPrimary }) => {
         </View>
 
       </LiquidGlassView>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 const styles = StyleSheet.create({

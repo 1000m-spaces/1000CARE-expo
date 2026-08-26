@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import CartHeaderButton from '~/common/CartHeaderButton/CartHeaderButton'
 import { Icon } from '~/common'
 import { NAVIGATION_TO_SEARCH } from '~/navigation/routes'
@@ -7,6 +7,7 @@ import { s, fs } from '~/utils/responsive'
 import { brandColors, liquidGlass } from '~/design-system/tokens'
 import LiquidGlassView from '~/design-system/LiquidGlassView'
 import { Fonts } from '~/assets/config'
+import PressScale from '~/design-system/PressScale'
 
 const CustomHeader = ({ navigation, search = true, title }) => {
 
@@ -15,10 +16,9 @@ const CustomHeader = ({ navigation, search = true, title }) => {
       <View style={styles.container}>
         {
           search && (
-            <TouchableOpacity
+            <PressScale
               onPress={() => navigation.navigate(NAVIGATION_TO_SEARCH)}
               style={styles.searchContainer}
-              activeOpacity={0.8}
             >
               <LiquidGlassView intensity="regular" style={styles.searchInner}>
                 <Icon
@@ -29,7 +29,7 @@ const CustomHeader = ({ navigation, search = true, title }) => {
                 />
                 <Text style={styles.searchPlaceholder}>Nhập tên sản phẩm, cửa hàng...</Text>
               </LiquidGlassView>
-            </TouchableOpacity>
+            </PressScale>
           )
         }
 

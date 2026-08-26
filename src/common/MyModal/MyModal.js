@@ -6,7 +6,6 @@ import {
   Keyboard,
   Modal,
   TouchableWithoutFeedback,
-  TouchableOpacity,
   ImageBackground,
   StyleSheet,
 } from 'react-native';
@@ -15,6 +14,7 @@ import ViewOverflow from 'react-native-view-overflow';
 import {minWidthDevice} from '../../assets/config';
 import Colors from '../../common/Colors/Colors';
 import {Rectangle_title, icon_close} from '../../assets/constants';
+import PressScale from '~/design-system/PressScale';
 
 const MyModal = props => {
   const AnimatedViewOverflow = Animated.createAnimatedComponent(ViewOverflow);
@@ -84,11 +84,11 @@ const MyModal = props => {
                 )}
 
                 {isShowClose && (
-                  <TouchableOpacity
+                  <PressScale
                     onPress={closeModal}
                     style={styles.btn_close}>
                     <Image source={icon_close} style={styles.img_close} />
-                  </TouchableOpacity>
+                  </PressScale>
                 )}
                 {props.children}
               </AnimatedViewOverflow>

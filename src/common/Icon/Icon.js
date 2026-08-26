@@ -1,8 +1,9 @@
 import React, {useContext} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {ThemeContext} from '../../theme';
 import {DIMENS} from '../../constants';
 import getIconType from './helpers/getIconType';
+import PressScale from '~/design-system/PressScale';
 
 // Possible icon set supported by this Icon component
 export const IconTypes = [
@@ -35,7 +36,7 @@ const defaultProps = {
 const Icon = ({name, type, size, color, style, onPress, disabled}) => {
   const {theme} = useContext(ThemeContext);
 
-  const Component = onPress ? TouchableOpacity : React.Fragment;
+  const Component = onPress ? PressScale : React.Fragment;
 
   const IconComponent = getIconType(type);
 

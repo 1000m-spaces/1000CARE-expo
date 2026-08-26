@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Image } from '~/common/index';
 import Modal from 'react-native-modal';
+import PressScale from '~/design-system/PressScale';
 
 import styles from './styles';
 import { close, close_white, shopping_cart_white, successPay } from '~/assets/constants';
@@ -40,7 +41,7 @@ const DialogInfo = ({ isOpen, isError, closeModal, isLoading, isOrder, message, 
       <View
         style={styles.mainContainer}
       >
-        <TouchableOpacity
+        <PressScale
           style={styles.closeBtnContainer}
           onPress={closeModal}
         >
@@ -49,7 +50,7 @@ const DialogInfo = ({ isOpen, isError, closeModal, isLoading, isOrder, message, 
             resizeMode={'contain'}
             source={close}
           />
-        </TouchableOpacity>
+        </PressScale>
         <View
           style={styles.contentContainer}
         >
