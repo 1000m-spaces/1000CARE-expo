@@ -3,11 +3,12 @@ import { Fonts } from '~/assets/config'
 import Colors from '~/common/Colors/Colors'
 import { DIMENS } from '~/constants/index'
 import { s, fs } from '~/utils/responsive'
+import { brandColors, radiusScale } from '~/design-system/tokens'
 
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#F8F9FB',
+    backgroundColor: brandColors.background,
   },
   swiperItem: {
     width: DIMENS.common.WINDOW_WIDTH,
@@ -26,23 +27,23 @@ export default StyleSheet.create({
   labelDistributor: {
     fontFamily: Fonts.semiBold,
     fontSize: fs(13),
-    color: '#1A202C',
+    color: brandColors.textDark,
     fontWeight: 'normal',
     letterSpacing: 0.5,
   },
   seeAll: {
-    color: '#0B7B8A',
+    color: brandColors.tealPrimary,
     fontFamily: Fonts.semiBold,
     fontSize: fs(13),
     fontWeight: 'normal',
   },
   listDistributorContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: s(20),
+    backgroundColor: brandColors.surface,
+    borderRadius: s(radiusScale.xxxl),
     marginHorizontal: s(12),
     marginBottom: s(12),
     paddingVertical: s(16),
-    shadowColor: '#000',
+    shadowColor: brandColors.textDark,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 12,
@@ -63,12 +64,12 @@ export default StyleSheet.create({
   trademarkLogoWrap: {
     width: '100%',
     height: s(126),
-    borderRadius: s(17),
-    backgroundColor: '#FFFFFF',
+    borderRadius: s(radiusScale.xxl),
+    backgroundColor: brandColors.tealLight,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    shadowColor: '#263238',
+    shadowColor: brandColors.tealDark,
     shadowOffset: { width: 0, height: s(5) },
     shadowOpacity: 0.08,
     shadowRadius: s(10),
@@ -80,7 +81,7 @@ export default StyleSheet.create({
   },
   trademarkName: {
     marginTop: s(7),
-    color: '#111827',
+    color: brandColors.textDark,
     fontFamily: Fonts.semiBold,
     fontSize: fs(14),
     lineHeight: fs(19),
@@ -89,15 +90,15 @@ export default StyleSheet.create({
   trademarkVoucher: {
     alignSelf: 'flex-start',
     marginTop: s(5),
-    borderRadius: s(10),
-    backgroundColor: 'rgba(255,106,69,0.12)',
+    borderRadius: s(radiusScale.md),
+    backgroundColor: 'rgba(255,59,48,0.1)',
     borderWidth: 1,
-    borderColor: 'rgba(255,106,69,0.24)',
+    borderColor: 'rgba(255,59,48,0.22)',
     paddingHorizontal: s(8),
     paddingVertical: s(4),
   },
   trademarkVoucherText: {
-    color: '#FF6B45',
+    color: brandColors.danger,
     fontFamily: Fonts.semiBold,
     fontSize: fs(11),
     lineHeight: fs(14),
