@@ -1,14 +1,15 @@
 import React from 'react'
-import { TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 
 const SearchValueItem = ({ text, onClick }) => {
   return (
-    <TouchableOpacity
+    <PressScale
       style={styles.wrap}
       onPress={onClick}
     >
       <Text style={styles.text}>{text}</Text>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 

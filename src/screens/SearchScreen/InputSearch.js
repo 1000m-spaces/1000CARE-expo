@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Platform } from 'react-native'
+import { View, TextInput, StyleSheet, Platform } from 'react-native'
 import { Icon } from '../../common'
+import PressScale from '~/design-system/PressScale'
 
 const InputSearch = (props) => {
   const [value, setValue] = useState('')
@@ -33,7 +34,7 @@ const InputSearch = (props) => {
           autoFocus={true}
         />
         {value.length > 0 && (
-          <TouchableOpacity
+          <PressScale
             onPress={() => {
               props.onChangeText('')
               setValue('')
@@ -46,7 +47,7 @@ const InputSearch = (props) => {
               color="#CBD5E0"
               size={20}
             />
-          </TouchableOpacity>
+          </PressScale>
         )}
       </View>
     </View>

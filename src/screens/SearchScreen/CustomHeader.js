@@ -1,16 +1,16 @@
 import React from 'react'
 import {
   View,
-  TouchableOpacity,
   StyleSheet,
 } from 'react-native'
 import CartHeaderButton from '~/common/CartHeaderButton/CartHeaderButton'
 import { Icon } from '../../common'
+import PressScale from '~/design-system/PressScale'
 
 const CustomHeader = ({ navigation, onBack }) => {
   return (
     <View style={styles.wrap}>
-      <TouchableOpacity
+      <PressScale
         onPress={() => {
           onBack()
         }}
@@ -22,7 +22,7 @@ const CustomHeader = ({ navigation, onBack }) => {
           color={'#FFF'}
           size={28}
         />
-      </TouchableOpacity>
+      </PressScale>
       <CartHeaderButton
         navigation={navigation}
         color="#FFF"
