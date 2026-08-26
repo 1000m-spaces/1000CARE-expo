@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { LinearGradient } from 'expo-linear-gradient'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 import { useDispatch, useSelector } from 'react-redux'
@@ -248,9 +249,8 @@ const PromotionBannerRail = ({ navigation, products }) => {
       contentContainerStyle={styles.hotDealRail}
     >
       {safeProducts.map((item, index) => (
-        <TouchableOpacity
+        <PressScale
           key={getItemKey(item, index)}
-          activeOpacity={0.88}
           style={[styles.hotDealTile, { backgroundColor: couponColors[index % couponColors.length] }]}
           onPress={() => navigation.navigate(NAVIGATION_PRODUCT_DETAIL_SCREEN, {
             product: item,
@@ -267,7 +267,7 @@ const PromotionBannerRail = ({ navigation, products }) => {
           <View style={styles.hotDealLabel}>
             <Text style={styles.hotDealLabelText} numberOfLines={1}>{getDiscountPercentLabel(item)}</Text>
           </View>
-        </TouchableOpacity>
+        </PressScale>
       ))}
     </ScrollView>
   )
@@ -293,9 +293,8 @@ const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
           const accentColor = getSupplierAccentColor(item)
 
           return (
-            <TouchableOpacity
+            <PressScale
               key={getItemKey(item, index)}
-              activeOpacity={0.86}
               style={styles.supplierTile}
               onPress={() => {
                 if (onItemPress) onItemPress(item)
@@ -322,7 +321,7 @@ const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
                   </Text>
                 </View>
               </LinearGradient>
-            </TouchableOpacity>
+            </PressScale>
           )
         })()
       ))}
@@ -344,12 +343,12 @@ const FlashSalePriceSock = ({ navigation, products }) => {
           <Text style={styles.foodTitle}>Giá sốc hôm nay</Text>
           <Text style={styles.foodSubtitle} numberOfLines={1}>Giờ vàng deal hot - Sản phẩm giá tốt</Text>
         </View>
-        <TouchableOpacity
+        <PressScale
           style={styles.foodArrow}
           onPress={() => navigation.navigate(NAVIGATION_PRODUCT_LIST, { type: 'priceSock', title: 'Sản phẩm giá sốc' })}
         >
           <Text style={styles.foodArrowText}>→</Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.flashRail}>
         {safeProducts.map((item, index) => {
@@ -357,9 +356,8 @@ const FlashSalePriceSock = ({ navigation, products }) => {
           const originalPrice = getOriginalPrice(item)
           const discountLabel = getDiscountLabel(item)
           return (
-            <TouchableOpacity
+            <PressScale
               key={getItemKey(item, index)}
-              activeOpacity={0.88}
               style={styles.flashCard}
               onPress={() => navigation.navigate(NAVIGATION_PRODUCT_DETAIL_SCREEN, {
                 product: item,
@@ -382,7 +380,7 @@ const FlashSalePriceSock = ({ navigation, products }) => {
                   <Text style={styles.flashOldPrice}>{formatMoney(originalPrice, { unit: 'đ', space: false })}</Text>
                 )}
               </View>
-            </TouchableOpacity>
+            </PressScale>
           )
         })}
       </ScrollView>
@@ -428,9 +426,8 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
         title="Thương hiệu nổi bật"
         headerStyle={styles.brandSectionHeader}
         action={(
-          <TouchableOpacity
+          <PressScale
             style={styles.foodArrow}
-            activeOpacity={0.86}
             onPress={() => {
               navigation.navigate(NAVIGATION_LIST_DISTRIBUTOR_TRADEMARK, {
                 type: 'trademark',
@@ -447,7 +444,7 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
             }}
           >
             <Text style={styles.foodArrowText}>→</Text>
-          </TouchableOpacity>
+          </PressScale>
         )}
       >
         {hasItems(trademarks) ? (
