@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, TouchableOpacity, View } from 'react-native'
+import { FlatList, View } from 'react-native'
 import { Text } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -40,7 +41,7 @@ const Voucher = ({ navigation, product, distributorId }) => {
     <View
       style={styles.mainContainer}
     >
-      <TouchableOpacity
+      <PressScale
         onPress={onOpenBottomSheet}
         style={{
           display: 'flex',
@@ -79,7 +80,7 @@ const Voucher = ({ navigation, product, distributorId }) => {
           name={'chevron_right_outlined'}
           style={styles.chevronIcon}
         />
-      </TouchableOpacity>
+      </PressScale>
       <BottomSheet
         title={
           <Text style={styles.title}>

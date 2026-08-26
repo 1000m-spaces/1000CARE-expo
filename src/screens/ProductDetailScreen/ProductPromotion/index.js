@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { View, TouchableOpacity, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Text } from '~/common/index'
 import PromotionItem from '~/common/PromotionItem/index'
+import PressScale from '~/design-system/PressScale'
 import { NAVIGATION_PROMOTION_DETAIL } from '~/navigation/routes'
 import { getCampaignsByProduct } from '~/store/selector'
 import { SVG } from '~/common'
@@ -30,12 +31,12 @@ const ListPromotion = ({ distributorId, product, navigation, promotions, expand,
           />
         ))}
         {!expand && (
-          <TouchableOpacity
+          <PressScale
             onPress={() => setExpand(true)}
             style={styles.expandContainer}
           >
             <Text style={styles.expand}>Xem thêm</Text>
-          </TouchableOpacity>
+          </PressScale>
         )}
       </View>
     )
@@ -84,7 +85,7 @@ const ProductPromotion = ({ product, navigation, distributorId, addProduct }) =>
     <View
       style={styles.rangePricesContainer}
     >
-      <TouchableOpacity 
+      <PressScale
         onPress={() => setExpandBlock(!expandBlock)}
       >
         <Text
@@ -108,7 +109,7 @@ const ProductPromotion = ({ product, navigation, distributorId, addProduct }) =>
           name={expandBlock? 'chevron_up_outlined' : 'chevron_down_outlined'}
           style={styles.chevronIcon}
         />
-      </TouchableOpacity>
+      </PressScale>
       {
         expandBlock && (
           <View>

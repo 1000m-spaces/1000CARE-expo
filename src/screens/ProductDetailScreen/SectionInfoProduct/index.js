@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { Image } from '~/common/index'
 import { LinearGradient } from 'expo-linear-gradient'
 import { right_arrow } from '~/assets/constants'
+import PressScale from '~/design-system/PressScale'
 
 const SectionInfoProduct = ({ title, children, onPress }) => {
   const [showViewMore, setShowViewMore] = useState(false)
@@ -32,7 +33,7 @@ const SectionInfoProduct = ({ title, children, onPress }) => {
               colors={['rgba(255,255,255,0.5)', 'rgba(255,255,255,1)', 'rgba(255,255,255,1)']}
               style={styles.viewMore}
             >
-              <TouchableOpacity
+              <PressScale
                 style={styles.flexViewMore}
                 onPress={onPress}
               >
@@ -42,7 +43,7 @@ const SectionInfoProduct = ({ title, children, onPress }) => {
                   style={styles.iconViewMore}
                   tintColor='#4276FE'
                 />
-              </TouchableOpacity>
+              </PressScale>
             </LinearGradient>
           ) : (<></>)
       }

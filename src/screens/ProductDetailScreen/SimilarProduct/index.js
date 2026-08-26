@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from 'react'
-import { ScrollView, View, TouchableOpacity } from 'react-native'
+import { ScrollView, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Text } from '~/common/index'
 import ProductItemScrollHorizontal from '~/common/ProductItemScrollHorizontal/ProductItemScrollHorizontal'
 import { check_info } from '~/assets/constants'
@@ -48,7 +49,7 @@ const SimilarProduct = ({ navigation, product, scrollToTop }) => {
         >
           {'Sản phẩm tương tự'}
         </Text>
-        <TouchableOpacity
+        <PressScale
           style={styles.allContainer}
           onPress={() => {
             navigation.navigate(NAVIGATION_PRODUCT_LIST, {
@@ -63,7 +64,7 @@ const SimilarProduct = ({ navigation, product, scrollToTop }) => {
           >
             {'Tất cả'}
           </Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
       <ScrollView
         horizontal

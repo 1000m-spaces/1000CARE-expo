@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Image, Text } from '~/common/index'
 import ProductItemScrollHorizontal from '~/common/ProductItemScrollHorizontal/ProductItemScrollHorizontal'
 import { check_info } from '~/assets/constants'
@@ -66,14 +67,14 @@ const TopProduct = ({ navigation, product, distributorId, scrollToTop }) => {
 
   return (
     <>
-      <TouchableOpacity 
+      <PressScale
         onPress={() => {
           dispatch(setSelectedDistri(product?.distributor))
           navigation.navigate(NAVIGATION_TO_HOME_SCREEN)
         }}
         style={styles.distributorContainer}
       >
-        <Image 
+        <Image
           style={styles.distributorLogo}
           source={{
             uri: product?.distributor?.logo,
@@ -87,7 +88,7 @@ const TopProduct = ({ navigation, product, distributorId, scrollToTop }) => {
           name={'chevron_right_outlined'}
           style={styles.chevronIcon}
         />
-      </TouchableOpacity>
+      </PressScale>
       <View
         style={styles.mainContainer}
       >
@@ -97,7 +98,7 @@ const TopProduct = ({ navigation, product, distributorId, scrollToTop }) => {
           >
             {'Tốp sản phẩm nổi bật'}
           </Text>
-          <TouchableOpacity
+          <PressScale
             style={styles.allContainer}
             onPress={() => {
               navigation.navigate(NAVIGATION_PRODUCT_LIST, {
@@ -113,7 +114,7 @@ const TopProduct = ({ navigation, product, distributorId, scrollToTop }) => {
             >
               {'Tất cả'}
             </Text>
-          </TouchableOpacity>
+          </PressScale>
         </View>
         <Swiper
           showsButtons
