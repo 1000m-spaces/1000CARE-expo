@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { useSelector } from 'react-redux'
 import { NAVIGATION_LIST_DISTRIBUTOR_TRADEMARK } from '~/navigation/routes'
 import { getListDistributors } from '~/store/selector'
@@ -8,6 +8,7 @@ import { DIMENS } from '~/constants/index'
 import ItemDistributor from '~/common/ItemDistributor/index'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, liquidGlass } from '~/design-system/tokens'
+import PressScale from '~/design-system/PressScale'
 
 const Distributors = ({ navigation, onItemPress }) => {
   const listDistributors = useSelector(state => getListDistributors(state))
@@ -21,7 +22,7 @@ const Distributors = ({ navigation, onItemPress }) => {
           <View style={styles.headerAccent} />
           <Text style={styles.headerTitle}>NHÀ CUNG CẤP</Text>
         </View>
-        <TouchableOpacity
+        <PressScale
           style={styles.seeAllBtn}
           onPress={() => {
             navigation.navigate(NAVIGATION_LIST_DISTRIBUTOR_TRADEMARK, {
@@ -32,7 +33,7 @@ const Distributors = ({ navigation, onItemPress }) => {
           }}
         >
           <Text style={styles.seeAllText}>Xem tất cả</Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
 
       {hasDistributors ? (

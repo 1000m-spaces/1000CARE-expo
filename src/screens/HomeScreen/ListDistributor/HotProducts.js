@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, Image, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { FlatList, Image, View, Text, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
 import { banner_2 } from '~/assets/constants'
 import { NAVIGATION_PRODUCT_DETAIL_SCREEN } from '~/navigation/routes'
@@ -8,6 +8,7 @@ import { DIMENS } from '~/constants/index'
 import { s, fs } from '~/utils/responsive'
 import { formatMoney } from '~/utils/format'
 import { getProductImage } from '~/utils/image'
+import PressScale from '~/design-system/PressScale'
 
 const HotProducts = ({ navigation }) => {
   const listProductsBestSeller = useSelector(state => getListProductsBestSeller(state))
@@ -45,8 +46,7 @@ const HotProducts = ({ navigation }) => {
         snapToAlignment="start"
         keyExtractor={(item, idx) => String(item?.product_id ?? item?.id ?? idx)}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            activeOpacity={0.88}
+          <PressScale
             style={[styles.dealCard, { width: productWidth }]}
             onPress={() => goProductDetail(item)}
           >
@@ -85,11 +85,11 @@ const HotProducts = ({ navigation }) => {
                   {formatMoney(getPrice(item), { unit: 'đ', space: false })}
                 </Text>
               </View>
-              <TouchableOpacity style={styles.buyButton} activeOpacity={0.86} onPress={() => goProductDetail(item)}>
+              <View style={styles.buyButton}>
                 <Text style={styles.buyText}>MUA NGAY</Text>
-              </TouchableOpacity>
+              </View>
             </View>
-          </TouchableOpacity>
+          </PressScale>
         )}
       />
     </View>
