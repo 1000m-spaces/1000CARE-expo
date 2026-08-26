@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import HTML from 'react-native-render-html'
 import Colors from '~/common/Colors/Colors'
 import { Text } from '~/common/index'
@@ -82,7 +83,7 @@ const ProductDescription = ({ product }) => {
         minHeight: expand ? 500 : 0,
       }}
     >
-      <TouchableOpacity
+      <PressScale
         onPress={() => setExpand(!expand)}
       >
         <Text
@@ -96,28 +97,28 @@ const ProductDescription = ({ product }) => {
           name={expand ? 'chevron_up_outlined' : 'chevron_down_outlined'}
           style={styles.chevronIcon}
         />
-      </TouchableOpacity>
+      </PressScale>
       {
         expand && (
           <View
             style={styles.tabContainer}
           >
-            <TouchableOpacity
+            <PressScale
               style={currentTab === 1 ? [styles.tabTitle, styles.tabSelected] : styles.tabTitle}
               onPress={() => setCurrentTab(1)}
             >
               <Text
                 style={currentTab === 1 ? [styles.tabText, styles.tabSelected] : styles.tabText}
               >Giới thiệu</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </PressScale>
+            <PressScale
               onPress={() => setCurrentTab(2)}
               style={currentTab === 2 ? [styles.tabTitle, styles.tabSelected] : styles.tabTitle}
             >
               <Text
                 style={currentTab === 2 ? [styles.tabText, styles.tabSelected] : styles.tabText}
               >Chi tiết</Text>
-            </TouchableOpacity>
+            </PressScale>
           </View>
         )
       }
