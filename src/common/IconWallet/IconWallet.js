@@ -1,13 +1,14 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import dimens from '~/constants/dimens'
 import { showToast } from '~/utils/toast'
 import Colors from '../Colors/Colors'
 import { Image } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
 
 const IconWallet = ({ image,textConten, onPress }) => {
   return(
-    <TouchableOpacity
+    <PressScale
       style={styles.container}
       onPress={() => {
         if (onPress) {
@@ -23,7 +24,7 @@ const IconWallet = ({ image,textConten, onPress }) => {
         <Image source={image} />
       </View>
       <Text style={styles.text}>{textConten}</Text>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 export default IconWallet

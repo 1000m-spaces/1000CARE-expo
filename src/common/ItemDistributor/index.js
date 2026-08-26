@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { Image } from '~/common/index'
 import { logoNeoMed } from '~/assets/constants'
 import { DIMENS } from '~/constants/index'
@@ -7,6 +7,7 @@ import { s, fs } from '~/utils/responsive'
 import { brandColors, liquidGlass } from '~/design-system/tokens'
 import LiquidGlassView from '~/design-system/LiquidGlassView'
 import { Fonts } from '~/assets/config'
+import PressScale from '~/design-system/PressScale'
 
 const ItemDistributor = ({ data, onItemPress, selected, itemWidth }) => {
   let imageSource = { uri: data.logo || data.images }
@@ -17,13 +18,12 @@ const ItemDistributor = ({ data, onItemPress, selected, itemWidth }) => {
   const isPending = data.status === 2 || data.distributor?.status === 2
 
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={() => {
         if (!isPending && onItemPress) {
           onItemPress()
         }
       }}
-      activeOpacity={0.8}
     >
       <LiquidGlassView
         intensity="regular"
@@ -46,7 +46,7 @@ const ItemDistributor = ({ data, onItemPress, selected, itemWidth }) => {
         </Text>
         {selected && <View style={styles.activeIndicator} />}
       </LiquidGlassView>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 

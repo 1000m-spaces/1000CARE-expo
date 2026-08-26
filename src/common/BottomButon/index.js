@@ -1,23 +1,23 @@
 import React from 'react'
 import {
   View,
-  TouchableOpacity,
   Text,
   StyleSheet,
   Dimensions,
 } from 'react-native'
 import { s, fs } from '../../utils/responsive'
 import { brandColors, liquidGlass } from '~/design-system/tokens'
+import PressScale from '~/design-system/PressScale'
 
 const BottomButon = ({ label, onPress }) => {
   return (
     <View style={styles.wrap}>
-      <TouchableOpacity
+      <PressScale
         style={styles.button}
         onPress={onPress}
       >
         <Text style={styles.text}>{label}</Text>
-      </TouchableOpacity>
+      </PressScale>
     </View>
   )
 }

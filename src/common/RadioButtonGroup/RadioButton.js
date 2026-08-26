@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 
 const RadioButton = ({ selected, title, onClick }) => {
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={onClick}
       style={styles.wrap}
     >
@@ -13,7 +14,7 @@ const RadioButton = ({ selected, title, onClick }) => {
         }
       </View>
       <Text style={styles.text}>{title}</Text>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
