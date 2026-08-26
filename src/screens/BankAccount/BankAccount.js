@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, ImageBackground, FlatList, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native'
+import { View, Text, ImageBackground, FlatList, ScrollView, SafeAreaView } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Image } from '~/common/index'
 import bank from '~/assets/configNeoMed/Wallet/bank.png'
 import backgroundWallet from '~/assets/configNeoMed/Wallet/backgroundWallet.png'
@@ -158,9 +159,9 @@ const BankAccount = props => {
           <Text style={styles.textMoney}>{infoAccount.customerName ? infoAccount.customerName : ''}</Text>
           <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'center' }}>
             <Text style={styles.number}><Text style={{ fontSize: 16 }}>Tài Khoản: </Text>{infoAccount.accountNumber ? infoAccount.accountNumber : ''}     </Text>
-            <TouchableOpacity onPress={() => alert(infoAccount.accountNumber)} style={styles.buttonCoppy}>
+            <PressScale onPress={() => alert(infoAccount.accountNumber)} style={styles.buttonCoppy}>
               <Text style={styles.textCoppy}>Sao chép</Text>
-            </TouchableOpacity>
+            </PressScale>
           </View>
         </ImageBackground>
       </ImageBackground>
@@ -168,7 +169,7 @@ const BankAccount = props => {
       <View style={styles.viewSpace} />
 
       <View style={styles.containerProfile}>
-        <TouchableOpacity
+        <PressScale
           onPress={() => setAccountActive(false)}
           style={[styles.buttonSelectAccount, { borderBottomWidth: 1, borderBottomColor: '#F5F5F5' }]}
         >
@@ -178,14 +179,14 @@ const BankAccount = props => {
               <Text style={[styles.numberMoney, { color: accountActive ? '#CCCCCC' : Colors.priceColor, marginRight: 15 }]}>
                 {hiddenMoney ? "******** " : formatMoney(infoAccount.balanceWallet ? infoAccount.balanceWallet : 0, { unit: '' })}<Text style={styles.textUnit}>{'VNĐ'}</Text>
               </Text>
-              <TouchableOpacity onPress={() => setHiddenMoney(!hiddenMoney)}>
+              <PressScale onPress={() => setHiddenMoney(!hiddenMoney)}>
                 <Icon
                   type="entypo"
                   name={!hiddenMoney ? "eye-with-line" : "eye"}
                   color={Colors.colorMain}
                   size={28}
                 />
-              </TouchableOpacity>
+              </PressScale>
             </View>
           </View>
           {accountActive ?
@@ -202,8 +203,8 @@ const BankAccount = props => {
               />
             </View>
           }
-        </TouchableOpacity>
-        <TouchableOpacity
+        </PressScale>
+        <PressScale
           onPress={() => {
             if (loanInfo?.Status === 'loan.link') {
               setAccountActive(true)
@@ -231,7 +232,7 @@ const BankAccount = props => {
               />
             </View>
           }
-        </TouchableOpacity>
+        </PressScale>
       </View>
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.viewSelect}>

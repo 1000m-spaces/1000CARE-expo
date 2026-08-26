@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Image } from '~/common/index'
 import dropdown from '~/assets/configNeoMed/Wallet/dropdown.png'
 import Colors from '~/common/Colors/Colors'
 import { CheckBox } from '~/common/index'
 import strings from '~/i18n'
 import { formatMoney } from '~/utils/format'
+import PressScale from '~/design-system/PressScale'
 
 const OrderItem = ({ order, textMethod, checkBoxAll, onAddOrder, onRemoveOrder }) => {
   const [checkBox, setCheckBox] = useState(false)
@@ -23,8 +24,7 @@ const OrderItem = ({ order, textMethod, checkBoxAll, onAddOrder, onRemoveOrder }
   }
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.5}
+    <PressScale
       style={styles.container}
       onPress={() => onChange()}
     >
@@ -36,13 +36,13 @@ const OrderItem = ({ order, textMethod, checkBoxAll, onAddOrder, onRemoveOrder }
         <Text style={styles.textPay}>{textMethod}: {order?.order_id}</Text>
         <Text style={styles.numberMoney}>{formatMoney(order?.total, { unit: '' })}<Text style={styles.textUnit}>{strings.currency.unit}</Text></Text>
       </View>
-      <TouchableOpacity style={styles.buttonRight}>
+      <View style={styles.buttonRight}>
         <Image
           style={styles.styleImage}
           source={dropdown}
         />
-      </TouchableOpacity>
-    </TouchableOpacity>
+      </View>
+    </PressScale>
   )
 }
 export default OrderItem
