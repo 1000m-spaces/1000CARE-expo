@@ -1,8 +1,9 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { Image } from '~/common/index'
 import pictureEmpty from '~/assets/camera/pictureEmpty.png'
 import dimens from '~/constants/dimens'
+import PressScale from '~/design-system/PressScale'
 
 const Item = ({ openCamera, data }) => {
   return (
@@ -10,10 +11,10 @@ const Item = ({ openCamera, data }) => {
       <View style={styles.viewLabel}>
         <Text>{data.item.name}{data.item.star && <Text style={{ color: 'red' }}>*</Text>}</Text>
       </View>
-      <TouchableOpacity onPress={() => openCamera(data.index)} style={styles.button}>
+      <PressScale onPress={() => openCamera(data.index)} style={styles.button}>
         {data.item.url ? <Image style={styles.image} source={{ uri: data.item.url }} />
           : <Image style={styles.image} source={pictureEmpty} />}
-      </TouchableOpacity>
+      </PressScale>
     </View>
   )
 }

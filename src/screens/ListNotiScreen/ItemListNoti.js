@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Image, TouchableOpacity, View } from 'react-native'
+import { Image, View } from 'react-native'
 import Text from '~/common/Text/index'
 import bell from '~/assets/icons/bell.png'
 import styles from './styles'
 import { getTime, convertBirth } from '~/utils'
+import PressScale from '~/design-system/PressScale'
 
 const ItemListNoti = ({ item, index, onPress, isReadAll }) => {
   const [read, setRead] = useState(false)
@@ -19,7 +20,7 @@ const ItemListNoti = ({ item, index, onPress, isReadAll }) => {
   },[item])
 
   return(
-    <TouchableOpacity
+    <PressScale
       onPress={() => {
         onPress(data, item?.id, item?.is_read)
         setRead(true)
@@ -50,7 +51,7 @@ const ItemListNoti = ({ item, index, onPress, isReadAll }) => {
           >{item.message}</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 export default ItemListNoti

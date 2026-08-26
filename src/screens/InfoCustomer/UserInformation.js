@@ -1,8 +1,9 @@
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, View } from 'react-native'
 import TextInput from '~/common/Input/Input'
 import { convertBirth } from '~/utils/date'
 import styles from './styles'
+import PressScale from '~/design-system/PressScale'
 
 const UserInformation = ({ isNameShop, setNameShop, isOwnerFullName, setOwnerFullName, setOwnerEmail, isOwnerEmail, showDatePicker, isDate, setPhone, isPhone }) => {
   return (
@@ -32,10 +33,10 @@ const UserInformation = ({ isNameShop, setNameShop, isOwnerFullName, setOwnerFul
         />
         <View style={{ flexDirection: 'row', flex: 1 }}>
           <View style={{ flex: 2 }}>
-            <TouchableOpacity onPress={showDatePicker}>
+            <PressScale onPress={showDatePicker}>
               <Text style={{ height: 20, marginTop: 10, alignItems: 'center' }}>Ngày sinh</Text>
               <Text style={{ height: 20, marginTop: 6, alignItems: 'center' }}>{isDate ? convertBirth(isDate, 'DD/MM/YYYY HH:mm:ss') : '__/__/____'}</Text>
-            </TouchableOpacity>
+            </PressScale>
           </View>
           <View style={{ flex: 3, marginLeft: 20 }}>
             <Text style={styles.label}>Số điện thoại</Text>
