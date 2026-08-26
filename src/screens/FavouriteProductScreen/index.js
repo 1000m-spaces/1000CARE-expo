@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { FlatList, SafeAreaView, TouchableOpacity } from 'react-native'
+import { FlatList, SafeAreaView } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 
 import styles from './style'
 import CustomHeader from '~/common/CustomHeader/index'
@@ -122,20 +123,20 @@ const FavouriteProductScreen = ({ navigation }) => {
               horizontal={true}
               renderItem={({ item }) => {
                 return (
-                  <TouchableOpacity
+                  <PressScale
                     style={item.id === currentTab ?
                       [styles.tabItem, styles.tabSelected]
                       : styles.tabItem}
                     onPress={() => setCurrentTab(item.id)}
                   >
-                    <Text 
+                    <Text
                       style={item.id === currentTab ?
                         [styles.tabTitle, styles.tabTitleSelected]
                         : styles.tabTitle}
                     >
                       {item.title}
                     </Text>
-                  </TouchableOpacity>
+                  </PressScale>
                 )
               }}
               keyExtractor={(item, index) => {

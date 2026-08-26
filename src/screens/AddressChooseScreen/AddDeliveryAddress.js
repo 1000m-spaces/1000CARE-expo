@@ -1,16 +1,17 @@
 import React from 'react'
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
 import Colors from '~/common/Colors/Colors'
 import strings from '~/i18n'
+import PressScale from '~/design-system/PressScale'
 
 const AddDeliveryAddress = ({ onPress }) => {
   return (
-    <TouchableOpacity
+    <PressScale
       style={styles.wrap}
       onPress={onPress}
     >
       <Text style={styles.text}>{strings.addressChoose.addAddressTitle}</Text>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 

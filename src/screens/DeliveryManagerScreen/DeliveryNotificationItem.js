@@ -3,13 +3,13 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   Dimensions,
 } from 'react-native'
 import { Image } from '~/common/index'
 import { delivered } from '~/assets/constants'
 import { NAVIGATION_ORDER_DETAIL_SCREEN } from '~/navigation/routes'
 import { getDateString } from '~/utils/date'
+import PressScale from '~/design-system/PressScale'
 
 const DeliveryNotificationItem = ({ data, navigation, goBack }) => {
   return (
@@ -27,7 +27,7 @@ const DeliveryNotificationItem = ({ data, navigation, goBack }) => {
         </Text>
         <View style={styles.wrapTimeAndButton}>
           <Text style={styles.textTime}>{data.created_time}</Text>
-          <TouchableOpacity
+          <PressScale
             style={styles.button}
             onPress={() => navigation.navigate(NAVIGATION_ORDER_DETAIL_SCREEN, {
               goBack,
@@ -39,7 +39,7 @@ const DeliveryNotificationItem = ({ data, navigation, goBack }) => {
             })}
           >
             <Text style={styles.textButton}>Chi tiết</Text>
-          </TouchableOpacity>
+          </PressScale>
         </View>
       </View>
     </View>

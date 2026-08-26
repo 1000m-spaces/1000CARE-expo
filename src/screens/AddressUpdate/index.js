@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, View, Text, TouchableOpacity } from 'react-native'
+import { SafeAreaView, View, Text } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import Header from '~/common/Header/index'
 import styles from './styles'
 import { back } from '~/assets/constants'
@@ -94,12 +95,12 @@ const AddressUpdate = (props) => {
         leftAction={() => props.navigation.pop()}
         iconLeft={back}
       />
-      <TouchableOpacity
+      <PressScale
         onPress={deleteAddressReq}
         style={styles.buttonDelete}
       >
         <Text style={styles.textDelete}>Xóa</Text>
-      </TouchableOpacity>
+      </PressScale>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={'always'}
