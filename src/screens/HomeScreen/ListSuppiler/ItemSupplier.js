@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { TouchableOpacity } from 'react-native'
 import Colors from '~/common/Colors/Colors'
 import { Image } from '~/common/index'
 import { arrow_right } from '~/assets/constants'
+import PressScale from '~/design-system/PressScale'
 
 const ItemSupplier = ({ data, selected, onItemPress, type }) => {
   const background = () => {
@@ -15,7 +15,7 @@ const ItemSupplier = ({ data, selected, onItemPress, type }) => {
   }
     
   return(
-    <TouchableOpacity 
+    <PressScale
       onPress={onItemPress.bind(this, data)}
     >
       {
@@ -49,7 +49,7 @@ const ItemSupplier = ({ data, selected, onItemPress, type }) => {
         )
       }
 
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 

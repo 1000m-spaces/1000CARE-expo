@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, ScrollView, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Text } from '~/common/index'
 import { NAVIGATION_PRODUCT_LIST } from '~/navigation/routes'
@@ -7,6 +7,7 @@ import { getListTrademarksAdvertisement } from '~/store/selector'
 import { logoNeoMed } from '~/assets/constants'
 import { formatMoney } from '~/utils/format'
 import styles from './styles'
+import PressScale from '~/design-system/PressScale'
 
 const ListTrademarksAdvertisement = ({ navigation, distributor, onMessage }) => {
   const listTrademarksAdvertisement = useSelector(state => getListTrademarksAdvertisement(state))
@@ -45,9 +46,8 @@ const ListTrademarksAdvertisement = ({ navigation, distributor, onMessage }) => 
     const voucherLabel = getVoucherLabel(item)
 
     return (
-      <TouchableOpacity
+      <PressScale
         key={item?.id ?? index}
-        activeOpacity={0.86}
         style={styles.trademarkCard}
         onPress={() => onItemPress(item)}
       >
@@ -62,7 +62,7 @@ const ListTrademarksAdvertisement = ({ navigation, distributor, onMessage }) => 
             <Text style={styles.trademarkVoucherText} numberOfLines={1}>{voucherLabel}</Text>
           </View>
         )}
-      </TouchableOpacity>
+      </PressScale>
     )
   }
 

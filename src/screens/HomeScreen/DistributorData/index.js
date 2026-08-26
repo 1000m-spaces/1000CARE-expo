@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 
 import ListCategories from '../ListCategories/index'
 import ListSuppiler from '../ListSuppiler/index'
@@ -62,7 +63,7 @@ const DistributorData = ({ selectedDistri, navigation }) => {
               </View>
               {
                   selectedSupplier?.id === -1 && (
-                  <TouchableOpacity
+                  <PressScale
                     style={[{
                       flex: 1,
                       position: 'absolute',
@@ -75,7 +76,7 @@ const DistributorData = ({ selectedDistri, navigation }) => {
                     })}
                   >
                     <Text style={styles.textButton}>{'Xem tất cả'}</Text>
-                  </TouchableOpacity>
+                  </PressScale>
                 )
               }
             </View>
