@@ -1,22 +1,23 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '~/common';
 import { s, fs } from '../utils/responsive';
-import { brandColors, brandGradients, brandShadow } from './tokens';
+import { brandColors, brandGradients, brandShadow, radiusScale } from './tokens';
 import { Fonts } from '~/assets/config';
+import PressScale from './PressScale';
 
 const { width } = Dimensions.get('window');
 
-const PremiumCard = ({ 
-  title, 
-  subtitle, 
-  onPress, 
+const PremiumCard = ({
+  title,
+  subtitle,
+  onPress,
   colors = brandGradients.primary,
-  image 
+  image
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={styles.wrapper}>
+    <PressScale onPress={onPress} style={styles.wrapper}>
       <LinearGradient
         colors={colors}
         style={styles.card}
@@ -28,17 +29,17 @@ const PremiumCard = ({
             <Text style={styles.title}>{title}</Text>
             {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
           </View>
-          
-          <TouchableOpacity style={styles.actionButton} onPress={onPress}>
+
+          <View style={styles.actionButton}>
             <Text style={styles.actionText}>Khám phá</Text>
-          </TouchableOpacity>
+          </View>
         </View>
 
         {image && (
           <Image source={image} style={styles.cardImage} resizeMode="contain" />
         )}
       </LinearGradient>
-    </TouchableOpacity>
+    </PressScale>
   );
 };
 
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   card: {
     width: width - s(32),
     height: s(160),
-    borderRadius: s(24),
+    borderRadius: s(radiusScale.xxxl),
     padding: s(22),
     alignSelf: 'center',
     overflow: 'hidden',
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: brandColors.surface,
     paddingVertical: s(10),
     paddingHorizontal: s(20),
-    borderRadius: s(15),
+    borderRadius: s(radiusScale.pill),
     alignSelf: 'flex-start',
   },
   actionText: {

@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
-import TouchReceptor from '../TouchReceptor/TouchReceptor';
+import PressScale from '~/design-system/PressScale';
 import {DIMENS} from '../../constants';
 import { s } from '~/utils/responsive';
-import { brandShadow, liquidGlass } from '~/design-system/tokens';
+import { brandShadow, liquidGlass, radiusScale } from '~/design-system/tokens';
 
 const OUTLINE = 'outline';
 const CLEAR = 'clear';
@@ -17,21 +17,29 @@ const Card = ({
   disabled = false,
   children,
 }) => {
-  const ViewGroup = onPress ? TouchReceptor : React.Fragment;
   const shadow = type === SHADOW ? shadowStyle() : {};
-
-  return (
-    <ViewGroup {...(onPress && {onPress, disabled})}>
-      <View
-        style={StyleSheet.flatten([
-          styles.container(type),
-          shadow,
-          style,
-        ])}>
-        {children}
-      </View>
-    </ViewGroup>
+  const content = (
+    <View
+      style={StyleSheet.flatten([
+        styles.container(type),
+        shadow,
+        style,
+      ])}>
+      {children}
+    </View>
   );
+
+  // Bấm được => phản hồi scale(0.96) dùng chung (stateRules.pressed),
+  // không dùng ripple/opacity mặc định để nhất quán với nút/component khác.
+  if (onPress) {
+    return (
+      <PressScale onPress={onPress} disabled={disabled}>
+        {content}
+      </PressScale>
+    );
+  }
+
+  return content;
 };
 
 const shadowStyle = () => ({
@@ -42,7 +50,7 @@ const styles = {
   container: (type) => ({
     borderWidth: type === OUTLINE ? DIMENS.common.borderWidth : 0,
     borderColor: liquidGlass.border,
-    borderRadius: s(24),
+    borderRadius: s(radiusScale.xxxl),
     backgroundColor: liquidGlass.background,
   }),
 };

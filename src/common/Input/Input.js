@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, TextInput } from 'react-native'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { brandColors, liquidGlass, radiusScale } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 
 const Input = props => {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: liquidGlass.border,
     backgroundColor: liquidGlass.background,
-    borderRadius: s(24),
+    borderRadius: s(radiusScale.xxl),
     paddingHorizontal: s(16),
     color: brandColors.textDark,
     fontFamily: Fonts.base,
