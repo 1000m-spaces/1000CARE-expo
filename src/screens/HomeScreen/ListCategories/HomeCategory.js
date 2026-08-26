@@ -1,9 +1,10 @@
 import React, {useCallback} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, FlatList} from 'react-native';
+import {StyleSheet, View, Text, FlatList} from 'react-native';
 import dimens from '~/constants/dimens';
 import ProductItem from '~/common/ProductItem/ProductItem';
 import {NAVIGATION_PRODUCT_LIST} from '~/navigation/routes';
 import Colors from '~/common/Colors/Colors';
+import PressScale from '~/design-system/PressScale';
 
 const numColumns = 2;
 const LAYOUTPADDING = 18;
@@ -68,7 +69,7 @@ const HomeCategory = ({navigation, data, distributorId, type}) => {
             ]}>
             {data.name}
           </Text>
-          <TouchableOpacity
+          <PressScale
             style={[
               {
                 flex: 1,
@@ -76,7 +77,7 @@ const HomeCategory = ({navigation, data, distributorId, type}) => {
             ]}
             onPress={openProductList}>
             <Text style={styles.textButton}>{'Tất cả'}</Text>
-          </TouchableOpacity>
+          </PressScale>
         </View>
 
         <FlatList
@@ -104,7 +105,7 @@ const HomeCategory = ({navigation, data, distributorId, type}) => {
         <Text style={[styles.textHeader, styles.textHeaderDAP]}>
           {data.name}
         </Text>
-        <TouchableOpacity style={[{flex: 1}]} onPress={openProductList}>
+        <PressScale style={[{flex: 1}]} onPress={openProductList}>
           <Text
             style={[
               styles.textButton,
@@ -112,7 +113,7 @@ const HomeCategory = ({navigation, data, distributorId, type}) => {
             ]}>
             {'Tất cả'}
           </Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
 
       <FlatList

@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, Image, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { FlatList, Image, View, Text, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
 import ProductItem from '~/common/ProductItem/ProductItem'
 import { DIMENS } from '~/constants/index'
@@ -7,6 +7,7 @@ import { NAVIGATION_PRODUCT_LIST } from '~/navigation/routes'
 import { getListProductPriceSockHome } from '~/store/selector'
 import { s, fs } from '~/utils/responsive'
 import { brandColors } from '~/design-system/tokens'
+import PressScale from '~/design-system/PressScale'
 
 const ProductPriceSock = ({ navigation, onFavorClick, onAddProduct, onMessage }) => {
   const listProductPriceSock = useSelector(state => getListProductPriceSockHome(state))
@@ -27,12 +28,12 @@ const ProductPriceSock = ({ navigation, onFavorClick, onAddProduct, onMessage })
             <Text style={styles.hotBadgeText}>🔥 HOT</Text>
           </View>
         </View>
-        <TouchableOpacity
+        <PressScale
           style={styles.seeAllBtn}
           onPress={() => navigation.navigate(NAVIGATION_PRODUCT_LIST, { type: 'priceSock', title: 'Sản phẩm giá sốc' })}
         >
           <Text style={styles.seeAllText}>Xem tất cả</Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
       <FlatList
         data={safeList}

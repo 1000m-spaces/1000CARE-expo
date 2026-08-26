@@ -1,11 +1,12 @@
 import React from 'react'
-import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { FlatList, View, Text, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
 import ProductItem from '~/common/ProductItem/ProductItem'
 import { DIMENS } from '~/constants/index'
 import { NAVIGATION_PRODUCT_LIST } from '~/navigation/routes'
 import { getListProductsHotDeal } from '~/store/selector'
 import { s, fs } from '~/utils/responsive'
+import PressScale from '~/design-system/PressScale'
 
 const ListProductPromotion = ({ navigation, onFavorClick, onAddProduct, onMessage }) => {
   const listProductsHotDeal = useSelector(state => getListProductsHotDeal(state))
@@ -23,12 +24,12 @@ const ListProductPromotion = ({ navigation, onFavorClick, onAddProduct, onMessag
           <View style={styles.headerAccent} />
           <Text style={styles.headerTitle}>KHUYẾN MÃI ĐỘC QUYỀN</Text>
         </View>
-        <TouchableOpacity
+        <PressScale
           style={styles.seeAllBtn}
           onPress={() => navigation.navigate(NAVIGATION_PRODUCT_LIST, { type: 'promotion', title: 'Sản phẩm khuyến mãi' })}
         >
           <Text style={styles.seeAllText}>Xem tất cả</Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
       <FlatList
         data={safeList}
