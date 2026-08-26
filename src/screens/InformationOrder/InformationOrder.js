@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { Image } from '~/common/index'
 import TitleBar from '../../common/TitleBar/TitleBar';
 import dimension from '../../constants/dimens';
 import { StarAction, Star } from '../../assets/constants';
+import PressScale from '~/design-system/PressScale';
 const data = [
     {name:'Combo Tràng Vị Khang',money1:'199.999',money2:'2.199.999'},{name:'Combo Tràng Vị Khang',money1:'199.999',money2:'2.199.999'},
     {name:'Combo Tràng Vị Khang',money1:'199.999',money2:'2.199.999'},{name:'Combo Tràng Vị Khang',money1:'199.999',money2:'2.199.999'},
@@ -30,12 +31,12 @@ const InformationOrder = props => {
     });
     const renderStar = dataStar.map((item,index) => {
         return(
-            <TouchableOpacity onPress={() => setCountStar(index+1)} >
+            <PressScale onPress={() => setCountStar(index+1)} >
                 {index < countStar
                     ?<Image resizeMode={'contain'} style={{height:25,width:25}} source={item.StarAction} />
                     :<Image resizeMode={'contain'} style={{height:25,width:25}} source={item.Star} />
                 }
-            </TouchableOpacity>
+            </PressScale>
         );
     })
     return(
@@ -74,13 +75,13 @@ const InformationOrder = props => {
                         {renderStar}
                     </View>
                 </View>
-                <TouchableOpacity style={{backgroundColor:'#F0F0F0',height:60,padding:5,elevation:2,marginTop:10}}>
+                <PressScale style={{backgroundColor:'#F0F0F0',height:60,padding:5,elevation:2,marginTop:10}}>
                     <Text>Chia sẻ những điều bạn thích về sản phẩm này nhé</Text>
-                </TouchableOpacity>
+                </PressScale>
                 <View style={{justifyContent:'center',alignItems:'center',marginHorizontal:20,marginTop:10}}>
-                    <TouchableOpacity style={{backgroundColor:'#0B7B8A',width:'100%',padding:10,alignItems:'center'}}>
+                    <PressScale style={{backgroundColor:'#0B7B8A',width:'100%',padding:10,alignItems:'center'}}>
                         <Text style={{color:'white',fontSize:16}}>Đặt lại</Text>
-                    </TouchableOpacity>
+                    </PressScale>
                 </View>
             </View>
         </View>

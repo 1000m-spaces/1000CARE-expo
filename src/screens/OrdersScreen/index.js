@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, FlatList, BackHandler, TouchableOpacity, TextInput, Platform } from 'react-native';
+import { View, FlatList, BackHandler, TextInput, Platform } from 'react-native';
+import PressScale from '~/design-system/PressScale';
 import { useFocusEffect } from '@react-navigation/native';
 
 import styles from './styles';
@@ -392,14 +393,14 @@ const OrdersScreen = props => {
             <View
               style={styles.bottomSheetActionContainer}
             >
-              <TouchableOpacity
+              <PressScale
                 style={[styles.btnContainer, enableCancelOrder ? {} : styles.btnContainerDisable]}
                 onPress={enableCancelOrder ? onCancelOrderConfirmed : null}
               >
                 <Text
                   style={styles.btnText}
                 >{'Đồng ý'}</Text>
-              </TouchableOpacity>
+              </PressScale>
             </View>
           </KeyboardAvoidingView>
         </BottomSheet> */}
