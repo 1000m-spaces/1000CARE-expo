@@ -20,7 +20,7 @@ import { getProductImage } from '~/utils/image'
 import { s, fs } from '~/utils/responsive'
 import SliderBox from '~/common/SliderBox/index'
 import AppSection from '~/design-system/AppSection'
-import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { brandColors, liquidGlass, radiusScale } from '~/design-system/tokens'
 import ListTrademarksAdvertisement from './ListTrademarksAdvertisement'
 import HotProducts from './HotProducts'
 import { useTabBarVisibility } from '~/navigation/TabBarVisibilityContext'
@@ -700,7 +700,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   hotDealLabelText: {
-    color: '#0F8792',
+    color: brandColors.tealDark,
     fontFamily: foodAppFont,
     fontSize: fs(11),
     lineHeight: fs(14),
@@ -774,31 +774,31 @@ const styles = StyleSheet.create({
   flashImageWrap: {
     width: s(150),
     height: s(150),
-    borderRadius: s(18),
-    backgroundColor: '#FFFFFF',
-    borderWidth: s(4),
-    borderColor: '#FF6B45',
+    borderRadius: s(radiusScale.xxl),
+    backgroundColor: brandColors.tealLight,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
   },
   flashImage: {
-    width: '112%',
-    height: '112%',
+    width: '82%',
+    height: '82%',
   },
   flashDiscount: {
     position: 'absolute',
     left: 0,
     bottom: 0,
     minWidth: '52%',
-    backgroundColor: 'rgba(255,106,69,0.94)',
+    backgroundColor: brandColors.danger,
     paddingVertical: s(5),
     paddingHorizontal: s(9),
-    borderTopRightRadius: s(13),
+    borderTopRightRadius: s(radiusScale.xl),
     zIndex: 3,
   },
   flashDiscountText: {
-    color: '#FFFFFF',
+    color: brandColors.surface,
     fontFamily: foodAppFont,
     fontSize: fs(12),
     lineHeight: fs(17),
@@ -806,7 +806,7 @@ const styles = StyleSheet.create({
   },
   flashStore: {
     marginTop: s(7),
-    color: '#7C858B',
+    color: brandColors.muted,
     fontFamily: Fonts.base,
     fontSize: fs(11),
     lineHeight: fs(15),
@@ -814,7 +814,7 @@ const styles = StyleSheet.create({
   },
   flashName: {
     marginTop: s(2),
-    color: '#111827',
+    color: brandColors.textDark,
     fontFamily: foodAppFont,
     fontSize: fs(14),
     lineHeight: fs(19),
@@ -826,7 +826,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flashPrice: {
-    color: '#19C3BE',
+    color: brandColors.goldAccent,
     fontFamily: foodAppFont,
     fontSize: fs(16),
     lineHeight: fs(22),
@@ -834,7 +834,7 @@ const styles = StyleSheet.create({
   },
   flashOldPrice: {
     marginLeft: s(5),
-    color: '#8A9399',
+    color: brandColors.mutedLight,
     fontFamily: Fonts.base,
     fontSize: fs(12),
     lineHeight: fs(16),
