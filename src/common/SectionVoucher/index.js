@@ -1,13 +1,14 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 import Image from '../Image/Image'
 import { voucher_icon, right_arrow } from '~/assets/constants'
 import styles from './styles'
 import { formatMoneyString } from '~/utils/format'
+import PressScale from '~/design-system/PressScale'
 
 const SectionVoucher = ({ title, onPress, voucher }) => {
   return (
-    <TouchableOpacity
+    <PressScale
       style={styles.wrap}
       onPress={onPress}
     >
@@ -42,8 +43,8 @@ const SectionVoucher = ({ title, onPress, voucher }) => {
           source={right_arrow}
         />
       </View>
-      
-    </TouchableOpacity>)
+
+    </PressScale>)
 }
 
 export default SectionVoucher

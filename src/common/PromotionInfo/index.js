@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, TouchableOpacity, FlatList } from 'react-native'
+import { View, FlatList } from 'react-native'
 import { checked, discount_icon } from '~/assets/constants'
 import styles from './styles'
 import { Button, Image, Text } from '~/common/index'
 import HTML from 'react-native-render-html'
 import Colors from '../Colors/Colors'
 import { Fonts } from '~/assets/config'
+import PressScale from '~/design-system/PressScale'
 
 const PromotionTypes = {
   3: 'range_prices',
@@ -23,10 +24,10 @@ const PromotionInfo = ({ type, promotion, onPress, showLevelInfo = false }) => {
   const data = promotion[PromotionTypes[promotion?.campaign_type]]
 
   return (
-    <TouchableOpacity
+    <PressScale
       onPress={onPress}
       style={[
-        styles.itemContainer, 
+        styles.itemContainer,
         is_checked ? styles.itemContainerChecked : {}, 
         type === 'product' ? { 
           backgroundColor: 'rgba(66, 118, 254, 0.1)',
@@ -100,7 +101,7 @@ const PromotionInfo = ({ type, promotion, onPress, showLevelInfo = false }) => {
         })
       }
       </View>
-    </TouchableOpacity>
+    </PressScale>
   )
 }
 
