@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { Linking, TouchableOpacity, View } from 'react-native'
+import { Linking, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { useDispatch, useSelector } from 'react-redux'
 import Colors from '~/common/Colors/Colors'
 import { CheckBox, Text } from '~/common/index'
@@ -122,7 +123,7 @@ const StepThree = ({ amountLoan, setAmountLoan, loanProposalsDetail, setAccepted
           marginBottom: 20,
         }}
       >
-        <TouchableOpacity
+        <PressScale
           style={styles.checkBoxContainer}
           onPress={() => setAcceptedTerm1(!acceptedTerm1)}
         >
@@ -131,13 +132,13 @@ const StepThree = ({ amountLoan, setAmountLoan, loanProposalsDetail, setAccepted
             onPress={() => setAcceptedTerm1(!acceptedTerm1)}
           />
           <Text style={styles.checkBoxMessage}>Tôi đã đọc hiểu và đồng ý giao kết</Text>
-          <TouchableOpacity
+          <PressScale
             onPress={() => {
               Linking.openURL('https://storage.googleapis.com/neomed.vn/docs/contracts/mbbank/HOP_DONG_TIN_DUNG.pdf')
             }}
-          ><Text style={styles.termMessage}>hợp đồng vay vốn</Text></TouchableOpacity>
-        </TouchableOpacity>
-        <TouchableOpacity
+          ><Text style={styles.termMessage}>hợp đồng vay vốn</Text></PressScale>
+        </PressScale>
+        <PressScale
           style={styles.checkBoxContainer}
           onPress={() => setAcceptedTerm2(!acceptedTerm2)}
         >
@@ -153,11 +154,11 @@ const StepThree = ({ amountLoan, setAmountLoan, loanProposalsDetail, setAccepted
               }}
             >
               <Text style={styles.checkBoxMessage}>Tôi đã đọc, hiểu và đồng ý các</Text>
-              <TouchableOpacity><Text style={styles.termMessage}>quy định về sử dụng dịch vụ</Text></TouchableOpacity>
+              <PressScale><Text style={styles.termMessage}>quy định về sử dụng dịch vụ</Text></PressScale>
             </View>
             <Text style={styles.checkBoxMessage}>cấp tín dụng trực tuyến và cam kết bổ sung các hồ sơ liên quan khi được MB yêu cầu</Text>
           </View>
-        </TouchableOpacity>
+        </PressScale>
       </View>
     </View>
   )
