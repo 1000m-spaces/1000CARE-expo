@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { FlatList, TouchableOpacity } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { close } from '~/assets/constants'
@@ -303,7 +304,7 @@ const ProductItem = ({ product, distributorId, productInCart, setOpenDialogWaiti
       }
       {
         !product?.is_promotion && (
-          <TouchableOpacity
+          <PressScale
             style={styles.btnCloseContainer}
             onPress={() => removeProd()}
           >
@@ -312,7 +313,7 @@ const ProductItem = ({ product, distributorId, productInCart, setOpenDialogWaiti
               style={styles.btnClose}
               source={close}
             />
-          </TouchableOpacity>
+          </PressScale>
         )
       }
       <ErrorView

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { FlatList, View, TouchableOpacity } from 'react-native'
+import { FlatList, View } from 'react-native'
+import PressScale from '~/design-system/PressScale'
 import { Text } from '~/common/index'
 import ProductItemScrollHorizontal from '~/common/ProductItemScrollHorizontal/ProductItemScrollHorizontal'
 import { check_info } from '~/assets/constants'
@@ -46,7 +47,7 @@ const TopProduct = ({ navigation, product, distributorId }) => {
         >
           {'Sản phẩm nên mua'}
         </Text>
-        <TouchableOpacity
+        <PressScale
           style={styles.allContainer}
           onPress={() => {
             navigation.navigate(NAVIGATION_PRODUCT_LIST, {
@@ -61,7 +62,7 @@ const TopProduct = ({ navigation, product, distributorId }) => {
           >
             {'Xem tất cả'}
           </Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
       
       <FlatList

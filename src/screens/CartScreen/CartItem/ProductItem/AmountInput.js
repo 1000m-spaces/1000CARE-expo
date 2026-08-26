@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, StyleSheet } from 'react-native'
 import { brandColors, liquidGlass } from '~/design-system/tokens'
 import { s, fs } from '~/utils/responsive'
+import PressScale from '~/design-system/PressScale'
 
 const AmountInput = ({ 
   onChangeText,
@@ -14,14 +15,14 @@ const AmountInput = ({
   return (
     <View>
       <View style={styles.wrap}>
-        <TouchableOpacity
+        <PressScale
           onPress={onMinus}
           style={styles.btnMinus}
         >
           <View
             style={styles.btnMinusContent}
           />
-        </TouchableOpacity>
+        </PressScale>
         <TextInput
           onChangeText={onChangeText}
           onEndEditing={onEndEditing}
@@ -29,12 +30,12 @@ const AmountInput = ({
           value={value}
           style={styles.input}
         />
-        <TouchableOpacity
+        <PressScale
           onPress={onPlus}
           style={styles.btnPlus}
         >
           <Text style={styles.btn}>+</Text>
-        </TouchableOpacity>
+        </PressScale>
       </View>
     </View>
   )
