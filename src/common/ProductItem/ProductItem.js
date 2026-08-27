@@ -1,8 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { Image } from '~/common/index'
+import { Image, Icon } from '~/common/index'
 import { heart, heart_red } from '../../assets/constants'
 import PressScale from '~/design-system/PressScale'
 import placeholder from '~/assets/images/placeholder.png'
@@ -161,7 +160,7 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
                 </View>
               )
             }
-            <View style={[styles.photoBand, { height: resolvedProductWidth }]}>
+            <View style={styles.photoWrap}>
               <Image
                 style={styles.photo}
                 widthImage={Number(1.5 * resolvedProductWidth).toFixed(0)}
@@ -170,70 +169,59 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
               />
               <PressScale
                 onPress={() => favorClick()}
-                style={styles.favorButton}
+                style={styles.wishlistButton}
                 hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
                 <Image
-                  style={styles.favorIcon}
+                  style={styles.wishlistIcon}
                   resizeMode={'contain'}
                   source={data.is_wishlist ? heart_red : heart}
-                  tintColor={data.is_wishlist ? Colors.errorColor : brandColors.surface}
+                  tintColor={data.is_wishlist ? Colors.errorColor : brandColors.mutedLight}
                 />
               </PressScale>
               {
                 data.range_prices && data.range_prices.length > 0 && (
-                  <View style={styles.giftTab}>
-                    <Text style={styles.giftTabText}>QUÀ TẶNG</Text>
+                  <View style={styles.giftDot}>
+                    <Icon type="feather" name="gift" size={s(11)} color={brandColors.surface} />
                   </View>
                 )
               }
-              {hasDiscount && (
-                <LinearGradient
-                  colors={['transparent', 'rgba(6,26,30,0.72)']}
-                  style={styles.photoScrim}
-                  pointerEvents="none"
+              {addButton && (
+                <PressScale
+                  onPress={() => addItem()}
+                  style={styles.addFab}
                 >
-                  <Text style={styles.discountTag}>GIẢM {discountPercent}%</Text>
-                </LinearGradient>
+                  <Icon type="feather" name="plus" size={s(16)} color={brandColors.surface} />
+                </PressScale>
               )}
             </View>
-            <View style={styles.body}>
-              {!!supplierName && (
-                <Text
-                  style={styles.eyebrow}
-                  numberOfLines={1}
-                  ellipsizeMode='tail'
-                >{supplierName}</Text>
-              )}
+            <View style={styles.info}>
               <Text
                 style={styles.productName}
                 numberOfLines={2}
                 ellipsizeMode='tail'
               >{data.name}</Text>
-              <View style={styles.divider} />
-              <View style={styles.priceLine}>
+              {!!supplierName && (
                 <Text
-                  style={isPointPayment ? styles.salePrice : styles.price}
+                  style={styles.subtitle}
                   numberOfLines={1}
                   ellipsizeMode='tail'
-                >
+                >{supplierName}</Text>
+              )}
+              <Text style={styles.priceLine} numberOfLines={1}>
+                <Text style={isPointPayment ? styles.salePrice : styles.price}>
                   {formatMoney(data.sale_price, { unit: isPointPayment ? 'điểm' : 'đ', space: false })}
                 </Text>
                 {hasDiscount && (
-                  <Text style={styles.discount} numberOfLines={1}>
-                    {formatMoney(data.price, { unit: 'đ', space: false })}
+                  <Text style={styles.discount}>
+                    {'  '}{formatMoney(data.price, { unit: 'đ', space: false })}
                   </Text>
                 )}
-              </View>
+                {hasDiscount && (
+                  <Text style={styles.discountPercent}>{'  '}-{discountPercent}%</Text>
+                )}
+              </Text>
             </View>
-            {addButton && (
-              <PressScale
-                onPress={() => addItem()}
-                style={styles.ctaBar}
-              >
-                <Text style={styles.ctaText}>+ Thêm vào giỏ</Text>
-              </PressScale>
-            )}
           </View>
         ) : (
           <View style={styles.imageColumnContainer}>
@@ -299,11 +287,18 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: brandColors.surface,
     margin: s(5),
-    borderRadius: s(radiusScale.xxl),
-    overflow: 'hidden',
-    ...brandShadow.soft,
+    borderRadius: s(radiusScale.xl),
+    shadowColor: '#0B1B1E',
+    shadowOffset: { width: 0, height: s(4) },
+    shadowOpacity: 0.06,
+    shadowRadius: s(10),
+    elevation: 2,
   },
-  photoBand: {
+  photoWrap: {
+    margin: s(8),
+    marginBottom: 0,
+    aspectRatio: 1,
+    borderRadius: s(radiusScale.lg),
     backgroundColor: brandColors.tealLight,
     position: 'relative',
     overflow: 'hidden',
@@ -313,91 +308,67 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'contain',
   },
-  photoScrim: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: '42%',
-    justifyContent: 'flex-end',
-    paddingHorizontal: s(10),
-    paddingBottom: s(8),
-  },
-  discountTag: {
-    fontFamily: Fonts.bold,
-    fontWeight: 'normal',
-    fontSize: fs(12),
-    color: brandColors.surface,
-    letterSpacing: 0.2,
-  },
-  favorButton: {
-    position: 'absolute',
-    top: s(8),
-    right: s(8),
-    width: s(26),
-    height: s(26),
-    borderRadius: s(radiusScale.pill),
-    backgroundColor: 'rgba(15,20,20,0.32)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  favorIcon: {
-    height: s(14),
-    width: s(14),
-  },
-  giftTab: {
+  wishlistButton: {
     position: 'absolute',
     top: s(8),
     left: s(8),
-    backgroundColor: brandColors.goldAccent,
-    borderRadius: s(radiusScale.xs),
-    paddingHorizontal: s(6),
-    paddingVertical: s(3),
-  },
-  giftTabText: {
-    fontFamily: Fonts.bold,
-    fontWeight: 'normal',
-    fontSize: fs(9),
-    letterSpacing: 0.3,
-    color: brandColors.textDark,
-  },
-  body: {
-    paddingHorizontal: s(10),
-    paddingTop: s(9),
-    paddingBottom: s(10),
-  },
-  eyebrow: {
-    fontFamily: Fonts.bold,
-    fontWeight: 'normal',
-    fontSize: fs(9.5),
-    lineHeight: fs(13),
-    letterSpacing: 0.6,
-    textTransform: 'uppercase',
-    color: brandColors.tealPrimary,
-    marginBottom: s(3),
-  },
-  divider: {
-    height: 1,
-    backgroundColor: brandColors.borderSoft,
-    marginVertical: s(7),
-  },
-  priceLine: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    flexWrap: 'wrap',
-  },
-  ctaBar: {
-    height: s(36),
-    backgroundColor: brandColors.tealPrimary,
+    width: s(22),
+    height: s(22),
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ctaText: {
+  wishlistIcon: {
+    height: s(15),
+    width: s(15),
+  },
+  giftDot: {
+    position: 'absolute',
+    bottom: s(8),
+    left: s(8),
+    width: s(20),
+    height: s(20),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: brandColors.goldAccent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addFab: {
+    position: 'absolute',
+    bottom: s(8),
+    right: s(8),
+    width: s(30),
+    height: s(30),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: brandColors.tealPrimary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: brandColors.tealDark,
+    shadowOffset: { width: 0, height: s(3) },
+    shadowOpacity: 0.28,
+    shadowRadius: s(6),
+    elevation: 4,
+  },
+  info: {
+    paddingHorizontal: s(10),
+    paddingTop: s(9),
+    paddingBottom: s(11),
+  },
+  subtitle: {
+    marginTop: s(2),
+    fontFamily: Fonts.base,
+    fontSize: fs(11),
+    lineHeight: fs(14),
+    color: brandColors.muted,
+    fontWeight: 'normal',
+  },
+  priceLine: {
+    marginTop: s(6),
+  },
+  discountPercent: {
     fontFamily: Fonts.bold,
     fontWeight: 'normal',
-    fontSize: fs(12.5),
-    color: brandColors.surface,
-    letterSpacing: 0.1,
+    fontSize: fs(11),
+    color: brandColors.danger,
   },
   productColumnContainer: {
     width: PRODUCT_COLUMN_WIDTH,
@@ -440,19 +411,15 @@ const styles = StyleSheet.create({
   price: {
     fontFamily: Fonts.bold,
     fontSize: fs(15),
-    marginRight: s(6),
     fontWeight: 'normal',
     color: brandColors.goldAccent,
-    lineHeight: fs(19),
     letterSpacing: -0.2,
   },
   salePrice: {
     fontFamily: Fonts.bold,
     fontSize: fs(15),
-    marginRight: s(6),
     fontWeight: 'normal',
     color: brandColors.goldAccent,
-    lineHeight: fs(19),
     letterSpacing: -0.2,
   },
   discount: {
@@ -460,7 +427,6 @@ const styles = StyleSheet.create({
     fontSize: fs(11),
     color: brandColors.mutedLight,
     fontWeight: 'normal',
-    lineHeight: fs(14),
     textDecorationLine: 'line-through',
   },
   quantityContainer: {
