@@ -1,8 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 import { Image } from '~/common/index'
-import { plus_2, heart, heart_red } from '../../assets/constants'
+import { heart, heart_red } from '../../assets/constants'
 import PressScale from '~/design-system/PressScale'
 import placeholder from '~/assets/images/placeholder.png'
 
@@ -17,7 +18,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, requestAddProductWishList, requestRemoveProductWishList, updateCart } from '~/store/actions'
 import { getAuthStore } from '~/store/selector'
 import strings from '~/i18n'
-import { gift_fill } from '~/assets/constants'
 import { Fonts } from '~/assets/config'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
@@ -28,8 +28,6 @@ const ContentPadding = 9 * 2
 const CategoriesWidth = 100
 const ITEMPADDING = 4
 const PRODUCT_WIDTH = dimens.common.WINDOW_WIDTH / numColumns - ITEMPADDING * 2 - 10
-const IMAGE_CONTAINER_HEIGHT = PRODUCT_WIDTH
-const IMAGE_HEIGHT = IMAGE_CONTAINER_HEIGHT - 8
 const PRODUCT_COLUMN_WIDTH = (dimens.common.WINDOW_WIDTH - CategoriesWidth - LAYOUTPADDING - ContentPadding) / 3
 const PRODUCT_COLUMN_HEIGHT = 120
 const IMAGE_COLUMN_WIDTH = PRODUCT_COLUMN_WIDTH
@@ -122,8 +120,6 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
   const isPending = data.distributor?.status === 2
 
   const resolvedProductWidth = Number(productWidth) > 0 ? Number(productWidth) : PRODUCT_WIDTH
-  const resolvedImageContainerHeight = resolvedProductWidth
-  const resolvedImageHeight = resolvedImageContainerHeight - 8
   const supplierName = data?.distributor?.nick_name || data?.supplier?.name || ''
   const isPointPayment = data.payment_type === 2
   const hasDiscount = !isPointPayment && Number(data.price) > 0 && Number(data.sale_price) > 0 && Number(data.sale_price) !== Number(data.price)
@@ -152,13 +148,7 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
       {
         type ? (
           <View
-            style={[
-              styles.productContainer,
-              {
-                width: resolvedProductWidth,
-                height: resolvedProductWidth * 1.72 + 64,
-              },
-            ]}
+            style={[styles.card, { width: resolvedProductWidth }]}
           >
             {
               isPending && (
@@ -171,85 +161,79 @@ const ProductItem = ({ navigation, data, distributorId, type, addButton = true, 
                 </View>
               )
             }
-            <View style={[styles.imageContainer, { height: resolvedImageContainerHeight }]}>
+            <View style={[styles.photoBand, { height: resolvedProductWidth }]}>
               <Image
-                style={[styles.productImage, { height: resolvedImageHeight }]}
+                style={styles.photo}
                 widthImage={Number(1.5 * resolvedProductWidth).toFixed(0)}
-                heightImage={Number(1.5 * resolvedImageHeight).toFixed(0)}
+                heightImage={Number(1.5 * resolvedProductWidth).toFixed(0)}
                 source={getProductImage(data, 'xl', placeholder)}
               />
-              {hasDiscount && (
-                <View style={styles.discountBadge}>
-                  <Text style={styles.discountBadgeText}>-{discountPercent}%</Text>
-                </View>
-              )}
               <PressScale
                 onPress={() => favorClick()}
-                style={styles.favorContainer}
+                style={styles.favorButton}
                 hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
                 <Image
                   style={styles.favorIcon}
                   resizeMode={'contain'}
                   source={data.is_wishlist ? heart_red : heart}
-                  tintColor={Colors.errorColor}
+                  tintColor={data.is_wishlist ? Colors.errorColor : brandColors.surface}
                 />
               </PressScale>
               {
                 data.range_prices && data.range_prices.length > 0 && (
-                  <View style={styles.giftBadge}>
-                    <Image
-                      style={styles.giftBadgeIcon}
-                      source={gift_fill}
-                      tintColor={brandColors.surface}
-                    />
+                  <View style={styles.giftTab}>
+                    <Text style={styles.giftTabText}>QUÀ TẶNG</Text>
                   </View>
                 )
               }
+              {hasDiscount && (
+                <LinearGradient
+                  colors={['transparent', 'rgba(6,26,30,0.72)']}
+                  style={styles.photoScrim}
+                  pointerEvents="none"
+                >
+                  <Text style={styles.discountTag}>GIẢM {discountPercent}%</Text>
+                </LinearGradient>
+              )}
             </View>
-            <View style={styles.productInfoContainer}>
+            <View style={styles.body}>
+              {!!supplierName && (
+                <Text
+                  style={styles.eyebrow}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                >{supplierName}</Text>
+              )}
               <Text
                 style={styles.productName}
                 numberOfLines={2}
                 ellipsizeMode='tail'
               >{data.name}</Text>
-              {!!supplierName && (
+              <View style={styles.divider} />
+              <View style={styles.priceLine}>
                 <Text
-                  style={styles.supplierName}
+                  style={isPointPayment ? styles.salePrice : styles.price}
                   numberOfLines={1}
                   ellipsizeMode='tail'
-                >{supplierName}</Text>
-              )}
-              <View style={styles.priceRow}>
-                <View style={styles.priceTextBlock}>
-                  <Text
-                    style={isPointPayment ? styles.salePrice : styles.price}
-                    numberOfLines={1}
-                    ellipsizeMode='tail'
-                  >
-                    {formatMoney(data.sale_price, { unit: isPointPayment ? 'điểm' : 'đ', space: false })}
+                >
+                  {formatMoney(data.sale_price, { unit: isPointPayment ? 'điểm' : 'đ', space: false })}
+                </Text>
+                {hasDiscount && (
+                  <Text style={styles.discount} numberOfLines={1}>
+                    {formatMoney(data.price, { unit: 'đ', space: false })}
                   </Text>
-                  {hasDiscount && (
-                    <Text style={styles.discount} numberOfLines={1}>
-                      {formatMoney(data.price, { unit: 'đ', space: false })}
-                    </Text>
-                  )}
-                </View>
-                {addButton && (
-                  <PressScale
-                    onPress={() => addItem()}
-                    style={styles.buttonAddContainer}
-                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                  >
-                    <Image
-                      source={plus_2}
-                      style={styles.buttonAdd}
-                      tintColor={brandColors.surface}
-                    />
-                  </PressScale>
                 )}
               </View>
             </View>
+            {addButton && (
+              <PressScale
+                onPress={() => addItem()}
+                style={styles.ctaBar}
+              >
+                <Text style={styles.ctaText}>+ Thêm vào giỏ</Text>
+              </PressScale>
+            )}
           </View>
         ) : (
           <View style={styles.imageColumnContainer}>
@@ -311,32 +295,114 @@ const styles = StyleSheet.create({
   listProductsContainer: {
     marginTop: 20,
   },
-  productContainer: {
-    width: PRODUCT_WIDTH,
-    height: PRODUCT_WIDTH * 1.4 + 50,
+  card: {
     flexDirection: 'column',
-    display: 'flex',
-    justifyContent: 'space-between',
     backgroundColor: brandColors.surface,
     margin: s(5),
-    borderWidth: 1,
-    borderColor: brandColors.borderSoft,
     borderRadius: s(radiusScale.xxl),
     overflow: 'hidden',
     ...brandShadow.soft,
+  },
+  photoBand: {
+    backgroundColor: brandColors.tealLight,
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  photo: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  photoScrim: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: '42%',
+    justifyContent: 'flex-end',
+    paddingHorizontal: s(10),
+    paddingBottom: s(8),
+  },
+  discountTag: {
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(12),
+    color: brandColors.surface,
+    letterSpacing: 0.2,
+  },
+  favorButton: {
+    position: 'absolute',
+    top: s(8),
+    right: s(8),
+    width: s(26),
+    height: s(26),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: 'rgba(15,20,20,0.32)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  favorIcon: {
+    height: s(14),
+    width: s(14),
+  },
+  giftTab: {
+    position: 'absolute',
+    top: s(8),
+    left: s(8),
+    backgroundColor: brandColors.goldAccent,
+    borderRadius: s(radiusScale.xs),
+    paddingHorizontal: s(6),
+    paddingVertical: s(3),
+  },
+  giftTabText: {
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(9),
+    letterSpacing: 0.3,
+    color: brandColors.textDark,
+  },
+  body: {
+    paddingHorizontal: s(10),
+    paddingTop: s(9),
+    paddingBottom: s(10),
+  },
+  eyebrow: {
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(9.5),
+    lineHeight: fs(13),
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    color: brandColors.tealPrimary,
+    marginBottom: s(3),
+  },
+  divider: {
+    height: 1,
+    backgroundColor: brandColors.borderSoft,
+    marginVertical: s(7),
+  },
+  priceLine: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    flexWrap: 'wrap',
+  },
+  ctaBar: {
+    height: s(36),
+    backgroundColor: brandColors.tealPrimary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ctaText: {
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(12.5),
+    color: brandColors.surface,
+    letterSpacing: 0.1,
   },
   productColumnContainer: {
     width: PRODUCT_COLUMN_WIDTH,
     height: PRODUCT_COLUMN_HEIGHT,
     flexDirection: 'column',
-  },
-  imageContainer: {
-    height: IMAGE_CONTAINER_HEIGHT,
-    backgroundColor: brandColors.tealLight,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: s(8),
-    position: 'relative',
   },
   imageColumnContainer: {
     backgroundColor: brandColors.tealLight,
@@ -347,47 +413,19 @@ const styles = StyleSheet.create({
     borderRadius: s(radiusScale.lg),
     overflow: 'hidden',
   },
-  productImage: {
-    width: '100%',
-    height: IMAGE_HEIGHT,
-    resizeMode: 'contain',
-  },
   productImageColumn: {
     width: IMAGE_COLUMN_WIDTH - 2,
     height: IMAGE_COLUMN_HEIGHT - 2,
     resizeMode: 'contain',
   },
-  productInfoContainer: {
-    paddingHorizontal: s(10),
-    paddingTop: s(8),
-    paddingBottom: s(10),
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-  productNameContainer: {
-    marginTop: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
   productName: {
     fontFamily: Fonts.bold,
     fontSize: fs(13),
     color: brandColors.textDark,
-    lineHeight: fs(18),
-    minHeight: fs(36),
+    lineHeight: fs(17),
+    minHeight: fs(34),
     fontWeight: 'normal',
     letterSpacing: -0.1,
-  },
-  supplierName: {
-    fontFamily: Fonts.base,
-    color: brandColors.muted,
-    fontSize: fs(11),
-    lineHeight: fs(15),
-    marginTop: s(2),
   },
   productColumName: {
     fontFamily: Fonts.bold,
@@ -399,122 +437,30 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
     flex: 2,
   },
-  buttonAddContainer: {
-    backgroundColor: brandColors.tealPrimary,
-    width: s(30),
-    height: s(30),
-    borderRadius: s(radiusScale.pill),
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...brandShadow.teal,
-  },
-  buttonAdd: {
-    width: s(13),
-    height: s(13),
-  },
-  priceRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: s(8),
-  },
-  priceTextBlock: {
-    flex: 1,
-    minWidth: 0,
-    paddingRight: s(8),
-  },
-  bottomContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  actionColumn: {
-    width: s(30),
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-  },
-  favorContainer: {
-    position: 'absolute',
-    top: s(6),
-    right: s(6),
-    height: s(26),
-    width: s(26),
-    borderRadius: s(radiusScale.pill),
-    backgroundColor: 'rgba(255,255,255,0.86)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...brandShadow.soft,
-  },
-  favorIcon: {
-    height: s(15),
-    width: s(15),
-  },
-  discountBadge: {
-    position: 'absolute',
-    top: s(6),
-    left: s(6),
-    backgroundColor: brandColors.danger,
-    borderRadius: s(radiusScale.pill),
-    paddingHorizontal: s(7),
-    paddingVertical: s(3),
-  },
-  discountBadgeText: {
-    fontFamily: Fonts.bold,
-    fontWeight: 'normal',
-    fontSize: fs(10),
-    lineHeight: fs(12),
-    color: brandColors.surface,
-  },
-  giftBadge: {
-    position: 'absolute',
-    bottom: s(6),
-    left: s(6),
-    width: s(22),
-    height: s(22),
-    borderRadius: s(radiusScale.pill),
-    backgroundColor: brandColors.goldAccent,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...brandShadow.soft,
-  },
-  giftBadgeIcon: {
-    width: s(12),
-    height: s(12),
-  },
-  priceContainer: {
-    marginTop: 1,
-    flexDirection: 'row',
-  },
   price: {
     fontFamily: Fonts.bold,
     fontSize: fs(15),
-    marginTop: 1,
+    marginRight: s(6),
     fontWeight: 'normal',
     color: brandColors.goldAccent,
     lineHeight: fs(19),
     letterSpacing: -0.2,
   },
-  salePriceContainer: {
-    marginTop: 1,
-    flexDirection: 'row',
-    // flex: 2,
-  },
   salePrice: {
     fontFamily: Fonts.bold,
     fontSize: fs(15),
+    marginRight: s(6),
     fontWeight: 'normal',
     color: brandColors.goldAccent,
     lineHeight: fs(19),
     letterSpacing: -0.2,
   },
   discount: {
-    marginTop: s(1),
     fontFamily: Fonts.base,
-    fontSize: fs(10),
+    fontSize: fs(11),
     color: brandColors.mutedLight,
     fontWeight: 'normal',
-    lineHeight: fs(13),
+    lineHeight: fs(14),
     textDecorationLine: 'line-through',
   },
   quantityContainer: {
