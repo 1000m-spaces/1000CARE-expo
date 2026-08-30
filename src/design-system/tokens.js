@@ -131,9 +131,9 @@ export const liquidGlass = {
 export const backgroundWash = {
   base: '#FCFDFD',
   blobs: [
-    { cx: '15%', cy: '0%', r: '38%', color: 'rgba(13,150,168,0.09)' },
-    { cx: '95%', cy: '12%', r: '34%', color: 'rgba(245,166,35,0.07)' },
-    { cx: '30%', cy: '100%', r: '40%', color: 'rgba(13,150,168,0.06)' },
+    { cx: '15%', cy: '0%', r: '36%', color: 'rgba(13,150,168,0.035)' },
+    { cx: '95%', cy: '12%', r: '32%', color: 'rgba(245,166,35,0.028)' },
+    { cx: '30%', cy: '100%', r: '38%', color: 'rgba(13,150,168,0.022)' },
   ],
 };
 
