@@ -1,34 +1,42 @@
 import { StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { brandColors, radiusScale } from '~/design-system/tokens'
+import { Fonts } from '~/assets/config'
+import { s, fs } from '~/utils/responsive'
 
+// Chip 3 tab theo spec redesign (pill teal khi chọn, trắng viền khi
+// chưa chọn) — thay cho tab gạch chân kiểu cũ.
 export default StyleSheet.create({
   listViewContainer: {
-    flex: 1,
-    maxHeight: 57,
-    marginBottom: 2,
-    backgroundColor: Colors.white,
-    marginTop: 6,
+    flexGrow: 0,
+    marginBottom: s(2),
+    backgroundColor: 'transparent',
+    marginTop: s(6),
   },
   listViewContent: {
-    height: 57,
+    paddingHorizontal: s(16),
+    paddingVertical: s(14),
+    gap: s(8),
   },
   tabItem: {
-    paddingVertical: 16,
-    paddingHorizontal: 18,
+    paddingVertical: s(8),
+    paddingHorizontal: s(14),
+    borderRadius: s(radiusScale.lg),
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
   },
   tabSelected: {
-    borderBottomColor: Colors.systemColor2,
-    borderBottomWidth: 2,
+    backgroundColor: brandColors.tealPrimary,
+    borderColor: brandColors.tealPrimary,
   },
   tabTitle: {
     textAlign: 'center',
-    fontSize: 14,
-    lineHeight: 22,
-    color: Colors.textColor3,
+    fontSize: fs(12),
+    color: brandColors.textDark,
+    fontFamily: Fonts.bold,
     fontWeight: 'normal',
   },
   tabTitleSelected: {
-    color: Colors.systemColor2,
-    fontWeight: '600',
+    color: brandColors.surface,
   },
 })
