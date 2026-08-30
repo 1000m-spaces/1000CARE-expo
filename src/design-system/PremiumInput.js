@@ -37,21 +37,22 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     marginLeft: s(4),
   },
+  // Input phẳng theo spec redesign: nền #F4F9F9, không shadow nổi —
+  // thay cho ô input dạng card trắng nổi khối trước đó.
   inputContainer: {
-    backgroundColor: brandColors.surface,
+    backgroundColor: '#F4F9F9',
     borderRadius: s(16),
     paddingHorizontal: s(16),
-    height: s(56),
+    height: s(52),
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: brandColors.border,
-    ...brandShadow.soft,
+    borderColor: brandColors.borderSoft,
   },
   input: {
     fontFamily: Fonts.base,
-    fontSize: fs(16),
+    fontSize: fs(15),
     color: brandColors.textDark,
-    fontWeight: 'normal',
+    fontWeight: '600',
   },
   errorInput: {
     borderColor: brandColors.danger,

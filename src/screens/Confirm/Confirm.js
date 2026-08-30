@@ -635,9 +635,9 @@ const styles = StyleSheet.create({
   },
   title: {
     color: brandColors.textDark,
-    fontSize: fs(24),
-    lineHeight: fs(31),
-    fontWeight: '600',
+    fontSize: fs(18),
+    lineHeight: fs(24),
+    fontWeight: '700',
     textAlign: 'center',
   },
   message: {
