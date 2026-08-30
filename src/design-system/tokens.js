@@ -87,12 +87,23 @@ export const brandShadow = {
     shadowRadius: 16,
     elevation: 6,
   },
+  // "Deeper, more premium, lifted" card shadow theo bản redesign
+  // (0 8-10px 20-24px rgba(10,47,56,0.06-0.09)) — RN chỉ hỗ trợ 1 lớp
+  // shadow/View nên lấy giá trị giữa của khoảng trên.
   soft: {
-    shadowColor: '#112B33',
+    shadowColor: '#0A2F38',
+    shadowOffset: { width: 0, height: 9 },
+    shadowOpacity: 0.075,
+    shadowRadius: 22,
+    elevation: 5,
+  },
+  // Card đang được chọn/nổi bật (địa chỉ mặc định...) dùng shadow tint teal.
+  softSelected: {
+    shadowColor: brandColors.tealPrimary,
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.05,
-    shadowRadius: 18,
-    elevation: 4,
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 5,
   },
 };
 
@@ -100,15 +111,30 @@ export const liquidGlass = {
   background: 'rgba(255,255,255,0.9)',
   backgroundStrong: 'rgba(255,255,255,0.96)',
   backgroundTint: 'rgba(248,254,255,0.88)',
-  border: 'rgba(255,255,255,0.96)',
+  border: 'rgba(255,255,255,0.95)',
   borderTint: 'rgba(11,123,138,0.14)',
+  // Gradient chéo dùng cho chất liệu "kính lỏng" (search bar, cart button,
+  // back button, sticky footer) — linear-gradient(135deg, ...) từ bản redesign.
+  gradient: ['rgba(255,255,255,0.8)', 'rgba(237,251,252,0.35)', 'rgba(255,255,255,0.6)'],
+  gradientLocations: [0, 0.55, 1],
   shadow: {
     shadowColor: '#0A2F38',
-    shadowOffset: { width: 0, height: 14 },
-    shadowOpacity: 0.06,
-    shadowRadius: 28,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.14,
+    shadowRadius: 22,
     elevation: 6,
   },
+};
+
+// Nền "wash" mới phía sau toàn bộ nội dung màn hình — 3 quầng màu radial
+// mờ (teal + gold) thay cho nền phẳng, dùng với component BackgroundWash.
+export const backgroundWash = {
+  base: '#FAFCFC',
+  blobs: [
+    { cx: '15%', cy: '0%', r: '42%', color: 'rgba(13,150,168,0.22)' },
+    { cx: '95%', cy: '12%', r: '38%', color: 'rgba(245,166,35,0.18)' },
+    { cx: '30%', cy: '100%', r: '45%', color: 'rgba(13,150,168,0.14)' },
+  ],
 };
 
 export const brandGradients = {

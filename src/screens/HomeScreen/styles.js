@@ -11,7 +11,7 @@ export default StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    backgroundColor: brandColors.background,
+    backgroundColor: 'transparent',
   },
   backgroundImageAsset: {
     width: '100%',

@@ -39,6 +39,17 @@ const LiquidGlassView = ({ children, style, intensity = 'regular', variant = 'de
     );
   }
 
+  const regularGradient = !isDroplet && (
+    <LinearGradient
+      pointerEvents="none"
+      colors={liquidGlass.gradient}
+      locations={liquidGlass.gradientLocations}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={StyleSheet.absoluteFill}
+    />
+  );
+
   if (hasNativeBlur) {
     return (
       <BlurView
@@ -48,6 +59,7 @@ const LiquidGlassView = ({ children, style, intensity = 'regular', variant = 'de
         style={[styles.base, glassStyle, style]}
         {...props}
       >
+        {regularGradient}
         <View pointerEvents="none" style={[styles.frostWash, isDroplet && styles.frostWashDroplet]} />
         {isDroplet && (
           <>
@@ -74,6 +86,7 @@ const LiquidGlassView = ({ children, style, intensity = 'regular', variant = 'de
 
   return (
     <View style={[styles.base, glassStyle, style]} {...props}>
+      {regularGradient}
       <View pointerEvents="none" style={[styles.frostWash, isDroplet && styles.frostWashDroplet]} />
       {isDroplet && (
         <>
@@ -101,7 +114,7 @@ const LiquidGlassView = ({ children, style, intensity = 'regular', variant = 'de
 const styles = StyleSheet.create({
   base: {
     overflow: 'hidden',
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: liquidGlass.border,
     ...liquidGlass.shadow,
     ...webBackdrop,

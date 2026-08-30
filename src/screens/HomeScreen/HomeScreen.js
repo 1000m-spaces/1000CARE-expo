@@ -31,6 +31,7 @@ import PremiumButton from '~/design-system/PremiumButton';
 import { brandColors } from '~/design-system/tokens';
 import { showToast } from '~/utils/toast';
 import LiquidGlassView from '~/design-system/LiquidGlassView';
+import BackgroundWash from '~/design-system/BackgroundWash';
 import PressScale from '~/design-system/PressScale';
 import { s } from '~/utils/responsive';
 // import { NetworkContext } from '../../network/NetworkProvider'
@@ -272,6 +273,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.backgroundImage}>
+      <BackgroundWash />
       <SafeAreaView edges={['top']} style={styles.safeArea}>
         <View style={styles.container}>
           <View style={[styles.contentLayer, selectedDistri?.id !== -1 && styles.supplierContentLayer]}>

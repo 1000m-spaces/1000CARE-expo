@@ -372,13 +372,15 @@ const FlashSalePriceSock = ({ navigation, products }) => {
                   </View>
                 ) : null}
               </View>
-              <Text style={styles.flashStore} numberOfLines={1}>{item?.distributor?.nick_name || item?.supplier?.name || '1000CARE'}</Text>
-              <Text style={styles.flashName} numberOfLines={2}>{item?.name}</Text>
-              <View style={styles.flashPriceRow}>
-                <Text style={styles.flashPrice}>{formatMoney(price, { unit: 'đ', space: false })}</Text>
-                {originalPrice > price && (
-                  <Text style={styles.flashOldPrice}>{formatMoney(originalPrice, { unit: 'đ', space: false })}</Text>
-                )}
+              <View style={styles.flashBody}>
+                <Text style={styles.flashStore} numberOfLines={1}>{item?.distributor?.nick_name || item?.supplier?.name || '1000CARE'}</Text>
+                <Text style={styles.flashName} numberOfLines={2}>{item?.name}</Text>
+                <View style={styles.flashPriceRow}>
+                  <Text style={styles.flashPrice}>{formatMoney(price, { unit: 'đ', space: false })}</Text>
+                  {originalPrice > price && (
+                    <Text style={styles.flashOldPrice}>{formatMoney(originalPrice, { unit: 'đ', space: false })}</Text>
+                  )}
+                </View>
               </View>
             </PressScale>
           )
@@ -769,43 +771,51 @@ const styles = StyleSheet.create({
     paddingBottom: s(4),
   },
   flashCard: {
-    width: s(150),
-  },
-  flashImageWrap: {
-    width: s(150),
-    height: s(150),
-    borderRadius: s(radiusScale.xxl),
-    backgroundColor: brandColors.tealLight,
+    width: s(148),
+    borderRadius: s(radiusScale.xxxl),
+    backgroundColor: brandColors.surface,
     borderWidth: 1,
     borderColor: brandColors.borderSoft,
+    overflow: 'hidden',
+    shadowColor: '#0A2F38',
+    shadowOffset: { width: 0, height: s(14) },
+    shadowOpacity: 0.12,
+    shadowRadius: s(28),
+    elevation: 6,
+  },
+  flashImageWrap: {
+    width: '100%',
+    height: s(110),
+    backgroundColor: brandColors.tealLight,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
   },
   flashImage: {
-    width: '82%',
-    height: '82%',
+    width: '100%',
+    height: '100%',
   },
   flashDiscount: {
     position: 'absolute',
-    left: 0,
-    bottom: 0,
-    minWidth: '52%',
-    backgroundColor: brandColors.danger,
-    paddingVertical: s(5),
-    paddingHorizontal: s(9),
-    borderTopRightRadius: s(radiusScale.xl),
+    top: s(8),
+    left: s(8),
+    backgroundColor: brandColors.goldAccent,
+    paddingVertical: s(3),
+    paddingHorizontal: s(7),
+    borderRadius: s(radiusScale.xs),
     zIndex: 3,
   },
   flashDiscountText: {
-    color: brandColors.surface,
+    color: brandColors.textDark,
     fontFamily: foodAppFont,
-    fontSize: fs(12),
-    lineHeight: fs(17),
+    fontSize: fs(10),
+    lineHeight: fs(13),
     fontWeight: 'normal',
   },
+  flashBody: {
+    padding: s(10),
+  },
   flashStore: {
-    marginTop: s(7),
     color: brandColors.muted,
     fontFamily: Fonts.base,
     fontSize: fs(11),
@@ -816,8 +826,9 @@ const styles = StyleSheet.create({
     marginTop: s(2),
     color: brandColors.textDark,
     fontFamily: foodAppFont,
-    fontSize: fs(14),
-    lineHeight: fs(19),
+    fontSize: fs(12),
+    lineHeight: fs(17),
+    height: s(34),
     fontWeight: 'normal',
   },
   flashPriceRow: {
@@ -826,18 +837,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flashPrice: {
-    color: brandColors.goldAccent,
+    color: brandColors.tealDark,
     fontFamily: foodAppFont,
-    fontSize: fs(16),
-    lineHeight: fs(22),
+    fontSize: fs(13.5),
+    lineHeight: fs(18),
     fontWeight: 'normal',
   },
   flashOldPrice: {
     marginLeft: s(5),
     color: brandColors.mutedLight,
     fontFamily: Fonts.base,
-    fontSize: fs(12),
-    lineHeight: fs(16),
+    fontSize: fs(10.5),
+    lineHeight: fs(14),
     fontWeight: 'normal',
     textDecorationLine: 'line-through',
   },
