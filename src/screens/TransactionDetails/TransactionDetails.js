@@ -5,12 +5,19 @@ import Header from '~/common/Header/index'
 import { back } from '~/assets/constants'
 import strings from '~/i18n'
 import { successPay } from '~/assets/constants'
-import Colors from '~/common/Colors/Colors'
+import BackgroundWash from '~/design-system/BackgroundWash'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
+
 const data = [
   { name: 'Dịch vụ', value: 'Nạp tiền' }, { name: 'Phí giao dịch', value: 'Miễn phí' },
   { name: 'Thời gian', value: '12/2/2021 08:07:45' }, { name: 'Mã giao dịch', value: 'CODE-275612891' },
 ]
 
+// Màn kết quả giao dịch dùng chung mẫu "success" (vòng tròn xanh + số tiền
+// lớn) theo token thương hiệu, card chi tiết trắng bo góc thay khối phẳng
+// nền trắng cũ.
 const TransactionDetails = props => {
   const renderList = data.map((item, index) => {
     return (
@@ -24,7 +31,8 @@ const TransactionDetails = props => {
     )
   })
   return (
-    <View>
+    <View style={styles.container}>
+      <BackgroundWash />
       <Header
         title={strings.TransactionDetails.titleRecharge}
         leftAction={() => props.navigation.pop()}
@@ -39,8 +47,8 @@ const TransactionDetails = props => {
             />
           </View>
         </View>
-        <Text style={styles.textNumber}><Text style={styles.number}>+200.000</Text>VND</Text>
-        <Text style={styles.textRecharge}>Nạp tiền vào tải khoản NEO</Text>
+        <Text style={styles.textNumber}><Text style={styles.number}>+200.000</Text> đ</Text>
+        <Text style={styles.textRecharge}>Nạp tiền vào tài khoản NEO</Text>
       </View>
       <View style={styles.containerDetail}>
         {renderList}
@@ -51,61 +59,70 @@ const TransactionDetails = props => {
 export default TransactionDetails
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: brandColors.background,
+  },
   bigCircle: {
-    backgroundColor: 'rgba(77, 221, 138, 0.5)',
-    borderRadius: 100,
-    height: 100,
-    width: 100,
-    display: 'flex',
+    backgroundColor: 'rgba(16,185,129,0.15)',
+    borderRadius: s(50),
+    height: s(100),
+    width: s(100),
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: s(20),
+    marginBottom: s(10),
   },
   smallCircle: {
-    backgroundColor: '#4DDD8A',
-    borderRadius: 80,
-    height: 80,
-    width: 80,
-    // display: 'flex',
+    backgroundColor: brandColors.success,
+    borderRadius: s(40),
+    height: s(80),
+    width: s(80),
     justifyContent: 'center',
     alignItems: 'center',
   },
   containerInfo: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    marginTop: 10,
+    marginTop: s(10),
   },
   textNumber: {
-    color: '#8C8C8C',
-    fontSize: 12,
+    color: brandColors.muted,
+    fontSize: fs(12),
   },
   number: {
-    color: '#595959',
-    fontSize: 24,
+    color: brandColors.tealDark,
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    fontSize: fs(24),
   },
   textRecharge: {
-    color: '#8C8C8C',
-    marginTop: 20,
-    marginBottom: 10,
+    color: brandColors.muted,
+    marginTop: s(10),
+    marginBottom: s(10),
+    fontSize: fs(13),
   },
   viewDetail: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
+    paddingVertical: s(9),
   },
   containerDetail: {
-    backgroundColor: 'white',
-    marginTop: 10,
-    padding: 20,
-    paddingBottom: 30,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xxl),
+    marginHorizontal: s(16),
+    marginTop: s(10),
+    padding: s(16),
+    ...brandShadow.soft,
   },
   textDetail: {
-    color: '#8C8C8C',
-    fontSize: 15,
+    color: brandColors.muted,
+    fontSize: fs(12.5),
   },
   textValue: {
-    color: '#595959',
-    fontSize: 15,
+    color: brandColors.textDark,
+    fontSize: fs(12.5),
+    fontWeight: '700',
   },
 })

@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { SafeAreaView, View, ActivityIndicator, Alert, ScrollView } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 import { back } from '~/assets/constants'
 import Header from '~/common/Header/index'
-import { Text, Button, SkeletonLoader } from '~/common/index'
+import { Text, SkeletonLoader } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
+import BackgroundWash from '~/design-system/BackgroundWash'
+import { brandColors, brandGradients } from '~/design-system/tokens'
 import styles from './styles'
 import { VietQr } from '~/neomed'
 import { useSelector } from 'react-redux'
 import { getUserId } from '~/store/selector'
 import QRCode from 'react-native-qrcode-svg'
-import Colors from '~/common/Colors/Colors'
 import { formatMoney } from '~/utils/format'
 
 const POLLING_INTERVAL = 3000 // Check payment status every 3 seconds
@@ -157,6 +160,7 @@ const VietQrPaymentScreen = ({ navigation, route }) => {
     if (loading) {
         return (
             <SafeAreaView style={{ flex: 1 }}>
+                <BackgroundWash />
                 <Header
                     title="Thanh toán VietQR"
                     leftAction={handleCancel}
@@ -170,21 +174,20 @@ const VietQrPaymentScreen = ({ navigation, route }) => {
     if (error) {
         return (
             <SafeAreaView style={{ flex: 1 }}>
+                <BackgroundWash />
                 <Header
                     title="Thanh toán VietQR"
                 />
                 <View style={styles.errorContainer}>
                     <Text style={styles.errorText}>{error}</Text>
-                    <Button
-                        onPressEvent={handleRetry}
-                        text="Thử lại"
-                        styleButton={styles.retryButton}
-                    />
-                    <Button
-                        onPressEvent={handleCancel}
-                        text="Hủy"
-                        styleButton={styles.cancelButton}
-                    />
+                    <PressScale style={styles.ctaButton} onPress={handleRetry}>
+                        <LinearGradient colors={brandGradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.ctaGradient}>
+                            <Text style={styles.ctaText}>Thử lại</Text>
+                        </LinearGradient>
+                    </PressScale>
+                    <PressScale style={styles.cancelButtonOutline} onPress={handleCancel}>
+                        <Text style={styles.cancelText}>Hủy</Text>
+                    </PressScale>
                 </View>
             </SafeAreaView>
         )
@@ -192,6 +195,7 @@ const VietQrPaymentScreen = ({ navigation, route }) => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <BackgroundWash />
             <Header
                 title="Thanh toán VietQR"
                 leftAction={handleCancel}
@@ -245,7 +249,7 @@ const VietQrPaymentScreen = ({ navigation, route }) => {
 
                     {paymentStatus === 'checking' && (
                         <View style={styles.statusContainer}>
-                            <ActivityIndicator size="small" color={Colors.primary} />
+                            <ActivityIndicator size="small" color={brandColors.tealPrimary} />
                             <Text style={styles.statusText}>
                                 Đang chờ xác nhận thanh toán...
                             </Text>
@@ -263,11 +267,9 @@ const VietQrPaymentScreen = ({ navigation, route }) => {
                         </Text>
                     </View>
 
-                    <Button
-                        onPressEvent={handleCancel}
-                        text="Hủy thanh toán"
-                        styleButton={styles.cancelButtonBottom}
-                    />
+                    <PressScale style={styles.cancelButtonOutlineFull} onPress={handleCancel}>
+                        <Text style={styles.cancelText}>Hủy thanh toán</Text>
+                    </PressScale>
                 </View>
             </ScrollView>
         </SafeAreaView>

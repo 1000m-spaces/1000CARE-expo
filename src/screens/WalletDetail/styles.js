@@ -1,120 +1,80 @@
-import { Dimensions, Platform, StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
-const fullWith = Dimensions.get('window').width
+import { StyleSheet } from 'react-native'
+import { brandColors, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 
 const styles = StyleSheet.create({
-  imageInfo: {
-    width: fullWith,
-    height: 220,
+  container: {
+    flex: 1,
+    backgroundColor: brandColors.background,
   },
-  viewTitle: {
-    flexDirection: 'row',
-    padding: 10,
+  scrollContent: {
+    paddingHorizontal: s(16),
   },
-  viewNeo: {
-    width: fullWith-60,
-    alignItems: 'center',
-    alignSelf: 'flex-start',
+  walletCard: {
+    borderRadius: s(radiusScale.xxxl),
+    padding: s(20),
+    marginTop: s(4),
+    marginBottom: s(16),
+    shadowColor: brandColors.tealPrimary,
+    shadowOffset: { width: 0, height: s(14) },
+    shadowOpacity: 0.24,
+    shadowRadius: s(28),
+    elevation: 8,
   },
-  styleTitle: {
-    marginTop: 10,
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    color: 'white',
-    fontSize: 22,
-  },
-  numberMoney: {
-    textAlign: 'center',
-    fontSize: 25,
-    color: 'white',
+  walletTitle: {
+    fontSize: fs(13),
     fontWeight: '600',
-    marginTop: 20,
+    color: 'rgba(255,255,255,0.85)',
+    marginBottom: s(10),
   },
-  textMoney: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 16,
-    marginTop: 15,
+  walletLabel: {
+    fontSize: fs(11.5),
+    color: 'rgba(255,255,255,0.75)',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
-  viewSelect: {
-    height: 90,
-    elevation: 5,
-    marginHorizontal: 20,
-    width: fullWith-40,
-    position: 'absolute',
-    top: 220 + 60 - 90/2 + (Platform.OS === 'ios' ? 20 : 0),
-    backgroundColor: 'white',
+  walletBalance: {
+    marginTop: s(6),
+    fontSize: fs(22),
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    color: brandColors.surface,
+  },
+  actionRow: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-around',
+    marginBottom: s(20),
   },
-  buttonSelect: {
-    height: 40,
-    width: 40,
-    backgroundColor: '#E5F9FD',
-    justifyContent: 'center',
+  actionItem: {
     alignItems: 'center',
-    borderRadius: 65,
+    width: s(80),
+  },
+  actionIconWrap: {
+    width: s(48),
+    height: s(48),
+    borderRadius: s(radiusScale.xl),
+    backgroundColor: brandColors.tealLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: s(6),
+  },
+  actionIcon: {
+    width: s(20),
+    height: s(20),
+  },
+  actionLabel: {
+    fontSize: fs(11),
+    color: brandColors.textDark,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   textHistory: {
-    fontSize: 16,
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor:'white',
-    lineHeight: 32,
-    color: Colors.textColor2,
-    marginBottom: 1,
-  },
-  textSelect: {
-    marginTop: 5,
-    color: Colors.textColor2,
-  },
-  viewSpace: {
-    backgroundColor: '#E5E5E5',
-    height: 50,
-  },
-  viewStatement: {
-    height: 85,
-    width: fullWith,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  buttonStatement: {
-    width: fullWith-70,
-    backgroundColor: '#0B7B8A',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 50,
-    padding: 10,
-  },
-  textStatement: {
-    color: 'white',
-    fontSize: 16,
-  },
-  viewPay: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
-    marginVertical: 1,
-  },
-  textCheckBox: {
-    marginLeft: 20,
-    fontSize: 16,
-    color: '#CCCCCC',
-  },
-  buttonPay: {
-    borderRadius: 35,
-    paddingHorizontal: 15,
-  },
-  textPay: {
-    fontWeight: 'normal',
-  },
-  viewButton: {
-    paddingHorizontal: 0,
+    fontSize: fs(13),
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    color: brandColors.textDark,
+    marginBottom: s(10),
   },
 })
 export default styles
