@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
 
   priceText: {
     fontSize: fs(20),
-    color: brandColors.goldAccent,
+    color: brandColors.textDark,
     fontFamily: Fonts.bold,
     textDecorationLine: 'none',
   },

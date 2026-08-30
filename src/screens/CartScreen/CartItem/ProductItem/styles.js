@@ -71,13 +71,13 @@ export default StyleSheet.create({
     marginTop: s(10),
   },
   price: {
-    color: brandColors.goldAccent,
+    color: brandColors.tealDark,
     fontSize: fs(14),
     fontWeight: '600',
   },
-  
+
   salePrice: {
-    color: brandColors.goldAccent,
+    color: brandColors.tealDark,
     fontSize: fs(14),
     fontWeight: '600',
   },
