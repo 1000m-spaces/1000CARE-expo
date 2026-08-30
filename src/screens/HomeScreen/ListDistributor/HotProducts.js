@@ -11,6 +11,10 @@ import { getProductImage } from '~/utils/image'
 import PressScale from '~/design-system/PressScale'
 import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
 
+// Card "Bán chạy" đồng bộ theo cùng ngôn ngữ thiết kế của card "Giá sốc
+// hôm nay" trong bộ spec (nền trắng, radius 20, shadow teal mềm, badge
+// giảm giá vàng góc trên-trái, giá teal đậm) — thay cho khối nền teal đặc
+// + dải giá skew trước đó.
 const HotProducts = ({ navigation }) => {
   const listProductsBestSeller = useSelector(state => getListProductsBestSeller(state))
   const safeList = Array.isArray(listProductsBestSeller) ? listProductsBestSeller : []
@@ -51,43 +55,31 @@ const HotProducts = ({ navigation }) => {
             style={[styles.dealCard, { width: productWidth }]}
             onPress={() => goProductDetail(item)}
           >
-            <View style={styles.dealTop}>
-              <Text style={styles.dealName} numberOfLines={2}>{item?.name}</Text>
-              <View style={styles.dealImageRow}>
-                <Image
-                  source={getProductImage(item, 'xl', banner_2)}
-                  style={styles.dealImage}
-                  resizeMode="contain"
-                />
-                {hasDiscount(item) && (
-                  <View style={styles.giftPanel}>
-                    <Text style={styles.giftTitle}>GIÁ TỐT</Text>
-                    <Text
-                      style={styles.giftValue}
-                      numberOfLines={1}
-                    >
-                      -{Math.round(((getOriginalPrice(item) - getPrice(item)) / getOriginalPrice(item)) * 100)}%
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </View>
-            <View style={styles.priceBand}>
-              <View pointerEvents="none" style={styles.priceSlant} />
-              <View style={styles.priceBlock}>
-                {hasDiscount(item) && (
-                  <Text style={styles.oldPrice}>{formatMoney(getOriginalPrice(item), { unit: 'đ', space: false })}</Text>
-                )}
-                <Text
-                  style={styles.salePrice}
-                  numberOfLines={1}
-                  ellipsizeMode="clip"
-                >
-                  {formatMoney(getPrice(item), { unit: 'đ', space: false })}
+            <View style={styles.imageWrap}>
+              <Image
+                source={getProductImage(item, 'xl', banner_2)}
+                style={styles.dealImage}
+                resizeMode="contain"
+              />
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>
+                  {hasDiscount(item)
+                    ? `-${Math.round(((getOriginalPrice(item) - getPrice(item)) / getOriginalPrice(item)) * 100)}%`
+                    : 'BÁN CHẠY'}
                 </Text>
               </View>
-              <View style={styles.buyButton}>
-                <Text style={styles.buyText}>MUA NGAY</Text>
+            </View>
+            <View style={styles.body}>
+              <Text style={styles.dealName} numberOfLines={2}>{item?.name}</Text>
+              <View style={styles.priceRow}>
+                <Text style={styles.salePrice} numberOfLines={1}>
+                  {formatMoney(getPrice(item), { unit: 'đ', space: false })}
+                </Text>
+                {hasDiscount(item) && (
+                  <Text style={styles.oldPrice} numberOfLines={1}>
+                    {formatMoney(getOriginalPrice(item), { unit: 'đ', space: false })}
+                  </Text>
+                )}
               </View>
             </View>
           </PressScale>
@@ -112,107 +104,60 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     ...brandShadow.soft,
   },
-  dealTop: {
-    flex: 1,
-    paddingTop: s(10),
-    paddingHorizontal: s(8),
+  imageWrap: {
+    height: s(136),
     backgroundColor: brandColors.tealLight,
-  },
-  dealName: {
-    height: s(36),
-    color: brandColors.textDark,
-    fontSize: fs(10.5),
-    lineHeight: fs(13),
-    fontWeight: '600',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-  },
-  dealImageRow: {
-    height: s(126),
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   dealImage: {
-    width: '52%',
-    height: '98%',
+    width: '68%',
+    height: '78%',
   },
-  giftPanel: {
-    width: '45%',
-    minHeight: s(88),
-    borderRadius: s(radiusScale.xxl),
-    backgroundColor: brandColors.tealPrimary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: s(2),
+  badge: {
+    position: 'absolute',
+    top: s(8),
+    left: s(8),
+    backgroundColor: brandColors.goldAccent,
+    paddingVertical: s(3),
+    paddingHorizontal: s(7),
+    borderRadius: s(radiusScale.xs),
   },
-  giftTitle: {
-    color: brandColors.surface,
+  badgeText: {
+    color: brandColors.textDark,
     fontSize: fs(10),
     lineHeight: fs(13),
-    fontWeight: '600',
-    letterSpacing: 0.4,
+    fontWeight: '800',
   },
-  giftValue: {
-    width: '100%',
-    marginTop: s(6),
-    color: brandColors.surface,
-    fontSize: fs(17),
-    lineHeight: fs(21),
-    fontWeight: '700',
-    textAlign: 'center',
-  },
-  priceBand: {
-    height: s(58),
-    backgroundColor: brandColors.tealDark,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: s(8),
-    paddingRight: s(6),
-    overflow: 'hidden',
-  },
-  priceSlant: {
-    position: 'absolute',
-    left: s(-18),
-    top: 0,
-    bottom: 0,
-    width: '63%',
-    backgroundColor: 'rgba(0,0,0,0.14)',
-    transform: [{ skewX: '-22deg' }],
-  },
-  priceBlock: {
+  body: {
     flex: 1,
-    marginRight: s(2),
-    zIndex: 1,
+    padding: s(10),
   },
-  oldPrice: {
-    color: 'rgba(255,255,255,0.64)',
-    fontSize: fs(10.5),
-    lineHeight: fs(13),
-    fontWeight: '600',
-    textDecorationLine: 'line-through',
+  dealName: {
+    height: s(34),
+    color: brandColors.textDark,
+    fontSize: fs(12),
+    lineHeight: fs(17),
+    fontWeight: '700',
+  },
+  priceRow: {
+    marginTop: s(6),
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: s(5),
   },
   salePrice: {
-    color: brandColors.surface,
-    fontSize: fs(14),
-    lineHeight: fs(18),
-    fontWeight: '700',
+    color: brandColors.tealDark,
+    fontSize: fs(14.5),
+    lineHeight: fs(19),
+    fontWeight: '800',
   },
-  buyButton: {
-    width: s(76),
-    height: s(32),
-    borderRadius: s(radiusScale.xxl),
-    backgroundColor: brandColors.goldAccent,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
-  },
-  buyText: {
-    color: brandColors.textDark,
+  oldPrice: {
+    color: brandColors.mutedLight,
     fontSize: fs(10.5),
-    lineHeight: fs(13),
-    fontWeight: '700',
-    textAlign: 'center',
+    lineHeight: fs(14),
+    fontWeight: '600',
+    textDecorationLine: 'line-through',
   },
 })
 

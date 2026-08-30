@@ -34,7 +34,6 @@ const CONTENT_TOP_PADDING = s(10)
 
 const shoppingTags = ['Hàng mới', 'Đang giảm giá', 'Bán chạy', 'Giao nhanh']
 const foodAppFont = Fonts.bold
-const couponColors = ['#FF5A3D', '#16B7C8', '#FFB22E', '#41CDA5', '#F66D8F', '#8E68FF']
 const supplierAccentPalette = ['#E94B94', '#24A76A', '#F7BD25', '#1FAFC2', '#F05A3F', '#7D62D9']
 const supplierAccentKeywords = [
   { pattern: /chan[\s_-]*tam|ch[aâ]n\s*t[aâ]m|lotus/i, color: '#E94B94' },
@@ -251,7 +250,7 @@ const PromotionBannerRail = ({ navigation, products }) => {
       {safeProducts.map((item, index) => (
         <PressScale
           key={getItemKey(item, index)}
-          style={[styles.hotDealTile, { backgroundColor: couponColors[index % couponColors.length] }]}
+          style={styles.hotDealTile}
           onPress={() => navigation.navigate(NAVIGATION_PRODUCT_DETAIL_SCREEN, {
             product: item,
             distributorId: item?.distributor_id,
@@ -670,21 +669,20 @@ const styles = StyleSheet.create({
   hotDealTile: {
     width: s(98),
     height: s(112),
-    borderRadius: s(19),
+    borderRadius: s(radiusScale.xxl),
     padding: s(7),
     alignItems: 'center',
     justifyContent: 'space-between',
-    shadowColor: '#263238',
-    shadowOffset: { width: 0, height: s(6) },
-    shadowOpacity: 0.08,
-    shadowRadius: s(10),
-    elevation: 3,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    ...brandShadow.soft,
   },
   hotDealImagePanel: {
     width: s(66),
     height: s(66),
     borderRadius: s(33),
-    backgroundColor: '#FFFFFF',
+    backgroundColor: brandColors.tealLight,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
@@ -695,14 +693,14 @@ const styles = StyleSheet.create({
   },
   hotDealLabel: {
     width: '100%',
-    borderRadius: s(8),
-    backgroundColor: 'rgba(255,255,255,0.94)',
+    borderRadius: s(radiusScale.xs),
+    backgroundColor: brandColors.goldAccent,
     paddingHorizontal: s(6),
     paddingVertical: s(5),
     alignItems: 'center',
   },
   hotDealLabelText: {
-    color: brandColors.tealDark,
+    color: brandColors.textDark,
     fontFamily: foodAppFont,
     fontSize: fs(11),
     lineHeight: fs(14),
