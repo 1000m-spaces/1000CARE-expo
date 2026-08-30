@@ -1,8 +1,12 @@
 import React from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { View, TextInput, StyleSheet } from 'react-native'
 import PressScale from '~/design-system/PressScale'
+import { brandColors } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
+// Bộ đếm số lượng theo spec redesign: nền xám nhạt bo tròn, 2 nút tròn
+// trắng nổi nhẹ (không viền), số ở giữa cho phép gõ trực tiếp (tính năng
+// có sẵn của app, mock chỉ hiện số tĩnh).
 const AmountInput = ({
   onChangeText,
   onEndEditing,
@@ -15,11 +19,9 @@ const AmountInput = ({
     <View style={styles.wrap}>
       <PressScale
         onPress={onMinus}
-        style={styles.btnMinus}
+        style={styles.btn}
       >
-        <View
-          style={styles.btnMinusContent}
-        />
+        <View style={styles.minusMark} />
       </PressScale>
       <TextInput
         onChangeText={onChangeText}
@@ -30,11 +32,10 @@ const AmountInput = ({
       />
       <PressScale
         onPress={onPlus}
-        style={styles.btnPlus}
+        style={styles.btn}
       >
-        <Text
-          style={styles.btn}
-        >+</Text>
+        <View style={styles.plusMarkH} />
+        <View style={styles.plusMarkV} />
       </PressScale>
     </View>
   )
@@ -42,57 +43,51 @@ const AmountInput = ({
 
 const styles = StyleSheet.create({
   wrap: {
-    display: 'flex',
     flexDirection: 'row',
-  },
-  btnMinus: {
-    width: 36,
-    height: 36,
-    backgroundColor: Colors.backgroundColor,
-
-    borderRadius: 18,
-
-    display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-  },
-  btnMinusContent: {
-    width: 12,
-    backgroundColor: Colors.black,
-    height: 2,
-  },
-  input: {
-    width: 80,
-    height: 36,
-    padding: 0,
-
-    marginHorizontal: 6,
-
-    textAlign: 'center',
-
-    borderRadius: 18,
-    fontSize: 16,
-
-    borderColor: '#CCCCCC',
-    borderWidth: 1,
-    borderStyle: 'solid',
+    gap: s(14),
+    backgroundColor: '#F4F9F9',
+    borderRadius: s(14),
+    paddingHorizontal: s(10),
+    paddingVertical: s(6),
   },
   btn: {
-    fontSize: 22,
-    lineHeight: 40,
-    textAlign: 'center',
-    textAlignVertical: 'center',
-  },
-  btnPlus: {
-    width: 36,
-    height: 36,
-    backgroundColor: Colors.backgroundColor,
-    
-    borderRadius: 18,
-
-    display: 'flex',
-    justifyContent: 'center',
+    width: s(28),
+    height: s(28),
+    borderRadius: s(8),
+    backgroundColor: brandColors.surface,
     alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  minusMark: {
+    width: s(11),
+    height: 1.6,
+    backgroundColor: brandColors.tealPrimary,
+  },
+  plusMarkH: {
+    position: 'absolute',
+    width: s(11),
+    height: 1.6,
+    backgroundColor: brandColors.tealPrimary,
+  },
+  plusMarkV: {
+    position: 'absolute',
+    width: 1.6,
+    height: s(11),
+    backgroundColor: brandColors.tealPrimary,
+  },
+  input: {
+    minWidth: s(28),
+    padding: 0,
+    textAlign: 'center',
+    fontSize: fs(15),
+    fontWeight: '700',
+    color: brandColors.textDark,
   },
 })
 

@@ -3,6 +3,7 @@ import Colors from '~/common/Colors/Colors'
 import dimension from '~/constants/dimens'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { Fonts } from '~/assets/config'
 
 export default StyleSheet.create({
   mainContainer: {
@@ -120,6 +121,54 @@ export default StyleSheet.create({
     fontSize: fs(14),
     fontWeight: '600',
   },
+  // Sticky footer glass theo spec — thay cho nút "Thêm vào giỏ hàng" nằm
+  // trong nội dung cuộn: hiện tổng tạm tính + CTA gradient, luôn cố định
+  // dưới đáy màn hình.
+  stickyFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(14),
+    paddingHorizontal: s(20),
+    paddingVertical: s(14),
+    paddingBottom: s(20),
+  },
+  stickyFooterTotal: {
+    flex: 1,
+  },
+  stickyFooterLabel: {
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(10),
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    color: brandColors.mutedLight,
+  },
+  stickyFooterAmount: {
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(16),
+    color: brandColors.textDark,
+  },
+  stickyFooterButton: {
+    flex: 1.4,
+  },
+  stickyFooterButtonGradient: {
+    height: s(50),
+    borderRadius: s(16),
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: brandColors.tealPrimary,
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.28,
+    shadowRadius: s(20),
+    elevation: 6,
+  },
+  stickyFooterButtonText: {
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(15),
+    color: brandColors.surface,
+  },
   quantityBtnContainer: {
     flexDirection: 'row',
     margin: 0,
@@ -201,7 +250,7 @@ export default StyleSheet.create({
     paddingVertical: 8,
   },
   productPrice: {
-    color: brandColors.goldAccent,
+    color: brandColors.tealDark,
     fontSize: fs(24),
     fontWeight: '600',
     lineHeight: fs(32),

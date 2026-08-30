@@ -8,7 +8,7 @@ import { requestGetProductDetails } from '~/store/products/productsActions'
 import Text from '~/common/Text/index'
 import styles from './styles'
 import Header from './Header'
-import { Button, Icon, Image } from '~/common/index'
+import { Icon, Image } from '~/common/index'
 import strings from '~/i18n'
 import { formatMoney } from '~/utils/index'
 import { getListItem as getProductInCart } from '~/store/cart/cartSelectors'
@@ -31,7 +31,9 @@ import RecommendProduct from './RecommendProduct/index'
 import Voucher from './Voucher/index'
 import AppScreen from '~/design-system/AppScreen'
 import AppSection from '~/design-system/AppSection'
-import { brandColors } from '~/design-system/tokens'
+import LiquidGlassView from '~/design-system/LiquidGlassView'
+import { LinearGradient } from 'expo-linear-gradient'
+import { brandColors, brandGradients } from '~/design-system/tokens'
 
 const ProductDetailScreen = (props) => {
   const { product: orgProduct, distributorId: orgDistributorId, combo: isProductCombo, goBack } = props.route?.params || {}
@@ -317,15 +319,6 @@ const ProductDetailScreen = (props) => {
                     <Text style={styles.discountPercent}>-{(100 - (Number(safeProduct?.sale_price) / Number(safeProduct?.price)) * 100).toFixed(1)}%</Text>
                   </View>
                   : null}
-                {!isProductCombo && (
-                  <Button
-                    styleView={styles.btnAddContainer}
-                    styleButton={styles.btnAdd}
-                    styleText={styles.btnAddText}
-                    onPressEvent={() => addProductToCart()}
-                    text={strings.productDetailScreen.addToCart}
-                  />
-                )}
               </View>
               <AppSection title="Ưu đãi đang áp dụng">
                 <ProductPromotion
@@ -366,6 +359,26 @@ const ProductDetailScreen = (props) => {
                 />
               </AppSection>
             </ScrollView>}
+          {!showViewPermission && !isProductCombo && (
+            <LiquidGlassView intensity="regular" style={styles.stickyFooter}>
+              <View style={styles.stickyFooterTotal}>
+                <Text style={styles.stickyFooterLabel}>Tạm tính</Text>
+                <Text style={styles.stickyFooterAmount} numberOfLines={1}>
+                  {formatMoney((safeProduct?.sale_price || 0) * quantity)}
+                </Text>
+              </View>
+              <PressScale onPress={() => addProductToCart()} style={styles.stickyFooterButton}>
+                <LinearGradient
+                  colors={brandGradients.primary}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.stickyFooterButtonGradient}
+                >
+                  <Text style={styles.stickyFooterButtonText}>{strings.productDetailScreen.addToCart}</Text>
+                </LinearGradient>
+              </PressScale>
+            </LiquidGlassView>
+          )}
         </View>
       </View>
       <Modal
