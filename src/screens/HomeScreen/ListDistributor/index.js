@@ -20,7 +20,7 @@ import { getProductImage } from '~/utils/image'
 import { s, fs } from '~/utils/responsive'
 import SliderBox from '~/common/SliderBox/index'
 import AppSection from '~/design-system/AppSection'
-import { brandColors, liquidGlass, radiusScale } from '~/design-system/tokens'
+import { brandColors, brandShadow, liquidGlass, radiusScale } from '~/design-system/tokens'
 import ListTrademarksAdvertisement from './ListTrademarksAdvertisement'
 import HotProducts from './HotProducts'
 import { useTabBarVisibility } from '~/navigation/TabBarVisibilityContext'
@@ -716,11 +716,7 @@ const styles = StyleSheet.create({
     width: s(112),
     height: s(126),
     borderRadius: s(20),
-    shadowColor: '#263238',
-    shadowOffset: { width: 0, height: s(6) },
-    shadowOpacity: 0.08,
-    shadowRadius: s(10),
-    elevation: 3,
+    ...brandShadow.soft,
   },
   supplierTileGradient: {
     flex: 1,

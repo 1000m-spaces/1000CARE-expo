@@ -9,7 +9,7 @@ import { s, fs } from '~/utils/responsive'
 import { formatMoney } from '~/utils/format'
 import { getProductImage } from '~/utils/image'
 import PressScale from '~/design-system/PressScale'
-import { brandColors, radiusScale } from '~/design-system/tokens'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
 
 const HotProducts = ({ navigation }) => {
   const listProductsBestSeller = useSelector(state => getListProductsBestSeller(state))
@@ -110,11 +110,7 @@ const styles = StyleSheet.create({
     borderColor: brandColors.borderSoft,
     backgroundColor: brandColors.surface,
     overflow: 'hidden',
-    shadowColor: brandColors.tealDark,
-    shadowOffset: { width: 0, height: s(7) },
-    shadowOpacity: 0.12,
-    shadowRadius: s(12),
-    elevation: 5,
+    ...brandShadow.soft,
   },
   dealTop: {
     flex: 1,
