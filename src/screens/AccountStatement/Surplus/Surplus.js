@@ -1,18 +1,51 @@
-import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
-import { Table, Row, Rows } from 'react-native-table-component';
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 
-const tableHead = ['Thời gian', 'NPP', 'Tiền mặt', 'Điểm thưởng','Nội dung'];
-
-const Surplus = props => {
-    return(
-        <View>
-            <ScrollView horizontal={true}>
-                <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-                    <Row data={tableHead} style={{height: 50,width:500, backgroundColor: '#E8E8E8'}} textStyle={{textAlign:'center'}}/>
-                </Table>
-            </ScrollView>
-        </View>
-    );
+// Tab "Số dư" — hiển thị số dư hiện tại dạng card trắng theo cùng ngôn ngữ
+// thiết kế với tab "Giao dịch", thay bảng lưới trống trước đó (chưa có dữ
+// liệu số dư thật, giữ dạng minh hoạ).
+const Surplus = () => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.label}>Số dư hiện tại</Text>
+        <Text style={styles.value}>0đ</Text>
+      </View>
+    </View>
+  )
 }
-export default Surplus;
+export default Surplus
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: brandColors.background,
+    padding: s(16),
+  },
+  card: {
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xxl),
+    padding: s(16),
+    ...brandShadow.soft,
+  },
+  label: {
+    fontSize: fs(12),
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
+    color: brandColors.muted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: s(8),
+  },
+  value: {
+    fontSize: fs(19),
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    color: brandColors.tealDark,
+  },
+})
