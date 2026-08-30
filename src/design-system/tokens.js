@@ -129,11 +129,11 @@ export const liquidGlass = {
 // Nền "wash" mới phía sau toàn bộ nội dung màn hình — 3 quầng màu radial
 // mờ (teal + gold) thay cho nền phẳng, dùng với component BackgroundWash.
 export const backgroundWash = {
-  base: '#FAFCFC',
+  base: '#FCFDFD',
   blobs: [
-    { cx: '15%', cy: '0%', r: '42%', color: 'rgba(13,150,168,0.22)' },
-    { cx: '95%', cy: '12%', r: '38%', color: 'rgba(245,166,35,0.18)' },
-    { cx: '30%', cy: '100%', r: '45%', color: 'rgba(13,150,168,0.14)' },
+    { cx: '15%', cy: '0%', r: '38%', color: 'rgba(13,150,168,0.09)' },
+    { cx: '95%', cy: '12%', r: '34%', color: 'rgba(245,166,35,0.07)' },
+    { cx: '30%', cy: '100%', r: '40%', color: 'rgba(13,150,168,0.06)' },
   ],
 };
 
