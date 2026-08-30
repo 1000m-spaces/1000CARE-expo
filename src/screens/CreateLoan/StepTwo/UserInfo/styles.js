@@ -1,29 +1,39 @@
 import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
-import Colors from '~/common/Colors/Colors'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 export default StyleSheet.create({
   mainContainer: {
-    backgroundColor: Colors.white,
-    padding: 18,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xl),
+    padding: s(16),
+    ...brandShadow.soft,
   },
 
   textTitle: {
     fontFamily: Fonts.bold,
+    fontWeight: '700',
+    fontSize: fs(13.5),
+    color: brandColors.textDark,
   },
 
   inputContainerStyle: {
-    borderWidth: 0,
-    borderColor: Colors.borderColor,
-    borderBottomWidth: 1,
-    marginBottom: 16,
+    minHeight: s(48),
+    borderRadius: s(radiusScale.lg),
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    backgroundColor: '#F4F9F9',
+    marginBottom: s(14),
   },
 
   labelStyle: {
-    color: Colors.textColor3,
-    fontFamily: Fonts.medium,
+    color: brandColors.muted,
+    fontFamily: Fonts.base,
     fontWeight: 'normal',
-    fontSize: 12,
-    lineHeight: 20,
+    fontSize: fs(12),
+    lineHeight: fs(18),
   },
 })

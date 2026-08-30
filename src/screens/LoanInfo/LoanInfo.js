@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, View, Text } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
+import { LinearGradient } from 'expo-linear-gradient'
 
 import Header from '~/common/Header/index'
 import { close } from '~/assets/constants'
-import { Button } from '~/common/index'
-import Colors from '~/common/Colors/Colors'
+import PressScale from '~/design-system/PressScale'
+import BackgroundWash from '~/design-system/BackgroundWash'
+import { brandColors, brandGradients, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 import BorrowInfo from './BorrowInfo/index'
 import { NAVIGATION_CONFIRM, NAVIGATION_TO_MAIN_SCREEN } from '~/navigation/routes'
 import BorrowStatus from './BorrowStatus/index'
@@ -87,20 +91,19 @@ const LoanInfo = ({ navigation, route }) => {
 
   return(
     <SafeAreaView style={styles.container}>
+      <BackgroundWash />
       <Header
         showLeft={type !== 'CREATE_LOAN_SUCCESS'}
         title={title ? title : 'Giao dịch thành công'}
         leftAction={() => goHomeScreen()}
         iconLeft={close}
       />
-      <View style={styles.divider} />
-      <ScrollView style={{ flex: 1, backgroundColor: Colors.white }}>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.inforContainer}>
           <BorrowStatus
             loanConfirmDetail={loanConfirmDetail}
           />
         </View>
-        <View style={styles.divider} />
         <View style={styles.inforContainer}>
           <BorrowInfo
             loanConfirmDetail={loanConfirmDetail}
@@ -108,18 +111,15 @@ const LoanInfo = ({ navigation, route }) => {
           />
         </View>
       </ScrollView>
-      
+
       {
         loanConfirmDetail?.Status === 'loan.none-link' && (
           <View style={styles.containerButton}>
-            <Button
-              text={'Liên kết tài khoản thấu chi'}
-              styleButton={styles.styleButton}
-              styleView={styles.styleView}
-              onPressEvent={() => {
-                dispatch(requestLinkResource())
-              }}
-            />
+            <PressScale style={styles.ctaButton} onPress={() => dispatch(requestLinkResource())}>
+              <LinearGradient colors={brandGradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.ctaGradient}>
+                <Text style={styles.ctaText}>Liên kết tài khoản thấu chi</Text>
+              </LinearGradient>
+            </PressScale>
           </View>
         )
       }
@@ -147,25 +147,41 @@ export default LoanInfo
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: brandColors.background,
   },
   inforContainer: {
-    backgroundColor: 'white',
-    padding: 18,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xxl),
+    marginHorizontal: s(16),
+    marginTop: s(12),
+    padding: s(18),
+    ...brandShadow.soft,
   },
   containerButton: {
     justifyContent: 'flex-end',
-    backgroundColor: Colors.white,
+    paddingHorizontal: s(16),
+    paddingVertical: s(16),
   },
-  styleButton: {
-    borderRadius: 50,
-    backgroundColor: Colors.red,
+  ctaButton: {
+    borderRadius: s(16),
+    overflow: 'hidden',
+    shadowColor: brandColors.tealPrimary,
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.24,
+    shadowRadius: s(20),
+    elevation: 6,
   },
-  styleView: {
-    paddingHorizontal: 20,
-    marginBottom: 5,
+  ctaGradient: {
+    height: s(50),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  divider: {
-    height: 6,
-    backgroundColor: Colors.backgroundColor,
+  ctaText: {
+    color: brandColors.surface,
+    fontSize: fs(14),
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
   },
 })

@@ -1,9 +1,13 @@
 import React from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, View, Text } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 
 import Header from '~/common/Header/index'
-import { Button } from '~/common/index'
-import Colors from '~/common/Colors/Colors'
+import PressScale from '~/design-system/PressScale'
+import BackgroundWash from '~/design-system/BackgroundWash'
+import { brandColors, brandGradients, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 import LoanInfo from './LoanInfo/index'
 import LoanStatus from './LoanStatus/index'
 
@@ -18,18 +22,17 @@ const PreCloseLoanSuccess = ({ navigation, route }) => {
 
   return(
     <SafeAreaView style={styles.container}>
+      <BackgroundWash />
       <Header
         showLeft={false}
-        title={'Trả nợ thành công '}
+        title={'Trả nợ thành công'}
       />
-      <View style={styles.divider} />
-      <ScrollView style={{ flex: 1, backgroundColor: Colors.white }}>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.inforContainer}>
           <LoanStatus
             paidAmount={paidAmount}
           />
         </View>
-        <View style={styles.divider} />
         <View style={styles.inforContainer}>
           <LoanInfo
             loanId={loanId}
@@ -37,19 +40,14 @@ const PreCloseLoanSuccess = ({ navigation, route }) => {
           />
         </View>
       </ScrollView>
-      
-      {
-        <View style={styles.containerButton}>
-          <Button
-            text={'Đóng'}
-            styleButton={styles.styleButton}
-            styleView={styles.styleView}
-            onPressEvent={() => {
-              goHomeScreen()
-            }}
-          />
-        </View>
-      }
+
+      <View style={styles.containerButton}>
+        <PressScale style={styles.ctaButton} onPress={() => goHomeScreen()}>
+          <LinearGradient colors={brandGradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.ctaGradient}>
+            <Text style={styles.ctaText}>Đóng</Text>
+          </LinearGradient>
+        </PressScale>
+      </View>
     </SafeAreaView>
   )
 }
@@ -58,25 +56,41 @@ export default PreCloseLoanSuccess
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: brandColors.background,
   },
   inforContainer: {
-    backgroundColor: 'white',
-    padding: 18,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xxl),
+    marginHorizontal: s(16),
+    marginTop: s(12),
+    padding: s(18),
+    ...brandShadow.soft,
   },
   containerButton: {
     justifyContent: 'flex-end',
-    backgroundColor: Colors.white,
+    paddingHorizontal: s(16),
+    paddingVertical: s(16),
   },
-  styleButton: {
-    borderRadius: 50,
-    backgroundColor: Colors.red,
+  ctaButton: {
+    borderRadius: s(16),
+    overflow: 'hidden',
+    shadowColor: brandColors.tealPrimary,
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.24,
+    shadowRadius: s(20),
+    elevation: 6,
   },
-  styleView: {
-    paddingHorizontal: 20,
-    marginBottom: 5,
+  ctaGradient: {
+    height: s(50),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  divider: {
-    height: 6,
-    backgroundColor: Colors.backgroundColor,
+  ctaText: {
+    color: brandColors.surface,
+    fontSize: fs(14),
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
   },
 })

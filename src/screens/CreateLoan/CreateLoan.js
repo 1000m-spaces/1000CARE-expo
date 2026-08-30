@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
+import { SafeAreaView, StyleSheet, View, Text } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 
 import Header from '~/common/Header/index'
 import { back } from '~/assets/constants'
 import strings from '~/i18n'
 import { confirm, people, information, check } from '~/assets/constants'
 import CreationProcess from '~/common/CreationProcess/CreationProcess'
-import Colors from '~/common/Colors/Colors'
-import { Button } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
+import BackgroundWash from '~/design-system/BackgroundWash'
+import { brandColors, brandGradients } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 import StepOne from './StepOne/index'
 import StepTwo from './StepTwo/index'
 import StepThree from './StepThree/index'
@@ -244,6 +248,7 @@ const CreateLoan = props => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <BackgroundWash />
       <Header
         title={strings.CreateLoan.title}
         leftAction={() => {
@@ -281,12 +286,11 @@ const CreateLoan = props => {
         </View>
       </KeyboardAwareScrollView>
       <View style={styles.containerButton}>
-        <Button
-          text={'Tiếp tục'}
-          styleButton={styles.styleButton}
-          styleView={styles.styleView}
-          onPressEvent={() => nextStep()}
-        />
+        <PressScale style={styles.ctaButton} onPress={() => nextStep()}>
+          <LinearGradient colors={brandGradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.ctaGradient}>
+            <Text style={styles.ctaText}>Tiếp tục</Text>
+          </LinearGradient>
+        </PressScale>
       </View>
       <DialogInfo
         isOpen={showDialog}
@@ -319,25 +323,35 @@ export default CreateLoan
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: brandColors.background,
   },
   containerProcess: {
-    backgroundColor: 'white',
-    marginTop: 6,
-    height: 100,
-  },
-  containerMain: {
-    flex: 1,
-    backgroundColor: 'white',
+    marginTop: s(6),
+    height: s(100),
   },
   containerButton: {
     justifyContent: 'flex-end',
-    backgroundColor: Colors.white,
+    paddingHorizontal: s(16),
+    paddingBottom: s(16),
   },
-  styleButton: {
-    borderRadius: 50,
+  ctaButton: {
+    borderRadius: s(16),
+    overflow: 'hidden',
+    shadowColor: brandColors.tealPrimary,
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.24,
+    shadowRadius: s(20),
+    elevation: 6,
   },
-  styleView: {
-    paddingHorizontal: 20,
-    marginBottom: 5,
+  ctaGradient: {
+    height: s(50),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ctaText: {
+    color: brandColors.surface,
+    fontSize: fs(14),
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
   },
 })

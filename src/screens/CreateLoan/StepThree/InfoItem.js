@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Fonts } from '~/assets/config'
-import Colors from '~/common/Colors/Colors'
 import { Text } from '~/common/index'
+import { brandColors } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 const InfoItem = ({ label, value, styleValue, styleLabel }) => {
   return (
@@ -15,27 +15,23 @@ const InfoItem = ({ label, value, styleValue, styleLabel }) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 8,
+    paddingVertical: s(8),
   },
   styleLabel: {
-    color: Colors.textColor3,
-    fontFamily: Fonts.medium,
+    color: brandColors.muted,
     flex: 1,
-    fontWeight: 'normal',
-    fontSize: 12,
-    lineHeight: 20,
+    fontSize: fs(12),
+    lineHeight: fs(19),
   },
   styleValue: {
-    color: Colors.textColor2,
-    fontFamily: Fonts.medium,
-    fontWeight: 'normal',
-    fontSize: 14,
+    color: brandColors.textDark,
+    fontWeight: '600',
+    fontSize: fs(13),
     flex: 1,
     textAlign: 'right',
-    lineHeight: 22,
+    lineHeight: fs(20),
   },
 })
 

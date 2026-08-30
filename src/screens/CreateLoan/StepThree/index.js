@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Linking, View } from 'react-native'
 import PressScale from '~/design-system/PressScale'
 import { useDispatch, useSelector } from 'react-redux'
-import Colors from '~/common/Colors/Colors'
+import { brandColors } from '~/design-system/tokens'
 import { CheckBox, Text } from '~/common/index'
 import { requestGetCustomerInfo, requestGetPharmacyInfo } from '~/store/actions'
 import { getCustomerInfo, getInfoAccount, getPharmacyInfo } from '~/store/selector'
@@ -108,8 +108,8 @@ const StepThree = ({ amountLoan, setAmountLoan, loanProposalsDetail, setAccepted
           label={''}
           value={'Số tiền gốc hàng tháng = 30% x Dư nợ thực tế'}
           styleValue={{
-            fontWeight: '600',
-            color: Colors.textColor1,
+            fontWeight: '700',
+            color: brandColors.tealDark,
           }}
         />
         <InfoItem

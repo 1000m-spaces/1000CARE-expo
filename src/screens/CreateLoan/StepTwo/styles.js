@@ -1,15 +1,16 @@
 import { StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { brandColors } from '~/design-system/tokens'
+import { s } from '~/utils/responsive'
 
 export default StyleSheet.create({
   mainContainer: {
-    backgroundColor: Colors.white,
-    marginTop: 6,
+    marginTop: s(6),
+    paddingHorizontal: s(16),
   },
 
   divider: {
     width: '100%',
-    height: 6,
-    backgroundColor: Colors.backgroundColor,
+    height: s(12),
+    backgroundColor: 'transparent',
   },
 })

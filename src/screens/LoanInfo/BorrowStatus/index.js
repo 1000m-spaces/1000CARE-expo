@@ -1,19 +1,17 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import Colors from '~/common/Colors/Colors'
 import { Image, Text } from '~/common/index'
 import { formatMoney } from '~/utils/format'
 import { successPay } from '~/assets/constants'
+import { brandColors } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 
 const BorrowStatus = ({ loanConfirmDetail }) => {
   return (
     <View style={styles.container}>
-      <View
-        style={[styles.bigCircle]}
-      >
-        <View
-          style={[styles.smallCircle]}
-        >
+      <View style={styles.bigCircle}>
+        <View style={styles.smallCircle}>
           <Image
             resizeMode={'contain'}
             source={successPay}
@@ -22,8 +20,8 @@ const BorrowStatus = ({ loanConfirmDetail }) => {
       </View>
       <Text style={styles.loadTitle}>Hạn mức thấu chi được cấp</Text>
       <View style={styles.amountContainer}>
-        <Text style={styles.money}>{formatMoney(loanConfirmDetail?.Info?.limitAmount || 0, { unit : '' })}</Text>
-        <Text style={styles.unit}>{'VNĐ'}</Text>
+        <Text style={styles.money}>{formatMoney(loanConfirmDetail?.Info?.limitAmount || 0, { unit: '' })}</Text>
+        <Text style={styles.unit}> đ</Text>
       </View>
     </View>
   )
@@ -31,56 +29,53 @@ const BorrowStatus = ({ loanConfirmDetail }) => {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
   },
 
   amountContainer: {
-    display: 'flex',
     flexDirection: 'row',
-    marginTop: 12,
+    alignItems: 'flex-end',
+    marginTop: s(12),
   },
 
   money: {
-    color: Colors.priceColor,
-    fontSize: 24,
-    lineHeight: 26,
-    fontWeight: '600',
+    color: brandColors.tealDark,
+    fontFamily: Fonts.bold,
+    fontSize: fs(24),
+    lineHeight: fs(28),
+    fontWeight: '800',
   },
 
   unit: {
-    color: Colors.priceColor,
-    fontSize: 12,
-    lineHeight: 26,
-    fontWeight: 'normal',
+    color: brandColors.tealDark,
+    fontSize: fs(13),
+    lineHeight: fs(22),
+    fontWeight: '600',
   },
 
   bigCircle: {
-    backgroundColor: 'rgba(77, 221, 138, 0.5)',
-    borderRadius: 100,
-    height: 100,
-    width: 100,
-    display: 'flex',
+    backgroundColor: 'rgba(16,185,129,0.15)',
+    borderRadius: s(50),
+    height: s(100),
+    width: s(100),
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   smallCircle: {
-    backgroundColor: Colors.successColor,
-    borderRadius: 80,
-    height: 80,
-    width: 80,
-    display: 'flex',
+    backgroundColor: brandColors.success,
+    borderRadius: s(40),
+    height: s(80),
+    width: s(80),
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   loadTitle: {
-    marginTop: 12,
-    fontSize: 16,
-    fontWeight: 'normal',
+    marginTop: s(12),
+    fontSize: fs(14.5),
+    fontWeight: '600',
+    color: brandColors.textDark,
   },
 })
 

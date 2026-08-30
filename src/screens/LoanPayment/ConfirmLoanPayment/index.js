@@ -1,10 +1,11 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
-import Colors from '~/common/Colors/Colors'
+import { brandColors } from '~/design-system/tokens'
 import { Text } from '~/common/index'
 import InfoDetailOrder from '~/common/InfoDetailOrder/index'
 import { formatMoney } from '~/utils/format'
+import { s, fs } from '~/utils/responsive'
 
 const ConfirmLoanPayment = ({ infoAccount, loanConfirmDetail, chargeFee }) => {
   return (
@@ -14,71 +15,53 @@ const ConfirmLoanPayment = ({ infoAccount, loanConfirmDetail, chargeFee }) => {
       <InfoDetailOrder
         label={'Thu nợ tài khoản vay'}
         value={loanConfirmDetail?.Info?.loanId}
-        styleLabel={styles.styleLabel}
-        styleValue={styles.styleValue}
         styleWrap={styles.styleWrap}
       />
       <InfoDetailOrder
         label={'Số tiền vay đã sử dụng'}
-        value={formatMoney(-1 * Number(loanConfirmDetail?.Info?.loanAmount), { unit: 'VNĐ' })}
-        styleLabel={styles.styleLabel}
-        styleValue={styles.styleValue}
+        value={formatMoney(-1 * Number(loanConfirmDetail?.Info?.loanAmount), { unit: 'đ' })}
         styleWrap={styles.styleWrap}
       />
       <InfoDetailOrder
         label={'Số tiền gốc trong hạn'}
-        value={formatMoney(loanConfirmDetail?.Info?.limitAmount, { unit: 'VNĐ' })}
-        styleLabel={styles.styleLabel}
-        styleValue={styles.styleValue}
+        value={formatMoney(loanConfirmDetail?.Info?.limitAmount, { unit: 'đ' })}
         styleWrap={styles.styleWrap}
       />
       <InfoDetailOrder
         label={'Số tiền gốc quá hạn'}
-        value={formatMoney(-1 * Number(loanConfirmDetail?.Info?.PrOverdue || 0), { unit: 'VNĐ' })}
-        styleLabel={styles.styleLabel}
-        styleValue={styles.styleValue}
+        value={formatMoney(-1 * Number(loanConfirmDetail?.Info?.PrOverdue || 0), { unit: 'đ' })}
         styleWrap={styles.styleWrap}
       />
       <InfoDetailOrder
         label={'Số tiền lãi trong hạn'}
-        value={formatMoney(-1 * Number(loanConfirmDetail?.Info?.interestAmount), { unit: 'VNĐ' })}
-        styleLabel={styles.styleLabel}
-        styleValue={styles.styleValue}
+        value={formatMoney(-1 * Number(loanConfirmDetail?.Info?.interestAmount), { unit: 'đ' })}
         styleWrap={styles.styleWrap}
       />
       <InfoDetailOrder
         label={'Số tiền lãi quá hạn'}
-        value={formatMoney(-1 * Number(loanConfirmDetail?.Info?.totalOverdueAmount || 0), { unit: 'VNĐ' })}
-        styleLabel={styles.styleLabel}
-        styleValue={styles.styleValue}
+        value={formatMoney(-1 * Number(loanConfirmDetail?.Info?.totalOverdueAmount || 0), { unit: 'đ' })}
         styleWrap={styles.styleWrap}
       />
       <InfoDetailOrder
         label={'Tổng lãi phải trả'}
-        value={formatMoney(-1 * (Number(loanConfirmDetail?.Info?.totalOverdueAmount || 0) + Number(loanConfirmDetail?.Info?.interestAmount)), { unit: 'VNĐ' })}
-        styleLabel={styles.styleLabel}
+        value={formatMoney(-1 * (Number(loanConfirmDetail?.Info?.totalOverdueAmount || 0) + Number(loanConfirmDetail?.Info?.interestAmount)), { unit: 'đ' })}
         styleValue={styles.styleMoneyValue}
         styleWrap={styles.styleWrap}
       />
       <InfoDetailOrder
         label={'Nợ phí'}
-        value={formatMoney(chargeFee?.fee || 0, { unit: 'VNĐ' })}
-        styleLabel={styles.styleLabel}
-        styleValue={styles.styleValue}
+        value={formatMoney(chargeFee?.fee || 0, { unit: 'đ' })}
         styleWrap={styles.styleWrap}
       />
       <InfoDetailOrder
         label={'Số tiền thanh toán'}
-        value={formatMoney(-1 * (Number(loanConfirmDetail?.Info?.loanAmount) + Number(loanConfirmDetail?.Info?.totalOverdueAmount || 0) + Number(loanConfirmDetail?.Info?.interestAmount)), { unit: 'VNĐ' })}
-        styleLabel={styles.styleLabel}
+        value={formatMoney(-1 * (Number(loanConfirmDetail?.Info?.loanAmount) + Number(loanConfirmDetail?.Info?.totalOverdueAmount || 0) + Number(loanConfirmDetail?.Info?.interestAmount)), { unit: 'đ' })}
         styleValue={styles.styleMoneyValue}
         styleWrap={styles.styleWrap}
       />
       <InfoDetailOrder
         label={'Tài khoản thu nợ'}
         value={infoAccount?.accountNumber}
-        styleLabel={styles.styleLabel}
-        styleValue={styles.styleValue}
         styleWrap={styles.styleWrap}
       />
     </>
@@ -87,43 +70,22 @@ const ConfirmLoanPayment = ({ infoAccount, loanConfirmDetail, chargeFee }) => {
 
 const styles = StyleSheet.create({
   textTitle: {
-    color: Colors.systemColor2,
-    fontSize: 16,
-    lineHeight: 24,
+    color: brandColors.tealDark,
+    fontSize: fs(15.5),
+    lineHeight: fs(22),
     fontFamily: Fonts.bold,
-    fontWeight: 'normal',
+    fontWeight: '700',
   },
-  textMessage: { 
-    marginTop: 2,
-    color: Colors.textColor2,
-    fontSize: 12,
-    lineHeight: 20,
-    fontWeight: 'normal',
-  },
-  priceText: { 
-    color: Colors.priceColor,
-    fontSize: 18,
-    lineHeight: 26,
-    fontWeight: '600',
-  },
-  styleValue: {
-    color: Colors.textColor2,
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    lineHeight: 22,
-    fontWeight: 'normal',
+  textMessage: {
+    marginTop: s(2),
+    color: brandColors.muted,
+    fontSize: fs(12),
+    lineHeight: fs(19),
   },
   styleMoneyValue: {
-    color: Colors.priceColor,
-    fontSize: 18,
-    lineHeight: 26,
-    fontWeight: 'normal',
-  },
-  styleLabel: {
-    color: Colors.textColor3,
-    fontSize: 12,
-    lineHeight: 20,
-    fontWeight: 'normal',
+    color: brandColors.tealDark,
+    fontSize: fs(15),
+    fontWeight: '800',
   },
   styleWrap: {
     paddingHorizontal: 0,

@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import PressScale from '~/design-system/PressScale'
+import { brandColors } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 const RadioButton = ({ selected, title, onClick }) => {
   return (
@@ -8,7 +10,7 @@ const RadioButton = ({ selected, title, onClick }) => {
       onPress={onClick}
       style={styles.wrap}
     >
-      <View style={[styles.radio, { borderColor: selected ? '#0B7B8A' : '#CCC' }]}>
+      <View style={[styles.radio, { borderColor: selected ? brandColors.tealPrimary : brandColors.borderSoft }]}>
         {
           selected ? <View style={styles.dot} /> : <></>
         }
@@ -20,30 +22,28 @@ const RadioButton = ({ selected, title, onClick }) => {
 
 const styles = StyleSheet.create({
   wrap: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
   radio: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    borderColor: '#CCC',
-    borderWidth: 1,
-
-    display: 'flex',
+    width: s(18),
+    height: s(18),
+    borderRadius: s(9),
+    borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#0B7B8A',
+    width: s(8),
+    height: s(8),
+    borderRadius: s(4),
+    backgroundColor: brandColors.tealPrimary,
   },
   text: {
-    marginLeft: 6,
-    color: '#595959',
+    marginLeft: s(8),
+    fontSize: fs(13),
+    color: brandColors.textDark,
+    fontWeight: '600',
   },
 })
 

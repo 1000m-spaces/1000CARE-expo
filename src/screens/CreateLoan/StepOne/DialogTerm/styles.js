@@ -1,37 +1,41 @@
 import { StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 
 const styles = StyleSheet.create({
   mainContainer: {
-    display: 'flex',
-    padding: 15,
-    borderWidth: 1,
-    borderRadius: 12,
-    borderColor: Colors.white,
+    padding: s(18),
+    borderRadius: s(radiusScale.xxl),
     justifyContent: 'center',
-    backgroundColor: Colors.white,
+    backgroundColor: brandColors.surface,
+    ...brandShadow.soft,
   },
   image: {
-    width: 12,
-    height: 12,
+    width: s(12),
+    height: s(12),
+    tintColor: brandColors.mutedLight,
   },
   message: {
-    marginTop: 12,
-    fontSize: 14,
+    marginTop: s(12),
+    fontSize: fs(13),
+    color: brandColors.muted,
+    lineHeight: fs(20),
     textAlign: 'left',
   },
 
   dialogHeader: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   title: {
     textAlign: 'left',
-    fontSize: 16,
-    color: Colors.textColor2,
-    fontWeight: '600',
+    fontSize: fs(15),
+    fontFamily: Fonts.bold,
+    color: brandColors.textDark,
+    fontWeight: '700',
   },
 
 })

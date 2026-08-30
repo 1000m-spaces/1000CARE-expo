@@ -1,32 +1,39 @@
 import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
-import Colors from '~/common/Colors/Colors'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 export default StyleSheet.create({
   mainContainer: {
-    backgroundColor: Colors.white,
-    padding: 18,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xl),
+    padding: s(16),
+    ...brandShadow.soft,
   },
 
   textTitle: {
     fontFamily: Fonts.bold,
+    fontWeight: '700',
+    fontSize: fs(13.5),
+    color: brandColors.textDark,
   },
 
   addButtonContainer: {
-    backgroundColor: Colors.systemColor2,
+    backgroundColor: brandColors.tealPrimary,
     alignSelf: 'flex-end',
-    marginRight: 18,
-    marginBottom: 40,
-    width: 36,
-    height: 36,
-    display: 'flex',
+    marginBottom: s(8),
+    width: s(36),
+    height: s(36),
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 18,
+    borderRadius: s(18),
   },
 
   addButton: {
-    width: 18,
-    height: 18,
+    width: s(18),
+    height: s(18),
+    tintColor: brandColors.surface,
   },
 })

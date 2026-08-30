@@ -1,184 +1,119 @@
 import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
-import Colors from '~/common/Colors/Colors'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 export default StyleSheet.create({
   mainContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.white,
+    paddingHorizontal: s(16),
   },
 
   amountInfoContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
     width: '100%',
     alignItems: 'center',
-    backgroundColor: Colors.white,
-    paddingVertical: 24,
-    marginTop: 6,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xxl),
+    paddingVertical: s(24),
+    marginTop: s(12),
+    ...brandShadow.soft,
   },
 
   amountContainer: {
-    display: 'flex',
     flexDirection: 'row',
-    marginTop: 12,
+    marginTop: s(12),
     alignItems: 'center',
-    marginHorizontal: 20,
+    marginHorizontal: s(20),
   },
 
   money: {
-    color: Colors.priceColor,
-    fontSize: 24,
-    lineHeight: 26,
-    fontWeight: '600',
+    color: brandColors.tealDark,
+    fontFamily: Fonts.bold,
+    fontSize: fs(24),
+    lineHeight: fs(28),
+    fontWeight: '800',
   },
 
   unit: {
-    color: Colors.priceColor,
-    fontSize: 12,
-    lineHeight: 26,
-    fontWeight: 'normal',
+    marginLeft: s(4),
+    color: brandColors.tealDark,
+    fontSize: fs(12),
+    lineHeight: fs(20),
+    fontWeight: '600',
   },
 
   max: {
-    color: Colors.textColor3,
-    fontSize: 12,
-    lineHeight: 20,
-    fontFamily: Fonts.medium,
-    fontWeight: 'normal',
+    color: brandColors.muted,
+    fontSize: fs(12),
+    lineHeight: fs(19),
+    fontFamily: Fonts.base,
   },
 
   maxAmount: {
-    color: Colors.textColor3,
-    fontSize: 12,
-    lineHeight: 20,
-    fontFamily: Fonts.medium,
-    fontWeight: 'normal',
+    color: brandColors.textDark,
+    fontSize: fs(12),
+    lineHeight: fs(19),
+    fontFamily: Fonts.bold,
+    fontWeight: '600',
   },
 
   borrowAmount: {
-    color: Colors.textColor3,
-    fontSize: 16,
-    lineHeight: 24,
+    color: brandColors.muted,
+    fontSize: fs(13.5),
+    lineHeight: fs(20),
     fontWeight: '600',
   },
 
   titleInformationContainer: {
-    display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    marginTop: 2,
-    backgroundColor: Colors.white,
-    padding: 18,
+    marginTop: s(14),
+    paddingHorizontal: s(4),
     justifyContent: 'space-between',
   },
 
   informationContainer: {
-    display: 'flex',
-    flexDirection: 'column',
     width: '100%',
-    marginTop: 2,
-    backgroundColor: Colors.white,
-    paddingHorizontal: 18,
-    paddingVertical: 9,
-    paddingBottom: 32,
-    justifyContent: 'space-between',
+    marginTop: s(4),
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xl),
+    paddingHorizontal: s(16),
+    paddingVertical: s(6),
+    ...brandShadow.soft,
   },
 
   titleInformation: {
-    color: Colors.textColor2,
-    fontSize: 14,
-    lineHeight: 22,
-    fontWeight: 'normal',
-  },
-
-  interestRateValue: {
-    color: Colors.textColor1,
-    fontSize: 14,
-    lineHeight: 22,
-    fontWeight: 'normal',
-  },
-
-  termsContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    marginTop: 2,
-    padding: 18,
-    backgroundColor: Colors.white,
-  },
-
-  termsTitle: {
-    color: Colors.textColor2,
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
-    marginBottom: 18,
-  },
-  
-  termsMessage: {
-    color: Colors.textColor2,
-    fontSize: 14,
-    lineHeight: 22,
-    fontWeight: 'normal',
-    marginBottom: 12,
+    color: brandColors.textDark,
+    fontFamily: Fonts.bold,
+    fontSize: fs(13.5),
+    lineHeight: fs(20),
+    fontWeight: '700',
   },
 
   checkBoxContainer: {
-    display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    marginTop: 12,
+    marginTop: s(12),
     alignItems: 'flex-start',
   },
 
   checkBoxMessage: {
-    marginLeft: 12,
-    color: Colors.textColor2,
-    fontSize: 12,
-    lineHeight: 20,
+    marginLeft: s(10),
+    color: brandColors.textDark,
+    fontSize: fs(11.5),
+    lineHeight: fs(18),
     fontWeight: '600',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 
   termMessage: {
-    marginHorizontal: 6,
-    color: Colors.systemColor2,
-    fontSize: 12,
-    lineHeight: 20,
-    height: 20,
-    fontWeight: '600',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-
-  termItemContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'flex-start',
-  },
-
-  dot: {
-    color: Colors.textColor2,
-    fontSize: 22,
-    lineHeight: 22,
-    fontWeight: '600',
-  },
-
-  termItemValue: {
-    marginStart: 6,
-    color: Colors.textColor2,
-    fontSize: 14,
-    lineHeight: 22,
-    fontWeight: 'normal',
+    marginHorizontal: s(4),
+    color: brandColors.tealPrimary,
+    fontSize: fs(11.5),
+    lineHeight: fs(18),
+    fontWeight: '700',
   },
 })

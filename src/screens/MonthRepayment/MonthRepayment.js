@@ -6,18 +6,22 @@ import strings from '~/i18n'
 import CreationProcess from '~/common/CreationProcess/CreationProcess'
 import iconSignUp from '~/assets/configNeoMed/CreateLoan/registerActive.png'
 import iconConfirm from '~/assets/configNeoMed/CreateLoan/confirm.png'
-import Colors from '~/common/Colors/Colors'
+import BackgroundWash from '~/design-system/BackgroundWash'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 
 const MonthRepayment = props => {
   const [money, setMoney] = useState('0')
   return (
     <View style={styles.container}>
+      <BackgroundWash />
       <Header
         title={strings.MonthRepayment.title}
         leftAction={() => props.navigation.pop()}
         iconLeft={back}
       />
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
         <View style={styles.containerProcess}>
           <CreationProcess
             imageStep1={iconSignUp}
@@ -35,18 +39,16 @@ const MonthRepayment = props => {
           <Text style={styles.textTitleMoney}>Số tiền đề nghị thu</Text>
           <View style={styles.viewInput}>
             <TextInput
-              // value={money}
               placeholder={'0'}
-              placeholderTextColor={Colors.priceColor}
+              placeholderTextColor={brandColors.mutedLight}
               keyboardType={'numeric'}
               style={styles.styleInput}
               onChangeText={(text) => setMoney(text)}
             />
-            <Text style={styles.textUnit}>VND</Text>
+            <Text style={styles.textUnit}> đ</Text>
           </View>
-          <Text style={styles.textMaxMoney}>Số tiền tối đa có thể thanh toán:<Text style={styles.maxMoney}> 20.000.000VND</Text></Text>
+          <Text style={styles.textMaxMoney}>Số tiền tối đa có thể thanh toán:<Text style={styles.maxMoney}> 20.000.000đ</Text></Text>
         </View>
-        <View style={styles.viewContent} />
       </ScrollView>
     </View>
   )
@@ -56,68 +58,81 @@ export default MonthRepayment
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: brandColors.background,
   },
   scroll: {
     flex: 1,
   },
+  scrollContent: {
+    paddingHorizontal: s(16),
+    paddingBottom: s(24),
+  },
   containerProcess: {
-    backgroundColor: 'white',
-    marginTop: 10,
-    height: 100,
-    paddingHorizontal: 30,
+    marginTop: s(6),
+    height: s(100),
   },
   viewLoan: {
-    backgroundColor: 'white',
-    marginTop: 1,
-    padding: 10,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xl),
+    marginTop: s(10),
+    padding: s(16),
+    ...brandShadow.soft,
   },
   textLoan: {
-    fontSize: 18,
-    color: '#4276FE',
+    fontSize: fs(15.5),
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
+    color: brandColors.tealDark,
   },
   textPlease: {
-    color: '#595959',
-    marginTop: 3,
+    color: brandColors.muted,
+    fontSize: fs(12),
+    marginTop: s(4),
   },
   containerMoney: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    marginTop: 1,
-    paddingHorizontal: 18,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xl),
+    marginTop: s(10),
+    padding: s(18),
+    ...brandShadow.soft,
   },
   textTitleMoney: {
-    color: '#8C8C8C',
-    fontSize: 18,
-    marginTop: 10,
+    color: brandColors.muted,
+    fontSize: fs(13.5),
   },
   styleInput: {
-    color: Colors.priceColor,
-    fontSize: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#DFDFDF',
+    color: brandColors.tealDark,
+    fontSize: fs(20),
+    borderBottomWidth: 1.5,
+    borderBottomColor: brandColors.borderSoft,
     textAlign: 'right',
-    fontWeight: '600',
-    minWidth: 100,
-    paddingBottom: 0,
+    fontWeight: '700',
+    minWidth: s(100),
+    paddingVertical: s(6),
+    marginTop: s(10),
   },
   viewInput: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   textUnit: {
-    color: Colors.priceColor,
-    fontSize: 12,
+    color: brandColors.tealDark,
+    fontSize: fs(12),
+    fontWeight: '600',
   },
   textMaxMoney: {
-    color: '#8C8C8C',
-    marginTop: 20,
+    color: brandColors.muted,
+    fontSize: fs(12),
+    marginTop: s(16),
     textAlign: 'center',
   },
   maxMoney: {
-    color: '#595959',
-  },
-  viewContent: {
-    backgroundColor: 'white',
-    marginTop: 1,
+    color: brandColors.textDark,
+    fontWeight: '700',
   },
 })
