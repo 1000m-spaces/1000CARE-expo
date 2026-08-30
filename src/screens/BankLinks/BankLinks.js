@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dimensions, StyleSheet, Text, View, FlatList, SafeAreaView, BackHandler } from 'react-native';
+import { StyleSheet, Text, View, FlatList, SafeAreaView, BackHandler } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import Header from '~/common/Header/index';
 import { back } from '~/assets/constants';
 import strings from '~/i18n';
 import ItemBank from './ItemBank';
-import Colors from '~/common/Colors/Colors';
 import {
   getPaymentAccount,
   getLinkPaymentStatus,
@@ -19,14 +19,16 @@ import {
 } from '~/store/actions';
 import { CommonActions } from '@react-navigation/native';
 
-import { Button } from '~/common/index';
+import PressScale from '~/design-system/PressScale';
+import BackgroundWash from '~/design-system/BackgroundWash';
+import { brandColors, brandGradients } from '~/design-system/tokens';
+import { s, fs } from '~/utils/responsive';
+import { Fonts } from '~/assets/config';
 import { NAVIGATION_BANK_LINKS_CONFIRM, NAVIGATION_TO_MAIN_SCREEN, NAVIGATION_UPDATE_PROFILE } from '~/navigation/routes';
 import Status from '~/common/Status/Status';
 import { showToast } from '~/utils/toast';
 import { useFocusEffect } from '@react-navigation/native';
 import DialogInfo from '~/common/DialogInfo/index';
-
-const fullWidth = Dimensions.get('window').width;
 
 const BankLinks = props => {
   const goBack = props.route.params?.goBack;
@@ -124,29 +126,34 @@ const BankLinks = props => {
   const getButtonAction = () => {
     if (user && user.national_id) {
       return (
-        <Button
-          styleView={styles.loginBtnContainer}
-          styleButton={styles.loginBtn}
-          onPressEvent={onAddBankPress}
-          text={'Thêm liên kết'}
-        />
+        <View style={styles.loginBtnContainer}>
+          <PressScale style={styles.ctaButton} onPress={onAddBankPress}>
+            <LinearGradient colors={brandGradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.ctaGradient}>
+              <Text style={styles.ctaText}>Thêm liên kết</Text>
+            </LinearGradient>
+          </PressScale>
+        </View>
       );
     }
     showToast('Bạn cần xác minh danh tính trước khi liên kết tài khoản');
     return (
-      <Button
-        styleView={styles.loginBtnContainer}
-        styleButton={styles.loginBtn}
-        onPressEvent={() => {
-          props.navigation.navigate(NAVIGATION_UPDATE_PROFILE, {
-            onBack: () => {
-              dispatch(getProfile());
-              dispatch(getWallet(1, 500));
-            },
-          });
-        }}
-        text={'Xác minh danh tính'}
-      />
+      <View style={styles.loginBtnContainer}>
+        <PressScale
+          style={styles.ctaButton}
+          onPress={() => {
+            props.navigation.navigate(NAVIGATION_UPDATE_PROFILE, {
+              onBack: () => {
+                dispatch(getProfile());
+                dispatch(getWallet(1, 500));
+              },
+            });
+          }}
+        >
+          <LinearGradient colors={brandGradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.ctaGradient}>
+            <Text style={styles.ctaText}>Xác minh danh tính</Text>
+          </LinearGradient>
+        </PressScale>
+      </View>
     );
   };
 
@@ -154,6 +161,7 @@ const BankLinks = props => {
   const keyExtractor = useCallback((item, index) => index.toString());
   return (
     <SafeAreaView style={styles.container}>
+      <BackgroundWash />
       <View style={styles.container}>
         <Header
           title={strings.BankLinks.title}
@@ -199,60 +207,41 @@ export default BankLinks;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  containerSearch: {
-    backgroundColor: 'white',
-    marginTop: 10,
-    padding: 15,
-  },
-  containerTextInput: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    height: 42,
-    borderRadius: 42,
-    borderColor: '#DFDFDF',
+    backgroundColor: brandColors.background,
   },
   containerBank: {
-    backgroundColor: 'white',
-    marginTop: 15,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#DFDFDF',
-    paddingBottom: 10,
-  },
-  selectBank: {
-    fontSize: 18,
-    marginBottom: 5,
-    color: '#595959',
-  },
-  styleIcon: {
-    marginLeft: 10,
-    marginRight: 5,
-  },
-  textInput: {
-    backgroundColor: 'white',
-    width: fullWidth - 80,
+    marginTop: s(15),
+    paddingHorizontal: s(16),
+    paddingBottom: s(6),
   },
   textListBank: {
-    fontSize: 18,
-    marginTop: 15,
-    marginLeft: 15,
-    color: '#595959',
+    fontSize: fs(13),
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    color: brandColors.textDark,
   },
   loginBtnContainer: {
-    flexDirection: 'row',
-    margin: 0,
-    marginTop: 24,
-    padding: 0,
-    alignItems: 'center',
-    paddingHorizontal: 18,
+    marginTop: s(24),
+    paddingHorizontal: s(16),
   },
-  loginBtn: {
-    height: 50,
-    width: '100%',
-    padding: 0,
-    paddingHorizontal: 0,
-    borderRadius: 50,
-    backgroundColor: Colors.systemColor2,
+  ctaButton: {
+    borderRadius: s(16),
+    overflow: 'hidden',
+    shadowColor: brandColors.tealPrimary,
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.24,
+    shadowRadius: s(20),
+    elevation: 6,
+  },
+  ctaGradient: {
+    height: s(50),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ctaText: {
+    color: brandColors.surface,
+    fontSize: fs(14),
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
   },
 });

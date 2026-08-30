@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 import PressScale from '~/design-system/PressScale'
+import BackgroundWash from '~/design-system/BackgroundWash'
+import { brandGradients } from '~/design-system/tokens'
 
 import { back } from '~/assets/constants'
 import PaymentInformation from './PaymentInformation'
@@ -89,6 +92,7 @@ const PayOrder = ({ navigation, route }) => {
     <SafeAreaView
       style={{ flex: 1 }}
     >
+      <BackgroundWash />
       <View
         style={styles.mainContainer}
       >
@@ -121,45 +125,51 @@ const PayOrder = ({ navigation, route }) => {
               }
             />
           </SectionInformation>
-          <View style={styles.containerProfile}>
-            <Text style={[styles.titleSection]}>{'Nguồn tiền thanh toán'}</Text>
-            <PressScale
-              onPress={() => {
-                onPaid('MBW', infoAccount.balanceWallet)
-              }}
-              style={[styles.buttonSelectAccount]}
+          <Text style={styles.sourceTitle}>Nguồn tiền thanh toán</Text>
+          <PressScale
+            onPress={() => {
+              onPaid('MBW', infoAccount.balanceWallet)
+            }}
+          >
+            <LinearGradient
+              colors={brandGradients.primary}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.sourceCard}
             >
-              <View>
-                <Text style={[styles.numberAccount]}>{strings.bankAccount.ewalletTitle}</Text>
-                {
-                  infoAccount?.mobile ? (
-                    <Text style={[styles.numberMoney]}>{formatMoney(infoAccount.balanceWallet ? infoAccount.balanceWallet : 0, { unit: '' })}<Text style={styles.textUnit}> {'VNĐ'}</Text></Text>
-                  ) : (
-                    <Text style={[styles.textUnit]}>{'Bạn chưa liên kết tài khoản MB'}</Text>
-                  )
-                }
-              </View>
-            </PressScale>
-            <PressScale
-              onPress={() => {
-                if (loanInfo?.Status === 'loan.link') {
-                  onPaid('MBL', loanInfo?.Info?.limitAmount)
-                }
-              }}
-              style={styles.buttonSelectAccount}
-            >
-              <View>
-                <Text style={[styles.numberAccount]}>Hạn mức thấu chi còn lại</Text>
-                {
-                  loanInfo?.Status === 'loan.link' ? (
-                    <Text style={[styles.numberMoney]}>{formatMoney((Number(loanInfo?.Info?.limitAmount) || 0) + (Number(loanInfo?.Info?.loanAmount) || 0), { unit: '' })}<Text style={styles.textUnit}>{'VNĐ'}</Text></Text>
-                  ) : (
-                    <Text style={[styles.textUnit]}>{'Bạn chưa liên kết tài khoản thấu chi'}</Text>
-                  )
-                }
-              </View>
-            </PressScale>
-          </View>
+              <Text style={styles.sourceLabelLight}>{strings.bankAccount.ewalletTitle}</Text>
+              {
+                infoAccount?.mobile ? (
+                  <Text style={styles.sourceValueLight}>
+                    {formatMoney(infoAccount.balanceWallet ? infoAccount.balanceWallet : 0, { unit: '' })}
+                    <Text style={styles.sourceUnitLight}> đ</Text>
+                  </Text>
+                ) : (
+                  <Text style={styles.sourceHintLight}>Bạn chưa liên kết tài khoản MB</Text>
+                )
+              }
+            </LinearGradient>
+          </PressScale>
+          <PressScale
+            onPress={() => {
+              if (loanInfo?.Status === 'loan.link') {
+                onPaid('MBL', loanInfo?.Info?.limitAmount)
+              }
+            }}
+            style={styles.sourceCardOutline}
+          >
+            <Text style={styles.sourceLabel}>Hạn mức thấu chi còn lại</Text>
+            {
+              loanInfo?.Status === 'loan.link' ? (
+                <Text style={styles.sourceValue}>
+                  {formatMoney((Number(loanInfo?.Info?.limitAmount) || 0) + (Number(loanInfo?.Info?.loanAmount) || 0), { unit: '' })}
+                  <Text style={styles.sourceUnit}> đ</Text>
+                </Text>
+              ) : (
+                <Text style={styles.sourceHint}>Bạn chưa liên kết tài khoản thấu chi</Text>
+              )
+            }
+          </PressScale>
         </View>
         <DialogInfo
           isOpen={showDialog}

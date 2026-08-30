@@ -9,6 +9,8 @@ import BankItem from './BankItem'
 import { useState } from 'react'
 import { log_mb_bank_landscape } from '~/assets/constants'
 import EmptyItem from '~/common/EmptyItem/index'
+import BackgroundWash from '~/design-system/BackgroundWash'
+import { brandColors } from '~/design-system/tokens'
 
 const ListBankAccount = props => {
   const distributor = props.route.params?.distributor
@@ -58,7 +60,8 @@ const ListBankAccount = props => {
   }, [infoAccount])
 
   return(
-    <SafeAreaView style={{ flex:1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: brandColors.background }}>
+      <BackgroundWash />
       <Header
         title={'Tài khoản nạp'}
         leftAction={() => {
@@ -69,7 +72,7 @@ const ListBankAccount = props => {
         }}
       />
       <FlatList
-        style={{ flexGrow: 0, marginTop:10 }}
+        style={{ flexGrow: 0, marginTop: 10 }}
         data={listBankAccount}
         keyExtractor={keyExtractorAccount}
         renderItem={({ item }) => {
@@ -87,7 +90,6 @@ const ListBankAccount = props => {
           )
         }}
       />
-      <View /> 
     </SafeAreaView>
   )
 }

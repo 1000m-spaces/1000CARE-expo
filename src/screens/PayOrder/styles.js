@@ -1,65 +1,98 @@
-import { Dimensions, StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { StyleSheet } from 'react-native'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 import { Fonts } from '~/assets/config'
-
-const fullWith = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    display: 'flex',
     justifyContent: 'space-between',
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: brandColors.background,
   },
-
   listCheckoutContainer: {
     flex: 2,
-    backgroundColor: Colors.white,
+    paddingBottom: s(16),
   },
-
-  containerProfile: {
-    backgroundColor: Colors.white,
-    width: fullWith - 40,
-    marginTop: 12,
-    marginHorizontal: 21,
-    borderRadius: 5,
-    display: 'flex',
+  mt12: {
+    marginTop: s(2),
   },
-  titleSection: {
-    color: Colors.textColor1,
-    fontFamily: Fonts.semiBold,
-    fontSize: 15,
+  itemSeparator: {
+    height: s(8),
   },
-  numberAccount: {
-    color: Colors.textColor2,
-    fontFamily: Fonts.medium,
-    fontSize: 14,
-  },
-  number: {
-    fontSize: 18,
-    textAlign: 'center',
+  sourceTitle: {
+    marginHorizontal: s(16),
+    marginTop: s(4),
+    marginBottom: s(8),
+    fontSize: fs(13),
     fontFamily: Fonts.bold,
-    color: 'white',
-    marginTop: 10,
+    fontWeight: '800',
+    color: brandColors.textDark,
   },
-  numberMoney: {
-    color: Colors.priceColor,
+  sourceCard: {
+    marginHorizontal: s(16),
+    marginBottom: s(10),
+    borderRadius: s(radiusScale.xxl),
+    padding: s(16),
+    shadowColor: brandColors.tealPrimary,
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.2,
+    shadowRadius: s(20),
+    elevation: 6,
+  },
+  sourceCardOutline: {
+    marginHorizontal: s(16),
+    marginBottom: s(10),
+    borderRadius: s(radiusScale.xxl),
+    padding: s(16),
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    ...brandShadow.soft,
+  },
+  sourceLabelLight: {
+    fontSize: fs(11.5),
+    color: 'rgba(255,255,255,0.75)',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: s(6),
+  },
+  sourceValueLight: {
+    fontSize: fs(18),
     fontFamily: Fonts.bold,
+    fontWeight: '800',
+    color: brandColors.surface,
+  },
+  sourceUnitLight: {
+    fontSize: fs(12),
     fontWeight: '600',
-    marginTop: 6,
-    fontSize: 14,
   },
-  buttonSelectAccount: {
-    paddingVertical: 6,
-    paddingHorizontal: 6,
-    borderRadius: 4,
-    backgroundColor: Colors.backgroundColor,
-    marginTop: 6,
+  sourceHintLight: {
+    fontSize: fs(12.5),
+    color: 'rgba(255,255,255,0.85)',
   },
-  textUnit: {
-    fontSize: 12,
-    fontWeight: 'normal',
-    fontFamily: Fonts.medium,
+  sourceLabel: {
+    fontSize: fs(11.5),
+    color: brandColors.muted,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: s(6),
+  },
+  sourceValue: {
+    fontSize: fs(18),
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    color: brandColors.tealDark,
+  },
+  sourceUnit: {
+    fontSize: fs(12),
+    fontWeight: '600',
+    color: brandColors.mutedLight,
+  },
+  sourceHint: {
+    fontSize: fs(12.5),
+    color: brandColors.mutedLight,
   },
 })
 

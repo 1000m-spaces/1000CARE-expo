@@ -1,13 +1,14 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { brandColors } from '~/design-system/tokens'
 import { formatMoney } from '~/utils/format'
+import { Fonts } from '~/assets/config'
 
 const Price = ({ price, unit = 'VNĐ', size = 16 }) => {
   return (
     <View style={styles.wrap}>
       <Text style={[styles.textPrice, { fontSize: size }]}>
-        {formatMoney(price,{ unit: '' })}
+        {formatMoney(price, { unit: '' })}
       </Text>
       <Text style={[styles.textUnit, { fontSize: size - 4 }]}>{unit}</Text>
     </View>
@@ -16,20 +17,19 @@ const Price = ({ price, unit = 'VNĐ', size = 16 }) => {
 
 const styles = StyleSheet.create({
   wrap: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
   textPrice: {
-    color: Colors.priceColor,
-    fontWeight: '600',
+    color: brandColors.tealDark,
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
   },
   textUnit: {
     marginLeft: 2,
     marginBottom: 1,
-
-    color: Colors.priceColor,
-    fontWeight: 'normal',
+    color: brandColors.tealDark,
+    fontWeight: '600',
     textTransform: 'uppercase',
   },
 })

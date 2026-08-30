@@ -16,6 +16,7 @@ import { getOrderError, getStatusRequestPayment } from '~/store/selector'
 import Status from '~/common/Status/Status'
 import { NAVIGATION_CONFIRM } from '~/navigation/routes'
 import DialogInfo from '~/common/DialogInfo/index'
+import BackgroundWash from '~/design-system/BackgroundWash'
 
 const PaymentByBank = ({ navigation, route }) => {
   const listOrders = route?.params?.listOrders || []
@@ -68,6 +69,7 @@ const PaymentByBank = ({ navigation, route }) => {
     <SafeAreaView
       style={{ flex: 1 }}
     >
+      <BackgroundWash />
       <View
         style={styles.mainContainer}
       >

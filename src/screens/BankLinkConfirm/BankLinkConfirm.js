@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, TextInput } from '~/common/index'
-import Colors from '~/common/Colors/Colors'
+import { TextInput } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
+import BackgroundWash from '~/design-system/BackgroundWash'
+import { brandColors, brandGradients, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 
 import {
   confirmLinkPayment,
@@ -53,27 +58,29 @@ const BankLinkConfirm = (props) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <BackgroundWash />
       <View style={styles.mainContainer}>
         <Header
           title={strings.bankLinkConfirm.title}
           leftAction={() => props.navigation.goBack()}
         />
-        <TextInput
-          containerStyle={styles.inputContainerStyle}
-          placeholderTextColor={Colors.textColor3}
-          value={otp}
-          onChangeText={(value) => {
-            setOtp(value)
-          }}
-          placeholder={strings.bankLinkConfirm.otp}
-        />
+        <View style={styles.content}>
+          <TextInput
+            containerStyle={styles.inputContainerStyle}
+            placeholderTextColor={brandColors.mutedLight}
+            value={otp}
+            onChangeText={(value) => {
+              setOtp(value)
+            }}
+            placeholder={strings.bankLinkConfirm.otp}
+          />
 
-        <Button
-          styleView={styles.loginBtnContainer}
-          styleButton={styles.loginBtn}
-          onPressEvent={onConfirmPress}
-          text={strings.bankLinkConfirm.confirm}
-        />
+          <PressScale style={styles.ctaButton} onPress={onConfirmPress}>
+            <LinearGradient colors={brandGradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.ctaGradient}>
+              <Text style={styles.ctaText}>{strings.bankLinkConfirm.confirm}</Text>
+            </LinearGradient>
+          </PressScale>
+        </View>
 
         <DialogInfo
           isOpen={showDialog}
@@ -107,30 +114,40 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: brandColors.background,
+  },
+  content: {
+    padding: s(16),
   },
   inputContainerStyle: {
-    marginTop: 10,
-    borderWidth: 0,
-    borderColor: Colors.backgroundColor,
-    borderBottomWidth: 2,
-    marginBottom: 16,
+    marginBottom: s(16),
+    height: s(52),
+    borderRadius: s(radiusScale.xl),
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    backgroundColor: brandColors.surface,
+    paddingHorizontal: s(4),
+    ...brandShadow.soft,
   },
-  loginBtnContainer: {
-    flexDirection: 'row',
-    margin: 0,
-    padding: 0,
+  ctaButton: {
+    borderRadius: s(16),
+    overflow: 'hidden',
+    shadowColor: brandColors.tealPrimary,
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.24,
+    shadowRadius: s(20),
+    elevation: 6,
+  },
+  ctaGradient: {
+    height: s(50),
     alignItems: 'center',
-    paddingHorizontal: 18,
+    justifyContent: 'center',
   },
-
-  loginBtn: {
-    height: 50,
-    width: '100%',
-    padding: 0,
-    paddingHorizontal: 0,
-    borderRadius: 50,
-    backgroundColor: Colors.systemColor2,
+  ctaText: {
+    color: brandColors.surface,
+    fontSize: fs(14),
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
   },
 })
 

@@ -1,5 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
+import { brandColors } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
 const InformationItem = ({ label, value }) => {
   return (
@@ -16,23 +18,20 @@ const InformationItem = ({ label, value }) => {
 
 const styles = StyleSheet.create({
   wrap: {
-    paddingHorizontal: 18,
-    paddingVertical: 9,
-
-    display: 'flex',
+    paddingHorizontal: s(12),
+    paddingVertical: s(7),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   label: {
-    fontSize: 14,
-    fontWeight: 'normal',
-    color: '#8C8C8C',
+    fontSize: fs(12.5),
+    color: brandColors.muted,
   },
   value: {
-    fontSize: 14,
-    fontWeight: 'normal',
-    color: '#595959',
+    fontSize: fs(12.5),
+    fontWeight: '700',
+    color: brandColors.textDark,
   },
 })
 
