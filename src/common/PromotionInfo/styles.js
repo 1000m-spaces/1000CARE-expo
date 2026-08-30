@@ -1,70 +1,77 @@
 import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
-import Colors from '~/common/Colors/Colors'
 import { DIMENS } from '~/constants/index'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
 
+// Card khuyến mãi theo spec redesign: nền trắng viền #EEF5F6 + shadow
+// "lifted", tile icon vàng (accent riêng cho khuyến mãi/quà tặng) — thay
+// cho viền xám 6px + icon tròn teal cũ.
 const styles = StyleSheet.create({
   itemContainer: {
-    display: 'flex',
     flexDirection: 'column',
-    marginBottom: 9,
+    marginBottom: s(12),
+    backgroundColor: brandColors.surface,
     borderWidth: 1,
-    borderColor: '#CCCCCC',
-    borderRadius: 6,
-    padding: 14,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xxxl),
+    padding: s(14),
+    ...brandShadow.soft,
   },
   itemContainerChecked: {
-    borderColor: Colors.systemColor2,
+    borderColor: brandColors.tealPrimary,
+    borderWidth: 1.5,
+    ...brandShadow.softSelected,
   },
   icon: {
-    width: 18,
-    height: 18,
+    width: s(18),
+    height: s(18),
   },
   iconContainer: {
-    backgroundColor: Colors.systemColor2,
-    display: 'flex',
+    backgroundColor: brandColors.goldAccent,
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems:'center',
-    borderRadius: 42,
-    width: 42,
-    height: 42,
+    borderRadius: s(radiusScale.xxl),
+    width: s(42),
+    height: s(42),
   },
   promotionInfoContainer: {
     width: DIMENS.common.WINDOW_WIDTH - 28 - 50,
   },
   level: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: Colors.textColor1,
+    fontSize: fs(13),
+    fontFamily: Fonts.base,
+    color: brandColors.textDark,
   },
   promotionName: {
-    color: Colors.systemColor2,
+    color: brandColors.textDark,
     fontFamily: Fonts.bold,
-    fontSize: 14,
-    marginBottom: 2,
-    marginLeft: 12,
-    lineHeight: 22,
-    marginRight: 30,
+    fontWeight: 'normal',
+    fontSize: fs(13.5),
+    marginBottom: s(4),
+    marginLeft: s(12),
+    lineHeight: fs(19),
+    marginRight: s(24),
   },
   promotionInfo: {
-    color: Colors.textColor2,
-    fontFamily: Fonts.medium,
-    marginTop: 2, 
+    color: brandColors.muted,
+    fontFamily: Fonts.base,
+    marginTop: s(2),
     fontWeight: 'normal',
-    fontSize: 14,
-    lineHeight: 26,
-    marginRight: 30,
+    fontSize: fs(12.5),
+    lineHeight: fs(19),
+    marginRight: s(24),
   },
   iconCheck: {
     position: 'absolute',
-    top: 12,
-    right: 12,
+    top: s(12),
+    right: s(12),
   },
   promotionLevelContainer: {
     marginTop: 1,
-    flex: 1, 
-    paddingHorizontal: 18,
-    backgroundColor: Colors.white,
+    flex: 1,
+    paddingHorizontal: s(12),
+    backgroundColor: 'transparent',
   },
 })
 

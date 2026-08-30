@@ -3,70 +3,62 @@ import {
   View,
   Text,
 } from 'react-native'
-import { Image } from '~/common/index'
+import { LinearGradient } from 'expo-linear-gradient'
 import { getDateString } from '~/utils/date'
 import { formatMoneyString } from '~/utils/format'
 import styles from './styles'
 import PressScale from '~/design-system/PressScale'
+import { brandGradients } from '~/design-system/tokens'
 const listMethod = ['COD', 'NEOW', 'NEOWP', 'VQR']
 
+// Card voucher dạng "vé" theo spec redesign: cuống trái gradient teal hiện
+// giá trị giảm, phần phải là nội dung — thay cho hàng có ảnh banner + badge
+// giảm giá rời rạc trước đó.
 const VoucherItem = ({ data, type, onClick, listVoucherExpired, orgDistributorId }) => {
   const [hidden, setHidden] = useState(true)
   const method = (paymentMethod) => listMethod.filter(word => paymentMethod.indexOf(word) != -1).map((item, index) => {
     return (
-      <View style={{ borderWidth: 1, marginTop: 5, borderColor: '#F5222D', marginRight: 5, paddingHorizontal: 2, borderRadius: 2 }}>
-        <Text style={[styles.titleVoucher, { fontSize: 10, color: '#F5222D' }]}>{item == 'COD' ? 'COD' : item == 'NEOW' ? 'Điểm mua hàng' : 'Điểm tích lũy'}</Text>
+      <View key={index} style={styles.methodTag}>
+        <Text style={styles.methodTagText}>{item == 'COD' ? 'COD' : item == 'NEOW' ? 'Điểm mua hàng' : 'Điểm tích lũy'}</Text>
       </View>
     )
   })
   const element = {
     'canUse': (<View>
-      {/* <Text style={styles.timeVoucher}>{`HSD: ${getDateString(data?.campaign?.start_date, 'DD-MM-yyyy')} - ${getDateString(data?.campaign?.end_date, 'DD-MM-yyyy')}`}</Text> */}
-      {/* <Text style={styles.timeVoucher}>{`HSD: ${getDateString(data?.create_at, 'DD/MM/yyyy')} - ${getDateString(data?.end_date, 'DD/MM/yyyy')}`}</Text> */}
       <Text style={styles.timeVoucher}>{`HSD: ${getDateString(data?.end_date, 'DD/MM/yyyy')}`}</Text>
       {
         !data.is_valid && data?.order_limit ? (
-          <Text style={styles.textSaleOff}>{`Đơn hàng tối thiêu ${formatMoneyString(data?.order_limit)}`}</Text>
+          <Text style={styles.conditionText}>{`Đơn hàng tối thiêu ${formatMoneyString(data?.order_limit)}`}</Text>
         ) : null
       }
-      <View style={styles.row}>
-        <View style={styles.saleOff}>
-          <Text style={styles.textSaleOff}>{`Giảm ${data?.discount / 1000}k`}</Text>
-        </View>
-        {
-          data.is_valid ? (
-            <PressScale
-              style={styles.useButton}
-              onPress={onClick}
-            >
-              <Text style={styles.textButton}>Sử dụng</Text>
-            </PressScale>
-          ) : (
-            <View
-              style={styles.disableButton}
-            >
-              <Text style={styles.textButton}>Sử dụng</Text>
-            </View>
-          )
-        }
-      </View>
+      {
+        data.is_valid ? (
+          <PressScale
+            style={styles.useButton}
+            onPress={onClick}
+          >
+            <Text style={styles.textButton}>Sử dụng</Text>
+          </PressScale>
+        ) : (
+          <View
+            style={styles.disableButton}
+          >
+            <Text style={styles.textButton}>Sử dụng</Text>
+          </View>
+        )
+      }
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         {method(data.payment_method)}
       </View>
     </View>),
     'picked': (<View>
       <Text style={styles.timeVoucher}>{`HSD: ${getDateString(data?.end_date, 'DD/MM/yyyy')}`}</Text>
-      <View style={styles.row}>
-        <View style={styles.saleOff}>
-          <Text style={styles.textSaleOff}>{`Giảm ${data?.discount / 1000}k`}</Text>
-        </View>
-        <PressScale
-          style={styles.deleteButton}
-          onPress={onClick}
-        >
-          <Text style={styles.textButton}>Hủy chọn</Text>
-        </PressScale>
-      </View>
+      <PressScale
+        style={styles.deleteButton}
+        onPress={onClick}
+      >
+        <Text style={styles.textButton}>Hủy chọn</Text>
+      </PressScale>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         {method(data.payment_method)}
       </View>
@@ -76,12 +68,9 @@ const VoucherItem = ({ data, type, onClick, listVoucherExpired, orgDistributorId
         <Text style={styles.timeVoucher}>{`HSD: ${getDateString(data?.end_date, 'DD/MM/yyyy')}`}</Text>
         {
           !data.is_valid && data?.order_limit ? (
-            <Text style={styles.textSaleOff}>{`Đơn hàng tối thiêu ${formatMoneyString(data?.order_limit)}`}</Text>
+            <Text style={styles.conditionText}>{`Đơn hàng tối thiêu ${formatMoneyString(data?.order_limit)}`}</Text>
           ) : null
         }
-        <View style={styles.saleOff}>
-          <Text style={styles.textSaleOff}>{`Giảm ${data?.discount / 1000}k`}</Text>
-        </View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {method(data.payment_method)}
         </View>
@@ -94,16 +83,12 @@ const VoucherItem = ({ data, type, onClick, listVoucherExpired, orgDistributorId
     </View>),
     'disabled': (<View>
       <Text style={styles.timeVoucher}>HSD: <Text style={styles.expired}>Đã hết hạn</Text></Text>
-      <View style={styles.saleOff}>
-        <Text style={styles.textSaleOff}>{`Giảm ${data?.discount / 1000}k`}</Text>
-      </View>
     </View>),
   }
 
   useEffect(() => {
     if (listVoucherExpired.length != 0) {
       for (const value of listVoucherExpired) {
-        console.log('KDLJSLKDKKKKKKKKK:', orgDistributorId)
         if (Object.values(value) == data?.id && (Object.keys(value)[0] != orgDistributorId)) {
           setHidden(false)
           return
@@ -116,14 +101,17 @@ const VoucherItem = ({ data, type, onClick, listVoucherExpired, orgDistributorId
   if (hidden) {
     return (
       <View style={styles.wrapper}>
-        <Image
-          style={styles.imageVoucher}
-          source={data?.campaign?.images ? { uri: data?.campaign?.images } : require('~/assets/image_voucher/voucher.jpg')}
-          resizeMode={'contain'}
-        />
-        {
-          type === 'canUse' && !data.is_valid && <View style={styles.overlay} />
-        }
+        <LinearGradient
+          colors={brandGradients.primary}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.stub}
+        >
+          <Text style={styles.stubValue} numberOfLines={1} adjustsFontSizeToFit>
+            {`${data?.discount / 1000}k`}
+          </Text>
+          <Text style={styles.stubLabel}>GIẢM</Text>
+        </LinearGradient>
         <View style={styles.infoVoucher}>
           <Text
             style={styles.titleVoucher}

@@ -1,133 +1,127 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { Fonts } from '~/assets/config'
+import { s, fs } from '~/utils/responsive'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
 
+// Card voucher dạng vé theo spec redesign — cuống trái gradient teal +
+// nội dung phải, thay cho hàng ảnh banner cũ.
 export default StyleSheet.create({
   wrapper: {
     width: '100%',
-    backgroundColor: '#FFF',
-
-    padding: 12,
-
-    borderBottomColor: '#F5F5F5',
-    borderBottomWidth: 1,
-    borderStyle: 'solid',
-
-    display: 'flex',
     flexDirection: 'row',
-
-    position: 'relative',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xxl),
+    overflow: 'hidden',
+    marginBottom: s(12),
+    ...brandShadow.soft,
   },
-  imageVoucher: {
-    width: 120,
-    height: '100%',
-
+  stub: {
+    width: s(78),
+    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: s(6),
   },
-  overlay: {
-    width: 120,
-    height: '100%',
-    backgroundColor: 'rgba(114, 114, 114, 0.8)',
-    position: 'absolute',
-    top: 12,
-    left: 12,
+  stubValue: {
+    color: brandColors.surface,
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(16),
+  },
+  stubLabel: {
+    marginTop: s(2),
+    color: 'rgba(255,255,255,0.8)',
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(9),
   },
   infoVoucher: {
-    width: Dimensions.get('window').width - 144,
-
-    paddingLeft: 12,
+    flex: 1,
+    padding: s(12),
   },
   titleVoucher: {
-    fontSize: 14,
-    fontFamily: 'Roboto',
-    color: '#595959',
-    lineHeight: 22,
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(13),
+    color: brandColors.textDark,
+    lineHeight: fs(18),
   },
   distributorName: {
-    fontSize: 12,
-    fontFamily: 'Roboto',
-    color: '#8C8C8C',
-    lineHeight: 18,
+    marginTop: s(2),
+    fontSize: fs(11),
+    color: brandColors.muted,
+    lineHeight: fs(15),
   },
   timeVoucher: {
-    marginTop: 4,
-    fontSize: 12,
-    fontFamily: 'Roboto',
-    color: '#8C8C8C',
+    marginTop: s(4),
+    fontSize: fs(10.5),
+    color: brandColors.mutedLight,
+  },
+  conditionText: {
+    marginTop: s(4),
+    fontSize: fs(11),
+    color: brandColors.danger,
+    fontWeight: '600',
   },
   codeOrder: {
-    fontFamily: 'Roboto',
-    color: '#4276FE',
+    color: brandColors.tealPrimary,
+    fontWeight: '600',
   },
   expired: {
-    fontFamily: 'Roboto',
-    color: '#F5222D',
-  },
-  row: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    color: brandColors.danger,
+    fontWeight: '600',
   },
   useButton: {
-    width: 86,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#0B7B8A',
-
-    marginTop: 6,
-
-    display: 'flex',
-    justifyContent: 'center',
+    minWidth: s(86),
+    height: s(28),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: brandColors.tealPrimary,
+    alignSelf: 'flex-start',
+    marginTop: s(8),
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: s(14),
   },
   disableButton: {
-    width: 86,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#CCCCCC',
-
-    marginTop: 6,
-
-    display: 'flex',
-    justifyContent: 'center',
+    minWidth: s(86),
+    height: s(28),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: brandColors.mutedLight,
+    alignSelf: 'flex-start',
+    marginTop: s(8),
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: s(14),
   },
   deleteButton: {
-    width: 86,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#F5222D',
-
-    marginTop: 6,
-
-    display: 'flex',
-    justifyContent: 'center',
+    minWidth: s(86),
+    height: s(28),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: brandColors.danger,
+    alignSelf: 'flex-start',
+    marginTop: s(8),
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: s(14),
   },
   textButton: {
-    color: '#FFFFFF',
-    fontSize: 12,
+    color: brandColors.surface,
+    fontSize: fs(11.5),
     fontWeight: '600',
-    fontFamily: 'Roboto',
   },
-  saleOff: {
-    width: 86,
-    height: 24,
-    borderRadius: 3,
-    backgroundColor: '#FFFFFF',
-
-    borderColor: '#F5222D',
+  methodTag: {
     borderWidth: 1,
-    borderStyle: 'solid',
-
-    marginTop: 6,
-
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderColor: brandColors.danger,
+    marginTop: s(6),
+    marginRight: s(5),
+    paddingHorizontal: s(6),
+    paddingVertical: s(2),
+    borderRadius: s(radiusScale.xs),
   },
-  textSaleOff: {
-    color: '#F5222D',
-    fontSize: 12,
-    fontWeight: '600',
-    fontFamily: 'Roboto',
+  methodTagText: {
+    fontSize: fs(10),
+    color: brandColors.danger,
   },
 })
