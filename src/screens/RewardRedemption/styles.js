@@ -1,81 +1,65 @@
 import { StyleSheet } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 
 const styles = StyleSheet.create({
   safeArea: {
-    flex:1,
+    flex: 1,
   },
-  mainContainer: { 
-    flex:1,
-    display: 'flex',
-    backgroundColor: Colors.backgroundColor,
+  mainContainer: {
+    flex: 1,
+    backgroundColor: brandColors.background,
   },
   amount: {
-    color: Colors.priceColor,
-    lineHeight: 22,
-    fontSize: 14,
-    fontWeight: '600',
+    color: brandColors.goldAccent,
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    lineHeight: fs(20),
+    fontSize: fs(14.5),
+    marginTop: s(2),
   },
-  titleItem:{
-    color: Colors.textColor3,
-    fontSize: 12,
-    lineHeight: 20,
+  titleItem: {
+    color: brandColors.muted,
+    fontSize: fs(12),
+    lineHeight: fs(17),
   },
-  logoItemContainer:{
-    width: 140,
-    height: 77,
-    paddingHorizontal: 16,
-    display: 'flex',
+  logoItemContainer: {
+    width: s(56),
+    height: s(56),
+    borderRadius: s(radiusScale.xl),
+    backgroundColor: brandColors.tealLight,
+    marginRight: s(12),
     justifyContent: 'center',
     alignItems: 'center',
   },
   logoItem: {
-    width: '100%',
-    height: 36,
+    width: '70%',
+    height: '70%',
   },
-  itemContainer:{
-    display: 'flex',
+  itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  paymentAccountTitle: {
-    paddingVertical: 18,
-    paddingLeft: 18,
-    color: Colors.textColor2,
-    fontSize: 16,
-    lineHeight: 22,
-    fontWeight: 'normal',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(radiusScale.xl),
+    padding: s(12),
+    marginBottom: s(10),
+    ...brandShadow.soft,
   },
   paymentAccountContainer: {
-    backgroundColor: Colors.white,
+    padding: s(16),
   },
   mt1: {
-    marginTop: 1,
-  },
-
-  checkoutInfoContainer: {
-    marginVertical: 12,
-    padding: 18,
-    backgroundColor: Colors.white,
-  },
-  titleInfo: {
-    color: Colors.textColor2,
-    lineHeight: 22,
-    fontSize: 14,
-    fontWeight: 'normal',
-  },
-  totalPrice: {
-    color: Colors.priceColor,
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
+    marginTop: 0,
   },
   iconChoose: {
     alignSelf: 'center',
-    height: 12, 
-    width: 6,
-    marginRight: 12,
+    height: s(12),
+    width: s(6),
+    tintColor: brandColors.mutedLight,
   },
 })
 

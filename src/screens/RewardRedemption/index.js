@@ -17,22 +17,21 @@ import { getBalance } from '~/store/actions';
 import { formatMoney, formatNumber } from '~/utils/format';
 import LoginRequired from '~/common/LoginRequired/index';
 import PressScale from '~/design-system/PressScale';
+import BackgroundWash from '~/design-system/BackgroundWash';
 
+// Dòng "điểm tích luỹ theo NCC" theo tinh thần card sản phẩm/thẻ trong
+// spec (nền trắng, viền borderSoft, shadow teal mềm), logo NCC trong khung
+// bo tròn tealLight, số điểm nhấn màu vàng — thay hàng phẳng nền trắng cũ.
 const RewardItem = ({ logo, title, amount, onClick }) => {
   return (
     <PressScale style={styles.itemContainer} onPress={onClick}>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
         <View style={styles.logoItemContainer}>
           <Image style={styles.logoItem} resizeMode={'contain'} source={logo} />
         </View>
         <View>
           <Text style={styles.titleItem}>{title}</Text>
-          <Text style={styles.amount}>{amount}</Text>
+          <Text style={styles.amount}>{amount} điểm</Text>
         </View>
       </View>
 
@@ -80,6 +79,7 @@ const RewardRedemption = props => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainContainer}>
+        <BackgroundWash />
         <CustomHeader
           navigation={props.navigation}
           title={'Điểm tích lũy'}
