@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   wrap: {
     marginTop: s(12),
     marginHorizontal: s(16),
-    borderRadius: s(24),
+    borderRadius: s(18),
     backgroundColor: liquidGlass.background,
     borderWidth: 1,
     borderColor: liquidGlass.border,

@@ -6,6 +6,9 @@ import { brandColors } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 import PressScale from '~/design-system/PressScale'
 
+// Section header theo spec: nhãn hoa hết-cỡ nhỏ + muted, icon chỉ còn làm
+// dấu hiệu phụ nhỏ gọn, link "Xem chi tiết" rút về dạng chevron chữ đơn giản
+// — thay cho icon-bubble lớn + nút viền cũ.
 const TitleDetailOrderBox = ({ urlIcon, title, route, navigation, params }) => {
   return (
     <View style={styles.wrap}>
@@ -26,7 +29,7 @@ const TitleDetailOrderBox = ({ urlIcon, title, route, navigation, params }) => {
             navigation.navigate(route, params)
           }}
         >
-          <Text style={styles.textViewDetailButton}>Xem chi tiết</Text>
+          <Text style={styles.textViewDetailButton}>Xem chi tiết ›</Text>
         </PressScale>
       ) : null}
     </View>
@@ -39,54 +42,44 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     paddingHorizontal: s(18),
     paddingVertical: s(12),
-
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   titleAndIcon: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
   wrapIcon: {
-    width: s(42),
-    height: s(42),
-    backgroundColor: 'rgba(11,123,138,0.1)',
-    borderRadius: s(21),
-
-    display: 'flex',
+    width: s(28),
+    height: s(28),
+    backgroundColor: brandColors.tealLight,
+    borderRadius: s(14),
     justifyContent: 'center',
     alignItems: 'center',
   },
   icon: {
-    width: s(24),
-    height: s(24),
+    width: s(15),
+    height: s(15),
   },
   title: {
-    marginLeft: s(12),
-    fontSize: fs(14),
+    marginLeft: s(10),
+    fontSize: fs(12),
     fontFamily: Fonts.bold,
-    color: brandColors.textDark,
-    fontWeight: '600',
+    color: brandColors.muted,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   viewDetailButton: {
-    width: s(100),
-    height: s(28),
-    borderRadius: s(14),
-    borderColor: brandColors.tealPrimary,
-    borderStyle: 'solid',
-    borderWidth: 1,
-
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingVertical: s(4),
+    paddingLeft: s(10),
   },
   textViewDetailButton: {
-    fontSize: fs(12),
+    fontSize: fs(12.5),
+    fontFamily: Fonts.bold,
+    fontWeight: '600',
     color: brandColors.tealPrimary,
-    lineHeight: fs(16),
   },
 })
 
