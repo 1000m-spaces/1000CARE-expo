@@ -13,7 +13,7 @@ import packageJson from '../../../package.json'
 
 import MenuItem from './MenuItem'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow, liquidGlass } from '~/design-system/tokens'
+import { brandColors, brandShadow } from '~/design-system/tokens'
 
 const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
   const dispatch = useDispatch()
@@ -137,25 +137,21 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
   }
 
   return (
-    <View style={styles.wrapper}>
-      {data.map((item, index) => (
-        <MenuItem
-          key={index}
-          data={item}
-          navigation={navigation}
-          isLoggedIn={isLoggedIn}
-          onShowMessage={onShowMessage}
-          lengthNotiNonRead={lengthNotiNonRead}
-        />
-      ))}
-      <Text
-        style={{
-          textAlign: 'center',
-          width: '100%',
-          color: brandColors.muted,
-          fontSize: fs(12),
-        }}
-      >{`Version: ${versionApp}`}</Text>
+    <View>
+      <View style={styles.wrapper}>
+        {data.map((item, index) => (
+          <MenuItem
+            key={index}
+            data={item}
+            navigation={navigation}
+            isLoggedIn={isLoggedIn}
+            onShowMessage={onShowMessage}
+            lengthNotiNonRead={lengthNotiNonRead}
+            isLast={index === data.length - 1}
+          />
+        ))}
+      </View>
+      <Text style={styles.version}>{`Phiên bản ${versionApp}`}</Text>
     </View>
   )
 }
@@ -163,20 +159,21 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
 const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
-    flexGrow: 1,
-    paddingBottom: s(20),
-    marginTop: s(4),
+    marginTop: s(16),
     marginHorizontal: s(16),
-    backgroundColor: liquidGlass.background,
+    backgroundColor: brandColors.surface,
     borderWidth: 1,
-    borderColor: liquidGlass.border,
-    borderRadius: s(24),
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(20),
     overflow: 'hidden',
     ...brandShadow.soft,
-
-    borderTopColor: brandColors.borderSoft,
-    borderTopWidth: 0,
-    borderStyle: 'solid',
+  },
+  version: {
+    textAlign: 'center',
+    width: '100%',
+    marginTop: s(14),
+    color: brandColors.mutedLight,
+    fontSize: fs(11),
   },
 })
 

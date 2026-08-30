@@ -31,7 +31,7 @@ const StatusBadge = ({ text, variant = 'info', style }) => {
   const colors = variants[variant] || variants.info;
 
   return (
-    <View style={[styles.badge, colors, style]}>
+    <View style={[styles.badge, { backgroundColor: colors.backgroundColor }, style]}>
       <Text style={[styles.text, { color: colors.color }]} numberOfLines={1}>
         {text}
       </Text>
@@ -40,19 +40,19 @@ const StatusBadge = ({ text, variant = 'info', style }) => {
 };
 
 const styles = StyleSheet.create({
+  // Pill trạng thái full-round theo spec (radius 999, không viền).
   badge: {
-    minHeight: s(28),
-    borderRadius: s(12),
-    borderWidth: 1,
+    minHeight: s(24),
+    borderRadius: s(999),
     paddingHorizontal: s(10),
+    paddingVertical: s(4),
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
     fontFamily: Fonts.bold,
-    fontSize: fs(10),
+    fontSize: fs(11),
     fontWeight: 'normal',
-    textTransform: 'uppercase',
   },
 });
 

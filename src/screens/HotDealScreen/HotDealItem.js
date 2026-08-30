@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: (dimens.common.WINDOW_WIDTH - s(32)) * 0.5,
     backgroundColor: brandColors.surface,
     marginTop: s(12),
-    borderRadius: s(18),
+    borderRadius: s(20),
     overflow: 'hidden',
     position: 'relative',
     borderWidth: 1,

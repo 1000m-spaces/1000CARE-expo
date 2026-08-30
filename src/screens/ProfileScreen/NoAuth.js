@@ -4,14 +4,18 @@ import {
   Text,
   StyleSheet,
 } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 import { Image } from '~/common/index'
 import strings from '~/i18n'
 import { NAVIGATION_PHONE_VERIFY, NAVIGATION_TO_LOGIN_SCREEN } from '~/navigation/routes'
 import { user } from '../../assets/constants'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow } from '~/design-system/tokens'
+import { brandColors, brandGradients, brandShadow } from '~/design-system/tokens'
+import { Fonts } from '~/assets/config'
 import PressScale from '~/design-system/PressScale'
 
+// Card trắng đúng theo hệ thống card mới (thay panel tối trước đó) — nút
+// đăng nhập dùng gradient teal thống nhất với CTA chính của app.
 const NoAuth = ({ navigation }) => {
   return (
     <View style={styles.wrapper}>
@@ -23,7 +27,6 @@ const NoAuth = ({ navigation }) => {
           />
         </View>
         <View style={styles.copy}>
-          <Text style={styles.eyebrow}>ACCOUNT ACCESS</Text>
           <Text style={styles.title}>Tài khoản 1000CARE</Text>
           <Text style={styles.textNotification}>
             {strings.profileScreen.noAuth.title}
@@ -32,10 +35,16 @@ const NoAuth = ({ navigation }) => {
       </View>
       <View style={styles.btnGroup}>
         <PressScale
-          style={styles.btnSignIn}
           onPress={() => navigation.navigate(NAVIGATION_TO_LOGIN_SCREEN)}
         >
-          <Text style={styles.textSignIn}>{strings.profileScreen.noAuth.login}</Text>
+          <LinearGradient
+            colors={brandGradients.primary}
+            style={styles.btnSignIn}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            <Text style={styles.textSignIn}>{strings.profileScreen.noAuth.login}</Text>
+          </LinearGradient>
         </PressScale>
         {/* <TouchableOpacity
           style={styles.btnSignUp}
@@ -50,10 +59,12 @@ const NoAuth = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    padding: s(18),
+    padding: s(16),
     margin: s(16),
-    backgroundColor: brandColors.textDark,
-    borderRadius: s(28),
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(20),
     ...brandShadow.soft,
   },
   notification: {
@@ -78,48 +89,38 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: s(12),
   },
-  eyebrow: {
-    fontSize: fs(10),
-    lineHeight: fs(14),
-    fontWeight: '600',
-    letterSpacing: 1.4,
-    color: brandColors.goldAccent,
-  },
   title: {
-    marginTop: s(4),
-    fontSize: fs(20),
-    lineHeight: fs(25),
-    fontWeight: '600',
-    color: brandColors.surface,
+    fontFamily: Fonts.bold,
+    fontSize: fs(15),
+    fontWeight: 'normal',
+    color: brandColors.textDark,
   },
   textNotification: {
-    marginTop: s(6),
-    fontSize: fs(13),
-    lineHeight: fs(19),
-    fontWeight: '600',
-    color: 'rgba(255,255,255,0.66)',
-
+    marginTop: s(4),
+    fontSize: fs(12.5),
+    lineHeight: fs(17),
+    fontWeight: 'normal',
+    color: brandColors.muted,
   },
   btnGroup: {
-    marginTop: s(18),
+    marginTop: s(16),
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
   btnSignIn: {
     width: '100%',
-    height: s(54),
-    borderRadius: s(18),
-    backgroundColor: brandColors.goldAccent,
-
+    height: s(50),
+    borderRadius: s(999),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   textSignIn: {
-    color: brandColors.textDark,
+    color: brandColors.surface,
+    fontFamily: Fonts.bold,
     fontSize: fs(14),
-    fontWeight: '600',
+    fontWeight: 'normal',
   },
   btnSignUp: {
     marginLeft: s(12),
