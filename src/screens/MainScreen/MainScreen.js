@@ -27,7 +27,6 @@ import {
 import { saveTokenFcm, requestGetItemHistory, offOpenNoti, setSelectedDistri } from '~/store/actions'
 import { getOpenNoti } from '~/store/selector'
 import { useDispatch, useSelector } from 'react-redux'
-import Colors from '~/common/Colors/Colors'
 import { Fonts } from '~/assets/config'
 
 import CustomTabBar from '../../navigation/CustomTabBar'
