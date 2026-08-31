@@ -58,17 +58,30 @@ const CartItem = ({ navigation, distributor, item, index, setOpenDialogWaiting, 
         return (
           <>
             <View style={styles.listHeader}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={styles.listHeaderRow}>
                 <CheckBox
                   checked={chooseAll}
                   onPress={onChooseAll}
+                  containerStyle={styles.listHeaderCheckbox}
                 />
-                <Text style={styles.textInfoListHeader}>{strings.cartDetail.distributorInfo}</Text>
-                <Text style={styles.textListHeader}>{distributor.name || distributor.nick_name}</Text>
+                <View style={styles.distributorIconWrap}>
+                  <Text style={styles.distributorIconText}>🏬</Text>
+                </View>
+                <View style={styles.distributorNameWrap}>
+                  <Text style={styles.textInfoListHeader}>{strings.cartDetail.distributorInfo}</Text>
+                  <Text style={styles.textListHeader} numberOfLines={1}>{distributor.name || distributor.nick_name}</Text>
+                </View>
               </View>
               {
                 totalPrices > 0 && distributor?.order_limit > totalPrices && item?.payment_type === 1
-                  ? <Text style={styles.textOrderLimit}>Đơn hàng chưa đạt giá trị tối thiểu {formatMoney(distributor?.order_limit, { unit: item?.payment_type === 1 ? 'đ' : 'điểm' })}</Text>
+                  ? (
+                    <View style={styles.orderLimitBanner}>
+                      <Text style={styles.orderLimitIcon}>⚠️</Text>
+                      <Text style={styles.textOrderLimit}>
+                        Đơn hàng chưa đạt giá trị tối thiểu {formatMoney(distributor?.order_limit, { unit: item?.payment_type === 1 ? 'đ' : 'điểm' })}
+                      </Text>
+                    </View>
+                  )
                   : null
               }
             </View>
