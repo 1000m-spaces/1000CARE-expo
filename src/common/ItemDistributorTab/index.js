@@ -1,12 +1,11 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Image, Text } from '~/common/index'
 import {
   logoNeoMed, log_mb_bank_landscape,
 } from '~/assets/constants'
 import { s, fs } from '~/utils/responsive'
 import { brandColors } from '~/design-system/tokens'
-import LiquidGlassView from '~/design-system/LiquidGlassView'
 
 const ItemDistributorTab = ({ data, onItemPress, selected, showLabel = false, selectedScale = 1 }) => {
   let imageSource = {
@@ -24,16 +23,13 @@ const ItemDistributorTab = ({ data, onItemPress, selected, showLabel = false, se
       activeOpacity={0.82}
       style={[styles.touchable, showLabel && styles.touchableWithLabel, selected && { transform: [{ scale: selectedScale }] }]}
     >
-      <LiquidGlassView
-        intensity="regular"
-        style={[styles.container, selected && styles.containerSelected]}
-      >
+      <View style={[styles.container, selected && styles.containerSelected]}>
         <Image
           style={imageSource === log_mb_bank_landscape ? styles.imageMB : styles.image}
           resizeMode={'contain'}
           source={imageSource}
         />
-      </LiquidGlassView>
+      </View>
       {showLabel && (
         <Text
           style={[styles.label, selected && styles.labelSelected]}
@@ -61,20 +57,21 @@ const styles = StyleSheet.create({
     width: s(68),
     height: s(52),
     borderRadius: s(26),
-    backgroundColor: 'rgba(255,255,255,0.42)',
-    borderColor: 'rgba(255,255,255,0.82)',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
   },
   containerSelected: {
-    backgroundColor: 'rgba(11,123,138,0.72)',
-    borderColor: 'rgba(255,255,255,0.72)',
+    backgroundColor: brandColors.tealPrimary,
+    borderColor: brandColors.tealPrimary,
     shadowColor: brandColors.tealPrimary,
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.26,
-    shadowRadius: 16,
-    elevation: 8,
+    shadowOpacity: 0.22,
+    shadowRadius: 14,
+    elevation: 6,
   },
   image: {
     width: s(48),

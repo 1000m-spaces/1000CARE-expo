@@ -4,7 +4,7 @@ export const brandColors = {
   tealLight: '#EDFBFC',
   goldAccent: '#F5A623',
   textDark: '#1A1A2E',
-  background: '#FEFFFE',
+  background: '#F5F6F7',
   surface: '#FFFFFF',
   surfaceAlt: '#FDFBFF',
   border: '#DDEBED',
@@ -129,11 +129,8 @@ export const liquidGlass = {
 // Nền "wash" mới phía sau toàn bộ nội dung màn hình — 3 quầng màu radial
 // mờ (teal + gold) thay cho nền phẳng, dùng với component BackgroundWash.
 export const backgroundWash = {
-  base: '#FCFDFD',
-  blobs: [
-    { cx: '10%', cy: '0%', r: '55%', color: 'rgba(13,150,168,0.08)' },
-    { cx: '100%', cy: '100%', r: '60%', color: 'rgba(245,166,35,0.067)' },
-  ],
+  base: '#F5F6F7',
+  blobs: [],
 };
 
 export const brandGradients = {

@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 
 import { Button, CheckBox, Text } from '~/common/index'
+import PressScale from '~/design-system/PressScale'
+import { brandGradients } from '~/design-system/tokens'
 import { getListItem } from '~/store/selector'
 import { useDispatch, useSelector } from 'react-redux'
 import strings from '~/i18n'
@@ -117,46 +120,44 @@ const Amount = ({ navigation, openMessage, arrayOrderLimit, listSelectedIds, cho
       </View>
       {
         totalItem() !== 0 && (
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-              paddingHorizontal: 32,
-            }}
-          >
-            <View style={{ width: '30%' }}>
-              <CheckBox
-                checked={isCheckBox}
-                onPress={() => setChooseAll(!isCheckBox)}
-                title={'Tất cả'}
-              />
-            </View>
-            <View style={{ width: '70%' }}>
-              <Button
-                styleView={[styles.nextStepBtnContainer]}
-                styleButton={[styles.nextStepBtn, (isEnableBuy && listSelectedIds.length > 0) ? {} : styles.nextStepBtnDisable]}
-                onPressEvent={() => {
-                  if (!isEnableBuy || listSelectedIds.length === 0) {
-                    return
-                  }
-                  if (arrayOrderLimit && arrayOrderLimit.length === 0 || !isCheckDistriLimited) {
-                    navigation.navigate(NAVIGATION_PAYMENT_CHECKOUT_SCREEN, {
-                      next: true,
-                      listSelectedIds,
-                    })
-                    dispatch(getCheckoutInfo({
-                      ids: listSelectedIds,
-                    }))
-                  } else {
-                    openMessage(`Đơn hàng của ${arrayOrderLimit[0].name} chưa đạt giá trị tối thiểu ${formatMoney(arrayOrderLimit[0].order_limit, { unit: 'đ' })}`)
-                  }
-                }}
-                text={strings.cartDetail.nextStep}
-              />
-            </View>
-
+          <View style={styles.actionRow}>
+            <CheckBox
+              checked={isCheckBox}
+              onPress={() => setChooseAll(!isCheckBox)}
+              title={'Tất cả'}
+              containerStyle={styles.checkAllContainer}
+            />
+            {(() => {
+              const canBuy = isEnableBuy && listSelectedIds.length > 0
+              const onPress = () => {
+                if (!canBuy) {
+                  return
+                }
+                if (arrayOrderLimit && arrayOrderLimit.length === 0 || !isCheckDistriLimited) {
+                  navigation.navigate(NAVIGATION_PAYMENT_CHECKOUT_SCREEN, {
+                    next: true,
+                    listSelectedIds,
+                  })
+                  dispatch(getCheckoutInfo({
+                    ids: listSelectedIds,
+                  }))
+                } else {
+                  openMessage(`Đơn hàng của ${arrayOrderLimit[0].name} chưa đạt giá trị tối thiểu ${formatMoney(arrayOrderLimit[0].order_limit, { unit: 'đ' })}`)
+                }
+              }
+              return (
+                <PressScale style={styles.nextStepBtn} onPress={onPress} disabled={!canBuy}>
+                  <LinearGradient
+                    colors={canBuy ? brandGradients.primary : ['#C7D0D2', '#C7D0D2']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.nextStepBtnGradient}
+                  >
+                    <Text style={styles.nextStepBtnText}>{strings.cartDetail.nextStep}</Text>
+                  </LinearGradient>
+                </PressScale>
+              )
+            })()}
           </View>
         )
       }

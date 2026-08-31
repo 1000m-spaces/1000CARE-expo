@@ -37,14 +37,7 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.7)',
   },
   searchPanel: {
-    marginHorizontal: s(16),
     marginTop: s(14),
-    borderRadius: s(20),
-    backgroundColor: brandColors.surface,
-    borderWidth: 1,
-    borderColor: brandColors.borderSoft,
-    overflow: 'hidden',
-    ...brandShadow.soft,
   },
   list: {
     flex: 1,

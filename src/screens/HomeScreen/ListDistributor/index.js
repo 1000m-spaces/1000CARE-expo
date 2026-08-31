@@ -294,7 +294,15 @@ const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
   const scrollX = useRef(new Animated.Value(0)).current
 
   if (!safeDistributors.length) {
-    return <HomeModuleSkeleton variant="supplier" count={4} />
+    // Trạng thái rỗng hiện rõ ràng bằng chữ thay vì skeleton mờ dễ bị
+    // nhầm là "không có gì" — giúp phân biệt "đang tải" và "API trả về
+    // rỗng" khi API /distributors/active chưa có dữ liệu.
+    return (
+      <View style={styles.supplierEmptyState}>
+        <Text style={styles.supplierEmptyTitle}>Đang tải nhà cung cấp…</Text>
+        <Text style={styles.supplierEmptySubtitle}>Danh sách sẽ hiển thị khi có nhà cung cấp đang hoạt động</Text>
+      </View>
+    )
   }
 
   return (
@@ -767,6 +775,30 @@ const styles = StyleSheet.create({
     fontFamily: foodAppFont,
     fontSize: fs(15),
     fontWeight: '800',
+  },
+  supplierEmptyState: {
+    minHeight: s(118),
+    marginHorizontal: s(16),
+    borderRadius: s(radiusScale.xxl),
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: s(18),
+    ...brandShadow.soft,
+  },
+  supplierEmptyTitle: {
+    color: brandColors.textDark,
+    fontFamily: foodAppFont,
+    fontSize: fs(13.5),
+    fontWeight: '700',
+  },
+  supplierEmptySubtitle: {
+    marginTop: s(4),
+    color: brandColors.muted,
+    fontSize: fs(12),
+    textAlign: 'center',
   },
   supplierRail: {
     paddingHorizontal: s(16),

@@ -65,20 +65,18 @@ const InputSearchSupplier = ({ isEmpty }) => {
 
 const styles = StyleSheet.create({
   wrap: {
-    width: '100%',
-    padding: s(12),
-    backgroundColor: brandColors.surface,
+    marginHorizontal: s(16),
   },
   input: {
     width: '100%',
     height: s(48),
-    backgroundColor: brandColors.background,
+    backgroundColor: '#F4F9F9',
     paddingLeft: s(42),
     borderRadius: s(16),
     color: brandColors.textDark,
     paddingRight: s(48),
     borderWidth: 1,
-    borderColor: brandColors.border,
+    borderColor: brandColors.borderSoft,
     fontSize: fs(14),
     fontWeight: '600',
   },
