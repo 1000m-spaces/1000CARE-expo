@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, View, Image as RNImage } from 'react-native'
 import PressScale from '~/design-system/PressScale'
 import { useDispatch, useSelector } from 'react-redux'
 import { Image } from '~/common/index'
@@ -19,7 +19,7 @@ import { Fonts } from '~/assets/config'
 import ProductItemListView from '~/common/ProductItemListView/ProductItemListView'
 import SearchBar from './SearchBar'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandShadow, liquidGlass } from '~/design-system/tokens'
+import { brandColors, brandShadow, liquidGlass, radiusScale } from '~/design-system/tokens'
 import AppBackground from '~/design-system/AppBackground'
 
 const ListViewListProduct = ({ navigation, products, loadMore, onShowMessage, setMessage, setOpenMessage }) => {
@@ -129,7 +129,8 @@ const GridViewListProduct = ({ navigation, products, loadMore, onShowMessage, se
 
 const ProductListScreen = ({ navigation, route }) => {
   const [currentPage, setCurrentPage] = useState(1)
-  const { title, distributorId, categoryId, trademarkId, type = 'product', productId, distributor } = route.params
+  const { title, distributorId, categoryId, trademarkId, type = 'product', productId, distributor, voucherLabel } = route.params
+  const [supplierLogoFailed, setSupplierLogoFailed] = useState(false)
 
   const [isLoading, setLoading] = useState(false)
   const [openMessage, setOpenMessage] = useState(false)
@@ -304,6 +305,43 @@ const ProductListScreen = ({ navigation, route }) => {
         <CartHeaderButton navigation={navigation} />
       </View>
       {
+        type === 'product_by_distributor' && distributor && (() => {
+          const supplierName = distributor?.nick_name || distributor?.name || title || 'Nhà cung cấp'
+          const initial = supplierName.trim().charAt(0).toUpperCase()
+          const canShowLogo = Boolean(distributor?.logo) && !supplierLogoFailed
+          const productCount = (getData() || []).length
+          return (
+            <>
+              <View style={styles.supplierHero}>
+                <View style={styles.supplierAvatarWrap}>
+                  {canShowLogo ? (
+                    <RNImage
+                      style={styles.supplierAvatarImg}
+                      source={{ uri: distributor.logo }}
+                      resizeMode="contain"
+                      onError={() => setSupplierLogoFailed(true)}
+                    />
+                  ) : (
+                    <Text style={styles.supplierAvatarInitial}>{initial}</Text>
+                  )}
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.supplierName} numberOfLines={1}>{supplierName}</Text>
+                  <Text style={styles.supplierSubtitle} numberOfLines={1}>
+                    Nhà cung cấp chính thức{productCount > 0 ? ` · ${productCount} sản phẩm` : ''}
+                  </Text>
+                </View>
+              </View>
+              {voucherLabel && (
+                <View style={styles.supplierVoucherPill}>
+                  <Text style={styles.supplierVoucherPillText}>🎁 {voucherLabel}</Text>
+                </View>
+              )}
+            </>
+          )
+        })()
+      }
+      {
         (type === 'product_by_distributor' || type === 'priceSock') && (
           <View style={styles.filterPanel}>
             <SearchBar
@@ -399,6 +437,60 @@ const styles = StyleSheet.create({
   minimalBackIcon: {
     width: s(16),
     height: s(16),
+  },
+  supplierHero: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(14),
+    marginTop: s(16),
+    marginHorizontal: s(16),
+    marginBottom: s(14),
+  },
+  supplierAvatarWrap: {
+    width: s(64),
+    height: s(64),
+    borderRadius: s(32),
+    backgroundColor: brandColors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    ...brandShadow.soft,
+  },
+  supplierAvatarImg: {
+    width: '62%',
+    height: '62%',
+  },
+  supplierAvatarInitial: {
+    fontSize: fs(22),
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    color: brandColors.tealPrimary,
+  },
+  supplierName: {
+    fontSize: fs(19),
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    color: brandColors.textDark,
+  },
+  supplierSubtitle: {
+    marginTop: s(4),
+    fontSize: fs(12.5),
+    color: brandColors.muted,
+  },
+  supplierVoucherPill: {
+    marginHorizontal: s(16),
+    marginBottom: s(16),
+    height: s(46),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: brandColors.tealDark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  supplierVoucherPillText: {
+    color: brandColors.goldAccent,
+    fontSize: fs(14),
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
   },
   listProductsContainer: {
     paddingHorizontal: s(12),

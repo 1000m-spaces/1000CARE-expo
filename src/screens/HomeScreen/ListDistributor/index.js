@@ -336,7 +336,13 @@ const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
             <PressScale
               style={styles.supplierTilePress}
               onPress={() => {
-                if (onItemPress) onItemPress(item)
+                navigation.navigate(NAVIGATION_PRODUCT_LIST, {
+                  type: 'product_by_distributor',
+                  distributorId: item?.id,
+                  distributor: item,
+                  voucherLabel,
+                  title: supplierName,
+                })
               }}
             >
               <View style={[styles.supplierLogoZone, { backgroundColor: hexToRgba(accentColor, 0.12) }]}>
