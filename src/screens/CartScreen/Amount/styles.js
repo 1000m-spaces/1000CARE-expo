@@ -16,11 +16,11 @@ const styles = StyleSheet.create({
   },
 
   bottomContainer: {
+    width: '100%',
     paddingVertical: s(18),
     paddingTop: s(20),
     paddingBottom: s(18),
     backgroundColor: liquidGlass.backgroundStrong,
-    alignSelf: 'flex-end',
   },
 
   actionRow: {

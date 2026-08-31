@@ -50,6 +50,7 @@ const CartHeaderButton = ({ navigation, color = brandColors.tealPrimary }) => {
   return (
     <PressScale
       onPress={() => onPress()}
+      style={styles.cartTouchable}
     >
       <LiquidGlassView intensity="regular" style={styles.cartLayout}>
         <Icon
@@ -58,11 +59,10 @@ const CartHeaderButton = ({ navigation, color = brandColors.tealPrimary }) => {
           color={color}
           size={s(24)}
         />
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{getNumberProducts()}</Text>
-        </View>
-
       </LiquidGlassView>
+      <View style={styles.badge}>
+        <Text style={styles.badgeText}>{getNumberProducts()}</Text>
+      </View>
     </PressScale>
   )
 }
@@ -76,6 +76,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'white',
   },
+  cartTouchable: {
+    width: s(46),
+    height: s(46),
+  },
   cartLayout: {
     width: s(46),
     height: s(46),
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.56)',
     borderColor: liquidGlass.border,
-    overflow: 'visible',
+    overflow: 'hidden',
   },
   badge: {
     position: 'absolute',

@@ -301,7 +301,6 @@ const ProductListScreen = ({ navigation, route }) => {
       <Header
         leftAction={() => navigation.pop()}
         iconLeft={back}
-        title={title}
         navigation={navigation}
         cart={true}
         customTitle={type === 'propose' ? () => {
@@ -325,11 +324,6 @@ const ProductListScreen = ({ navigation, route }) => {
         } : null}
         titleStyles={type === 'propose'? { marginLeft: -50 } : { marginLeft:0 }}
       />
-      <View style={styles.marketHero}>
-        <Text style={styles.heroEyebrow}>PRODUCT CATALOG</Text>
-        <Text style={styles.heroTitle} numberOfLines={2}>{title || 'Danh sách sản phẩm'}</Text>
-        <Text style={styles.heroSubtitle}>Lọc, xem nhanh và thêm sản phẩm vào giỏ theo nhà phân phối đã chọn.</Text>
-      </View>
       {
         (type === 'product_by_distributor' || type === 'priceSock') && (
           <View style={styles.filterPanel}>

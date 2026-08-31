@@ -110,6 +110,7 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.72)',
     borderWidth: 1,
     borderColor: 'rgba(11,123,138,0.18)',
+    overflow: 'hidden',
   },
   cartBadge: {
     position: 'absolute',

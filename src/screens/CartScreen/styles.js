@@ -86,11 +86,11 @@ const styles = StyleSheet.create({
   },
 
   bottomContainer: {
+    width: '100%',
     paddingVertical: s(18),
     paddingTop: s(20),
     paddingBottom: s(16),
     backgroundColor: liquidGlass.backgroundStrong,
-    alignSelf: 'flex-end',
     borderTopWidth: 1,
     borderTopColor: liquidGlass.border,
     ...liquidGlass.shadow,

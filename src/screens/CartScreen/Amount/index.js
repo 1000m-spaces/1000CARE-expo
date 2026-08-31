@@ -153,7 +153,7 @@ const Amount = ({ navigation, openMessage, arrayOrderLimit, listSelectedIds, cho
                     end={{ x: 1, y: 1 }}
                     style={styles.nextStepBtnGradient}
                   >
-                    <Text style={styles.nextStepBtnText}>{strings.cartDetail.nextStep}</Text>
+                    <Text style={styles.nextStepBtnText} numberOfLines={1}>{strings.cartDetail.nextStep}</Text>
                   </LinearGradient>
                 </PressScale>
               )
