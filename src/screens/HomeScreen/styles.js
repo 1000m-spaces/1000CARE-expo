@@ -56,7 +56,7 @@ export default StyleSheet.create({
   marketHeaderTop: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: s(10),
+    gap: s(8),
     zIndex: 2,
   },
   brandMark: {
@@ -96,9 +96,9 @@ export default StyleSheet.create({
     color: brandColors.muted,
   },
   cartTouch: {
-    width: s(48),
-    height: s(48),
-    borderRadius: s(20),
+    width: s(42),
+    height: s(42),
+    borderRadius: s(18),
     overflow: 'visible',
   },
   cartPill: {

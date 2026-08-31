@@ -8,7 +8,7 @@ import { s, fs } from '~/utils/responsive'
 import { formatMoney } from '~/utils/format'
 import { getProductImage } from '~/utils/image'
 import PressScale from '~/design-system/PressScale'
-import { brandColors, radiusScale } from '~/design-system/tokens'
+import { brandColors } from '~/design-system/tokens'
 
 // Card "Bán chạy" đồng bộ theo cùng ngôn ngữ thiết kế của card "Giá sốc
 // hôm nay" trong bộ spec (nền trắng, radius 20, shadow teal mềm, badge
@@ -117,12 +117,15 @@ const styles = StyleSheet.create({
   },
   badge: {
     position: 'absolute',
-    top: 0,
-    left: 0,
+    top: s(6),
+    left: s(6),
     backgroundColor: brandColors.goldAccent,
     paddingVertical: s(4),
-    paddingHorizontal: s(8),
-    borderBottomRightRadius: s(radiusScale.md),
+    paddingHorizontal: s(9),
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: s(16),
+    borderBottomLeftRadius: s(16),
+    borderBottomRightRadius: 0,
   },
   badgeText: {
     color: brandColors.textDark,

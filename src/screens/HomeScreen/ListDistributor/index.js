@@ -4,14 +4,13 @@ import PressScale from '~/design-system/PressScale'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 import { useDispatch, useSelector } from 'react-redux'
 import { banner_2, banner_3, banner_4 } from '~/assets/constants'
-import { NAVIGATION_LIST_DISTRIBUTOR_TRADEMARK, NAVIGATION_PRODUCT_DETAIL_SCREEN, NAVIGATION_PRODUCT_LIST } from '~/navigation/routes'
+import { NAVIGATION_PRODUCT_DETAIL_SCREEN, NAVIGATION_PRODUCT_LIST } from '~/navigation/routes'
 import {
   getListAdsBannerNeomed,
   getListDistributors,
   getListProductPriceSockHome,
   getListProductsBestSeller,
   getListProductsHotDeal,
-  getListTrademarksAdvertisement,
 } from '~/store/selector'
 import { requestGetListAdsBannerHomeNeomedByDistributor } from '~/store/actions'
 import { formatMoney } from '~/utils/format'
@@ -20,7 +19,6 @@ import { s, fs } from '~/utils/responsive'
 import SliderBox from '~/common/SliderBox/index'
 import AppSection from '~/design-system/AppSection'
 import { brandColors, brandShadow, liquidGlass, radiusScale } from '~/design-system/tokens'
-import ListTrademarksAdvertisement from './ListTrademarksAdvertisement'
 import HotProducts from './HotProducts'
 import { useTabBarVisibility } from '~/navigation/TabBarVisibilityContext'
 import { Fonts } from '~/assets/config'
@@ -426,7 +424,6 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
   const { handleScroll } = useTabBarVisibility()
   const listAdsBanner = useSelector(state => getListAdsBannerNeomed(state))
   const distributors = useSelector(state => getListDistributors(state))
-  const trademarks = useSelector(state => getListTrademarksAdvertisement(state))
   const hotDeals = useSelector(state => getListProductsHotDeal(state))
   const priceSockProducts = useSelector(state => getListProductPriceSockHome(state))
   const bestSellerProducts = useSelector(state => getListProductsBestSeller(state))
@@ -460,42 +457,6 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
         </View>
         <PromotionBannerRail navigation={navigation} products={hotDeals} />
       </View>
-
-      <AppSection
-        title="Thương hiệu nổi bật"
-        headerStyle={styles.brandSectionHeader}
-        action={(
-          <PressScale
-            style={styles.foodArrow}
-            onPress={() => {
-              navigation.navigate(NAVIGATION_LIST_DISTRIBUTOR_TRADEMARK, {
-                type: 'trademark',
-                onItemPress: (item) => {
-                  navigation.navigate(NAVIGATION_PRODUCT_LIST, {
-                    type: 'trademark',
-                    distributorId: selectedDistri?.id,
-                    trademarkId: item?.id,
-                    title: item?.name,
-                  })
-                },
-                title: 'Thương hiệu',
-              })
-            }}
-          >
-            <Text style={styles.foodArrowText}>→</Text>
-          </PressScale>
-        )}
-      >
-        {hasItems(trademarks) ? (
-          <ListTrademarksAdvertisement
-            navigation={navigation}
-            distributor={selectedDistri}
-            onMessage={onMessage}
-          />
-        ) : (
-          <HomeModuleSkeleton variant="brand" count={3} />
-        )}
-      </AppSection>
 
       <AppSection title="Sản phẩm bán chạy">
         {hasItems(bestSellerProducts) ? (
@@ -748,14 +709,15 @@ const styles = StyleSheet.create({
   },
   hotDealRibbon: {
     position: 'absolute',
-    top: 0,
-    left: 0,
+    top: s(6),
+    left: s(6),
     backgroundColor: brandColors.goldAccent,
-    paddingHorizontal: s(8),
+    paddingHorizontal: s(9),
     paddingVertical: s(4),
-    borderRadius: s(20),
     borderTopLeftRadius: 0,
-    borderBottomRightRadius: s(radiusScale.md),
+    borderTopRightRadius: s(16),
+    borderBottomLeftRadius: s(16),
+    borderBottomRightRadius: 0,
     zIndex: 2,
   },
   hotDealRibbonText: {
@@ -792,7 +754,7 @@ const styles = StyleSheet.create({
     marginHorizontal: s(16),
     marginBottom: s(24),
     borderRadius: s(radiusScale.xxl),
-    backgroundColor: brandColors.tealLight,
+    backgroundColor: 'rgba(11,123,138,0.035)',
     paddingTop: s(16),
     paddingBottom: s(14),
   },
@@ -899,12 +861,15 @@ const styles = StyleSheet.create({
   },
   flashDiscount: {
     position: 'absolute',
-    top: 0,
-    left: 0,
+    top: s(6),
+    left: s(6),
     backgroundColor: brandColors.goldAccent,
     paddingVertical: s(4),
-    paddingHorizontal: s(8),
-    borderBottomRightRadius: s(radiusScale.md),
+    paddingHorizontal: s(9),
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: s(16),
+    borderBottomLeftRadius: s(16),
+    borderBottomRightRadius: 0,
     zIndex: 3,
   },
   flashDiscountText: {
