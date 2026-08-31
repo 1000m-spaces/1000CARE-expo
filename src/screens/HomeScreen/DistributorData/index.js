@@ -64,18 +64,14 @@ const DistributorData = ({ selectedDistri, navigation }) => {
               {
                   selectedSupplier?.id === -1 && (
                   <PressScale
-                    style={[{
-                      flex: 1,
-                      position: 'absolute',
-                      right: 8,
-                    }]}
+                    style={styles.seeAllBtn}
                     onPress={() => navigation.navigate(NAVIGATION_PRODUCT_LIST, {
                       distributorId: selectedDistri?.id,
                       title: 'Tất cả sản phẩm',
                       type: 'product_by_distributor',
                     })}
                   >
-                    <Text style={styles.textButton}>{'Xem tất cả'}</Text>
+                    <Text style={styles.textButton} numberOfLines={1}>{'Xem tất cả'}</Text>
                   </PressScale>
                 )
               }

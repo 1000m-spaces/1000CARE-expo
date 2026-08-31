@@ -1,47 +1,54 @@
-import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import Colors from '~/common/Colors/Colors'
+import React, { useState } from 'react'
+import { StyleSheet, View, Text, Image as RNImage } from 'react-native'
 import { Image } from '~/common/index'
 import { arrow_right } from '~/assets/constants'
 import PressScale from '~/design-system/PressScale'
+import { brandColors, radiusScale } from '~/design-system/tokens'
+import { s, fs } from '~/utils/responsive'
+import { Fonts } from '~/assets/config'
 
 const ItemSupplier = ({ data, selected, onItemPress, type }) => {
-  const background = () => {
-    return selected ? Colors.systemColor2 : 'transparent'
-  }
+  const [imageFailed, setImageFailed] = useState(false)
+  const label = data.display_name ? data.display_name : data.name
+  const initial = (label || '?').trim().charAt(0).toUpperCase()
+  const isSvg = typeof data?.logo === 'string' && data.logo.toLowerCase().endsWith('.svg')
+  const canShowImage = Boolean(data?.logo) && !isSvg && !imageFailed
 
-  const textColor = () => {
-    return selected ? 'white' : '#828282'
-  }
-    
   return(
     <PressScale
       onPress={onItemPress.bind(this, data)}
     >
       {
         type ? (
-          <View style={[styles.container, { backgroundColor: background() }]}>
-            <Text style={[styles.category, { color: textColor() }]}>{data.display_name ? data.display_name : data.name}</Text>
+          <View style={[styles.container, selected && styles.containerSelected]}>
+            <Text style={[styles.category, selected && styles.categorySelected]}>{label}</Text>
           </View>
         ) : (
-          <View style={selected ? [styles.containerColumn, styles.selected] : styles.containerColumn}>
-            <Image
-              style={styles.image}
-              widthImage={2*50}
-              heightImage={2*(100 - 32)}
-              source={{
-                uri: data?.logo,
-              }}
-              tintColor={selected ? Colors.systemColor2: Colors.textColor2}
-            />
-            <Text style={selected ? [styles.categoryName, styles.alignCenter, styles.categoryNameSelected] : [styles.categoryName, styles.alignCenter]}>
-              {data.display_name ? data.display_name : data.name}
+          <View style={[styles.containerColumn, selected && styles.selected]}>
+            <View style={[styles.iconTile, selected && styles.iconTileSelected]}>
+              {canShowImage ? (
+                <RNImage
+                  style={styles.image}
+                  source={{ uri: data?.logo }}
+                  resizeMode="contain"
+                  onError={() => setImageFailed(true)}
+                />
+              ) : (
+                <Text style={[styles.iconFallbackText, selected && styles.iconFallbackTextSelected]}>{initial}</Text>
+              )}
+            </View>
+            <Text
+              numberOfLines={2}
+              style={[styles.categoryName, selected && styles.categoryNameSelected]}
+            >
+              {label}
             </Text>
             {
               selected && (
                 <Image
                   style={styles.seletedIcon}
                   source={arrow_right}
+                  tintColor={brandColors.tealPrimary}
                 />
               )
             }
@@ -53,66 +60,94 @@ const ItemSupplier = ({ data, selected, onItemPress, type }) => {
   )
 }
 
-const ItemHeight = 40
 const styles = StyleSheet.create({
   container: {
-    height: ItemHeight,
-    borderRadius: 20,
+    height: s(40),
+    borderRadius: s(radiusScale.lg),
+    paddingHorizontal: s(6),
     justifyContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+  },
+  containerSelected: {
+    backgroundColor: brandColors.tealPrimary,
+    borderColor: brandColors.tealPrimary,
+  },
+  iconTile: {
+    width: s(48),
+    height: s(48),
+    borderRadius: s(radiusScale.xl),
+    backgroundColor: brandColors.tealLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  iconTileSelected: {
+    backgroundColor: brandColors.surface,
   },
   image: {
-    width: 50,
-    height: 100 - 32,
-    resizeMode: 'contain',
+    width: '60%',
+    height: '60%',
+  },
+  iconFallbackText: {
+    fontSize: fs(17),
+    fontFamily: Fonts.bold,
+    fontWeight: '800',
+    color: brandColors.muted,
+  },
+  iconFallbackTextSelected: {
+    color: brandColors.tealPrimary,
   },
   seletedIcon: {
     position: 'absolute',
-    width: 15,
-    height: 25,
-    right: -2,
-    top: 120/2 - 25/2,
+    width: s(12),
+    height: s(20),
+    right: 0,
+    top: '50%',
+    marginTop: s(-10),
     resizeMode: 'contain',
   },
   containerColumn: {
-    height: 130,
-    width: 100,
-    display: 'flex',
-    flexDirection: 'column',
+    height: s(96),
+    width: '100%',
     justifyContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
+    gap: s(6),
+    paddingHorizontal: s(8),
   },
-  category:{
-    paddingVertical: 9,
-    paddingHorizontal: 15,
-    fontSize: 14,       
-    fontWeight: '600', 
+  category: {
+    paddingVertical: s(9),
+    paddingHorizontal: s(15),
+    fontSize: fs(13),
+    fontWeight: '600',
+    color: brandColors.textDark,
+  },
+  categorySelected: {
+    color: brandColors.surface,
+    fontWeight: '700',
   },
   selected: {
-    backgroundColor: 'white',
-    borderLeftWidth: 4,
-    borderLeftColor: Colors.systemColor2,
+    backgroundColor: brandColors.surface,
+    borderLeftWidth: 3,
+    borderLeftColor: brandColors.tealPrimary,
   },
   categoryNameSelected: {
-    fontSize: 12,
-    lineHeight: 18,
+    fontSize: fs(11),
+    lineHeight: fs(15),
     textAlign: 'center',
-    color: Colors.systemColor2,
-    fontWeight: '600',
+    color: brandColors.tealPrimary,
+    fontWeight: '700',
     textTransform: 'uppercase',
   },
   categoryName: {
-    fontSize: 12,
-    color: Colors.textColor2,
+    fontSize: fs(11),
+    color: brandColors.muted,
     textTransform: 'uppercase',
-    lineHeight: 18,
-    fontWeight: 'normal',
-    marginTop: 6,
-    marginHorizontal: 2,
-  },
-  alignCenter: {
+    lineHeight: fs(15),
+    fontWeight: '600',
     textAlign: 'center',
-    textAlignVertical: 'center',
   },
 })
 

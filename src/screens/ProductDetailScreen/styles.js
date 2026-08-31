@@ -67,7 +67,7 @@ export default StyleSheet.create({
   purchaseHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     flexWrap: 'wrap',
     rowGap: s(14),
   },
