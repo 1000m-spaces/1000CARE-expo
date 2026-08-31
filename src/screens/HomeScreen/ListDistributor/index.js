@@ -450,6 +450,14 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
     >
       <TagRail />
 
+      <AppSection title="Chương trình khuyến mãi">
+        {hasItems(listAdsBanner) ? (
+          <CampaignBanner listAdsBanner={listAdsBanner} />
+        ) : (
+          <HomeModuleSkeleton variant="banner" />
+        )}
+      </AppSection>
+
       <FlashSalePriceSock navigation={navigation} products={priceSockProducts} />
 
       <View style={styles.supplierSectionCard}>
@@ -476,14 +484,6 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
           />
         ) : (
           <HomeModuleSkeleton variant="bestSeller" />
-        )}
-      </AppSection>
-
-      <AppSection title="Chương trình khuyến mãi">
-        {hasItems(listAdsBanner) ? (
-          <CampaignBanner listAdsBanner={listAdsBanner} />
-        ) : (
-          <HomeModuleSkeleton variant="banner" />
         )}
       </AppSection>
 
