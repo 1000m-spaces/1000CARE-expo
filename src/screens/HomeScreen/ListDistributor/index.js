@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo } from 'react'
-import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useMemo, useRef } from 'react'
+import { Animated, Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import PressScale from '~/design-system/PressScale'
-import { LinearGradient } from 'expo-linear-gradient'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 import { useDispatch, useSelector } from 'react-redux'
 import { banner_2, banner_3, banner_4 } from '~/assets/constants'
@@ -28,6 +27,10 @@ import { Fonts } from '~/assets/config'
 
 const screenWidth = Dimensions.get('window').width
 const bannerWidth = screenWidth - s(32)
+const SUPPLIER_CARD_WIDTH = s(128)
+const SUPPLIER_CARD_GAP = s(12)
+const SUPPLIER_RAIL_SIDE_PADDING = s(16)
+const SUPPLIER_CARD_STEP = SUPPLIER_CARD_WIDTH + SUPPLIER_CARD_GAP
 const bannerHeight = Math.round(bannerWidth / 2.8)
 const hasItems = data => Array.isArray(data) && data.length > 0
 const CONTENT_TOP_PADDING = s(10)
@@ -75,6 +78,15 @@ const getSupplierAccentColor = item => {
   const hash = source.split('').reduce((total, char) => total + char.charCodeAt(0), 0)
   return supplierAccentPalette[hash % supplierAccentPalette.length]
 }
+const getSupplierVoucherLabel = item => {
+  const voucher = item?.voucher || item?.campaign || item?.promotion || item?.best_voucher
+  const discount = Number(item?.discount || item?.voucher_discount || voucher?.discount || 0)
+  const discountPercent = Number(item?.discount_percent || item?.percent || voucher?.discount_percent || voucher?.percent || 0)
+
+  if (discountPercent > 0) return `Voucher -${Math.round(discountPercent)}%`
+  if (discount > 0) return `Voucher ${formatMoney(discount, { unit: 'đ', space: false })}`
+  return 'Xem ưu đãi'
+}
 const getProductPrice = item => Number(item?.sale_price || item?.price || 0)
 const getOriginalPrice = item => Number(item?.price || item?.listed_price || item?.original_price || 0)
 const getDiscountLabel = item => {
@@ -86,14 +98,6 @@ const getDiscountLabel = item => {
   }
   return null
 }
-const getDiscountPercentLabel = item => {
-  const price = getOriginalPrice(item)
-  const salePrice = getProductPrice(item)
-  if (price > 0 && salePrice > 0 && salePrice < price) {
-    return `GIẢM ${Math.round(((price - salePrice) / price) * 100)}%`
-  }
-  return 'HOT DEAL'
-}
 
 const Skeleton = ({ children }) => (
   <SkeletonPlaceholder backgroundColor="#EAF2F3" highlightColor="#F8FFFF" speed={1200}>
@@ -102,8 +106,6 @@ const Skeleton = ({ children }) => (
 )
 
 const HomeModuleSkeleton = ({ variant = 'rail', withHeader = false, count = 3 }) => {
-  const productWidth = Math.round((Dimensions.get('window').width - s(44)) / 2)
-
   const HeaderSkeleton = () => (
     <View style={styles.skeletonHeader}>
       <View>
@@ -156,15 +158,15 @@ const HomeModuleSkeleton = ({ variant = 'rail', withHeader = false, count = 3 })
   const renderSuppliers = () => (
     <View style={styles.skeletonRail}>
       {Array.from({ length: count }).map((_, index) => (
-        <SkeletonPlaceholder.Item key={index} width={s(112)} height={s(126)} borderRadius={s(20)} marginRight={s(12)} />
+        <SkeletonPlaceholder.Item key={index} width={SUPPLIER_CARD_WIDTH} height={s(168)} borderRadius={s(20)} marginRight={s(12)} />
       ))}
     </View>
   )
 
   const renderBestSeller = () => (
     <View style={styles.skeletonRail}>
-      {Array.from({ length: 2 }).map((_, index) => (
-        <SkeletonPlaceholder.Item key={index} width={productWidth} height={s(236)} borderRadius={s(24)} marginRight={s(12)} />
+      {Array.from({ length: 3 }).map((_, index) => (
+        <SkeletonPlaceholder.Item key={index} width={s(140)} height={s(200)} borderRadius={s(20)} marginRight={s(12)} />
       ))}
     </View>
   )
@@ -197,6 +199,9 @@ const TagRail = () => (
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.tagRail}
     >
+      <View style={[styles.tagPill, styles.tagPillActive]}>
+        <Text style={styles.tagTextActive}>Tất cả</Text>
+      </View>
       {shoppingTags.map(tag => (
         <View key={tag} style={styles.tagPill}>
           <Text style={styles.tagText}>{tag}</Text>
@@ -247,15 +252,25 @@ const PromotionBannerRail = ({ navigation, products }) => {
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.hotDealRail}
     >
-      {safeProducts.map((item, index) => (
+      {safeProducts.map((item, index) => {
+        const price = getProductPrice(item)
+        const originalPrice = getOriginalPrice(item)
+        const hasPct = originalPrice > 0 && price > 0 && price < originalPrice
+        const pctLabel = hasPct ? `-${Math.round(((originalPrice - price) / originalPrice) * 100)}%` : 'HOT'
+        const accentColor = getSupplierAccentColor(item)
+
+        return (
         <PressScale
           key={getItemKey(item, index)}
-          style={styles.hotDealTile}
+          style={[styles.hotDealTile, { backgroundColor: hexToRgba(accentColor, 0.08), borderColor: hexToRgba(accentColor, 0.22) }]}
           onPress={() => navigation.navigate(NAVIGATION_PRODUCT_DETAIL_SCREEN, {
             product: item,
             distributorId: item?.distributor_id,
           })}
         >
+          <View style={styles.hotDealRibbon}>
+            <Text style={styles.hotDealRibbonText}>{pctLabel}</Text>
+          </View>
           <View style={styles.hotDealImagePanel}>
             <Image
               source={getProductImage(item, 'xl', banner_2)}
@@ -263,68 +278,79 @@ const PromotionBannerRail = ({ navigation, products }) => {
               resizeMode="contain"
             />
           </View>
-          <View style={styles.hotDealLabel}>
-            <Text style={styles.hotDealLabelText} numberOfLines={1}>{getDiscountPercentLabel(item)}</Text>
-          </View>
+          <Text style={styles.hotDealName} numberOfLines={2}>{item?.name}</Text>
         </PressScale>
-      ))}
+        )
+      })}
     </ScrollView>
   )
 }
 
+// Card "Nhà cung cấp" theo spec bản cập nhật: 128x168, 2/3 trên là vùng
+// logo (nền tint riêng theo NCC), 1/3 dưới là dải đặc màu teal + chữ
+// voucher vàng — thay card gradient viền mờ cũ. Cả rail nằm trong khung
+// thẻ nền tealLight riêng, có hiệu ứng scale theo vị trí cuộn (card gần
+// tâm màn hình phóng to ~1.12x, card xa thu nhỏ ~0.86x).
 const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
   const safeDistributors = Array.isArray(distributors) ? distributors.slice(0, 8) : []
+  const scrollX = useRef(new Animated.Value(0)).current
 
   if (!safeDistributors.length) {
     return <HomeModuleSkeleton variant="supplier" count={4} />
   }
 
   return (
-    <ScrollView
+    <Animated.ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.supplierRail}
+      scrollEventThrottle={16}
+      onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+        { useNativeDriver: true },
+      )}
     >
-      {safeDistributors.map((item, index) => (
-        (() => {
-          const supplierName = item?.nick_name || item?.name || 'Nhà cung cấp'
-          const canWrapName = /\s/.test(supplierName)
-          const accentColor = getSupplierAccentColor(item)
+      {safeDistributors.map((item, index) => {
+        const supplierName = item?.nick_name || item?.name || 'Nhà cung cấp'
+        const accentColor = getSupplierAccentColor(item)
+        const voucherLabel = getSupplierVoucherLabel(item)
+        const cardCenter = SUPPLIER_RAIL_SIDE_PADDING + index * SUPPLIER_CARD_STEP + SUPPLIER_CARD_WIDTH / 2
+        const centerInputPoint = cardCenter - screenWidth / 2
+        const scale = scrollX.interpolate({
+          inputRange: [centerInputPoint - SUPPLIER_CARD_STEP, centerInputPoint, centerInputPoint + SUPPLIER_CARD_STEP],
+          outputRange: [0.86, 1.12, 0.86],
+          extrapolate: 'clamp',
+        })
 
-          return (
+        return (
+          <Animated.View
+            key={getItemKey(item, index)}
+            style={[styles.supplierTile, { transform: [{ scale }] }]}
+          >
             <PressScale
-              key={getItemKey(item, index)}
-              style={styles.supplierTile}
+              style={styles.supplierTilePress}
               onPress={() => {
                 if (onItemPress) onItemPress(item)
               }}
             >
-              <LinearGradient
-                colors={['#FFFFFF', hexToRgba(accentColor, 0.05), hexToRgba(accentColor, 0.14), hexToRgba(accentColor, 0.26)]}
-                locations={[0, 0.48, 0.76, 1]}
-                start={{ x: 0.12, y: 0 }}
-                end={{ x: 0.9, y: 1 }}
-                style={styles.supplierTileGradient}
-              >
+              <View style={[styles.supplierLogoZone, { backgroundColor: hexToRgba(accentColor, 0.12) }]}>
                 <View style={styles.supplierLogoWrap}>
                   <Image source={getDistributorLogo(item)} style={styles.supplierLogo} resizeMode="contain" />
                 </View>
-                <View style={styles.supplierDealBadge}>
-                  <Text
-                    style={[styles.supplierDealText, { color: accentColor }]}
-                    numberOfLines={canWrapName ? 2 : 1}
-                    adjustsFontSizeToFit={!canWrapName}
-                    minimumFontScale={0.68}
-                  >
-                    {supplierName}
-                  </Text>
-                </View>
-              </LinearGradient>
+                <Text style={styles.supplierNameText} numberOfLines={2}>
+                  {supplierName}
+                </Text>
+              </View>
+              <View style={styles.supplierVoucherStrip}>
+                <Text style={styles.supplierVoucherText} numberOfLines={2}>
+                  {voucherLabel}
+                </Text>
+              </View>
             </PressScale>
-          )
-        })()
-      ))}
-    </ScrollView>
+          </Animated.View>
+        )
+      })}
+    </Animated.ScrollView>
   )
 }
 
@@ -339,7 +365,13 @@ const FlashSalePriceSock = ({ navigation, products }) => {
     <View style={styles.flashSection}>
       <View style={styles.foodHeader}>
         <View style={styles.foodHeaderCopy}>
-          <Text style={styles.foodTitle}>Giá sốc hôm nay</Text>
+          <View style={styles.flashTitleRow}>
+            <View style={styles.flashAccentBar} />
+            <Text style={styles.foodTitle}>Giá sốc hôm nay</Text>
+            <View style={styles.flashHotBadge}>
+              <Text style={styles.flashHotBadgeText}>HOT</Text>
+            </View>
+          </View>
           <Text style={styles.foodSubtitle} numberOfLines={1}>Giờ vàng deal hot - Sản phẩm giá tốt</Text>
         </View>
         <PressScale
@@ -415,13 +447,19 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
 
       <FlashSalePriceSock navigation={navigation} products={priceSockProducts} />
 
-      <AppSection title="Chương trình khuyến mãi">
-        {hasItems(listAdsBanner) ? (
-          <CampaignBanner listAdsBanner={listAdsBanner} />
-        ) : (
-          <HomeModuleSkeleton variant="banner" />
-        )}
-      </AppSection>
+      <View style={styles.supplierSectionCard}>
+        <View style={styles.supplierSectionHeader}>
+          <Text style={styles.supplierSectionTitle}>Nhà cung cấp</Text>
+        </View>
+        <SupplierDealRail navigation={navigation} onItemPress={onItemPress} distributors={distributors} />
+      </View>
+
+      <View style={styles.foodSection}>
+        <View style={styles.foodHeader}>
+          <Text style={styles.foodTitle}>Deal hời dành cho bạn</Text>
+        </View>
+        <PromotionBannerRail navigation={navigation} products={hotDeals} />
+      </View>
 
       <AppSection
         title="Thương hiệu nổi bật"
@@ -459,13 +497,6 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
         )}
       </AppSection>
 
-      <View style={styles.foodSection}>
-        <View style={styles.foodHeader}>
-          <Text style={styles.foodTitle}>Deal hời dành cho bạn</Text>
-        </View>
-        <PromotionBannerRail navigation={navigation} products={hotDeals} />
-      </View>
-
       <AppSection title="Sản phẩm bán chạy">
         {hasItems(bestSellerProducts) ? (
           <HotProducts
@@ -479,12 +510,13 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
         )}
       </AppSection>
 
-      <View style={styles.foodSection}>
-        <View style={styles.foodHeader}>
-          <Text style={styles.foodTitle}>Nhà cung cấp</Text>
-        </View>
-        <SupplierDealRail navigation={navigation} onItemPress={onItemPress} distributors={distributors} />
-      </View>
+      <AppSection title="Chương trình khuyến mãi">
+        {hasItems(listAdsBanner) ? (
+          <CampaignBanner listAdsBanner={listAdsBanner} />
+        ) : (
+          <HomeModuleSkeleton variant="banner" />
+        )}
+      </AppSection>
 
       <View style={{ height: s(164) }} />
     </ScrollView>
@@ -535,6 +567,16 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.semiBold,
     fontSize: fs(13),
     fontWeight: 'normal',
+  },
+  tagPillActive: {
+    backgroundColor: brandColors.tealPrimary,
+    borderColor: brandColors.tealPrimary,
+  },
+  tagTextActive: {
+    color: brandColors.surface,
+    fontFamily: Fonts.bold,
+    fontSize: fs(13),
+    fontWeight: '700',
   },
   bannerShell: {
     width: bannerWidth,
@@ -624,6 +666,29 @@ const styles = StyleSheet.create({
   foodHeaderCopy: {
     flex: 1,
   },
+  flashTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(8),
+  },
+  flashAccentBar: {
+    width: s(4),
+    height: s(16),
+    borderRadius: s(2),
+    backgroundColor: brandColors.danger,
+  },
+  flashHotBadge: {
+    backgroundColor: 'rgba(255,59,48,0.1)',
+    paddingHorizontal: s(8),
+    paddingVertical: s(3),
+    borderRadius: s(radiusScale.xs),
+  },
+  flashHotBadgeText: {
+    color: brandColors.danger,
+    fontFamily: foodAppFont,
+    fontSize: fs(10),
+    fontWeight: '800',
+  },
   foodTitle: {
     color: '#111827',
     fontFamily: foodAppFont,
@@ -667,94 +732,139 @@ const styles = StyleSheet.create({
     gap: s(12),
   },
   hotDealTile: {
-    width: s(98),
-    height: s(112),
-    borderRadius: s(radiusScale.xxl),
-    padding: s(7),
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: brandColors.surface,
+    width: s(104),
+    height: s(130),
+    borderRadius: s(20),
     borderWidth: 1,
-    borderColor: brandColors.borderSoft,
-    ...brandShadow.soft,
-  },
-  hotDealImagePanel: {
-    width: s(66),
-    height: s(66),
-    borderRadius: s(33),
-    backgroundColor: brandColors.tealLight,
+    padding: s(10),
+    paddingTop: s(14),
     alignItems: 'center',
-    justifyContent: 'center',
     overflow: 'hidden',
+    shadowColor: '#0A2F38',
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.08,
+    shadowRadius: s(22),
+    elevation: 4,
   },
-  hotDealImage: {
-    width: s(60),
-    height: s(48),
-  },
-  hotDealLabel: {
-    width: '100%',
-    borderRadius: s(radiusScale.xs),
+  hotDealRibbon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
     backgroundColor: brandColors.goldAccent,
-    paddingHorizontal: s(6),
-    paddingVertical: s(5),
-    alignItems: 'center',
+    paddingHorizontal: s(8),
+    paddingVertical: s(4),
+    borderRadius: s(20),
+    borderTopLeftRadius: 0,
+    borderBottomRightRadius: s(radiusScale.md),
+    zIndex: 2,
   },
-  hotDealLabelText: {
+  hotDealRibbonText: {
     color: brandColors.textDark,
     fontFamily: foodAppFont,
-    fontSize: fs(11),
-    lineHeight: fs(14),
-    fontWeight: 'normal',
+    fontSize: fs(10),
+    fontWeight: '800',
   },
-  supplierRail: {
-    paddingHorizontal: s(16),
-    gap: s(12),
-  },
-  supplierTile: {
-    width: s(112),
-    height: s(126),
-    borderRadius: s(20),
-    ...brandShadow.soft,
-  },
-  supplierTileGradient: {
-    flex: 1,
-    borderRadius: s(20),
-    padding: s(8),
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  supplierLogoWrap: {
+  hotDealImagePanel: {
     width: s(58),
     height: s(58),
     borderRadius: s(29),
+    backgroundColor: brandColors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    marginTop: s(8),
+    marginBottom: s(8),
+    ...brandShadow.soft,
+  },
+  hotDealImage: {
+    width: '78%',
+    height: '78%',
+  },
+  hotDealName: {
+    color: brandColors.textDark,
+    fontFamily: foodAppFont,
+    fontSize: fs(10.5),
+    lineHeight: fs(14),
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  supplierSectionCard: {
+    marginHorizontal: s(16),
+    marginBottom: s(24),
+    borderRadius: s(radiusScale.xxl),
+    backgroundColor: brandColors.tealLight,
+    paddingTop: s(16),
+    paddingBottom: s(14),
+  },
+  supplierSectionHeader: {
+    paddingHorizontal: s(16),
+    marginBottom: s(10),
+  },
+  supplierSectionTitle: {
+    color: brandColors.textDark,
+    fontFamily: foodAppFont,
+    fontSize: fs(15),
+    fontWeight: '800',
+  },
+  supplierRail: {
+    paddingHorizontal: s(16),
+    paddingVertical: s(6),
+    gap: s(12),
+  },
+  supplierTile: {
+    width: SUPPLIER_CARD_WIDTH,
+    height: s(168),
+  },
+  supplierTilePress: {
+    flex: 1,
+    borderRadius: s(radiusScale.xxl),
+    overflow: 'hidden',
+    backgroundColor: brandColors.surface,
+    ...brandShadow.soft,
+  },
+  supplierLogoZone: {
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: s(8),
+    padding: s(8),
+  },
+  supplierLogoWrap: {
+    width: s(52),
+    height: s(52),
+    borderRadius: s(26),
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: s(8),
+    ...brandShadow.soft,
   },
   supplierLogo: {
-    width: s(48),
-    height: s(48),
+    width: s(40),
+    height: s(40),
   },
-  supplierDealBadge: {
-    width: '100%',
-    minHeight: s(34),
-    borderRadius: s(9),
-    backgroundColor: 'rgba(255,255,255,0.94)',
-    paddingHorizontal: s(7),
-    paddingVertical: s(4),
+  supplierNameText: {
+    color: brandColors.textDark,
+    fontFamily: foodAppFont,
+    fontSize: fs(11),
+    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: fs(14),
+    height: s(28),
+  },
+  supplierVoucherStrip: {
+    flex: 1,
+    backgroundColor: brandColors.tealDark,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: s(6),
   },
-  supplierDealText: {
-    color: '#0F8792',
+  supplierVoucherText: {
+    color: brandColors.goldAccent,
     fontFamily: foodAppFont,
-    fontSize: fs(9.5),
-    lineHeight: fs(12),
-    fontWeight: 'normal',
-    maxWidth: s(94),
+    fontSize: fs(11),
+    fontWeight: '800',
     textAlign: 'center',
+    lineHeight: fs(14),
   },
   flashSection: {
     marginTop: s(27),
@@ -765,21 +875,19 @@ const styles = StyleSheet.create({
     paddingBottom: s(4),
   },
   flashCard: {
-    width: s(148),
-    borderRadius: s(radiusScale.xxxl),
+    width: s(132),
+    borderRadius: s(18),
     backgroundColor: brandColors.surface,
-    borderWidth: 1,
-    borderColor: brandColors.borderSoft,
     overflow: 'hidden',
     shadowColor: '#0A2F38',
-    shadowOffset: { width: 0, height: s(14) },
-    shadowOpacity: 0.12,
-    shadowRadius: s(28),
+    shadowOffset: { width: 0, height: s(12) },
+    shadowOpacity: 0.1,
+    shadowRadius: s(26),
     elevation: 6,
   },
   flashImageWrap: {
     width: '100%',
-    height: s(110),
+    height: s(100),
     backgroundColor: brandColors.tealLight,
     overflow: 'hidden',
     alignItems: 'center',
@@ -791,12 +899,12 @@ const styles = StyleSheet.create({
   },
   flashDiscount: {
     position: 'absolute',
-    top: s(8),
-    left: s(8),
+    top: 0,
+    left: 0,
     backgroundColor: brandColors.goldAccent,
-    paddingVertical: s(3),
-    paddingHorizontal: s(7),
-    borderRadius: s(radiusScale.xs),
+    paddingVertical: s(4),
+    paddingHorizontal: s(8),
+    borderBottomRightRadius: s(radiusScale.md),
     zIndex: 3,
   },
   flashDiscountText: {
@@ -810,11 +918,13 @@ const styles = StyleSheet.create({
     padding: s(10),
   },
   flashStore: {
-    color: brandColors.muted,
-    fontFamily: Fonts.base,
-    fontSize: fs(11),
-    lineHeight: fs(15),
-    fontWeight: 'normal',
+    color: brandColors.tealPrimary,
+    fontFamily: foodAppFont,
+    fontSize: fs(9.5),
+    lineHeight: fs(13),
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.3,
   },
   flashName: {
     marginTop: s(2),

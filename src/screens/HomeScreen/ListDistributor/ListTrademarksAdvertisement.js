@@ -43,7 +43,7 @@ const ListTrademarksAdvertisement = ({ navigation, distributor, onMessage }) => 
   }
 
   const renderBrandItem = (item, index) => {
-    const voucherLabel = getVoucherLabel(item)
+    const voucherLabel = getVoucherLabel(item) || 'Xem ưu đãi'
 
     return (
       <PressScale
@@ -53,15 +53,13 @@ const ListTrademarksAdvertisement = ({ navigation, distributor, onMessage }) => 
       >
         <View style={styles.trademarkLogoWrap}>
           <Image source={getBrandImage(item)} style={styles.trademarkLogo} resizeMode="contain" />
+          <Text style={styles.trademarkName} numberOfLines={2}>
+            {getBrandName(item)}
+          </Text>
         </View>
-        <Text style={styles.trademarkName} numberOfLines={2}>
-          {getBrandName(item)}
-        </Text>
-        {voucherLabel && (
-          <View style={styles.trademarkVoucher}>
-            <Text style={styles.trademarkVoucherText} numberOfLines={1}>{voucherLabel}</Text>
-          </View>
-        )}
+        <View style={styles.trademarkVoucher}>
+          <Text style={styles.trademarkVoucherText} numberOfLines={2}>{voucherLabel}</Text>
+        </View>
       </PressScale>
     )
   }

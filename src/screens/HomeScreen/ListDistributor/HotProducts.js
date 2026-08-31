@@ -4,12 +4,11 @@ import { useSelector } from 'react-redux'
 import { banner_2 } from '~/assets/constants'
 import { NAVIGATION_PRODUCT_DETAIL_SCREEN } from '~/navigation/routes'
 import { getListProductsBestSeller } from '~/store/selector'
-import { DIMENS } from '~/constants/index'
 import { s, fs } from '~/utils/responsive'
 import { formatMoney } from '~/utils/format'
 import { getProductImage } from '~/utils/image'
 import PressScale from '~/design-system/PressScale'
-import { brandColors, brandShadow, radiusScale } from '~/design-system/tokens'
+import { brandColors, radiusScale } from '~/design-system/tokens'
 
 // Card "Bán chạy" đồng bộ theo cùng ngôn ngữ thiết kế của card "Giá sốc
 // hôm nay" trong bộ spec (nền trắng, radius 20, shadow teal mềm, badge
@@ -20,9 +19,9 @@ const HotProducts = ({ navigation }) => {
   const safeList = Array.isArray(listProductsBestSeller) ? listProductsBestSeller : []
   if (safeList.length === 0) return null
 
-  const productWidth = Math.round((DIMENS.common.WINDOW_WIDTH - s(44)) / 2)
+  const productWidth = s(140)
   const snapToInterval = productWidth + s(12)
-  const listHeight = s(252)
+  const listHeight = s(220)
 
   const getPrice = item => Number(item?.sale_price || item?.price || 0)
   const getOriginalPrice = item => Number(item?.price || item?.original_price || item?.listed_price || 0)
@@ -65,7 +64,7 @@ const HotProducts = ({ navigation }) => {
                 <Text style={styles.badgeText}>
                   {hasDiscount(item)
                     ? `-${Math.round(((getOriginalPrice(item) - getPrice(item)) / getOriginalPrice(item)) * 100)}%`
-                    : 'BÁN CHẠY'}
+                    : '🔥 BÁN CHẠY'}
                 </Text>
               </View>
             </View>
@@ -95,37 +94,39 @@ const styles = StyleSheet.create({
     paddingTop: s(2),
   },
   dealCard: {
-    height: s(236),
+    height: s(200),
     marginRight: s(12),
-    borderRadius: s(radiusScale.xxxl),
-    borderWidth: 1,
-    borderColor: brandColors.borderSoft,
+    borderRadius: s(20),
     backgroundColor: brandColors.surface,
     overflow: 'hidden',
-    ...brandShadow.soft,
+    shadowColor: '#0A2F38',
+    shadowOffset: { width: 0, height: s(12) },
+    shadowOpacity: 0.1,
+    shadowRadius: s(26),
+    elevation: 6,
   },
   imageWrap: {
-    height: s(136),
+    height: s(104),
     backgroundColor: brandColors.tealLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   dealImage: {
-    width: '68%',
-    height: '78%',
+    width: '62%',
+    height: '72%',
   },
   badge: {
     position: 'absolute',
-    top: s(8),
-    left: s(8),
+    top: 0,
+    left: 0,
     backgroundColor: brandColors.goldAccent,
-    paddingVertical: s(3),
-    paddingHorizontal: s(7),
-    borderRadius: s(radiusScale.xs),
+    paddingVertical: s(4),
+    paddingHorizontal: s(8),
+    borderBottomRightRadius: s(radiusScale.md),
   },
   badgeText: {
     color: brandColors.textDark,
-    fontSize: fs(10),
+    fontSize: fs(9.5),
     lineHeight: fs(13),
     fontWeight: '800',
   },
