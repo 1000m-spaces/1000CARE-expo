@@ -33,7 +33,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   supplierContentLayer: {
-    paddingTop: s(142),
+    paddingTop: s(84),
   },
   marketHeader: {
     position: 'absolute',

@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, Text, Image as RNImage } from 'react-native'
-import { Image } from '~/common/index'
-import { arrow_right } from '~/assets/constants'
 import PressScale from '~/design-system/PressScale'
 import { brandColors, radiusScale } from '~/design-system/tokens'
 import { s, fs } from '~/utils/responsive'
@@ -25,7 +23,7 @@ const ItemSupplier = ({ data, selected, onItemPress, type }) => {
           </View>
         ) : (
           <View style={[styles.containerColumn, selected && styles.selected]}>
-            <View style={[styles.iconTile, selected && styles.iconTileSelected]}>
+            <View style={styles.iconTile}>
               {canShowImage ? (
                 <RNImage
                   style={styles.image}
@@ -34,7 +32,7 @@ const ItemSupplier = ({ data, selected, onItemPress, type }) => {
                   onError={() => setImageFailed(true)}
                 />
               ) : (
-                <Text style={[styles.iconFallbackText, selected && styles.iconFallbackTextSelected]}>{initial}</Text>
+                <Text style={styles.iconFallbackText}>{initial}</Text>
               )}
             </View>
             <Text
@@ -43,15 +41,6 @@ const ItemSupplier = ({ data, selected, onItemPress, type }) => {
             >
               {label}
             </Text>
-            {
-              selected && (
-                <Image
-                  style={styles.seletedIcon}
-                  source={arrow_right}
-                  tintColor={brandColors.tealPrimary}
-                />
-              )
-            }
           </View>
         )
       }
@@ -76,46 +65,31 @@ const styles = StyleSheet.create({
     borderColor: brandColors.tealPrimary,
   },
   iconTile: {
-    width: s(48),
-    height: s(48),
-    borderRadius: s(radiusScale.xl),
+    width: s(40),
+    height: s(40),
+    borderRadius: s(20),
     backgroundColor: brandColors.tealLight,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   },
-  iconTileSelected: {
-    backgroundColor: brandColors.surface,
-  },
   image: {
-    width: '60%',
-    height: '60%',
+    width: '58%',
+    height: '58%',
   },
   iconFallbackText: {
-    fontSize: fs(17),
+    fontSize: fs(13),
     fontFamily: Fonts.bold,
     fontWeight: '800',
-    color: brandColors.muted,
-  },
-  iconFallbackTextSelected: {
     color: brandColors.tealPrimary,
   },
-  seletedIcon: {
-    position: 'absolute',
-    width: s(12),
-    height: s(20),
-    right: 0,
-    top: '50%',
-    marginTop: s(-10),
-    resizeMode: 'contain',
-  },
   containerColumn: {
-    height: s(96),
+    height: s(88),
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     gap: s(6),
-    paddingHorizontal: s(8),
+    paddingHorizontal: s(6),
   },
   category: {
     paddingVertical: s(9),

@@ -15,10 +15,11 @@ export default StyleSheet.create({
   },
   listSupplierColumn: {
     zIndex: 10,
-    width: s(100),
+    width: s(96),
     flexGrow: 0,
-    backgroundColor: 'rgba(231, 250, 252, 0.72)',
-    marginRight: 1,
+    backgroundColor: brandColors.surface,
+    borderRightWidth: 1,
+    borderRightColor: brandColors.borderSoft,
   },
   listSupplier: {
     flexGrow: 0,
