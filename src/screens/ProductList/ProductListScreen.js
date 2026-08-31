@@ -10,6 +10,7 @@ import { getProductByCate, getProductsByDistributor, requestGetProductBestSeller
 import Colors from '~/common/Colors/Colors'
 import { back } from '~/assets/constants'
 import { LoadingView } from '~/common'
+import Spinner from '~/common/Spinner/Spinner'
 import EmptyItem from '~/common/EmptyItem/index'
 import ErrorView from '~/common/ErrorView/index'
 import { check_info } from '~/assets/constants'
@@ -22,7 +23,7 @@ import { s, fs } from '~/utils/responsive'
 import { brandColors, brandShadow, liquidGlass, radiusScale } from '~/design-system/tokens'
 import AppBackground from '~/design-system/AppBackground'
 
-const ListViewListProduct = ({ navigation, products, loadMore, onShowMessage, setMessage, setOpenMessage }) => {
+const ListViewListProduct = ({ navigation, products, loadMore, isLoadingMore, onShowMessage, setMessage, setOpenMessage }) => {
   const keyExtractorProduct = useCallback((_, idx) => {
     return idx.toString()
   })
@@ -34,6 +35,7 @@ const ListViewListProduct = ({ navigation, products, loadMore, onShowMessage, se
       keyExtractor={keyExtractorProduct}
       onEndReachedThreshold={0.1}
       onEndReached={() => loadMore()}
+      ListFooterComponent={isLoadingMore ? <Spinner size="small" style={styles.loadMoreSpinner} /> : null}
       ListEmptyComponent={() => {
         return (
           <EmptyItem
@@ -74,7 +76,7 @@ const ListViewListProduct = ({ navigation, products, loadMore, onShowMessage, se
   )
 }
 
-const GridViewListProduct = ({ navigation, products, loadMore, onShowMessage, setMessage, setOpenMessage }) => {
+const GridViewListProduct = ({ navigation, products, loadMore, isLoadingMore, onShowMessage, setMessage, setOpenMessage }) => {
   const keyExtractorProduct = useCallback((_, idx) => {
     return idx.toString()
   })
@@ -86,6 +88,7 @@ const GridViewListProduct = ({ navigation, products, loadMore, onShowMessage, se
       keyExtractor={keyExtractorProduct}
       onEndReachedThreshold={0.1}
       onEndReached={() => loadMore()}
+      ListFooterComponent={isLoadingMore ? <Spinner size="small" style={styles.loadMoreSpinner} /> : null}
       ListEmptyComponent={() => {
         return (
           <EmptyItem
@@ -133,6 +136,7 @@ const ProductListScreen = ({ navigation, route }) => {
   const [supplierLogoFailed, setSupplierLogoFailed] = useState(false)
 
   const [isLoading, setLoading] = useState(false)
+  const [isLoadingMore, setLoadingMore] = useState(false)
   const [openMessage, setOpenMessage] = useState(false)
   const [viewMode, setViewMode] = useState('list')
   const [query, setQuery] = useState({
@@ -253,8 +257,8 @@ const ProductListScreen = ({ navigation, route }) => {
 
   const loadMore = () => {
     const data = getData() || []
-    if (data.length >= currentPage * 11 && !isLoading) {
-      setLoading(true)
+    if (data.length >= currentPage * 11 && !isLoading && !isLoadingMore) {
+      setLoadingMore(true)
       setCurrentPage(currentPage + 1)
       requestData(currentPage + 1, 11, true)
     }
@@ -262,6 +266,7 @@ const ProductListScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     setLoading(false)
+    setLoadingMore(false)
   }, [listProduct, listProductsOfTrademark, listProductsHotDeal, listProductsBestSeller, listProductPriceSock, listProductsProposeRaw, listProductsBySupplier, query])
 
   const onShowMessage = (msg) => {
@@ -277,12 +282,14 @@ const ProductListScreen = ({ navigation, route }) => {
     }
     setCurrentTab(type)
 
-    if (type && type?.id <= 2) {
-      setQuery({
-        supplierSelected: null, 
-        cateSelected: [],
-      })
-    }
+    // Đổi tab (Siêu rẻ/Khuyến mãi/Tất cả) phải luôn reset query và kích
+    // hoạt lại requestData (effect phụ thuộc [query]) — trước đây chỉ
+    // reset cho id<=2 nên bấm "Tất cả" (id 3) không bao giờ fetch lại,
+    // danh sách hiện rỗng vì state cũ (thường là mảng trống ban đầu).
+    setQuery({
+      supplierSelected: null,
+      cateSelected: null,
+    })
   }
 
   const clearPriceSockFilter = () => {
@@ -382,20 +389,22 @@ const ProductListScreen = ({ navigation, route }) => {
         style={styles.wrap}
       >
         {(viewMode === 'grid' || (type !== 'priceSock' && type !== 'product_by_distributor')) ? (
-          <GridViewListProduct 
+          <GridViewListProduct
             navigation={navigation}
             products={getData()}
             loadMore={loadMore}
+            isLoadingMore={isLoadingMore}
             onShowMessage={onShowMessage}
             setMessage={setMessage}
             setOpenMessage={setOpenMessage}
           />
         ) :
           (
-            <ListViewListProduct 
+            <ListViewListProduct
               navigation={navigation}
               products={getData()}
               loadMore={loadMore}
+              isLoadingMore={isLoadingMore}
               onShowMessage={onShowMessage}
               setMessage={setMessage}
               setOpenMessage={setOpenMessage}
@@ -499,6 +508,9 @@ const styles = StyleSheet.create({
   listRowsContainer: {
     paddingTop: s(2),
     paddingBottom: s(96),
+  },
+  loadMoreSpinner: {
+    paddingVertical: s(20),
   },
   wrap: {
     flex: 1,

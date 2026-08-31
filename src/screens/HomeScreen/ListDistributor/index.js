@@ -83,7 +83,7 @@ const getSupplierVoucherLabel = item => {
 
   if (discountPercent > 0) return `Voucher -${Math.round(discountPercent)}%`
   if (discount > 0) return `Voucher ${formatMoney(discount, { unit: 'đ', space: false })}`
-  return 'Xem ưu đãi'
+  return null
 }
 const getProductPrice = item => Number(item?.sale_price || item?.price || 0)
 const getOriginalPrice = item => Number(item?.price || item?.listed_price || item?.original_price || 0)
@@ -345,7 +345,7 @@ const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
                 })
               }}
             >
-              <View style={[styles.supplierLogoZone, { backgroundColor: hexToRgba(accentColor, 0.12) }]}>
+              <View style={[styles.supplierLogoZone, !voucherLabel && { flex: 1 }, { backgroundColor: hexToRgba(accentColor, 0.12) }]}>
                 <View style={styles.supplierLogoWrap}>
                   <Image source={getDistributorLogo(item)} style={styles.supplierLogo} resizeMode="contain" />
                 </View>
@@ -353,11 +353,13 @@ const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
                   {supplierName}
                 </Text>
               </View>
-              <View style={styles.supplierVoucherStrip}>
-                <Text style={styles.supplierVoucherText} numberOfLines={2}>
-                  {voucherLabel}
-                </Text>
-              </View>
+              {voucherLabel && (
+                <View style={styles.supplierVoucherStrip}>
+                  <Text style={styles.supplierVoucherText} numberOfLines={2}>
+                    {voucherLabel}
+                  </Text>
+                </View>
+              )}
             </PressScale>
           </Animated.View>
         )
