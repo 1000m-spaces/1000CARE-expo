@@ -22,6 +22,7 @@ const Header = ({ navigation, goBack }) => {
       >
         <Image
           resizeMode={'contain'}
+          style={styles.backIcon}
           source={back}
         />
       </PressScale>

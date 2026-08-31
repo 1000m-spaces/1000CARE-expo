@@ -2,7 +2,8 @@ import React, { useEffect, useCallback, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import PressScale from '~/design-system/PressScale'
 import { useDispatch, useSelector } from 'react-redux'
-import Header from '~/common/Header/index'
+import { Image } from '~/common/index'
+import CartHeaderButton from '~/common/CartHeaderButton/CartHeaderButton'
 import ProductItem from '~/common/ProductItem/ProductItem'
 import { getListProducts, getListProductsBestSeller, getListProductsHotDeal, getListProductsOfTrademark, getListProductPriceSock, getListProductsPropose, getListProductsBySupplier } from '~/store/selector'
 import { getProductByCate, getProductsByDistributor, requestGetProductBestSeller, requestGetProductsByTrademarkId, requestGetProductsHotDeal, requestGetProductPriceSock, requestGetProductPropose, getProductsBySupplier } from '~/store/actions'
@@ -15,8 +16,6 @@ import { check_info } from '~/assets/constants'
 import { Text } from '~/common/index'
 import { Icon } from '~/common'
 import { Fonts } from '~/assets/config'
-import { setSelectedDistri } from '~/store/actions'
-import { NAVIGATION_TO_HOME_SCREEN } from '~/navigation/routes'
 import ProductItemListView from '~/common/ProductItemListView/ProductItemListView'
 import SearchBar from './SearchBar'
 import { s, fs } from '~/utils/responsive'
@@ -298,32 +297,12 @@ const ProductListScreen = ({ navigation, route }) => {
 
   return (
     <AppBackground>
-      <Header
-        leftAction={() => navigation.pop()}
-        iconLeft={back}
-        navigation={navigation}
-        cart={true}
-        customTitle={type === 'propose' ? () => {
-          return (
-            <PressScale
-              onPress={() =>{
-                dispatch(setSelectedDistri(distributor))
-                navigation.navigate(NAVIGATION_TO_HOME_SCREEN)
-              }}
-              style={styles.titleContainer}
-            >
-              <Text
-                style={styles.title}
-                numberOfLines={1}
-                ellipsizeMode='tail'
-              >
-                {distributor?.nick_name}
-              </Text>
-            </PressScale>
-          )
-        } : null}
-        titleStyles={type === 'propose'? { marginLeft: -50 } : { marginLeft:0 }}
-      />
+      <View style={styles.minimalHeader}>
+        <PressScale style={styles.minimalBackBtn} onPress={() => navigation.pop()}>
+          <Image resizeMode={'contain'} style={styles.minimalBackIcon} source={back} />
+        </PressScale>
+        <CartHeaderButton navigation={navigation} />
+      </View>
       {
         (type === 'product_by_distributor' || type === 'priceSock') && (
           <View style={styles.filterPanel}>
@@ -399,6 +378,28 @@ const ProductListScreen = ({ navigation, route }) => {
 export default ProductListScreen
 
 const styles = StyleSheet.create({
+  minimalHeader: {
+    marginHorizontal: s(16),
+    marginTop: s(6),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'transparent',
+  },
+  minimalBackBtn: {
+    width: s(38),
+    height: s(38),
+    borderRadius: s(19),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.72)',
+    borderWidth: 1,
+    borderColor: 'rgba(11,123,138,0.12)',
+  },
+  minimalBackIcon: {
+    width: s(16),
+    height: s(16),
+  },
   listProductsContainer: {
     paddingHorizontal: s(12),
     paddingBottom: s(96),

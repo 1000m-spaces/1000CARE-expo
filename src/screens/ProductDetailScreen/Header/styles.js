@@ -1,34 +1,36 @@
 import { StyleSheet } from 'react-native'
-import dimension from '~/constants/dimens'
 import { s } from '~/utils/responsive'
-import { liquidGlass } from '~/design-system/tokens'
 
+// Bỏ hẳn thanh nền (pill/bar) bọc quanh back+giỏ hàng theo yêu cầu —
+// chỉ còn 2 nút tròn nổi độc lập trên nền trong suốt của màn hình.
 export default StyleSheet.create({
   headerContainer: {
-    height: dimension.common.WINDOW_HEIGHT * 0.06,
     marginHorizontal: s(16),
     marginTop: s(6),
-    paddingHorizontal: s(6),
-    borderRadius: s(22),
-    backgroundColor: liquidGlass.background,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: liquidGlass.border,
-    overflow: 'hidden',
-    ...liquidGlass.shadow,
+    backgroundColor: 'transparent',
   },
   cartQuantityContainer: {
-    display: 'flex',
     flexDirection: 'row',
-    marginRight: s(6),
   },
   backBtn: {
-    padding: s(12),
+    width: s(38),
+    height: s(38),
+    borderRadius: s(19),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.72)',
+    borderWidth: 1,
+    borderColor: 'rgba(11,123,138,0.12)',
+  },
+  backIcon: {
+    width: s(16),
+    height: s(16),
   },
   heart: {
     height: 24,
-    width : 20,
+    width: 20,
   },
 })
