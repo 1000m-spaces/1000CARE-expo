@@ -1,8 +1,16 @@
 module.exports = function(api) {
   api.cache(true);
+  const isProduction = (process.env.BABEL_ENV || process.env.NODE_ENV) === 'production';
   return {
     presets: [['babel-preset-expo', { jsxRuntime: 'automatic' }]],
     plugins: [
+      // Toàn bộ lớp gọi API (apiClient/registerClient/accountingClient +
+      // từng file *API.js) đang log NGUYÊN request/response ra console cho
+      // mỗi lần gọi — kể cả bản production vì babel-preset-expo không tự
+      // strip console. console.log trên RN (old bridge) rất tốn khi log
+      // object lớn (list sản phẩm...), là 1 nguyên nhân code khiến app có
+      // cảm giác load chậm, độc lập với tốc độ backend. Strip hết console.*
+      // (trừ warn/error) khỏi bundle production thay vì sửa từng chỗ.
       [
         'module-resolver',
         {
@@ -28,6 +36,7 @@ module.exports = function(api) {
           },
         },
       ],
-    ],
+      isProduction && ['transform-remove-console', { exclude: ['error', 'warn'] }],
+    ].filter(Boolean),
   };
 };
