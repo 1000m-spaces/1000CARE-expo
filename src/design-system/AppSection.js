@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     color: brandColors.textDark,
     fontFamily: Fonts.bold,
     fontSize: fs(18),
-    lineHeight: fs(24),
+    lineHeight: fs(23),
     fontWeight: 'normal',
   },
   subtitle: {

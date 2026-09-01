@@ -507,11 +507,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   price: {
-    fontSize: 13,
+    fontSize: 14,
     marginTop: 1,
-    fontWeight: '600',
+    fontWeight: '700',
     color: brandColors.goldAccent,
-    lineHeight: 18,
+    lineHeight: 19,
   },
   salePriceContainer: {
     marginTop: 1,
@@ -519,16 +519,16 @@ const styles = StyleSheet.create({
     // flex: 2,
   },
   salePrice: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '700',
     color: brandColors.goldAccent,
-    lineHeight: 18,
+    lineHeight: 19,
   },
   discount: {
-    fontSize: 10,
+    fontSize: 12,
     color: brandColors.mutedLight,
     fontWeight: 'normal',
-    lineHeight: 14,
+    lineHeight: 16,
     textDecorationLine: 'line-through',
   },
   quantityContainer: {

@@ -132,18 +132,18 @@ const SearchBar = ({ navigation, type, viewMode, setViewMode, onLoad, query, dis
 }
 
 const styles = StyleSheet.create({
-  titleTab:  { 
-    fontFamily: Fonts.bold,
-    fontSize: fs(12),
-    lineHeight: fs(16),
+  titleTab:  {
+    fontFamily: Fonts.regular,
+    fontSize: fs(13),
+    lineHeight: fs(17),
     fontWeight: 'normal',
     marginRight: s(4),
     color: brandColors.tealDark,
   },
   titleTabSelected: {
-    fontFamily: Fonts.bold,
-    fontSize: fs(12),
-    lineHeight: fs(16),
+    fontFamily: Fonts.semiBold,
+    fontSize: fs(13),
+    lineHeight: fs(17),
     marginRight: s(4),
     fontWeight: 'normal',
     color: brandColors.surface,

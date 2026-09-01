@@ -22,6 +22,12 @@ const { height: D_HEIGHT, width: D_WIDTH } = Dimensions.get('window')
 const X_WIDTH = 375
 const X_HEIGHT = 812
 
+// Design system "1000M Order App" khai báo --font-sans: 'Inter','Plus Jakarta
+// Sans',-apple-system... nhưng chính file đó ghi chú Inter chỉ là webfont thế
+// chỗ vì bản gốc dùng SF Pro (không cấp phép cho web/Android) — tức ý định
+// thật là font hệ thống kiểu SF Pro, đúng cái SanFranciscoText* đang dùng ở
+// đây rồi nên giữ nguyên family, chỉ đồng bộ lại size/weight (xem typeScale
+// trong design-system/tokens.js).
 export const Fonts = {
   regular: 'SanFranciscoText-Regular',
   base: 'SanFranciscoText-Regular',

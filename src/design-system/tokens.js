@@ -25,14 +25,20 @@ export const brandTypography = {
 
 // Thang chữ theo ngữ cảnh — mỗi vai trò UI có 1 size/weight cố định,
 // dùng xuyên suốt app thay vì chọn size tự do theo từng màn hình.
+// Đồng bộ theo design system "1000M Order App" (--text-*-size/weight):
+// section-title 18/700, product-title 13/600, price 14/700,
+// price-old 12/400, body 11.5/400, tab 13 (400 thường/600 active).
 export const typeScale = {
   pageTitle: { fontSize: 17, fontWeight: '800' },
   heroTitle: { fontSize: 28, fontWeight: '700', letterSpacing: -0.4 },
-  sectionTitle: { fontSize: 16, fontWeight: '800' },
-  itemName: { fontSize: 13, fontWeight: '700' },
-  itemDescription: { fontSize: 11, fontWeight: '400' },
-  price: { fontSize: 15, fontWeight: '700' },
+  sectionTitle: { fontSize: 18, fontWeight: '700' },
+  itemName: { fontSize: 13, fontWeight: '600' },
+  itemDescription: { fontSize: 11.5, fontWeight: '400' },
+  price: { fontSize: 14, fontWeight: '700' },
+  priceOld: { fontSize: 12, fontWeight: '400', textDecorationLine: 'line-through' },
   priceCompact: { fontSize: 13, fontWeight: '700' },
+  tab: { fontSize: 13, fontWeight: '400' },
+  tabActive: { fontSize: 13, fontWeight: '600' },
   eyebrow: { fontSize: 11, fontWeight: '700', letterSpacing: 1.4, textTransform: 'uppercase' },
   counter: { fontSize: 22, fontWeight: '700', fontVariant: ['tabular-nums'] },
 };

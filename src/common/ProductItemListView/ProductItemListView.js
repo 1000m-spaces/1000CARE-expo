@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     fontSize: fs(13),
     color: brandColors.textDark,
     lineHeight: fs(18),
-    fontFamily: Fonts.bold,
+    fontFamily: Fonts.semiBold,
     fontWeight: 'normal',
   },
   priceContainer: {
@@ -296,10 +296,10 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: Fonts.bold,
-    fontSize: fs(15),
+    fontSize: fs(14),
     fontWeight: 'normal',
     color: brandColors.goldAccent,
-    lineHeight: fs(20),
+    lineHeight: fs(19),
   },
   favorContainer: {
     width: s(34),
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
   },
   discount: {
     marginLeft: s(5),
-    fontSize: fs(11),
+    fontSize: fs(12),
     color: brandColors.mutedLight,
     fontWeight: 'normal',
     lineHeight: fs(18),

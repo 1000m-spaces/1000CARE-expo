@@ -140,9 +140,9 @@ const styles = StyleSheet.create({
   dealName: {
     height: s(34),
     color: brandColors.textDark,
-    fontSize: fs(12),
+    fontSize: fs(13),
     lineHeight: fs(17),
-    fontWeight: '700',
+    fontWeight: '600',
   },
   priceRow: {
     marginTop: s(6),
@@ -152,15 +152,15 @@ const styles = StyleSheet.create({
   },
   salePrice: {
     color: brandColors.tealDark,
-    fontSize: fs(14.5),
+    fontSize: fs(14),
     lineHeight: fs(19),
-    fontWeight: '800',
+    fontWeight: '700',
   },
   oldPrice: {
     color: brandColors.mutedLight,
-    fontSize: fs(10.5),
-    lineHeight: fs(14),
-    fontWeight: '600',
+    fontSize: fs(12),
+    lineHeight: fs(16),
+    fontWeight: '400',
     textDecorationLine: 'line-through',
   },
 })
