@@ -83,7 +83,7 @@ const getSupplierVoucherLabel = item => {
 
   if (discountPercent > 0) return `Voucher -${Math.round(discountPercent)}%`
   if (discount > 0) return `Voucher ${formatMoney(discount, { unit: 'đ', space: false })}`
-  return null
+  return 'Xem ưu đãi'
 }
 const getProductPrice = item => Number(item?.sale_price || item?.price || 0)
 const getOriginalPrice = item => Number(item?.price || item?.listed_price || item?.original_price || 0)
