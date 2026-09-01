@@ -76,15 +76,21 @@ const getSupplierAccentColor = item => {
   const hash = source.split('').reduce((total, char) => total + char.charCodeAt(0), 0)
   return supplierAccentPalette[hash % supplierAccentPalette.length]
 }
-const getSupplierVoucherLabel = item => {
+// Voucher thật từ API (null nếu NCC chưa có voucher/discount nào) — dùng để
+// quyết định có hiện block "Xem ưu đãi" ở TRANG CHI TIẾT của từng NCC hay
+// không (trang đó không được bịa voucher giả).
+const getRealSupplierVoucherLabel = item => {
   const voucher = item?.voucher || item?.campaign || item?.promotion || item?.best_voucher
   const discount = Number(item?.discount || item?.voucher_discount || voucher?.discount || 0)
   const discountPercent = Number(item?.discount_percent || item?.percent || voucher?.discount_percent || voucher?.percent || 0)
 
   if (discountPercent > 0) return `Voucher -${Math.round(discountPercent)}%`
   if (discount > 0) return `Voucher ${formatMoney(discount, { unit: 'đ', space: false })}`
-  return 'Xem ưu đãi'
+  return null
 }
+// Nhãn hiển thị trên card NCC ở màn chính — luôn có chữ (fallback "Xem ưu
+// đãi") kể cả khi chưa có voucher thật, chỉ dùng để card không bị trống.
+const getSupplierVoucherLabel = item => getRealSupplierVoucherLabel(item) || 'Xem ưu đãi'
 const getProductPrice = item => Number(item?.sale_price || item?.price || 0)
 const getOriginalPrice = item => Number(item?.price || item?.listed_price || item?.original_price || 0)
 const getDiscountLabel = item => {
@@ -320,6 +326,7 @@ const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
         const supplierName = item?.nick_name || item?.name || 'Nhà cung cấp'
         const accentColor = getSupplierAccentColor(item)
         const voucherLabel = getSupplierVoucherLabel(item)
+        const realVoucherLabel = getRealSupplierVoucherLabel(item)
         const cardCenter = SUPPLIER_RAIL_SIDE_PADDING + index * SUPPLIER_CARD_STEP + SUPPLIER_CARD_WIDTH / 2
         const centerInputPoint = cardCenter - screenWidth / 2
         const scale = scrollX.interpolate({
@@ -340,7 +347,7 @@ const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
                   type: 'product_by_distributor',
                   distributorId: item?.id,
                   distributor: item,
-                  voucherLabel,
+                  voucherLabel: realVoucherLabel,
                   title: supplierName,
                 })
               }}
