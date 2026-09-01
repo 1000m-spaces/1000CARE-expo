@@ -1,38 +1,40 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image, StyleSheet, TextInput } from 'react-native';
 import PressScale from '~/design-system/PressScale';
+import LiquidGlassView from '~/design-system/LiquidGlassView';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { LinearGradient } from 'expo-linear-gradient';
 import { resetLogin } from '~/store/auth/authActions';
 import { getErrMsg } from '~/store/auth/authSelector';
 import ErrorView from '~/common/ErrorView';
-
-import styles from './styles';
-import strings from '~/i18n';
-import { logo_text } from '~/assets/constants';
-import { Image } from '~/common/index';
-import { NAVIGATION_CONFIRM, NAVIGATION_PHONE_VERIFY } from '~/navigation/routes';
-import Header from '~/common/Header/index';
-import { back } from '~/assets/constants';
+import { Icon } from '~/common/index';
 import AppBackground from '~/design-system/AppBackground';
-import PremiumInput from '~/design-system/PremiumInput';
-import PremiumButton from '~/design-system/PremiumButton';
+import strings from '~/i18n';
+import { NAVIGATION_PHONE_VERIFY } from '~/navigation/routes';
+import { brandColors, brandGradients } from '~/design-system/tokens';
+import { fs, s } from '~/utils/responsive';
 
+// Màn đăng ký theo spec redesign: cùng bố cục tối giản với LoginPhone —
+// back button nổi + tiêu đề cùng dòng, input dạng pill, nút CTA gradient.
 const RegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  // Manage State Hooks
-  const [username, setUserName] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [agreed, setAgreed] = useState(false);
 
   const errorMsg = useSelector(state => getErrMsg(state));
 
+  const canSubmit = fullName.trim() && phone.trim() && password.trim() && agreed;
+
   const onRegisterPress = () => {
-    // dispatch(loginWithAccount(username, password, true))
+    if (!canSubmit) return;
     navigation.navigate(NAVIGATION_PHONE_VERIFY, {
-      onSuccess: () => {
-        navigation.navigate(NAVIGATION_CONFIRM);
-      },
+      phone,
+      fullName,
+      title: 'Xác thực số điện thoại',
     });
   };
 
@@ -41,87 +43,211 @@ const RegisterScreen = ({ navigation }) => {
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={'always'}
-        contentContainerStyle={styles.scrollContent}>
-        <Header
-          title={strings.registerScreen.title}
-          iconLeft={back}
-          leftAction={() => navigation.pop()}
-        />
-        <View style={styles.content}>
-          <View style={styles.logoCard}>
-            <Image source={logo_text} resizeMode="contain" style={styles.logo} />
-          </View>
-          <View style={styles.card}>
-            <Text style={styles.title}>
-              {strings.registerScreen.title}
-            </Text>
-            <View style={styles.fullNameContainer}>
-              <PremiumInput
-                label={strings.registerScreen.firstName}
-                value={username}
-                onChangeText={value => {
-                  setUserName(value);
-                }}
-                placeholder={strings.registerScreen.firstName}
-              />
-
-              <PremiumInput
-                label={strings.registerScreen.lastName}
-                value={username}
-                onChangeText={value => {
-                  setUserName(value);
-                }}
-                placeholder={strings.registerScreen.lastName}
-              />
-            </View>
-
-            <PremiumInput
-              label={strings.registerScreen.username}
-              value={username}
-              onChangeText={value => {
-                setUserName(value);
-              }}
-              placeholder={strings.registerScreen.username}
-            />
-
-            <PremiumInput
-              label={strings.registerScreen.password}
-              value={password}
-              onChangeText={value => setPassword(value)}
-              placeholder={strings.registerScreen.password}
-              secureTextEntry={true}
-            />
-            <PremiumInput
-              label={strings.registerScreen.re_password}
-              value={password}
-              onChangeText={value => setPassword(value)}
-              placeholder={strings.registerScreen.re_password}
-              secureTextEntry={true}
-            />
-            <PremiumButton
-              style={styles.registerButton}
-              onPress={onRegisterPress}
-              text={strings.registerScreen.register}
-            />
-          </View>
+        contentContainerStyle={styles.scrollContent}
+      >
+        <View style={styles.headerRow}>
+          <PressScale onPress={() => navigation.pop()} style={styles.backButton}>
+            <LiquidGlassView intensity="regular" style={styles.backButtonGlass}>
+              <Icon type="feather" name="chevron-left" color={brandColors.tealPrimary} size={s(18)} />
+            </LiquidGlassView>
+          </PressScale>
+          <Text style={styles.headerTitle}>Tạo tài khoản mới</Text>
         </View>
-        <View style={styles.footer_views}>
-          <Text style={styles.footerText}>{strings.registerScreen.have_account}</Text>
-          <PressScale onPress={() => navigation.pop()}>
-            <Text style={styles.text_register_now}>
+
+        <View style={styles.content}>
+          <Text style={styles.inputLabel}>Họ và tên</Text>
+          <View style={styles.inputOuter}>
+            <Icon type="feather" name="user" color={brandColors.tealDark} size={s(18)} />
+            <TextInput
+              style={styles.input}
+              value={fullName}
+              onChangeText={setFullName}
+              placeholder="Nguyễn Văn A"
+              placeholderTextColor={brandColors.mutedLight}
+            />
+          </View>
+
+          <Text style={styles.inputLabel}>Số điện thoại</Text>
+          <View style={styles.inputOuter}>
+            <Icon type="feather" name="smartphone" color={brandColors.tealDark} size={s(18)} />
+            <TextInput
+              style={styles.input}
+              value={phone}
+              keyboardType="numeric"
+              onChangeText={setPhone}
+              placeholder="09xx xxx xxx"
+              placeholderTextColor={brandColors.mutedLight}
+            />
+          </View>
+
+          <Text style={styles.inputLabel}>Mật khẩu</Text>
+          <View style={styles.inputOuter}>
+            <Icon type="feather" name="lock" color={brandColors.tealDark} size={s(18)} />
+            <TextInput
+              style={styles.input}
+              value={password}
+              onChangeText={setPassword}
+              placeholder="••••••••"
+              placeholderTextColor={brandColors.mutedLight}
+              secureTextEntry
+            />
+          </View>
+
+          <PressScale
+            onPress={() => setAgreed(!agreed)}
+            style={styles.termsRow}
+          >
+            <View style={[styles.checkbox, agreed && styles.checkboxChecked]}>
+              {agreed && <Icon type="feather" name="check" color={brandColors.surface} size={s(11)} />}
+            </View>
+            <Text style={styles.termsText}>Tôi đồng ý với Điều khoản sử dụng</Text>
+          </PressScale>
+
+          <PressScale
+            onPress={onRegisterPress}
+            disabled={!canSubmit}
+            style={styles.registerButton}
+          >
+            <LinearGradient
+              colors={canSubmit ? brandGradients.primary : [brandColors.border, brandColors.border]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.buttonGradient}
+            >
+              <Text style={styles.buttonText}>{strings.registerScreen.register}</Text>
+            </LinearGradient>
+          </PressScale>
+
+          <Text style={styles.footerLine}>
+            {strings.registerScreen.have_account}{' '}
+            <Text style={styles.footerLink} onPress={() => navigation.pop()}>
               {strings.registerScreen.login_now}
             </Text>
-          </PressScale>
+          </Text>
         </View>
       </KeyboardAwareScrollView>
+
       <ErrorView
         error={errorMsg}
-        isOpen={errorMsg && errorMsg !== ''}
+        isOpen={errorMsg ? true : false}
         onClose={() => dispatch(resetLogin())}
       />
     </AppBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollContent: {
+    flexGrow: 1,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: s(58),
+    marginLeft: s(16),
+    marginBottom: s(14),
+    gap: s(12),
+  },
+  backButton: {},
+  backButtonGlass: {
+    width: s(38),
+    height: s(38),
+    borderRadius: s(19),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitle: {
+    color: brandColors.textDark,
+    fontSize: fs(17),
+    fontWeight: '800',
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: s(24),
+    paddingBottom: s(24),
+  },
+  inputLabel: {
+    fontSize: fs(13),
+    fontWeight: '700',
+    color: brandColors.textDark,
+    marginBottom: s(8),
+  },
+  inputOuter: {
+    width: '100%',
+    height: s(50),
+    borderRadius: s(16),
+    backgroundColor: '#F4F9F9',
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(10),
+    paddingHorizontal: s(16),
+    marginBottom: s(18),
+  },
+  input: {
+    flex: 1,
+    color: brandColors.textDark,
+    fontSize: fs(15),
+    fontWeight: '600',
+    paddingVertical: 0,
+  },
+  termsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(10),
+    marginBottom: s(26),
+  },
+  checkbox: {
+    width: s(18),
+    height: s(18),
+    borderRadius: s(5),
+    borderWidth: 1.5,
+    borderColor: brandColors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxChecked: {
+    backgroundColor: brandColors.tealPrimary,
+    borderColor: brandColors.tealPrimary,
+  },
+  termsText: {
+    flex: 1,
+    fontSize: fs(12.5),
+    color: brandColors.muted,
+    fontWeight: '600',
+  },
+  registerButton: {
+    width: '100%',
+    borderRadius: s(16),
+    overflow: 'hidden',
+    marginBottom: s(18),
+    shadowColor: brandColors.tealPrimary,
+    shadowOffset: { width: 0, height: s(10) },
+    shadowOpacity: 0.24,
+    shadowRadius: s(20),
+    elevation: 6,
+  },
+  buttonGradient: {
+    height: s(52),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: brandColors.surface,
+    fontWeight: '700',
+    fontSize: fs(15),
+  },
+  footerLine: {
+    color: brandColors.muted,
+    fontSize: fs(13),
+    textAlign: 'center',
+  },
+  footerLink: {
+    color: brandColors.tealPrimary,
+    fontWeight: '700',
+  },
+});
 
 RegisterScreen.navigationOptions = {
   header: null,

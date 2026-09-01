@@ -49,7 +49,7 @@ export default {
     noInternetMessage: "Looks like internet connection is off, please turn on internet connection and press ok to continue."
   },
   loginScreen: {
-    title: "Đăng nhập tài khoản",
+    title: "Đăng nhập bằng số điện thoại",
     loginWithApple: "Login with AppleID",
     loginWithFB: "Login with Facebook",
     loginWithPhone: "Login with phone",
