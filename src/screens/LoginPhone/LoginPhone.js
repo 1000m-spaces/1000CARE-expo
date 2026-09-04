@@ -5,22 +5,15 @@ import LiquidGlassView from '~/design-system/LiquidGlassView';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LinearGradient } from 'expo-linear-gradient';
-import {
-  loginByPhone,
-  requestGetListPhoneByPassFirebase,
-  resetLogin,
-  resetLoginPhone,
-} from '~/store/auth/authActions';
-import {
-  getErrMsg,
-  getLoginPhoneStatus,
-} from '~/store/auth/authSelector';
+import { CommonActions } from '@react-navigation/native';
+import { loginV2, resetLoginV2 } from '~/store/authV2/authV2Actions';
+import { getLoginV2Status, getLoginV2Err } from '~/store/authV2/authV2Selector';
 import ErrorView from '~/common/ErrorView';
 import { Icon } from '~/common/index';
 import AppBackground from '~/design-system/AppBackground';
 import strings from '~/i18n';
 import { logoNeoMed } from '~/assets/constants';
-import { NAVIGATION_CONFIRM } from '~/navigation/routes';
+import { NAVIGATION_TO_MAIN_SCREEN } from '~/navigation/routes';
 import Status from '~/common/Status/Status';
 import { Fonts } from '~/assets/config';
 import { brandColors, brandGradients } from '~/design-system/tokens';
@@ -28,38 +21,39 @@ import { fs, s } from '~/utils/responsive';
 
 // Màn đăng nhập theo spec redesign: bố cục tối giản, canh giữa — thay cho
 // card neumorphic to bản của bản premium trước đó.
+// Ráp thật vào backend mới marketplace-core (auth/v1/login, phone+password
+// — không còn OTP mỗi lần đăng nhập như luồng Firebase cũ) theo yêu cầu
+// 2026-09-04. Xem [[marketplace-core-backend-migration]] trong memory:
+// các API khác (sản phẩm/giỏ hàng/đơn hàng) vẫn ở backend cũ, không liên
+// quan tới token đăng nhập này.
 const LoginPhone = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  const loginStatus = useSelector(state => getLoginPhoneStatus(state));
-  const [loading, setLoading] = useState(false);
+  const loginStatus = useSelector(state => getLoginV2Status(state));
+  const loginErr = useSelector(state => getLoginV2Err(state));
+  const loading = loginStatus === Status.LOADING;
 
   const [phone, setPhone] = useState('');
-  const errorMsg = useSelector(state => getErrMsg(state));
-  const [loginType, setLoginType] = useState('');
-
-  useEffect(() => {
-    dispatch(requestGetListPhoneByPassFirebase());
-  }, []);
+  const [password, setPassword] = useState('');
 
   const onLoginPress = () => {
     if (loading) return;
-    if (!phone) {
-      alert('Vui lòng nhập số điện thoại');
+    if (!phone || !password) {
+      alert('Vui lòng nhập đầy đủ số điện thoại và mật khẩu');
       return;
     }
-    setLoading(true);
-    setLoginType('LOGIN_BY_BE');
-    dispatch(loginByPhone(phone, true));
+    dispatch(loginV2(phone, password));
   };
 
   useEffect(() => {
     if (loginStatus === Status.SUCCESS) {
-      setLoading(false);
-      dispatch(resetLoginPhone());
-      navigation.navigate(NAVIGATION_CONFIRM, {
-        type: loginType,
-      });
+      dispatch(resetLoginV2());
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{ name: NAVIGATION_TO_MAIN_SCREEN }],
+        }),
+      );
     }
   }, [loginStatus]);
 
@@ -99,6 +93,19 @@ const LoginPhone = ({ navigation }) => {
             />
           </View>
 
+          <Text style={styles.inputLabel}>Mật khẩu</Text>
+          <View style={styles.inputOuter}>
+            <Icon type="feather" name="lock" color={brandColors.tealDark} size={s(18)} />
+            <TextInput
+              style={styles.input}
+              value={password}
+              onChangeText={setPassword}
+              placeholder="••••••••"
+              placeholderTextColor={brandColors.mutedLight}
+              secureTextEntry
+            />
+          </View>
+
           <PressScale
             onPress={onLoginPress}
             disabled={loading}
@@ -129,12 +136,9 @@ const LoginPhone = ({ navigation }) => {
       </KeyboardAwareScrollView>
 
       <ErrorView
-        error={errorMsg}
-        isOpen={errorMsg ? true : false}
-        onClose={() => {
-          setLoading(false);
-          dispatch(resetLogin());
-        }}
+        error={loginErr}
+        isOpen={loginErr ? true : false}
+        onClose={() => dispatch(resetLoginV2())}
       />
     </AppBackground>
   );

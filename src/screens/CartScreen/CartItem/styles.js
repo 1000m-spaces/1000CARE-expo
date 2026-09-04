@@ -204,16 +204,35 @@ const styles = StyleSheet.create({
     lineHeight: fs(16),
   },
   orderLimitBanner: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: s(6),
     marginTop: s(10),
     backgroundColor: 'rgba(255,59,48,0.08)',
     borderRadius: s(12),
     padding: s(9),
   },
+  orderLimitRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: s(6),
+  },
   orderLimitIcon: {
     fontSize: fs(13),
+  },
+  // Thanh tiến độ đạt giá trị đơn tối thiểu — theo mô hình "min_order_value
+  // theo từng nhóm mua hàng" của backend mới (marketplace-core, xem
+  // [[marketplace-core-business-model]]: sau này mỗi nhóm sẽ là 1 "store"
+  // thay vì 1 NCC, còn hiện tại NCC = 1 nhóm tạm). Dùng luôn dữ liệu
+  // order_limit đang có (mock) — không đợi API mới.
+  orderLimitProgressTrack: {
+    marginTop: s(8),
+    height: s(5),
+    borderRadius: s(999),
+    backgroundColor: 'rgba(255,59,48,0.16)',
+    overflow: 'hidden',
+  },
+  orderLimitProgressFill: {
+    height: '100%',
+    borderRadius: s(999),
+    backgroundColor: brandColors.danger,
   },
   textListHeader: {
     color: brandColors.textDark,

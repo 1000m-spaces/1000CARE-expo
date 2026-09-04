@@ -32,7 +32,8 @@
         "backgroundColor": "#FEFFFE"
       },
       "package": "com.m1000.healthcare",
-      "runtimeVersion": "1.0.0"
+      "runtimeVersion": "1.0.0",
+      "usesCleartextTraffic": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

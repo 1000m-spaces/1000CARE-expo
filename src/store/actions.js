@@ -1,4 +1,5 @@
 export * from './auth/authActions'
+export * from './authV2/authV2Actions'
 export * from './categories/categoriesActions'
 export * from './distributors/distributeAction'
 export * from './suppliers/suppliersActions'

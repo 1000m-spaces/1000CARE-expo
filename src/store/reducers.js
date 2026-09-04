@@ -21,6 +21,7 @@ import voucherReducer from './voucher/voucherReducer'
 import trademarksReducer from './trademarks/TrademarksReducer'
 import adsReducer from './ads/adsReducer'
 import versionReducer from './version/versionReducer'
+import authV2Reducer from './authV2/authV2Reducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -44,7 +45,8 @@ const rootReducer = combineReducers({
   voucher: voucherReducer,
   trademarks: trademarksReducer,
   ads: adsReducer,
-  version: versionReducer
+  version: versionReducer,
+  authV2: authV2Reducer,
 })
 
 export default (state, action) => rootReducer(state, action)

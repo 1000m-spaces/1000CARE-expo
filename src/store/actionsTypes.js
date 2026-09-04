@@ -189,3 +189,21 @@ export const NEOMED = createRequestTypes(
   ],
   suffixTypes,
 )
+
+// Events cho backend mới marketplace-core (auth/v1 + customer/v1) — tách
+// hẳn namespace AUTH_V2 khỏi NEOMED để không đụng state/luồng auth cũ,
+// vì 2 backend khác model (phone+password JWT vs Firebase phone-OTP) và
+// đang chạy song song trong lúc backend mới chưa đủ module thay hẳn.
+export const AUTH_V2 = createRequestTypes(
+  'AUTH_V2',
+  [
+    'REGISTER', // POST /auth/v1/register — tạo identity + gửi OTP
+    'VERIFY_PHONE', // POST /auth/v1/phone/verify
+    'RESEND_OTP', // POST /auth/v1/phone/resend
+    'LOGIN', // POST /auth/v1/login — trả access+refresh token
+    'REFRESH', // POST /auth/v1/refresh
+    'ME', // GET /customer/v1/me
+    'LOGOUT',
+  ],
+  suffixTypes,
+)

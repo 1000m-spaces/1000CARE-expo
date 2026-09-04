@@ -76,10 +76,20 @@ const CartItem = ({ navigation, distributor, item, index, setOpenDialogWaiting, 
                 totalPrices > 0 && distributor?.order_limit > totalPrices && item?.payment_type === 1
                   ? (
                     <View style={styles.orderLimitBanner}>
-                      <Text style={styles.orderLimitIcon}>⚠️</Text>
-                      <Text style={styles.textOrderLimit}>
-                        Đơn hàng chưa đạt giá trị tối thiểu {formatMoney(distributor?.order_limit, { unit: item?.payment_type === 1 ? 'đ' : 'điểm' })}
-                      </Text>
+                      <View style={styles.orderLimitRow}>
+                        <Text style={styles.orderLimitIcon}>⚠️</Text>
+                        <Text style={styles.textOrderLimit}>
+                          Còn thiếu {formatMoney(distributor?.order_limit - totalPrices, { unit: 'đ' })} để đạt giá trị đơn tối thiểu {formatMoney(distributor?.order_limit, { unit: 'đ' })}
+                        </Text>
+                      </View>
+                      <View style={styles.orderLimitProgressTrack}>
+                        <View
+                          style={[
+                            styles.orderLimitProgressFill,
+                            { width: `${Math.min(100, (totalPrices / distributor?.order_limit) * 100)}%` },
+                          ]}
+                        />
+                      </View>
                     </View>
                   )
                   : null

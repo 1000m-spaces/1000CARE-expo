@@ -44,6 +44,8 @@ import {
   resetConfirmDeleteAcount,
   deleteAccount,
   requestGetPharmacyInfo,
+  verifyPhoneV2,
+  resetVerifyPhoneV2,
 } from '~/store/actions';
 import {
   getTopupReqId,
@@ -74,6 +76,8 @@ import {
   getLinkResourceConfirmError,
   getConfirmDeleteOtpErr,
   getConfirmDeleteOtpStatus,
+  getVerifyPhoneV2Status,
+  getVerifyPhoneV2Err,
 } from '~/store/selector';
 import Status from '~/common/Status/Status';
 import {
@@ -158,6 +162,11 @@ const Confirm = ({ route, navigation }) => {
   const confirmDeleteOtpStatus = useSelector(state =>
     getConfirmDeleteOtpStatus(state),
   );
+  // OTP xác thực SĐT khi đăng ký qua backend mới (marketplace-core) —
+  // POST /auth/v1/phone/verify chỉ cần {phone, code}, không có request_id
+  // như các luồng OTP cũ.
+  const verifyPhoneV2Status = useSelector(state => getVerifyPhoneV2Status(state));
+  const verifyPhoneV2Err = useSelector(state => getVerifyPhoneV2Err(state));
 
   const getCellCount = () => {
     switch (type) {
@@ -226,6 +235,8 @@ const Confirm = ({ route, navigation }) => {
         return linkResourceConfirmError;
       case 'DELETE_ACOUNT':
         return confirmDeleteOtpErr;
+      case 'REGISTER_V2':
+        return verifyPhoneV2Err;
       default:
         return '';
     }
@@ -266,6 +277,9 @@ const Confirm = ({ route, navigation }) => {
         return;
       case 'DELETE_ACOUNT':
         dispatch(resetConfirmDeleteAcount());
+        return;
+      case 'REGISTER_V2':
+        dispatch(resetVerifyPhoneV2());
         return;
     }
   };
@@ -366,6 +380,18 @@ const Confirm = ({ route, navigation }) => {
   }, [confirmSignupStatus]);
 
   useEffect(() => {
+    if (verifyPhoneV2Status === Status.SUCCESS) {
+      // Xác thực SĐT xong (identity chuyển active) — backend mới không trả
+      // token ở bước này, phải đăng nhập lại bằng phone+password ở màn Login.
+      setShowDialog(false);
+      dispatch(resetVerifyPhoneV2());
+      navigation.navigate(NAVIGATION_TO_LOGIN_SCREEN);
+    } else if (verifyPhoneV2Status !== Status.LOADING) {
+      setShowDialog(false);
+    }
+  }, [verifyPhoneV2Status]);
+
+  useEffect(() => {
     if (confirmOrderPaymentStatus === Status.SUCCESS) {
       setShowDialog(false);
       dispatch(resetOrder());
@@ -454,6 +480,8 @@ const Confirm = ({ route, navigation }) => {
       dispatch(requestLinkResourceConfirm(getRequestId(), value));
     } else if (type == 'DELETE_ACOUNT') {
       dispatch(confirmDeleteAcountOtp(getRequestId(), value));
+    } else if (type === 'REGISTER_V2') {
+      dispatch(verifyPhoneV2(route.params?.phone, value));
     }
   };
 
@@ -568,7 +596,7 @@ const Confirm = ({ route, navigation }) => {
             />
           </View>
         </View>
-        {(type === 'LOGIN' || type === 'SIGNUP') && (
+        {(type === 'LOGIN' || type === 'SIGNUP' || type === 'REGISTER_V2') && (
           <View style={styles.footer_views}>
             <Text style={styles.hotlineLabel}>{'Hotline:'}</Text>
             <PressScale

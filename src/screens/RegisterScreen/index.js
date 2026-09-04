@@ -1,22 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TextInput } from 'react-native';
 import PressScale from '~/design-system/PressScale';
 import LiquidGlassView from '~/design-system/LiquidGlassView';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LinearGradient } from 'expo-linear-gradient';
-import { resetLogin } from '~/store/auth/authActions';
-import { getErrMsg } from '~/store/auth/authSelector';
+import { registerV2, resetRegisterV2 } from '~/store/authV2/authV2Actions';
+import { getRegisterV2Status, getRegisterV2Err } from '~/store/authV2/authV2Selector';
 import ErrorView from '~/common/ErrorView';
 import { Icon } from '~/common/index';
 import AppBackground from '~/design-system/AppBackground';
 import strings from '~/i18n';
-import { NAVIGATION_PHONE_VERIFY } from '~/navigation/routes';
+import { NAVIGATION_CONFIRM } from '~/navigation/routes';
+import Status from '~/common/Status/Status';
 import { brandColors, brandGradients } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
 // Màn đăng ký theo spec redesign: cùng bố cục tối giản với LoginPhone —
 // back button nổi + tiêu đề cùng dòng, input dạng pill, nút CTA gradient.
+// Ráp thật vào backend mới marketplace-core (auth/v1/register → gửi OTP
+// → auth/v1/phone/verify ở màn Confirm type=REGISTER_V2 → phải đăng nhập
+// lại bằng phone+password, xem [[marketplace-core-backend-migration]]).
 const RegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
@@ -25,18 +29,26 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [agreed, setAgreed] = useState(false);
 
-  const errorMsg = useSelector(state => getErrMsg(state));
+  const registerStatus = useSelector(state => getRegisterV2Status(state));
+  const registerErr = useSelector(state => getRegisterV2Err(state));
+  const submitting = registerStatus === Status.LOADING;
 
-  const canSubmit = fullName.trim() && phone.trim() && password.trim() && agreed;
+  const canSubmit = fullName.trim() && phone.trim() && password.trim() && agreed && !submitting;
 
   const onRegisterPress = () => {
     if (!canSubmit) return;
-    navigation.navigate(NAVIGATION_PHONE_VERIFY, {
-      phone,
-      fullName,
-      title: 'Xác thực số điện thoại',
-    });
+    dispatch(registerV2(phone, password));
   };
+
+  useEffect(() => {
+    if (registerStatus === Status.SUCCESS) {
+      dispatch(resetRegisterV2());
+      navigation.navigate(NAVIGATION_CONFIRM, {
+        type: 'REGISTER_V2',
+        phone,
+      });
+    }
+  }, [registerStatus]);
 
   return (
     <AppBackground>
@@ -114,7 +126,9 @@ const RegisterScreen = ({ navigation }) => {
               end={{ x: 1, y: 1 }}
               style={styles.buttonGradient}
             >
-              <Text style={styles.buttonText}>{strings.registerScreen.register}</Text>
+              <Text style={styles.buttonText}>
+                {submitting ? 'Đang đăng ký...' : strings.registerScreen.register}
+              </Text>
             </LinearGradient>
           </PressScale>
 
@@ -128,9 +142,9 @@ const RegisterScreen = ({ navigation }) => {
       </KeyboardAwareScrollView>
 
       <ErrorView
-        error={errorMsg}
-        isOpen={errorMsg ? true : false}
-        onClose={() => dispatch(resetLogin())}
+        error={registerErr}
+        isOpen={registerErr ? true : false}
+        onClose={() => dispatch(resetRegisterV2())}
       />
     </AppBackground>
   );

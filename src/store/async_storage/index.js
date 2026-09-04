@@ -2,6 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const AUTH_SCHEMA_KEY = 'auth_session_schema'
 const AUTH_KEYS = ['user', 'token', 'refresh_token']
+// Token của backend mới marketplace-core — key riêng, KHÔNG chung với
+// AUTH_KEYS (token cũ) vì 2 hệ auth độc lập, chạy song song.
+const AUTH_V2_KEYS = ['v2_access_token', 'v2_refresh_token', 'v2_active_customer_id']
 
 const setUser = async (user) => {
   try {
@@ -86,6 +89,65 @@ const clearAuthSession = async () => {
   }
 }
 
+const getV2AccessToken = async () => {
+  try {
+    return await AsyncStorage.getItem('v2_access_token')
+  } catch (e) {
+    console.log(e)
+  }
+  return null
+}
+
+const setV2AccessToken = async token => {
+  try {
+    await AsyncStorage.setItem('v2_access_token', token || '')
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const getV2RefreshToken = async () => {
+  try {
+    return await AsyncStorage.getItem('v2_refresh_token')
+  } catch (e) {
+    console.log(e)
+  }
+  return null
+}
+
+const setV2RefreshToken = async token => {
+  try {
+    await AsyncStorage.setItem('v2_refresh_token', token || '')
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const getV2ActiveCustomerId = async () => {
+  try {
+    return await AsyncStorage.getItem('v2_active_customer_id')
+  } catch (e) {
+    console.log(e)
+  }
+  return null
+}
+
+const setV2ActiveCustomerId = async customerId => {
+  try {
+    await AsyncStorage.setItem('v2_active_customer_id', customerId || '')
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const clearAuthV2Session = async () => {
+  try {
+    await AsyncStorage.multiRemove(AUTH_V2_KEYS)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 const getAuthSessionSchema = async () => {
   try {
     return await AsyncStorage.getItem(AUTH_SCHEMA_KEY)
@@ -138,4 +200,11 @@ export default {
   setAuthSessionSchema,
   getSkipForceUpdate,
   setSkipForceUpdate,
+  getV2AccessToken,
+  setV2AccessToken,
+  getV2RefreshToken,
+  setV2RefreshToken,
+  getV2ActiveCustomerId,
+  setV2ActiveCustomerId,
+  clearAuthV2Session,
 }

@@ -1,4 +1,5 @@
 export * from './auth/authSelector'
+export * from './authV2/authV2Selector'
 export * from './categories/categoriesSelector'
 export * from './distributors/distributeSelector'
 export * from './products/productsSelector'
