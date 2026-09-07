@@ -10,12 +10,15 @@ const BASE_ACCOUNT_PATH = Config.BASE_ACCOUNT_PATH
 const BASE_REGISTER_PATH = Config.BASE_REGISTER_PATH
 const BASE_AUTH_PATH = Config.BASE_AUTH_PATH
 
-// Backend mới marketplace-core (dev server của team backend) — chỉ auth +
-// GET /customer/v1/me ổn định để ráp thử, catalog/cart/order chưa có nên
-// KHÔNG dùng base này cho gì khác. Hardcode dev URL (chưa có biến .env
-// riêng cho backend này), theo đúng kiểu BASE_REGISTER_PATH đã hardcode
-// dev trước khi có Config ở trên.
-const MARKETPLACE_CORE_BASE = 'http://123.31.29.208:13000'
+// Backend mới marketplace-core (dev server team backend), theo
+// docs/environments.md (nguồn sự thật cho domain, cập nhật 2026-09-07):
+// dev qua nginx-proxy-manager, có HTTPS thật — dùng domain này thay vì
+// IP:port thô (http://123.31.29.208:13000) để KHÔNG bị iOS ATS / Android
+// cleartext-block chặn (đã từng phải vá native exception cho bản HTTP
+// thô, giờ không cần nữa vì có HTTPS). Hardcode dev URL (chưa có biến
+// .env riêng cho backend này), theo đúng kiểu BASE_REGISTER_PATH đã
+// hardcode dev trước khi có Config ở trên.
+const MARKETPLACE_CORE_BASE = 'https://dev-api-mkp.1000m.vn'
 const CODE_PUSH_KEY = {
   ios: Config.IOS_CODEPUSH_KEY,
   android: Config.ANDROID_CODEPUSH_KEY,

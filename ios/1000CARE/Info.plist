@@ -32,7 +32,7 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>15</string>
+    <string>16</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
     <key>LSMinimumSystemVersion</key>
@@ -45,22 +45,6 @@
       <false/>
       <key>NSAllowsLocalNetworking</key>
       <true/>
-      <!-- Backend dev marketplace-core (auth mới) chỉ chạy HTTP thuần trên
-           IP public, chưa có TLS — ATS mặc định sẽ chặn hẳn. Mở ngoại lệ
-           đúng 1 host này thay vì NSAllowsArbitraryLoads toàn cục. Cần
-           BUILD NATIVE MỚI (eas build) để có hiệu lực — eas update (OTA)
-           không đụng được Info.plist của bản đã cài. Gỡ khi backend có
-           HTTPS hoặc khi domain/IP dev đổi. -->
-      <key>NSExceptionDomains</key>
-      <dict>
-        <key>123.31.29.208</key>
-        <dict>
-          <key>NSExceptionAllowsInsecureHTTPLoads</key>
-          <true/>
-          <key>NSIncludesSubdomains</key>
-          <false/>
-        </dict>
-      </dict>
     </dict>
     <key>NSCameraUsageDescription</key>
     <string>1000CARE cần truy cập camera để chụp ảnh trực tiếp làm ảnh đại diện hoặc gửi đính kèm.</string>
