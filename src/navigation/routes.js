@@ -71,3 +71,5 @@ export const NAVIGATION_FILTER_PRODUCT = 'FilterProduct';
 export const NAVIGATION_ALL_FILTER = 'AllFilter';
 export const NAVIGATION_AUTHORITY = 'AuthoritySupplier';
 export const NAVIGATION_VIETQR_PAYMENT = 'VietQrPayment';
+export const NAVIGATION_ACCOUNT_PENDING_APPROVAL = 'AccountPendingApproval';
+export const NAVIGATION_KYC_SUBMIT = 'KycSubmit';

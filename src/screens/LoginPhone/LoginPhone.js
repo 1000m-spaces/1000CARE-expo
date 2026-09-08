@@ -7,13 +7,18 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { LinearGradient } from 'expo-linear-gradient';
 import { CommonActions } from '@react-navigation/native';
 import { loginV2, resetLoginV2 } from '~/store/authV2/authV2Actions';
-import { getLoginV2Status, getLoginV2Err } from '~/store/authV2/authV2Selector';
+import {
+  getLoginV2Status,
+  getLoginV2Err,
+  getMembershipsV2Status,
+  getMembershipsV2,
+} from '~/store/authV2/authV2Selector';
 import ErrorView from '~/common/ErrorView';
 import { Icon } from '~/common/index';
 import AppBackground from '~/design-system/AppBackground';
 import strings from '~/i18n';
 import { logoNeoMed } from '~/assets/constants';
-import { NAVIGATION_TO_MAIN_SCREEN } from '~/navigation/routes';
+import { NAVIGATION_TO_MAIN_SCREEN, NAVIGATION_ACCOUNT_PENDING_APPROVAL } from '~/navigation/routes';
 import Status from '~/common/Status/Status';
 import { Fonts } from '~/assets/config';
 import { brandColors, brandGradients } from '~/design-system/tokens';
@@ -31,7 +36,12 @@ const LoginPhone = ({ navigation }) => {
 
   const loginStatus = useSelector(state => getLoginV2Status(state));
   const loginErr = useSelector(state => getLoginV2Err(state));
-  const loading = loginStatus === Status.LOADING;
+  const membershipsStatus = useSelector(state => getMembershipsV2Status(state));
+  const memberships = useSelector(state => getMembershipsV2(state));
+  // Đăng nhập xong còn phải chờ check /auth/v1/memberships mới biết đi
+  // đâu (Home hay màn chờ duyệt) — giữ nút ở trạng thái loading xuyên
+  // suốt cả 2 bước cho mượt, tránh nhấp nháy giữa chừng.
+  const loading = loginStatus === Status.LOADING || membershipsStatus === Status.LOADING;
 
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -46,16 +56,17 @@ const LoginPhone = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (loginStatus === Status.SUCCESS) {
+    if (membershipsStatus === Status.SUCCESS) {
       dispatch(resetLoginV2());
+      const hasCustomer = Array.isArray(memberships?.customers) && memberships.customers.length > 0;
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
-          routes: [{ name: NAVIGATION_TO_MAIN_SCREEN }],
+          routes: [{ name: hasCustomer ? NAVIGATION_TO_MAIN_SCREEN : NAVIGATION_ACCOUNT_PENDING_APPROVAL }],
         }),
       );
     }
-  }, [loginStatus]);
+  }, [membershipsStatus, memberships]);
 
   return (
     <AppBackground>

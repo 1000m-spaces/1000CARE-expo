@@ -203,6 +203,10 @@ export const AUTH_V2 = createRequestTypes(
     'LOGIN', // POST /auth/v1/login — trả access+refresh token
     'REFRESH', // POST /auth/v1/refresh
     'ME', // GET /customer/v1/me
+    'MEMBERSHIPS', // GET /auth/v1/memberships — check đã được duyệt vào nhà thuốc chưa
+    'GET_KYC', // GET /customer/v1/kyc
+    'SUBMIT_KYC', // POST /customer/v1/kyc
+    'UPLOAD_KYC_DOC', // upload 1 ảnh giấy phép (2 bước: create + confirm)
     'LOGOUT',
   ],
   suffixTypes,

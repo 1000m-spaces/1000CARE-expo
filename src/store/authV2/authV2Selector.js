@@ -14,3 +14,12 @@ export const getMeV2 = state => ({
   role: state.authV2.role,
   allMemberships: state.authV2.allMemberships,
 })
+export const getMembershipsV2Status = state => state.authV2.membershipsStatus
+export const getMembershipsV2 = state => state.authV2.memberships
+export const getKycV2Status = state => state.authV2.kycStatus
+export const getKycV2 = state => state.authV2.kyc
+export const getSubmitKycV2Status = state => state.authV2.submitKycStatus
+export const getSubmitKycV2Err = state => state.authV2.submitKycErr
+export const getUploadKycDocV2Status = state => state.authV2.uploadKycDocStatus
+export const getUploadKycDocV2Err = state => state.authV2.uploadKycDocErr
+export const getUploadedKycDocsV2 = state => state.authV2.uploadedKycDocs

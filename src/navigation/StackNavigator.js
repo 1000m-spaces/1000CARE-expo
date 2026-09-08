@@ -6,6 +6,8 @@ import {
   LoginPhone,
   PhoneVerify,
   RegisterScreen,
+  AccountPendingApproval,
+  KycSubmit,
   RechargeOnline,
   ProfileScreen,
   AccountStatement,
@@ -112,6 +114,8 @@ import {
   NAVIGATION_ALL_FILTER,
   NAVIGATION_AUTHORITY,
   NAVIGATION_VIETQR_PAYMENT,
+  NAVIGATION_ACCOUNT_PENDING_APPROVAL,
+  NAVIGATION_KYC_SUBMIT,
 } from './routes';
 import PaymentByNeomedScreen from '~/screens/PaymentByNeomedScreen/index';
 import AddressChooseScreen from '~/screens/AddressChooseScreen/index';
@@ -307,6 +311,21 @@ const StackNavigator = () => {
       <Stack.Screen
         name={NAVIGATION_TO_REGISTER_SCREEN}
         component={RegisterScreen}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_ACCOUNT_PENDING_APPROVAL}
+        component={AccountPendingApproval}
+        options={{
+          header: () => null,
+          gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_KYC_SUBMIT}
+        component={KycSubmit}
         options={{
           header: () => null,
         }}

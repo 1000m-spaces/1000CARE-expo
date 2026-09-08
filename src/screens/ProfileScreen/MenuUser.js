@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import strings from '~/i18n'
 import {
   NAVIGATION_INFO_CUSTOMER, NAVIGATION_REFERRAL_SCREEN, NAVIGATION_TO_SPLASH_SCREEN,
-  NAVIGATION_LIST_NOTI_SCREEN, NAVIGATION_VOUCHER, NAVIGATION_WALLET, NAVIGATION_FAVOURITE_SUPPLIER, NAVIGATION_AUTHORITY
+  NAVIGATION_LIST_NOTI_SCREEN, NAVIGATION_VOUCHER, NAVIGATION_WALLET, NAVIGATION_FAVOURITE_SUPPLIER, NAVIGATION_AUTHORITY,
+  NAVIGATION_KYC_SUBMIT
 } from '~/navigation/routes'
 import { logout, resetCart } from '~/store/actions'
 import { getAuthStore } from '~/store/selector'
@@ -48,6 +49,14 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
       icon: account,
       colorIcon: '#FF9900',
       routePath: NAVIGATION_INFO_CUSTOMER,
+      isClickAvailable: true,
+    },
+    {
+      text: 'Xác thực hồ sơ (GPP)',
+      background: 'rgba(11, 123, 138, 0.1)',
+      icon: safety_certificate,
+      colorIcon: brandColors.tealPrimary,
+      routePath: NAVIGATION_KYC_SUBMIT,
       isClickAvailable: true,
     },
     {

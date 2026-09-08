@@ -61,6 +61,8 @@ import PayOrder from './PayOrder';
 import FavouriteSupplier from './FavouriteSupplier/FavouriteSupplier';
 import FilterProduct from './FilterProduct';
 import AllFilter from './FilterProduct/AllFilter';
+import AccountPendingApproval from './AccountPendingApproval';
+import KycSubmit from './KycSubmit';
 import AuthoritySupplier from './AuthoritySupplier/AuthoritySupplier';
 export {
   MainScreen,
@@ -127,4 +129,6 @@ export {
   FavouriteSupplier,
   FilterProduct,
   AllFilter,
+  AccountPendingApproval,
+  KycSubmit,
 };
