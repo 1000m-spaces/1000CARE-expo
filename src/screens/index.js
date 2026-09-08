@@ -65,6 +65,8 @@ import AccountPendingApproval from './AccountPendingApproval';
 import KycSubmit from './KycSubmit';
 import PharmacyRegistration from './PharmacyRegistration';
 import MarketerLinks from './MarketerLinks';
+import OrdersV2 from './OrdersV2';
+import OrderDetailV2 from './OrdersV2/OrderDetail';
 import AuthoritySupplier from './AuthoritySupplier/AuthoritySupplier';
 export {
   MainScreen,
@@ -135,4 +137,6 @@ export {
   KycSubmit,
   PharmacyRegistration,
   MarketerLinks,
+  OrdersV2,
+  OrderDetailV2,
 };

@@ -201,6 +201,45 @@ function* rejectMarketerLink({ payload }) {
   }
 }
 
+function* getOrdersListSaga({ payload }) {
+  try {
+    yield put({ type: AUTH_V2.GET_ORDERS_V2_LOADING })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getOrders }, payload?.status)
+    yield put({ type: AUTH_V2.GET_ORDERS_V2_SUCCESS, payload: { items: data?.items || [] } })
+  } catch (error) {
+    yield put({ type: AUTH_V2.GET_ORDERS_V2_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
+function* getOrderDetailSaga({ payload }) {
+  try {
+    yield put({ type: AUTH_V2.GET_ORDER_DETAIL_V2_LOADING })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getOrderDetail }, payload.orderId)
+    yield put({ type: AUTH_V2.GET_ORDER_DETAIL_V2_SUCCESS, payload: { order: data } })
+  } catch (error) {
+    yield put({ type: AUTH_V2.GET_ORDER_DETAIL_V2_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
+function* cancelOrderSaga({ payload }) {
+  try {
+    yield put({ type: AUTH_V2.CANCEL_ORDER_V2_LOADING })
+    const data = yield call({ content: AuthV2, fn: AuthV2.cancelOrder }, payload.orderId, payload.reason)
+    yield put({ type: AUTH_V2.CANCEL_ORDER_V2_SUCCESS, payload: { order: data } })
+  } catch (error) {
+    yield put({ type: AUTH_V2.CANCEL_ORDER_V2_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
+function* acknowledgeOrderSaga({ payload }) {
+  try {
+    yield call({ content: AuthV2, fn: AuthV2.acknowledgeOrder }, payload.orderId)
+    yield put({ type: AUTH_V2.ACKNOWLEDGE_ORDER_V2_SUCCESS, payload: { orderId: payload.orderId } })
+  } catch (error) {
+    yield put({ type: AUTH_V2.ACKNOWLEDGE_ORDER_V2_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
 function* logout() {
   try {
     const refreshToken = yield asyncStorage.getV2RefreshToken()
@@ -243,5 +282,9 @@ export default function* watcherSaga() {
   yield takeLatest(AUTH_V2.GET_MARKETER_LINKS_REQUEST, getMarketerLinks)
   yield takeLatest(AUTH_V2.CONFIRM_MARKETER_LINK_REQUEST, confirmMarketerLink)
   yield takeLatest(AUTH_V2.REJECT_MARKETER_LINK_REQUEST, rejectMarketerLink)
+  yield takeLatest(AUTH_V2.GET_ORDERS_V2_REQUEST, getOrdersListSaga)
+  yield takeLatest(AUTH_V2.GET_ORDER_DETAIL_V2_REQUEST, getOrderDetailSaga)
+  yield takeLatest(AUTH_V2.CANCEL_ORDER_V2_REQUEST, cancelOrderSaga)
+  yield takeLatest(AUTH_V2.ACKNOWLEDGE_ORDER_V2_REQUEST, acknowledgeOrderSaga)
   yield takeLatest(AUTH_V2.LOGOUT_REQUEST, logout)
 }

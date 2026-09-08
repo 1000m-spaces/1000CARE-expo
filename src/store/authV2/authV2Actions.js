@@ -67,4 +67,28 @@ export const rejectMarketerLinkV2 = linkId => ({
   payload: { linkId },
 })
 
+export const getOrdersListV2 = status => ({
+  type: AUTH_V2.GET_ORDERS_V2_REQUEST,
+  payload: { status },
+})
+
+export const getOrderDetailV2 = orderId => ({
+  type: AUTH_V2.GET_ORDER_DETAIL_V2_REQUEST,
+  payload: { orderId },
+})
+
+export const resetOrderDetailV2 = () => ({ type: 'RESET_AUTH_V2_ORDER_DETAIL' })
+
+export const cancelOrderV2 = (orderId, reason) => ({
+  type: AUTH_V2.CANCEL_ORDER_V2_REQUEST,
+  payload: { orderId, reason },
+})
+
+export const resetCancelOrderV2 = () => ({ type: 'RESET_AUTH_V2_CANCEL_ORDER' })
+
+export const acknowledgeOrderV2 = orderId => ({
+  type: AUTH_V2.ACKNOWLEDGE_ORDER_V2_REQUEST,
+  payload: { orderId },
+})
+
 export const logoutV2 = () => ({ type: AUTH_V2.LOGOUT_REQUEST })

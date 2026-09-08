@@ -28,3 +28,9 @@ export const getUploadedKycDocsV2 = state => state.authV2.uploadedKycDocs
 export const getMarketerLinksV2Status = state => state.authV2.marketerLinksStatus
 export const getMarketerLinksV2 = state => state.authV2.marketerLinks
 export const getMarketerLinkActionStatusV2 = state => state.authV2.marketerLinkActionStatus
+export const getOrdersV2Status = state => state.authV2.ordersV2Status
+export const getOrdersV2 = state => state.authV2.ordersV2
+export const getOrderDetailV2Status = state => state.authV2.orderDetailV2Status
+export const getOrderDetailV2 = state => state.authV2.orderDetailV2
+export const getCancelOrderV2Status = state => state.authV2.cancelOrderV2Status
+export const getCancelOrderV2Err = state => state.authV2.cancelOrderV2Err

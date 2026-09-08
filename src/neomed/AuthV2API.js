@@ -119,6 +119,24 @@ class AuthV2API {
   rejectMarketerLink = linkId => {
     return customerV2Client.post(`/marketer-links/${linkId}/reject`)
   }
+
+  // GET /customer/v1/orders?status= → {items:[Order]} (list, không có `lines`)
+  getOrders = status => {
+    return customerV2Client.get('/orders', { params: status ? { status } : undefined })
+  }
+
+  // GET /customer/v1/orders/{id} → Order (có `lines`)
+  getOrderDetail = orderId => {
+    return customerV2Client.get(`/orders/${orderId}`)
+  }
+
+  cancelOrder = (orderId, reason) => {
+    return customerV2Client.post(`/orders/${orderId}/cancel`, { reason })
+  }
+
+  acknowledgeOrder = orderId => {
+    return customerV2Client.post(`/orders/${orderId}/acknowledge`)
+  }
 }
 
 export const AuthV2 = new AuthV2API()

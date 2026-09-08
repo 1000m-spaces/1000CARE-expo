@@ -10,6 +10,8 @@ import {
   KycSubmit,
   PharmacyRegistration,
   MarketerLinks,
+  OrdersV2,
+  OrderDetailV2,
   RechargeOnline,
   ProfileScreen,
   AccountStatement,
@@ -120,6 +122,8 @@ import {
   NAVIGATION_KYC_SUBMIT,
   NAVIGATION_PHARMACY_REGISTRATION,
   NAVIGATION_MARKETER_LINKS,
+  NAVIGATION_ORDERS_V2,
+  NAVIGATION_ORDER_DETAIL_V2,
 } from './routes';
 import PaymentByNeomedScreen from '~/screens/PaymentByNeomedScreen/index';
 import AddressChooseScreen from '~/screens/AddressChooseScreen/index';
@@ -344,6 +348,20 @@ const StackNavigator = () => {
       <Stack.Screen
         name={NAVIGATION_MARKETER_LINKS}
         component={MarketerLinks}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_ORDERS_V2}
+        component={OrdersV2}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_ORDER_DETAIL_V2}
+        component={OrderDetailV2}
         options={{
           header: () => null,
         }}

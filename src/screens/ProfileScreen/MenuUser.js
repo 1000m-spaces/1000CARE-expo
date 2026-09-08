@@ -6,7 +6,8 @@ import {
   NAVIGATION_INFO_CUSTOMER, NAVIGATION_REFERRAL_SCREEN, NAVIGATION_TO_SPLASH_SCREEN,
   NAVIGATION_LIST_NOTI_SCREEN, NAVIGATION_VOUCHER, NAVIGATION_WALLET, NAVIGATION_FAVOURITE_SUPPLIER, NAVIGATION_AUTHORITY,
   NAVIGATION_KYC_SUBMIT,
-  NAVIGATION_MARKETER_LINKS
+  NAVIGATION_MARKETER_LINKS,
+  NAVIGATION_ORDERS_V2
 } from '~/navigation/routes'
 import { logout, resetCart } from '~/store/actions'
 import { getAuthStore } from '~/store/selector'
@@ -66,6 +67,16 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
       icon: group_people,
       colorIcon: brandColors.tealPrimary,
       routePath: NAVIGATION_MARKETER_LINKS,
+      isClickAvailable: true,
+    },
+    {
+      // Màn đơn hàng RIÊNG (backend mới) — chưa thay tab "Đơn hàng"
+      // chính (vẫn backend cũ), xem [[marketplace-core-business-model]].
+      text: 'Đơn hàng (bản thử nghiệm mới)',
+      background: 'rgba(11, 123, 138, 0.1)',
+      icon: credit_card,
+      colorIcon: brandColors.tealPrimary,
+      routePath: NAVIGATION_ORDERS_V2,
       isClickAvailable: true,
     },
     {

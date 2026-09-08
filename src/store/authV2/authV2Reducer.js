@@ -43,6 +43,13 @@ const initialState = {
   marketerLinksStatus: Status.DEFAULT,
   marketerLinks: [], // [{id, marketer_id, source, status, ...}]
   marketerLinkActionStatus: {}, // { [linkId]: Status } — trạng thái confirm/reject riêng từng dòng
+
+  ordersV2Status: Status.DEFAULT,
+  ordersV2: [], // list — Order[] (không có `lines`)
+  orderDetailV2Status: Status.DEFAULT,
+  orderDetailV2: null, // Order đầy đủ (có `lines`)
+  cancelOrderV2Status: Status.DEFAULT,
+  cancelOrderV2Err: '',
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -173,6 +180,40 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         marketerLinkActionStatus: { ...state.marketerLinkActionStatus, [payload.linkId]: Status.ERROR },
+      }
+
+    case AUTH_V2.GET_ORDERS_V2_LOADING:
+      return { ...state, ordersV2Status: Status.LOADING }
+    case AUTH_V2.GET_ORDERS_V2_SUCCESS:
+      return { ...state, ordersV2Status: Status.SUCCESS, ordersV2: payload.items }
+    case AUTH_V2.GET_ORDERS_V2_FAILURE:
+      return { ...state, ordersV2Status: Status.ERROR }
+
+    case AUTH_V2.GET_ORDER_DETAIL_V2_LOADING:
+      return { ...state, orderDetailV2Status: Status.LOADING }
+    case AUTH_V2.GET_ORDER_DETAIL_V2_SUCCESS:
+      return { ...state, orderDetailV2Status: Status.SUCCESS, orderDetailV2: payload.order }
+    case AUTH_V2.GET_ORDER_DETAIL_V2_FAILURE:
+      return { ...state, orderDetailV2Status: Status.ERROR }
+    case 'RESET_AUTH_V2_ORDER_DETAIL':
+      return { ...state, orderDetailV2Status: Status.DEFAULT, orderDetailV2: null }
+
+    case AUTH_V2.CANCEL_ORDER_V2_LOADING:
+      return { ...state, cancelOrderV2Status: Status.LOADING, cancelOrderV2Err: '' }
+    case AUTH_V2.CANCEL_ORDER_V2_SUCCESS:
+      return { ...state, cancelOrderV2Status: Status.SUCCESS, orderDetailV2: payload.order }
+    case AUTH_V2.CANCEL_ORDER_V2_FAILURE:
+      return { ...state, cancelOrderV2Status: Status.ERROR, cancelOrderV2Err: payload.errorMsg }
+    case 'RESET_AUTH_V2_CANCEL_ORDER':
+      return { ...state, cancelOrderV2Status: Status.DEFAULT, cancelOrderV2Err: '' }
+
+    case AUTH_V2.ACKNOWLEDGE_ORDER_V2_SUCCESS:
+      return {
+        ...state,
+        orderDetailV2:
+          state.orderDetailV2 && state.orderDetailV2.id === payload.orderId
+            ? { ...state.orderDetailV2, customer_ack_at: new Date().toISOString() }
+            : state.orderDetailV2,
       }
 
     case AUTH_V2.LOGOUT_REQUEST:

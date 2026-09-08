@@ -211,6 +211,10 @@ export const AUTH_V2 = createRequestTypes(
     'GET_MARKETER_LINKS', // GET /customer/v1/marketer-links
     'CONFIRM_MARKETER_LINK', // POST /customer/v1/marketer-links/{id}/confirm
     'REJECT_MARKETER_LINK', // POST /customer/v1/marketer-links/{id}/reject
+    'GET_ORDERS_V2', // GET /customer/v1/orders?status=
+    'GET_ORDER_DETAIL_V2', // GET /customer/v1/orders/{id}
+    'CANCEL_ORDER_V2', // POST /customer/v1/orders/{id}/cancel
+    'ACKNOWLEDGE_ORDER_V2', // POST /customer/v1/orders/{id}/acknowledge
     'LOGOUT',
   ],
   suffixTypes,
