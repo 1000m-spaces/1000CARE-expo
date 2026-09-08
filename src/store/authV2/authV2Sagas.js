@@ -1,7 +1,7 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects'
 import { AUTH_V2 } from '../actionsTypes'
 import { AuthV2 } from '~/neomed/AuthV2API'
-import { asyncStorage } from '../index'
+import { asyncStorage, store } from '../index'
 import { getMeV2 } from './authV2Selector'
 
 function* register({ payload }) {
@@ -37,7 +37,13 @@ function* login({ payload }) {
   try {
     yield put({ type: AUTH_V2.LOGIN_LOADING })
     const data = yield call({ content: AuthV2, fn: AuthV2.login }, payload.phone, payload.password)
-    AuthV2.updateToken(data.access_token)
+    // setSession lưu vào authV2TokenManager (nguồn sự thật duy nhất cho
+    // token) + tự lên lịch refresh chủ động trước khi hết hạn ~60s.
+    AuthV2.setSession({
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      expiresIn: data.expires_in,
+    })
     yield asyncStorage.setV2AccessToken(data.access_token)
     yield asyncStorage.setV2RefreshToken(data.refresh_token)
     yield put({
@@ -174,11 +180,26 @@ function* logout() {
   } catch (error) {
     // logout là idempotent phía server, bỏ qua lỗi mạng
   }
-  AuthV2.updateToken('')
+  AuthV2.clearSession()
   yield asyncStorage.clearAuthV2Session()
 }
 
 export default function* watcherSaga() {
+  // Đăng ký 1 lần lúc saga khởi động: onRefreshed persist token mới vào
+  // asyncStorage (401 giữa chừng có thể trigger refresh ở BẤT KỲ lúc
+  // nào, không chỉ trong saga login), onRefreshFailed dọn sạch phiên +
+  // reset redux khi refresh token cũng hết hạn/bị thu hồi (reuse detected).
+  AuthV2.configureTokenManager({
+    onRefreshed: data => {
+      asyncStorage.setV2AccessToken(data.access_token)
+      asyncStorage.setV2RefreshToken(data.refresh_token)
+    },
+    onRefreshFailed: () => {
+      asyncStorage.clearAuthV2Session()
+      store.dispatch({ type: 'AUTH_V2_RESET' })
+    },
+  })
+
   yield takeLatest(AUTH_V2.REGISTER_REQUEST, register)
   yield takeLatest(AUTH_V2.VERIFY_PHONE_REQUEST, verifyPhone)
   yield takeLatest(AUTH_V2.RESEND_OTP_REQUEST, resendOtp)

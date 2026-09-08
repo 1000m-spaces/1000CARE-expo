@@ -1,17 +1,32 @@
-import authV2Client, { setAuthV2Token } from './api/authV2Client'
-import customerV2Client, { setCustomerV2Token, setActiveCustomerId } from './api/customerV2Client'
+import authV2Client from './api/authV2Client'
+import customerV2Client, { setActiveCustomerId as setActiveCustomerIdOnClient } from './api/customerV2Client'
+import { setAuthV2Tokens, clearAuthV2TokenManager, configureAuthV2TokenManager } from './api/authV2TokenManager'
 
 // Client cho backend mới marketplace-core (auth/v1 + customer/v1). Tách
 // hẳn khỏi RegisterAPI/AuthAPI (backend cũ) — 2 hệ token không dùng
 // chung được. Xem [[marketplace-core-backend-migration]] trong memory.
 class AuthV2API {
-  updateToken(accessToken) {
-    setAuthV2Token(accessToken)
-    setCustomerV2Token(accessToken)
+  // saga gọi 1 lần lúc khởi tạo app để biết lưu token mới vào đâu
+  // (asyncStorage) và làm gì khi refresh thất bại hẳn (dọn phiên).
+  configureTokenManager(handlers) {
+    configureAuthV2TokenManager(handlers)
+  }
+
+  // { accessToken, refreshToken, expiresIn } — gọi sau login/refresh
+  // thành công. Đặt tại authV2TokenManager (nguồn sự thật duy nhất, cả
+  // authV2Client lẫn customerV2Client đều đọc từ đây), tự lên lịch
+  // refresh chủ động trước khi hết hạn ~60s.
+  setSession({ accessToken, refreshToken, expiresIn }) {
+    setAuthV2Tokens({ accessToken, refreshToken, expiresIn })
+  }
+
+  clearSession() {
+    clearAuthV2TokenManager()
+    setActiveCustomerIdOnClient(null)
   }
 
   setActiveCustomerId(customerId) {
-    setActiveCustomerId(customerId)
+    setActiveCustomerIdOnClient(customerId)
   }
 
   register = (phone, password) => {

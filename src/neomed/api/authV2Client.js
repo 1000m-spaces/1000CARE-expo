@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { MARKETPLACE_CORE_BASE } from '~/constants/config'
+import { getAuthV2AccessToken, retryWithRefreshedToken } from './authV2TokenManager'
 
 // Map mã lỗi ổn định (`code`) của backend mới sang message tiếng Việt hiển
 // thị được — theo bảng "Mã lỗi toàn hệ thống" trong auth/openapi.yaml.
@@ -49,22 +50,26 @@ const authV2Client = axios.create({
   },
 })
 
-let accessToken = null
-
-export const setAuthV2Token = token => {
-  accessToken = token
+// Token đọc trực tiếp từ authV2TokenManager (nguồn sự thật duy nhất) ở
+// MỖI request thay vì set 1 lần vào defaults.headers — để lần refresh
+// nào cũng có hiệu lực ngay, không cần đồng bộ lại header thủ công.
+authV2Client.interceptors.request.use(config => {
+  const token = getAuthV2AccessToken()
   if (token) {
-    authV2Client.defaults.headers.common['Authorization'] = `Bearer ${token}`
-  } else {
-    delete authV2Client.defaults.headers.common['Authorization']
+    config.headers.Authorization = `Bearer ${token}`
   }
-}
-
-export const getAuthV2Token = () => accessToken
+  return config
+})
 
 authV2Client.interceptors.response.use(
   response => response.data,
   error => {
+    // 401 (không phải chính request /refresh) → thử refresh 1 lần
+    // (single-flight, xem authV2TokenManager) rồi gọi lại đúng 1 lần.
+    // Refresh thất bại thì vẫn trả lỗi 401 gốc (đúng nghĩa "hết phiên").
+    const retry = retryWithRefreshedToken(authV2Client, error)
+    if (retry) return retry.catch(() => Promise.reject(parseAuthV2Error(error)))
+
     if (__DEV__) {
       console.log('❌ AuthV2 API Error:', error?.response?.status, error?.response?.data)
     }
