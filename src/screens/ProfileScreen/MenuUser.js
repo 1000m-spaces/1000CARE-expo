@@ -5,7 +5,8 @@ import strings from '~/i18n'
 import {
   NAVIGATION_INFO_CUSTOMER, NAVIGATION_REFERRAL_SCREEN, NAVIGATION_TO_SPLASH_SCREEN,
   NAVIGATION_LIST_NOTI_SCREEN, NAVIGATION_VOUCHER, NAVIGATION_WALLET, NAVIGATION_FAVOURITE_SUPPLIER, NAVIGATION_AUTHORITY,
-  NAVIGATION_KYC_SUBMIT
+  NAVIGATION_KYC_SUBMIT,
+  NAVIGATION_MARKETER_LINKS
 } from '~/navigation/routes'
 import { logout, resetCart } from '~/store/actions'
 import { getAuthStore } from '~/store/selector'
@@ -57,6 +58,14 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
       icon: safety_certificate,
       colorIcon: brandColors.tealPrimary,
       routePath: NAVIGATION_KYC_SUBMIT,
+      isClickAvailable: true,
+    },
+    {
+      text: 'Liên kết Marketer',
+      background: 'rgba(11, 123, 138, 0.1)',
+      icon: group_people,
+      colorIcon: brandColors.tealPrimary,
+      routePath: NAVIGATION_MARKETER_LINKS,
       isClickAvailable: true,
     },
     {

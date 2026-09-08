@@ -55,4 +55,16 @@ export const uploadKycDocV2 = asset => ({
 
 export const resetUploadKycDocV2 = () => ({ type: 'RESET_AUTH_V2_UPLOAD_KYC_DOC' })
 
+export const getMarketerLinksV2 = () => ({ type: AUTH_V2.GET_MARKETER_LINKS_REQUEST })
+
+export const confirmMarketerLinkV2 = linkId => ({
+  type: AUTH_V2.CONFIRM_MARKETER_LINK_REQUEST,
+  payload: { linkId },
+})
+
+export const rejectMarketerLinkV2 = linkId => ({
+  type: AUTH_V2.REJECT_MARKETER_LINK_REQUEST,
+  payload: { linkId },
+})
+
 export const logoutV2 = () => ({ type: AUTH_V2.LOGOUT_REQUEST })

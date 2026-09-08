@@ -74,3 +74,4 @@ export const NAVIGATION_VIETQR_PAYMENT = 'VietQrPayment';
 export const NAVIGATION_ACCOUNT_PENDING_APPROVAL = 'AccountPendingApproval';
 export const NAVIGATION_KYC_SUBMIT = 'KycSubmit';
 export const NAVIGATION_PHARMACY_REGISTRATION = 'PharmacyRegistration';
+export const NAVIGATION_MARKETER_LINKS = 'MarketerLinks';

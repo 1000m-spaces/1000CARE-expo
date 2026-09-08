@@ -171,6 +171,36 @@ function* uploadKycDoc({ payload }) {
   }
 }
 
+function* getMarketerLinks() {
+  try {
+    yield put({ type: AUTH_V2.GET_MARKETER_LINKS_LOADING })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getMarketerLinks })
+    yield put({ type: AUTH_V2.GET_MARKETER_LINKS_SUCCESS, payload: { items: data?.items || [] } })
+  } catch (error) {
+    yield put({ type: AUTH_V2.GET_MARKETER_LINKS_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
+function* confirmMarketerLink({ payload }) {
+  try {
+    yield put({ type: AUTH_V2.CONFIRM_MARKETER_LINK_LOADING, payload })
+    yield call({ content: AuthV2, fn: AuthV2.confirmMarketerLink }, payload.linkId)
+    yield put({ type: AUTH_V2.CONFIRM_MARKETER_LINK_SUCCESS, payload })
+  } catch (error) {
+    yield put({ type: AUTH_V2.CONFIRM_MARKETER_LINK_FAILURE, payload: { ...payload, errorMsg: error?.message } })
+  }
+}
+
+function* rejectMarketerLink({ payload }) {
+  try {
+    yield put({ type: AUTH_V2.REJECT_MARKETER_LINK_LOADING, payload })
+    yield call({ content: AuthV2, fn: AuthV2.rejectMarketerLink }, payload.linkId)
+    yield put({ type: AUTH_V2.REJECT_MARKETER_LINK_SUCCESS, payload })
+  } catch (error) {
+    yield put({ type: AUTH_V2.REJECT_MARKETER_LINK_FAILURE, payload: { ...payload, errorMsg: error?.message } })
+  }
+}
+
 function* logout() {
   try {
     const refreshToken = yield asyncStorage.getV2RefreshToken()
@@ -210,5 +240,8 @@ export default function* watcherSaga() {
   yield takeLatest(AUTH_V2.GET_KYC_REQUEST, getKyc)
   yield takeLatest(AUTH_V2.SUBMIT_KYC_REQUEST, submitKyc)
   yield takeLatest(AUTH_V2.UPLOAD_KYC_DOC_REQUEST, uploadKycDoc)
+  yield takeLatest(AUTH_V2.GET_MARKETER_LINKS_REQUEST, getMarketerLinks)
+  yield takeLatest(AUTH_V2.CONFIRM_MARKETER_LINK_REQUEST, confirmMarketerLink)
+  yield takeLatest(AUTH_V2.REJECT_MARKETER_LINK_REQUEST, rejectMarketerLink)
   yield takeLatest(AUTH_V2.LOGOUT_REQUEST, logout)
 }

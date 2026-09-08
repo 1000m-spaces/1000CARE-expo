@@ -9,6 +9,7 @@ import {
   AccountPendingApproval,
   KycSubmit,
   PharmacyRegistration,
+  MarketerLinks,
   RechargeOnline,
   ProfileScreen,
   AccountStatement,
@@ -118,6 +119,7 @@ import {
   NAVIGATION_ACCOUNT_PENDING_APPROVAL,
   NAVIGATION_KYC_SUBMIT,
   NAVIGATION_PHARMACY_REGISTRATION,
+  NAVIGATION_MARKETER_LINKS,
 } from './routes';
 import PaymentByNeomedScreen from '~/screens/PaymentByNeomedScreen/index';
 import AddressChooseScreen from '~/screens/AddressChooseScreen/index';
@@ -335,6 +337,13 @@ const StackNavigator = () => {
       <Stack.Screen
         name={NAVIGATION_PHARMACY_REGISTRATION}
         component={PharmacyRegistration}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_MARKETER_LINKS}
+        component={MarketerLinks}
         options={{
           header: () => null,
         }}

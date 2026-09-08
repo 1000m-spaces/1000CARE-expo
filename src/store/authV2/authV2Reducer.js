@@ -39,6 +39,10 @@ const initialState = {
   uploadKycDocStatus: Status.DEFAULT,
   uploadKycDocErr: '',
   uploadedKycDocs: [], // [{assetId, kind, previewUri}] tích luỹ qua nhiều lần upload
+
+  marketerLinksStatus: Status.DEFAULT,
+  marketerLinks: [], // [{id, marketer_id, source, status, ...}]
+  marketerLinkActionStatus: {}, // { [linkId]: Status } — trạng thái confirm/reject riêng từng dòng
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -134,6 +138,42 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, uploadKycDocStatus: Status.ERROR, uploadKycDocErr: payload.errorMsg }
     case 'RESET_AUTH_V2_UPLOAD_KYC_DOC':
       return { ...state, uploadKycDocStatus: Status.DEFAULT, uploadKycDocErr: '' }
+
+    case AUTH_V2.GET_MARKETER_LINKS_LOADING:
+      return { ...state, marketerLinksStatus: Status.LOADING }
+    case AUTH_V2.GET_MARKETER_LINKS_SUCCESS:
+      return { ...state, marketerLinksStatus: Status.SUCCESS, marketerLinks: payload.items }
+    case AUTH_V2.GET_MARKETER_LINKS_FAILURE:
+      return { ...state, marketerLinksStatus: Status.ERROR }
+
+    case AUTH_V2.CONFIRM_MARKETER_LINK_LOADING:
+    case AUTH_V2.REJECT_MARKETER_LINK_LOADING:
+      return {
+        ...state,
+        marketerLinkActionStatus: { ...state.marketerLinkActionStatus, [payload.linkId]: Status.LOADING },
+      }
+    case AUTH_V2.CONFIRM_MARKETER_LINK_SUCCESS:
+      return {
+        ...state,
+        marketerLinkActionStatus: { ...state.marketerLinkActionStatus, [payload.linkId]: Status.SUCCESS },
+        marketerLinks: state.marketerLinks.map(item =>
+          item.id === payload.linkId ? { ...item, status: 'confirmed' } : item,
+        ),
+      }
+    case AUTH_V2.REJECT_MARKETER_LINK_SUCCESS:
+      return {
+        ...state,
+        marketerLinkActionStatus: { ...state.marketerLinkActionStatus, [payload.linkId]: Status.SUCCESS },
+        marketerLinks: state.marketerLinks.map(item =>
+          item.id === payload.linkId ? { ...item, status: 'rejected' } : item,
+        ),
+      }
+    case AUTH_V2.CONFIRM_MARKETER_LINK_FAILURE:
+    case AUTH_V2.REJECT_MARKETER_LINK_FAILURE:
+      return {
+        ...state,
+        marketerLinkActionStatus: { ...state.marketerLinkActionStatus, [payload.linkId]: Status.ERROR },
+      }
 
     case AUTH_V2.LOGOUT_REQUEST:
     case 'AUTH_V2_RESET':

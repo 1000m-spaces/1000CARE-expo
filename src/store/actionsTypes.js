@@ -208,6 +208,9 @@ export const AUTH_V2 = createRequestTypes(
     'GET_KYC', // GET /customer/v1/kyc
     'SUBMIT_KYC', // POST /customer/v1/kyc
     'UPLOAD_KYC_DOC', // upload 1 ảnh giấy phép (2 bước: create + confirm)
+    'GET_MARKETER_LINKS', // GET /customer/v1/marketer-links
+    'CONFIRM_MARKETER_LINK', // POST /customer/v1/marketer-links/{id}/confirm
+    'REJECT_MARKETER_LINK', // POST /customer/v1/marketer-links/{id}/reject
     'LOGOUT',
   ],
   suffixTypes,

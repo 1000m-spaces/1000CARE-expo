@@ -25,3 +25,6 @@ export const getSubmitKycV2Err = state => state.authV2.submitKycErr
 export const getUploadKycDocV2Status = state => state.authV2.uploadKycDocStatus
 export const getUploadKycDocV2Err = state => state.authV2.uploadKycDocErr
 export const getUploadedKycDocsV2 = state => state.authV2.uploadedKycDocs
+export const getMarketerLinksV2Status = state => state.authV2.marketerLinksStatus
+export const getMarketerLinksV2 = state => state.authV2.marketerLinks
+export const getMarketerLinkActionStatusV2 = state => state.authV2.marketerLinkActionStatus

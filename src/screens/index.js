@@ -64,6 +64,7 @@ import AllFilter from './FilterProduct/AllFilter';
 import AccountPendingApproval from './AccountPendingApproval';
 import KycSubmit from './KycSubmit';
 import PharmacyRegistration from './PharmacyRegistration';
+import MarketerLinks from './MarketerLinks';
 import AuthoritySupplier from './AuthoritySupplier/AuthoritySupplier';
 export {
   MainScreen,
@@ -133,4 +134,5 @@ export {
   AccountPendingApproval,
   KycSubmit,
   PharmacyRegistration,
+  MarketerLinks,
 };

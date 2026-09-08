@@ -106,6 +106,19 @@ class AuthV2API {
   confirmMediaUpload = uploadId => {
     return customerV2Client.post(`/media/uploads/${uploadId}/confirm`)
   }
+
+  // GET /customer/v1/marketer-links — {items:[{id, marketer_id, source, status, ...}]}
+  getMarketerLinks = () => {
+    return customerV2Client.get('/marketer-links')
+  }
+
+  confirmMarketerLink = linkId => {
+    return customerV2Client.post(`/marketer-links/${linkId}/confirm`)
+  }
+
+  rejectMarketerLink = linkId => {
+    return customerV2Client.post(`/marketer-links/${linkId}/reject`)
+  }
 }
 
 export const AuthV2 = new AuthV2API()
