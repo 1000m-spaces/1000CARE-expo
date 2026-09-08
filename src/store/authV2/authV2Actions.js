@@ -30,6 +30,13 @@ export const meV2 = () => ({ type: AUTH_V2.ME_REQUEST })
 
 export const membershipsV2 = () => ({ type: AUTH_V2.MEMBERSHIPS_REQUEST })
 
+export const registerCustomerV2 = payload => ({
+  type: AUTH_V2.REGISTER_CUSTOMER_REQUEST,
+  payload,
+})
+
+export const resetRegisterCustomerV2 = () => ({ type: 'RESET_AUTH_V2_REGISTER_CUSTOMER' })
+
 export const getKycV2 = () => ({ type: AUTH_V2.GET_KYC_REQUEST })
 
 export const submitKycV2 = docs => ({

@@ -49,6 +49,20 @@ class AuthV2API {
     return authV2Client.get('/memberships')
   }
 
+  // POST /customer/v1/registration — nhà thuốc TỰ đăng ký (đính chính
+  // 2026-09-08: không cần backoffice tạo trước như tài liệu ban đầu nói).
+  // Tạo customer + gắn identity hiện tại làm owner, kyc_status='submitted'.
+  registerCustomer = ({ name, address, contactPhone, pharmacistName, email, docs = [] }) => {
+    return customerV2Client.post('/registration', {
+      name,
+      address,
+      contact_phone: contactPhone,
+      pharmacist_name: pharmacistName,
+      email,
+      docs,
+    })
+  }
+
   getKyc = () => {
     return customerV2Client.get('/kyc')
   }

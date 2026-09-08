@@ -16,6 +16,8 @@ export const getMeV2 = state => ({
 })
 export const getMembershipsV2Status = state => state.authV2.membershipsStatus
 export const getMembershipsV2 = state => state.authV2.memberships
+export const getRegisterCustomerV2Status = state => state.authV2.registerCustomerStatus
+export const getRegisterCustomerV2Err = state => state.authV2.registerCustomerErr
 export const getKycV2Status = state => state.authV2.kycStatus
 export const getKycV2 = state => state.authV2.kyc
 export const getSubmitKycV2Status = state => state.authV2.submitKycStatus

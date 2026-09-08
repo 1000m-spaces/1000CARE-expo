@@ -204,6 +204,7 @@ export const AUTH_V2 = createRequestTypes(
     'REFRESH', // POST /auth/v1/refresh
     'ME', // GET /customer/v1/me
     'MEMBERSHIPS', // GET /auth/v1/memberships — check đã được duyệt vào nhà thuốc chưa
+    'REGISTER_CUSTOMER', // POST /customer/v1/registration — nhà thuốc tự đăng ký
     'GET_KYC', // GET /customer/v1/kyc
     'SUBMIT_KYC', // POST /customer/v1/kyc
     'UPLOAD_KYC_DOC', // upload 1 ảnh giấy phép (2 bước: create + confirm)

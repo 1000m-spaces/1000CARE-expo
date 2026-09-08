@@ -63,6 +63,7 @@ import FilterProduct from './FilterProduct';
 import AllFilter from './FilterProduct/AllFilter';
 import AccountPendingApproval from './AccountPendingApproval';
 import KycSubmit from './KycSubmit';
+import PharmacyRegistration from './PharmacyRegistration';
 import AuthoritySupplier from './AuthoritySupplier/AuthoritySupplier';
 export {
   MainScreen,
@@ -131,4 +132,5 @@ export {
   AllFilter,
   AccountPendingApproval,
   KycSubmit,
+  PharmacyRegistration,
 };

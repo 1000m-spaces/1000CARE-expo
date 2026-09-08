@@ -1,28 +1,57 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import { CommonActions } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import PressScale from '~/design-system/PressScale';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
 import { membershipsV2, logoutV2 } from '~/store/authV2/authV2Actions';
 import { getMembershipsV2Status, getMembershipsV2 } from '~/store/authV2/authV2Selector';
 import Status from '~/common/Status/Status';
-import { NAVIGATION_TO_LOGIN_SCREEN, NAVIGATION_TO_MAIN_SCREEN } from '~/navigation/routes';
+import {
+  NAVIGATION_TO_LOGIN_SCREEN,
+  NAVIGATION_TO_MAIN_SCREEN,
+  NAVIGATION_PHARMACY_REGISTRATION,
+} from '~/navigation/routes';
 import { brandColors, brandGradients } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
+// Key cục bộ đánh dấu "đã gửi đăng ký nhà thuốc từ máy này" — backend
+// không có cách phân biệt "chưa từng đăng ký" với "đã đăng ký, đang chờ
+// duyệt" chỉ qua GET /auth/v1/memberships (cả 2 đều trả customers rỗng
+// cho tới khi có membership), nên dùng cờ local để quyết định hiện nút
+// "Đăng ký nhà thuốc" hay chỉ hiện "đang chờ duyệt".
+const REGISTERED_FLAG_KEY = 'v2_pharmacy_registration_submitted';
+
 // Hiện sau khi đăng nhập (backend mới marketplace-core) mà
 // GET /auth/v1/memberships trả customers rỗng — identity có tài khoản
-// nhưng CHƯA được backoffice gắn vào nhà thuốc nào, mọi API
+// nhưng CHƯA được backoffice duyệt vào nhà thuốc nào, mọi API
 // /customer/v1/* khác đều trả 403 not_a_member. Xem
-// [[marketplace-core-business-model]] mục "Duyệt user".
+// [[marketplace-core-business-model]] mục "Duyệt user". Đính chính
+// 2026-09-08: nhà thuốc CÓ thể tự đăng ký (POST /customer/v1/registration)
+// thay vì phải chờ backoffice tạo trước.
 const AccountPendingApproval = ({ navigation }) => {
   const dispatch = useDispatch();
   const membershipsStatus = useSelector(state => getMembershipsV2Status(state));
   const memberships = useSelector(state => getMembershipsV2(state));
   const checking = membershipsStatus === Status.LOADING;
+
+  const [hasRegistered, setHasRegistered] = useState(null); // null = đang đọc storage
+
+  useEffect(() => {
+    AsyncStorage.getItem(REGISTERED_FLAG_KEY).then(value => setHasRegistered(value === 'true'));
+  }, []);
+
+  // Mỗi lần quay lại màn này (vd sau khi gửi đăng ký xong) tự check lại.
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      AsyncStorage.getItem(REGISTERED_FLAG_KEY).then(value => setHasRegistered(value === 'true'));
+      dispatch(membershipsV2());
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     if (
@@ -53,30 +82,57 @@ const AccountPendingApproval = ({ navigation }) => {
     );
   };
 
+  const onGoRegister = () => {
+    AsyncStorage.setItem(REGISTERED_FLAG_KEY, 'true');
+    setHasRegistered(true);
+    navigation.navigate(NAVIGATION_PHARMACY_REGISTRATION);
+  };
+
   return (
     <AppBackground>
       <View style={styles.content}>
         <View style={styles.iconBadge}>
           <Icon type="feather" name="clock" color={brandColors.tealDark} size={s(34)} />
         </View>
-        <Text style={styles.title}>Tài khoản đang chờ duyệt</Text>
+        <Text style={styles.title}>
+          {hasRegistered ? 'Hồ sơ nhà thuốc đang chờ duyệt' : 'Tài khoản chưa có nhà thuốc'}
+        </Text>
         <Text style={styles.message}>
-          Tài khoản của bạn chưa được gắn vào nhà thuốc nào trên hệ thống.
-          Vui lòng liên hệ quản trị viên (1000CARE) để được thêm vào nhà
-          thuốc của bạn, sau đó quay lại kiểm tra.
+          {hasRegistered
+            ? 'Đội ngũ 1000CARE đang xét duyệt hồ sơ nhà thuốc của bạn. Vui lòng quay lại kiểm tra sau.'
+            : 'Bạn chưa đăng ký nhà thuốc nào trên hệ thống. Đăng ký ngay để bắt đầu sử dụng.'}
         </Text>
 
-        <PressScale onPress={onCheckAgain} disabled={checking} style={styles.checkButton}>
-          <LinearGradient
-            colors={checking ? [brandColors.border, brandColors.border] : brandGradients.primary}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.checkButtonGradient}
-          >
-            <Text style={styles.checkButtonText}>
-              {checking ? 'Đang kiểm tra...' : 'Kiểm tra lại'}
+        {!hasRegistered && (
+          <PressScale onPress={onGoRegister} style={styles.checkButton}>
+            <LinearGradient
+              colors={brandGradients.primary}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.checkButtonGradient}
+            >
+              <Text style={styles.checkButtonText}>Đăng ký nhà thuốc</Text>
+            </LinearGradient>
+          </PressScale>
+        )}
+
+        <PressScale onPress={onCheckAgain} disabled={checking} style={hasRegistered ? styles.checkButton : styles.secondaryButton}>
+          {hasRegistered ? (
+            <LinearGradient
+              colors={checking ? [brandColors.border, brandColors.border] : brandGradients.primary}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.checkButtonGradient}
+            >
+              <Text style={styles.checkButtonText}>
+                {checking ? 'Đang kiểm tra...' : 'Kiểm tra lại'}
+              </Text>
+            </LinearGradient>
+          ) : (
+            <Text style={styles.secondaryButtonText}>
+              {checking ? 'Đang kiểm tra...' : 'Đã đăng ký rồi, kiểm tra lại'}
             </Text>
-          </LinearGradient>
+          )}
         </PressScale>
 
         <PressScale onPress={onLogout} style={styles.logoutButton}>
@@ -138,6 +194,15 @@ const styles = StyleSheet.create({
     color: brandColors.surface,
     fontWeight: '700',
     fontSize: fs(15),
+  },
+  secondaryButton: {
+    paddingVertical: s(12),
+    marginBottom: s(6),
+  },
+  secondaryButtonText: {
+    color: brandColors.tealPrimary,
+    fontWeight: '700',
+    fontSize: fs(13.5),
   },
   logoutButton: {
     paddingVertical: s(10),

@@ -27,6 +27,9 @@ const initialState = {
   membershipsStatus: Status.DEFAULT,
   memberships: null, // {suppliers[], customers[], marketer?, backoffice?}
 
+  registerCustomerStatus: Status.DEFAULT,
+  registerCustomerErr: '',
+
   kycStatus: Status.DEFAULT,
   kyc: null, // {kyc_status, kyc_note, docs[]}
 
@@ -93,6 +96,15 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, membershipsStatus: Status.SUCCESS, memberships: payload.memberships }
     case AUTH_V2.MEMBERSHIPS_FAILURE:
       return { ...state, membershipsStatus: Status.ERROR }
+
+    case AUTH_V2.REGISTER_CUSTOMER_LOADING:
+      return { ...state, registerCustomerStatus: Status.LOADING, registerCustomerErr: '' }
+    case AUTH_V2.REGISTER_CUSTOMER_SUCCESS:
+      return { ...state, registerCustomerStatus: Status.SUCCESS }
+    case AUTH_V2.REGISTER_CUSTOMER_FAILURE:
+      return { ...state, registerCustomerStatus: Status.ERROR, registerCustomerErr: payload.errorMsg }
+    case 'RESET_AUTH_V2_REGISTER_CUSTOMER':
+      return { ...state, registerCustomerStatus: Status.DEFAULT, registerCustomerErr: '' }
 
     case AUTH_V2.GET_KYC_LOADING:
       return { ...state, kycStatus: Status.LOADING }

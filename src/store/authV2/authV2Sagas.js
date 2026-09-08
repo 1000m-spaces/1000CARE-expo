@@ -94,6 +94,19 @@ function* me() {
   }
 }
 
+function* registerCustomer({ payload }) {
+  try {
+    yield put({ type: AUTH_V2.REGISTER_CUSTOMER_LOADING })
+    yield call({ content: AuthV2, fn: AuthV2.registerCustomer }, payload)
+    yield put({ type: AUTH_V2.REGISTER_CUSTOMER_SUCCESS })
+    // Đăng ký xong nhiều khả năng membership có ngay (owner) — check lại
+    // để tự chuyển màn nếu AccountPendingApproval đang lắng nghe.
+    yield put({ type: AUTH_V2.MEMBERSHIPS_REQUEST })
+  } catch (error) {
+    yield put({ type: AUTH_V2.REGISTER_CUSTOMER_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
 function* getKyc() {
   try {
     yield put({ type: AUTH_V2.GET_KYC_LOADING })
@@ -172,6 +185,7 @@ export default function* watcherSaga() {
   yield takeLatest(AUTH_V2.LOGIN_REQUEST, login)
   yield takeLatest(AUTH_V2.ME_REQUEST, me)
   yield takeLatest(AUTH_V2.MEMBERSHIPS_REQUEST, memberships)
+  yield takeLatest(AUTH_V2.REGISTER_CUSTOMER_REQUEST, registerCustomer)
   yield takeLatest(AUTH_V2.GET_KYC_REQUEST, getKyc)
   yield takeLatest(AUTH_V2.SUBMIT_KYC_REQUEST, submitKyc)
   yield takeLatest(AUTH_V2.UPLOAD_KYC_DOC_REQUEST, uploadKycDoc)

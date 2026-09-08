@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, ActionSheetIOS, Platform, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import PressScale from '~/design-system/PressScale';
 import LiquidGlassView from '~/design-system/LiquidGlassView';
 import AppBackground from '~/design-system/AppBackground';
@@ -12,16 +11,12 @@ import {
   getKycV2 as getKycV2Action,
   submitKycV2,
   resetSubmitKycV2,
-  uploadKycDocV2,
-  resetUploadKycDocV2,
 } from '~/store/authV2/authV2Actions';
 import {
   getKycV2Status,
   getKycV2,
   getSubmitKycV2Status,
   getSubmitKycV2Err,
-  getUploadKycDocV2Status,
-  getUploadKycDocV2Err,
   getUploadedKycDocsV2,
 } from '~/store/authV2/authV2Selector';
 import Status from '~/common/Status/Status';
@@ -49,8 +44,8 @@ const KycSubmit = ({ navigation }) => {
   const kyc = useSelector(state => getKycV2(state));
   const submitStatus = useSelector(state => getSubmitKycV2Status(state));
   const submitErr = useSelector(state => getSubmitKycV2Err(state));
-  const uploadStatus = useSelector(state => getUploadKycDocV2Status(state));
-  const uploadErr = useSelector(state => getUploadKycDocV2Err(state));
+  // Luôn rỗng cho tới khi backend mở FR-KYC-MEDIA (upload ảnh KYC) — giữ
+  // selector/hiển thị sẵn để không phải sửa lại UI khi API sẵn sàng.
   const uploadedDocs = useSelector(state => getUploadedKycDocsV2(state));
 
   const [showError, setShowError] = useState('');
@@ -60,61 +55,17 @@ const KycSubmit = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (uploadErr) setShowError(uploadErr);
-  }, [uploadErr]);
-
-  useEffect(() => {
     if (submitErr) setShowError(submitErr);
   }, [submitErr]);
 
   const currentStatus = kyc?.kyc_status || 'unverified';
   const statusInfo = KYC_STATUS_LABEL[currentStatus] || KYC_STATUS_LABEL.unverified;
   const canEdit = currentStatus === 'unverified' || currentStatus === 'rejected';
-  const uploading = uploadStatus === Status.LOADING;
   const submitting = submitStatus === Status.LOADING;
 
-  const addPhoto = source => {
-    const options = { mediaType: 'photo', quality: 0.8 };
-    const onPicked = response => {
-      const picked = response?.assets?.[0];
-      if (!picked) return;
-      dispatch(
-        uploadKycDocV2({
-          uri: picked.uri,
-          mime: picked.type || 'image/jpeg',
-          sizeBytes: picked.fileSize || 0,
-          fileName: picked.fileName || `gpp-${Date.now()}.jpg`,
-          kind: 'gpp',
-        }),
-      );
-    };
-    if (source === 'camera') {
-      launchCamera(options, onPicked);
-    } else {
-      launchImageLibrary(options, onPicked);
-    }
-  };
-
-  const onAddPhotoPress = () => {
-    if (Platform.OS === 'ios') {
-      ActionSheetIOS.showActionSheetWithOptions(
-        { options: ['Huỷ', 'Chụp ảnh', 'Chọn từ thư viện'], cancelButtonIndex: 0 },
-        buttonIndex => {
-          if (buttonIndex === 1) addPhoto('camera');
-          if (buttonIndex === 2) addPhoto('library');
-        },
-      );
-    } else {
-      Alert.alert('Ảnh giấy phép GPP', '', [
-        { text: 'Huỷ', style: 'cancel' },
-        { text: 'Chụp ảnh', onPress: () => addPhoto('camera') },
-        { text: 'Chọn từ thư viện', onPress: () => addPhoto('library') },
-      ]);
-    }
-  };
-
+  // Chưa có ảnh thật (FR-KYC-MEDIA chưa mở) nên gửi docs rỗng — vẫn gọi
+  // API thật để test được chuỗi trạng thái kyc_status, không mock kết quả.
   const onSubmit = () => {
-    if (uploadedDocs.length === 0) return;
     dispatch(submitKycV2(uploadedDocs.map(d => ({ asset_id: d.assetId, kind: d.kind }))));
   };
 
@@ -150,29 +101,23 @@ const KycSubmit = ({ navigation }) => {
                 {uploadedDocs.map((doc, index) => (
                   <Image key={`${doc.assetId}-${index}`} source={{ uri: doc.previewUri }} style={styles.photoThumb} />
                 ))}
-                <PressScale onPress={onAddPhotoPress} disabled={uploading} style={styles.addPhotoTile}>
-                  {uploading ? (
-                    <Text style={styles.addPhotoText}>...</Text>
-                  ) : (
-                    <>
-                      <Icon type="feather" name="camera" color={brandColors.tealDark} size={s(22)} />
-                      <Text style={styles.addPhotoText}>Thêm ảnh</Text>
-                    </>
-                  )}
+                {/* Tải ảnh KYC (purpose=legal_doc, private) chưa chạy được
+                    — backend chưa mở endpoint upload phía surface customer
+                    (FR-KYC-MEDIA, xem [[marketplace-core-business-model]]).
+                    Khoá nút, không gọi API sẽ chắc chắn lỗi. */}
+                <PressScale disabled style={styles.addPhotoTile}>
+                  <Icon type="feather" name="camera-off" color={brandColors.mutedLight} size={s(22)} />
+                  <Text style={styles.addPhotoText}>Chưa hỗ trợ</Text>
                 </PressScale>
               </View>
+              <Text style={styles.noteText}>
+                Tính năng tải ảnh giấy phép đang chờ đội backend hoàn
+                thiện. Bạn vẫn có thể gửi hồ sơ trước, bổ sung ảnh sau.
+              </Text>
 
-              <PressScale
-                onPress={onSubmit}
-                disabled={uploadedDocs.length === 0 || submitting}
-                style={styles.submitButton}
-              >
+              <PressScale onPress={onSubmit} disabled={submitting} style={styles.submitButton}>
                 <LinearGradient
-                  colors={
-                    uploadedDocs.length === 0 || submitting
-                      ? [brandColors.border, brandColors.border]
-                      : brandGradients.primary
-                  }
+                  colors={submitting ? [brandColors.border, brandColors.border] : brandGradients.primary}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={styles.submitButtonGradient}
@@ -192,7 +137,6 @@ const KycSubmit = ({ navigation }) => {
         isOpen={!!showError}
         onClose={() => {
           setShowError('');
-          dispatch(resetUploadKycDocV2());
           dispatch(resetSubmitKycV2());
         }}
       />
@@ -290,9 +234,16 @@ const styles = StyleSheet.create({
     gap: s(4),
   },
   addPhotoText: {
-    color: brandColors.tealDark,
+    color: brandColors.mutedLight,
     fontSize: fs(11),
     fontWeight: '700',
+  },
+  noteText: {
+    color: brandColors.mutedLight,
+    fontSize: fs(11.5),
+    lineHeight: fs(17),
+    fontWeight: '600',
+    marginBottom: s(20),
   },
   submitButton: {
     width: '100%',
