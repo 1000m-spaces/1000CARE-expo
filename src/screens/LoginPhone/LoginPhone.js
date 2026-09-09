@@ -17,7 +17,11 @@ import ErrorView from '~/common/ErrorView';
 import { Icon } from '~/common/index';
 import AppBackground from '~/design-system/AppBackground';
 import strings from '~/i18n';
-import { logoNeoMed } from '~/assets/constants';
+// logoNeoMed (logo1000M.png) là logo công ty mẹ "1000M", có nền vuông
+// teal ĐẶC luôn trong file ảnh — không phải logo 1000CARE. Dùng
+// splash-logo-mark (mark trắng trong suốt, giống màn Splash) + tintColor
+// để ra đúng logo 1000CARE, không còn bị vuông teal bao quanh.
+const logo1000care = require('~/assets/configNeoMed/splash-logo-mark.png');
 import { NAVIGATION_TO_MAIN_SCREEN, NAVIGATION_ACCOUNT_PENDING_APPROVAL } from '~/navigation/routes';
 import Status from '~/common/Status/Status';
 import { Fonts } from '~/assets/config';
@@ -86,7 +90,11 @@ const LoginPhone = ({ navigation }) => {
 
         <View style={styles.content}>
           <View style={styles.logoBadge}>
-            <Image source={logoNeoMed} resizeMode="contain" style={styles.logo} />
+            <Image
+              source={logo1000care}
+              resizeMode="contain"
+              style={[styles.logo, { tintColor: brandColors.tealPrimary }]}
+            />
           </View>
           <Text style={styles.brandName}>1000CARE</Text>
           <Text style={styles.title}>{strings.loginScreen.title}</Text>
@@ -178,18 +186,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoBadge: {
-    width: s(76),
-    height: s(76),
-    borderRadius: s(22),
-    backgroundColor: brandColors.tealLight,
+    width: s(96),
+    height: s(96),
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: s(14),
-    overflow: 'hidden',
+    marginBottom: s(10),
   },
   logo: {
-    width: '72%',
-    height: '72%',
+    width: '100%',
+    height: '100%',
   },
   brandName: {
     fontFamily: Fonts.bold,
