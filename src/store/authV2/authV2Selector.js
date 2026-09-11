@@ -34,3 +34,5 @@ export const getOrderDetailV2Status = state => state.authV2.orderDetailV2Status
 export const getOrderDetailV2 = state => state.authV2.orderDetailV2
 export const getCancelOrderV2Status = state => state.authV2.cancelOrderV2Status
 export const getCancelOrderV2Err = state => state.authV2.cancelOrderV2Err
+export const getNotificationsV2Status = state => state.authV2.notificationsV2Status
+export const getNotificationsV2 = state => state.authV2.notificationsV2

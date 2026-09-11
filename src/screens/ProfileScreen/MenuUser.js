@@ -7,7 +7,8 @@ import {
   NAVIGATION_LIST_NOTI_SCREEN, NAVIGATION_VOUCHER, NAVIGATION_WALLET, NAVIGATION_FAVOURITE_SUPPLIER, NAVIGATION_AUTHORITY,
   NAVIGATION_KYC_SUBMIT,
   NAVIGATION_MARKETER_LINKS,
-  NAVIGATION_ORDERS_V2
+  NAVIGATION_ORDERS_V2,
+  NAVIGATION_NOTIFICATIONS_V2
 } from '~/navigation/routes'
 import { logout, resetCart } from '~/store/actions'
 import { getAuthStore } from '~/store/selector'
@@ -77,6 +78,14 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
       icon: credit_card,
       colorIcon: brandColors.tealPrimary,
       routePath: NAVIGATION_ORDERS_V2,
+      isClickAvailable: true,
+    },
+    {
+      text: 'Thông báo (bản thử nghiệm mới)',
+      background: 'rgba(11, 123, 138, 0.1)',
+      icon: mail,
+      colorIcon: brandColors.tealPrimary,
+      routePath: NAVIGATION_NOTIFICATIONS_V2,
       isClickAvailable: true,
     },
     {

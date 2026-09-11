@@ -12,6 +12,7 @@ import {
   MarketerLinks,
   OrdersV2,
   OrderDetailV2,
+  NotificationsV2,
   RechargeOnline,
   ProfileScreen,
   AccountStatement,
@@ -124,6 +125,7 @@ import {
   NAVIGATION_MARKETER_LINKS,
   NAVIGATION_ORDERS_V2,
   NAVIGATION_ORDER_DETAIL_V2,
+  NAVIGATION_NOTIFICATIONS_V2,
 } from './routes';
 import PaymentByNeomedScreen from '~/screens/PaymentByNeomedScreen/index';
 import AddressChooseScreen from '~/screens/AddressChooseScreen/index';
@@ -362,6 +364,13 @@ const StackNavigator = () => {
       <Stack.Screen
         name={NAVIGATION_ORDER_DETAIL_V2}
         component={OrderDetailV2}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_NOTIFICATIONS_V2}
+        component={NotificationsV2}
         options={{
           header: () => null,
         }}

@@ -67,6 +67,7 @@ import PharmacyRegistration from './PharmacyRegistration';
 import MarketerLinks from './MarketerLinks';
 import OrdersV2 from './OrdersV2';
 import OrderDetailV2 from './OrdersV2/OrderDetail';
+import NotificationsV2 from './NotificationsV2';
 import AuthoritySupplier from './AuthoritySupplier/AuthoritySupplier';
 export {
   MainScreen,
@@ -139,4 +140,5 @@ export {
   MarketerLinks,
   OrdersV2,
   OrderDetailV2,
+  NotificationsV2,
 };

@@ -215,6 +215,8 @@ export const AUTH_V2 = createRequestTypes(
     'GET_ORDER_DETAIL_V2', // GET /customer/v1/orders/{id}
     'CANCEL_ORDER_V2', // POST /customer/v1/orders/{id}/cancel
     'ACKNOWLEDGE_ORDER_V2', // POST /customer/v1/orders/{id}/acknowledge
+    'GET_NOTIFICATIONS_V2', // GET /customer/v1/notifications
+    'MARK_NOTIFICATION_READ_V2', // POST /customer/v1/notifications/{id}/read
     'LOGOUT',
   ],
   suffixTypes,

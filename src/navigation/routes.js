@@ -77,3 +77,4 @@ export const NAVIGATION_PHARMACY_REGISTRATION = 'PharmacyRegistration';
 export const NAVIGATION_MARKETER_LINKS = 'MarketerLinks';
 export const NAVIGATION_ORDERS_V2 = 'OrdersV2';
 export const NAVIGATION_ORDER_DETAIL_V2 = 'OrderDetailV2';
+export const NAVIGATION_NOTIFICATIONS_V2 = 'NotificationsV2';

@@ -137,6 +137,15 @@ class AuthV2API {
   acknowledgeOrder = orderId => {
     return customerV2Client.post(`/orders/${orderId}/acknowledge`)
   }
+
+  // GET /customer/v1/notifications → {items:[{id,kind,title,body,order_id?,read_at?,created_at}]}
+  getNotifications = () => {
+    return customerV2Client.get('/notifications')
+  }
+
+  markNotificationRead = notificationId => {
+    return customerV2Client.post(`/notifications/${notificationId}/read`)
+  }
 }
 
 export const AuthV2 = new AuthV2API()

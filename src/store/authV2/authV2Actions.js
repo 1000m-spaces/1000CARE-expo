@@ -91,4 +91,11 @@ export const acknowledgeOrderV2 = orderId => ({
   payload: { orderId },
 })
 
+export const getNotificationsV2 = () => ({ type: AUTH_V2.GET_NOTIFICATIONS_V2_REQUEST })
+
+export const markNotificationReadV2 = notificationId => ({
+  type: AUTH_V2.MARK_NOTIFICATION_READ_V2_REQUEST,
+  payload: { notificationId },
+})
+
 export const logoutV2 = () => ({ type: AUTH_V2.LOGOUT_REQUEST })

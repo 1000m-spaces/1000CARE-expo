@@ -50,6 +50,9 @@ const initialState = {
   orderDetailV2: null, // Order đầy đủ (có `lines`)
   cancelOrderV2Status: Status.DEFAULT,
   cancelOrderV2Err: '',
+
+  notificationsV2Status: Status.DEFAULT,
+  notificationsV2: [], // [{id, kind, title, body, order_id?, read_at?, created_at}]
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -214,6 +217,20 @@ export default (state = initialState, { type, payload }) => {
           state.orderDetailV2 && state.orderDetailV2.id === payload.orderId
             ? { ...state.orderDetailV2, customer_ack_at: new Date().toISOString() }
             : state.orderDetailV2,
+      }
+
+    case AUTH_V2.GET_NOTIFICATIONS_V2_LOADING:
+      return { ...state, notificationsV2Status: Status.LOADING }
+    case AUTH_V2.GET_NOTIFICATIONS_V2_SUCCESS:
+      return { ...state, notificationsV2Status: Status.SUCCESS, notificationsV2: payload.items }
+    case AUTH_V2.GET_NOTIFICATIONS_V2_FAILURE:
+      return { ...state, notificationsV2Status: Status.ERROR }
+    case AUTH_V2.MARK_NOTIFICATION_READ_V2_SUCCESS:
+      return {
+        ...state,
+        notificationsV2: state.notificationsV2.map(item =>
+          item.id === payload.notificationId ? { ...item, read_at: new Date().toISOString() } : item,
+        ),
       }
 
     case AUTH_V2.LOGOUT_REQUEST:
