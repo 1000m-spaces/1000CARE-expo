@@ -131,6 +131,9 @@ export default StyleSheet.create({
     paddingHorizontal: s(20),
     paddingVertical: s(14),
     paddingBottom: s(20),
+    backgroundColor: brandColors.surface,
+    borderTopWidth: 1,
+    borderTopColor: brandColors.border,
   },
   stickyFooterTotal: {
     flex: 1,

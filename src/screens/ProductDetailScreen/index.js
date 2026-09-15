@@ -31,7 +31,6 @@ import RecommendProduct from './RecommendProduct/index'
 import Voucher from './Voucher/index'
 import AppScreen from '~/design-system/AppScreen'
 import AppSection from '~/design-system/AppSection'
-import LiquidGlassView from '~/design-system/LiquidGlassView'
 import { LinearGradient } from 'expo-linear-gradient'
 import { brandColors, brandGradients } from '~/design-system/tokens'
 
@@ -360,7 +359,7 @@ const ProductDetailScreen = (props) => {
               </AppSection>
             </ScrollView>}
           {!showViewPermission && !isProductCombo && (
-            <LiquidGlassView intensity="regular" style={styles.stickyFooter}>
+            <View style={styles.stickyFooter}>
               <View style={styles.stickyFooterTotal}>
                 <Text style={styles.stickyFooterLabel}>Tạm tính</Text>
                 <Text style={styles.stickyFooterAmount} numberOfLines={1}>
@@ -377,7 +376,7 @@ const ProductDetailScreen = (props) => {
                   <Text style={styles.stickyFooterButtonText}>{strings.productDetailScreen.addToCart}</Text>
                 </LinearGradient>
               </PressScale>
-            </LiquidGlassView>
+            </View>
           )}
         </View>
       </View>

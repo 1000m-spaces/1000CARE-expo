@@ -4,8 +4,7 @@ import CartHeaderButton from '~/common/CartHeaderButton/CartHeaderButton'
 import { Icon } from '~/common'
 import { NAVIGATION_TO_SEARCH } from '~/navigation/routes'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, liquidGlass } from '~/design-system/tokens'
-import LiquidGlassView from '~/design-system/LiquidGlassView'
+import { brandColors, brandShadow } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 import PressScale from '~/design-system/PressScale'
 
@@ -20,7 +19,7 @@ const CustomHeader = ({ navigation, search = true, title }) => {
               onPress={() => navigation.navigate(NAVIGATION_TO_SEARCH)}
               style={styles.searchContainer}
             >
-              <LiquidGlassView intensity="regular" style={styles.searchInner}>
+              <View style={styles.searchInner}>
                 <Icon
                   type="antdesign"
                   name={'search'}
@@ -28,7 +27,7 @@ const CustomHeader = ({ navigation, search = true, title }) => {
                   size={s(18)}
                 />
                 <Text style={styles.searchPlaceholder}>Nhập tên sản phẩm, cửa hàng...</Text>
-              </LiquidGlassView>
+              </View>
             </PressScale>
           )
         }
@@ -80,8 +79,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: s(24),
     paddingHorizontal: s(16),
-    backgroundColor: 'rgba(255,255,255,0.42)',
-    borderColor: liquidGlass.border,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
   },
   searchPlaceholder: {
     marginLeft: s(10),
@@ -94,11 +94,12 @@ const styles = StyleSheet.create({
     width: s(48),
     height: s(48),
     borderRadius: s(24),
-    backgroundColor: liquidGlass.background,
-    borderWidth: 0,
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
     justifyContent: 'center',
     alignItems: 'center',
-    ...liquidGlass.shadow,
+    ...brandShadow.soft,
   },
   titleContainer: {
     flex: 1,

@@ -5,7 +5,6 @@ import { logoNeoMed } from '~/assets/constants'
 import { DIMENS } from '~/constants/index'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, liquidGlass } from '~/design-system/tokens'
-import LiquidGlassView from '~/design-system/LiquidGlassView'
 import { Fonts } from '~/assets/config'
 import PressScale from '~/design-system/PressScale'
 
@@ -25,8 +24,7 @@ const ItemDistributor = ({ data, onItemPress, selected, itemWidth }) => {
         }
       }}
     >
-      <LiquidGlassView
-        intensity="regular"
+      <View
         style={[styles.container, itemWidth && { width: itemWidth, minHeight: itemWidth * 0.92, marginHorizontal: 0 }, selected && styles.containerSelected, isPending && styles.containerPending]}
       >
         {isPending && (
@@ -45,7 +43,7 @@ const ItemDistributor = ({ data, onItemPress, selected, itemWidth }) => {
           {data.nick_name ? data.nick_name : data.name}
         </Text>
         {selected && <View style={styles.activeIndicator} />}
-      </LiquidGlassView>
+      </View>
     </PressScale>
   )
 }
@@ -56,7 +54,7 @@ const styles = StyleSheet.create({
   container: {
     width: ItemWidth,
     minHeight: ItemWidth * 0.9,
-    backgroundColor: 'rgba(255,255,255,0.42)',
+    backgroundColor: brandColors.surface,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: s(24),
@@ -65,7 +63,7 @@ const styles = StyleSheet.create({
     paddingVertical: s(12),
     paddingHorizontal: s(6),
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.78)',
+    borderColor: brandColors.border,
     ...liquidGlass.shadow,
     overflow: 'hidden',
   },

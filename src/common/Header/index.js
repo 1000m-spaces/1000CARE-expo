@@ -3,7 +3,6 @@ import { Icon, Image } from '~/common/index'
 import { View, Text } from 'react-native'
 import { close } from '~/assets/constants'
 import CartHeaderButton from '../CartHeaderButton/CartHeaderButton'
-import LiquidGlassView from '~/design-system/LiquidGlassView'
 import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
@@ -11,7 +10,7 @@ import Colors from '../Colors/Colors'
 
 const Header = ({ showLeft = true, showRight = false, leftAction, iconLeft = close, iconRight = 'checkmark-done-sharp', rightAction, title, navigation, cart = false, headerContainerStyles = {}, titleStyles = {}, customTitle = null }) => {
   return (
-    <LiquidGlassView intensity="regular" style={[styles.headerContainer, headerContainerStyles]}>
+    <View style={[styles.headerContainer, headerContainerStyles]}>
       {
         showLeft && leftAction && (
           <PressScale
@@ -65,7 +64,7 @@ const Header = ({ showLeft = true, showRight = false, leftAction, iconLeft = clo
           </PressScale>
         ) : null
       }
-    </LiquidGlassView>
+    </View>
   )
 }
 

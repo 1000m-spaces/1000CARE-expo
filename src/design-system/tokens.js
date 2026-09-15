@@ -137,22 +137,33 @@ export const brandShadow = {
   },
 };
 
+// ĐỔI 2026-09-15: bản thiết kế mới bỏ hẳn chất liệu kính mờ/blur (xem
+// [[marketplace-core-business-model]] không liên quan — đây là style
+// thuần theo bản handoff app Marketer). Giữ nguyên TÊN các token này
+// (background/backgroundStrong/border/shadow...) vì ~40 file khắp app
+// đang tham chiếu qua tên — chỉ đổi giá trị từ rgba trong suốt sang màu
+// đặc phẳng (--surface/--border thật), để không phải sửa từng file mà
+// cascade tự động. `gradient`/`gradientLocations` không còn nơi nào
+// dùng (LiquidGlassView.js không còn được gọi ở đâu trong app) — giữ
+// lại phòng khi cần, không xoá component.
 export const liquidGlass = {
-  background: 'rgba(255,255,255,0.9)',
-  backgroundStrong: 'rgba(255,255,255,0.96)',
-  backgroundTint: 'rgba(248,254,255,0.88)',
-  border: 'rgba(255,255,255,0.95)',
+  background: '#FFFFFF',
+  backgroundStrong: '#FFFFFF',
+  backgroundTint: '#FFFFFF',
+  border: '#DDEBED', // brandColors.border thật — trước là viền trắng mờ ăn theo blur, giờ phải là viền xám thấy được
   borderTint: 'rgba(2,158,157,0.14)', // brandColors.tealPrimary (--ink)
   // Gradient chéo dùng cho chất liệu "kính lỏng" (search bar, cart button,
   // back button, sticky footer) — linear-gradient(135deg, ...) từ bản redesign.
   gradient: ['rgba(255,255,255,0.8)', 'rgba(237,251,252,0.35)', 'rgba(255,255,255,0.6)'],
   gradientLocations: [0, 0.55, 1],
+  // = --shadow của design system mới (0 2px 4px rgba(...,.05), 0 9px 22px
+  // rgba(...,.075)) — cùng công thức đã dùng cho brandShadow.soft.
   shadow: {
     shadowColor: '#0A2F38',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.14,
+    shadowOffset: { width: 0, height: 9 },
+    shadowOpacity: 0.075,
     shadowRadius: 22,
-    elevation: 6,
+    elevation: 5,
   },
 };
 

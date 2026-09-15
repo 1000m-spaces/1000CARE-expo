@@ -10,8 +10,7 @@ import { getAuthStore } from '~/store/selector'
 import { showToast } from '~/utils/toast'
 import strings from '~/i18n'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, liquidGlass } from '~/design-system/tokens'
-import LiquidGlassView from '~/design-system/LiquidGlassView'
+import { brandColors, brandShadow } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 
 const CartHeaderButton = ({ navigation, color = brandColors.tealPrimary }) => {
@@ -52,14 +51,14 @@ const CartHeaderButton = ({ navigation, color = brandColors.tealPrimary }) => {
       onPress={() => onPress()}
       style={styles.cartTouchable}
     >
-      <LiquidGlassView intensity="regular" style={styles.cartLayout}>
+      <View style={styles.cartLayout}>
         <Icon
           type={'antdesign'}
           name={'shopping-cart'}
           color={color}
           size={s(24)}
         />
-      </LiquidGlassView>
+      </View>
       <View style={styles.badge}>
         <Text style={styles.badgeText}>{getNumberProducts()}</Text>
       </View>
@@ -86,9 +85,10 @@ const styles = StyleSheet.create({
     borderRadius: s(23),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.56)',
-    borderColor: liquidGlass.border,
-    overflow: 'hidden',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
+    ...brandShadow.soft,
   },
   badge: {
     position: 'absolute',

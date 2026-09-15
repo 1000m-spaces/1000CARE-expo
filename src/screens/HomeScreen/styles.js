@@ -107,10 +107,10 @@ export default StyleSheet.create({
     borderRadius: s(20),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.72)',
+    backgroundColor: brandColors.surface,
     borderWidth: 1,
-    borderColor: 'rgba(2, 158, 157,0.18)',
-    overflow: 'hidden',
+    borderColor: brandColors.border,
+    ...brandShadow.soft,
   },
   cartBadge: {
     position: 'absolute',

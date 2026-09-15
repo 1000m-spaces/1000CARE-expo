@@ -30,7 +30,6 @@ import PremiumCard from '~/design-system/PremiumCard';
 import PremiumButton from '~/design-system/PremiumButton';
 import { brandColors } from '~/design-system/tokens';
 import { showToast } from '~/utils/toast';
-import LiquidGlassView from '~/design-system/LiquidGlassView';
 import BackgroundWash from '~/design-system/BackgroundWash';
 import PressScale from '~/design-system/PressScale';
 import { s } from '~/utils/responsive';
@@ -65,9 +64,9 @@ const HomeCartButton = ({ navigation }) => {
 
   return (
     <PressScale style={styles.cartTouch} onPress={onPress}>
-      <LiquidGlassView intensity="regular" style={styles.cartPill}>
+      <View style={styles.cartPill}>
         <Icon type="feather" name="shopping-cart" color={brandColors.tealDark} size={24} />
-      </LiquidGlassView>
+      </View>
       <View style={styles.cartBadge}>
         <Text style={styles.cartBadgeText}>{count}</Text>
       </View>
