@@ -40,3 +40,9 @@ export const getProductMessageThreadsV2 = state => {
 
 export const getProductMessageThreadV2 = (state, marketerId) =>
   getProductMessageThreadsV2(state).find(t => t.marketerId === marketerId) || null
+
+// Dùng cho màn xem trước riêng (ProductMessagePreviewV2) — mở từ bong
+// bóng chat, tra thẳng theo id thay vì phải truyền cả object qua route
+// params (giữ UI luôn đọc dữ liệu mới nhất từ redux).
+export const getProductMessageByIdV2 = (state, messageId) =>
+  (state.catalogV2.productMessages || []).find(m => m.id === messageId) || null

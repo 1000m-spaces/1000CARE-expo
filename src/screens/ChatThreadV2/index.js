@@ -1,18 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import PressScale from '~/design-system/PressScale';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
-import { getStoreProductsV2, applyProductMessageV2 } from '~/store/catalogV2/catalogV2Actions';
+import { getStoreProductsV2 } from '~/store/catalogV2/catalogV2Actions';
 import {
   getProductMessageThreadV2,
   getStoreProductsV2 as selectStoreProductsV2,
-  getApplyProductMessageV2Status,
 } from '~/store/catalogV2/catalogV2Selector';
-import Status from '~/common/Status/Status';
-import { formatMoney } from '~/utils/format';
 import { getLocalMessages, addLocalMessage } from '~/neomed/chatLocalStore';
+import { NAVIGATION_PRODUCT_MESSAGE_PREVIEW_V2 } from '~/navigation/routes';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
@@ -86,7 +84,12 @@ const ChatThreadV2 = ({ navigation, route }) => {
       );
     }
     return (
-      <ProductMessageBubble key={item.key} message={item.data} />
+      <ProductMessageBubble
+        key={item.key}
+        message={item.data}
+        navigation={navigation}
+        marketerName={marketerName}
+      />
     );
   };
 
@@ -135,16 +138,23 @@ const ChatThreadV2 = ({ navigation, route }) => {
   );
 };
 
-const ProductMessageBubble = ({ message }) => {
-  const dispatch = useDispatch();
+// Bong bóng tóm tắt — bấm vào mở ProductMessagePreviewV2 để xem đủ danh
+// sách SP + bấm "Áp dụng vào giỏ hàng" ở đó (tách 2 bước theo đúng luồng
+// đã chốt: xem trước → thấy hợp thì mới áp dụng), thay vì nhồi cả list
+// SP + 2 nút hành động ngay trong khung chat.
+const ProductMessageBubble = ({ message, navigation, marketerName }) => {
   const products = useSelector(state => selectStoreProductsV2(state, message.store_id));
-  const applyStatus = useSelector(state => getApplyProductMessageV2Status(state, message.id));
-  const applying = applyStatus === Status.LOADING;
   const alreadyApplied = !!message.applied_at;
+  const count = message.product_ids?.length || 0;
 
-  const matchedProducts = (message.product_ids || [])
-    .map(id => products.find(p => p.product_id === id))
+  const matchedNames = (message.product_ids || [])
+    .map(id => products.find(p => p.product_id === id)?.name)
     .filter(Boolean);
+  const previewText = matchedNames.length
+    ? matchedNames.length > 1
+      ? `${matchedNames[0]} và ${matchedNames.length - 1} sản phẩm khác`
+      : matchedNames[0]
+    : 'Đang tải sản phẩm...';
 
   return (
     <View style={[styles.bubbleRow, styles.bubbleRowTheirs]}>
@@ -153,30 +163,22 @@ const ProductMessageBubble = ({ message }) => {
           <Text style={styles.bubbleTheirsText}>{message.note.trim()}</Text>
         </View>
       )}
-      <View style={styles.productBubble}>
+      <PressScale
+        style={styles.productBubble}
+        onPress={() => navigation.navigate(NAVIGATION_PRODUCT_MESSAGE_PREVIEW_V2, {
+          messageId: message.id,
+          marketerName,
+        })}
+      >
         <View style={styles.pbHead}>
           <Icon type="feather" name="package" color={brandColors.tealPrimary} size={s(15)} />
           <Text style={styles.pbEyebrow}>GỢI Ý SẢN PHẨM</Text>
           <View style={styles.pbBadge}>
-            <Text style={styles.pbBadgeText}>{message.product_ids?.length || 0} SP</Text>
+            <Text style={styles.pbBadgeText}>{count} SP</Text>
           </View>
         </View>
 
-        {matchedProducts.length === 0 ? (
-          <Text style={styles.pbLoading}>Đang tải sản phẩm...</Text>
-        ) : (
-          matchedProducts.map(p => (
-            <View key={p.product_id} style={styles.pbRow}>
-              {p.media ? (
-                <Image source={{ uri: p.media }} style={styles.pbThumb} />
-              ) : (
-                <View style={styles.pbThumb} />
-              )}
-              <Text style={styles.pbName} numberOfLines={1}>{p.name}</Text>
-              <Text style={styles.pbPrice}>{formatMoney(p.price, { unit: 'đ' })}</Text>
-            </View>
-          ))
-        )}
+        <Text style={styles.pbPreview} numberOfLines={1}>{previewText}</Text>
 
         {alreadyApplied ? (
           <View style={styles.pbAppliedRow}>
@@ -184,21 +186,12 @@ const ProductMessageBubble = ({ message }) => {
             <Text style={styles.pbAppliedText}>Đã áp dụng vào giỏ hàng</Text>
           </View>
         ) : (
-          <View style={styles.pbActions}>
-            <PressScale
-              style={styles.pbApplyButton}
-              disabled={applying}
-              onPress={() => dispatch(applyProductMessageV2(message.id))}
-            >
-              <Icon type="feather" name="shopping-cart" color={brandColors.surface} size={s(13)} />
-              <Text style={styles.pbApplyText}>{applying ? 'Đang áp dụng...' : 'Áp dụng vào giỏ hàng'}</Text>
-            </PressScale>
-            <PressScale style={styles.pbLaterButton}>
-              <Text style={styles.pbLaterText}>Xem sau</Text>
-            </PressScale>
+          <View style={styles.pbFooter}>
+            <Text style={styles.pbFooterText}>Xem chi tiết & áp dụng</Text>
+            <Icon type="feather" name="chevron-right" color={brandColors.tealPrimary} size={s(14)} />
           </View>
         )}
-      </View>
+      </PressScale>
       {!!message.created_at && (
         <Text style={styles.bubbleTime}>{new Date(message.created_at).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</Text>
       )}
@@ -338,69 +331,26 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: brandColors.goldDark,
   },
-  pbLoading: {
+  pbPreview: {
     paddingHorizontal: s(14),
     paddingBottom: s(12),
-    fontSize: fs(11.5),
-    color: brandColors.mutedLight,
+    fontSize: fs(12.5),
+    color: brandColors.textDark,
     fontWeight: '600',
   },
-  pbRow: {
+  pbFooter: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: s(10),
-    paddingHorizontal: s(14),
-    paddingVertical: s(8),
-    borderTopWidth: 1,
-    borderTopColor: brandColors.border,
-  },
-  pbThumb: {
-    width: s(36),
-    height: s(36),
-    borderRadius: s(8),
-    backgroundColor: brandColors.tealLight,
-  },
-  pbName: {
-    flex: 1,
-    fontSize: fs(12.5),
-    fontWeight: '600',
-    color: brandColors.textDark,
-  },
-  pbPrice: {
-    fontSize: fs(12.5),
-    fontWeight: '800',
-    color: brandColors.tealDark,
-  },
-  pbActions: {
-    flexDirection: 'row',
-    gap: s(8),
+    justifyContent: 'space-between',
+    gap: s(6),
     padding: s(14),
     borderTopWidth: 1,
     borderTopColor: brandColors.border,
   },
-  pbApplyButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: s(6),
-    backgroundColor: brandColors.tealPrimary,
-    borderRadius: s(12),
-    paddingVertical: s(10),
-  },
-  pbApplyText: {
-    color: brandColors.surface,
+  pbFooterText: {
+    color: brandColors.tealPrimary,
     fontSize: fs(11.5),
     fontWeight: '700',
-  },
-  pbLaterButton: {
-    paddingVertical: s(10),
-    paddingHorizontal: s(6),
-  },
-  pbLaterText: {
-    color: brandColors.muted,
-    fontSize: fs(11.5),
-    fontWeight: '600',
   },
   pbAppliedRow: {
     flexDirection: 'row',
