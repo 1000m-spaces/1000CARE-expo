@@ -86,25 +86,17 @@ class AuthV2API {
     return customerV2Client.post('/kyc', { docs })
   }
 
-  // Upload 2 bước theo docs/media-module-design.md — LƯU Ý: tại
-  // 2026-09-07 backend mới triển khai purpose='product_photo'/public,
-  // 'legal_doc' (hồ sơ KYC, private) còn ghi "còn nợ" trong chính thiết
-  // kế. Gọi thật theo đúng contract, nhưng có thể lỗi nếu backend chưa
-  // xử lý purpose này — không mock, để lỗi thật hiện ra qua ErrorView.
-  createMediaUpload = ({ ownerKind, ownerId, purpose, mime, sizeBytes, originalName }) => {
-    return customerV2Client.post('/media/uploads', {
-      owner_kind: ownerKind,
-      owner_id: ownerId,
-      purpose,
-      mime,
-      size_bytes: sizeBytes,
-      checksum_sha256: '',
-      original_name: originalName,
-    })
+  // POST /customer/v1/kyc/documents — thay hẳn luồng media/uploads cũ
+  // (FR-KYC-MEDIA đã xong 2026-09-15). Trả {asset_id, put_url, method,
+  // headers, expires_at, duplicate}. Gọi được cả khi CHƯA có hồ sơ nhà
+  // thuốc (gắn theo identity). asset_id dùng lại trong docs[] của
+  // POST /registration hoặc POST /kyc.
+  createKycDocumentUpload = ({ mime, size, filename }) => {
+    return customerV2Client.post('/kyc/documents', { mime, size, filename })
   }
 
-  confirmMediaUpload = uploadId => {
-    return customerV2Client.post(`/media/uploads/${uploadId}/confirm`)
+  confirmKycDocumentUpload = assetId => {
+    return customerV2Client.post(`/kyc/documents/${assetId}/confirm`)
   }
 
   // GET /customer/v1/marketer-links — {items:[{id, marketer_id, source, status, ...}]}
@@ -145,6 +137,53 @@ class AuthV2API {
 
   markNotificationRead = notificationId => {
     return customerV2Client.post(`/notifications/${notificationId}/read`)
+  }
+
+  // GET /customer/v1/stores → {items:[store], total} — không cần hồ sơ nhà thuốc
+  getStores = () => {
+    return customerV2Client.get('/stores')
+  }
+
+  // GET /customer/v1/stores/{id}/products → {items:[{product_id,name,brand,rx,media,price,currency}]}
+  // Đổi shape 2026-09-14 (trước là {product_ids:[]}), xem
+  // [[marketplace-core-business-model]].
+  getStoreProducts = storeId => {
+    return customerV2Client.get(`/stores/${storeId}/products`)
+  }
+
+  // GET /customer/v1/carts → mọi giỏ đang mở (theo store + theo member soạn)
+  getCarts = () => {
+    return customerV2Client.get('/carts')
+  }
+
+  // GET /customer/v1/stores/{id}/cart?member= — mỗi item kèm
+  // name/brand/media/unit_price/line_total; cart có subtotal + min_order_value.
+  getStoreCart = (storeId, memberMarketerId) => {
+    return customerV2Client.get(`/stores/${storeId}/cart`, {
+      params: memberMarketerId ? { member: memberMarketerId } : undefined,
+    })
+  }
+
+  updateCartItem = (storeId, productId, qty, memberMarketerId) => {
+    return customerV2Client.put(`/stores/${storeId}/cart/items/${productId}`, {
+      qty,
+      member: memberMarketerId,
+    })
+  }
+
+  deleteCartItem = (storeId, productId, memberMarketerId) => {
+    return customerV2Client.delete(`/stores/${storeId}/cart/items/${productId}`, {
+      params: memberMarketerId ? { member: memberMarketerId } : undefined,
+    })
+  }
+
+  // GET /customer/v1/product-messages → {items:[ProductMessage]} — bộ SP marketer gửi
+  getProductMessages = () => {
+    return customerV2Client.get('/product-messages')
+  }
+
+  applyProductMessageToCart = messageId => {
+    return customerV2Client.post(`/product-messages/${messageId}/apply-to-cart`)
   }
 }
 

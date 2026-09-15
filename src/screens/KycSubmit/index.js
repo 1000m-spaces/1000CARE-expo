@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, ActionSheetIOS, Platform, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import PressScale from '~/design-system/PressScale';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
@@ -10,12 +11,16 @@ import {
   getKycV2 as getKycV2Action,
   submitKycV2,
   resetSubmitKycV2,
+  uploadKycDocV2,
+  resetUploadKycDocV2,
 } from '~/store/authV2/authV2Actions';
 import {
   getKycV2Status,
   getKycV2,
   getSubmitKycV2Status,
   getSubmitKycV2Err,
+  getUploadKycDocV2Status,
+  getUploadKycDocV2Err,
   getUploadedKycDocsV2,
 } from '~/store/authV2/authV2Selector';
 import Status from '~/common/Status/Status';
@@ -32,10 +37,11 @@ const KYC_STATUS_LABEL = {
 // Màn nộp hồ sơ nhà thuốc (GPP) — điều kiện để đặt đơn thật
 // (kyc_status='verified'), backend mới marketplace-core. Xem
 // [[marketplace-core-business-model]] mục "Duyệt user" + KYC.
-// LƯU Ý: upload ảnh dùng module media (2 bước: create + confirm) —
-// purpose='legal_doc' còn ghi "còn nợ" trong chính thiết kế backend tại
-// 2026-09-07, có thể lỗi thật khi gọi — không mock, để ErrorView hiện
-// lỗi thật nếu backend chưa xử lý xong.
+// FR-KYC-MEDIA xong 2026-09-15: upload ảnh qua POST /customer/v1/kyc/documents
+// (2 bước create+confirm, xem authV2Sagas.uploadKycDoc) — LƯU Ý: put_url
+// trả về hiện vẫn là MinIO HTTP thô (chưa có domain HTTPS), nên bước PUT
+// file có thể bị iOS/Android chặn trên máy thật cho tới khi backend thêm
+// domain — logic app đã đúng, đợi hạ tầng.
 const KycSubmit = ({ navigation }) => {
   const dispatch = useDispatch();
 
@@ -43,8 +49,8 @@ const KycSubmit = ({ navigation }) => {
   const kyc = useSelector(state => getKycV2(state));
   const submitStatus = useSelector(state => getSubmitKycV2Status(state));
   const submitErr = useSelector(state => getSubmitKycV2Err(state));
-  // Luôn rỗng cho tới khi backend mở FR-KYC-MEDIA (upload ảnh KYC) — giữ
-  // selector/hiển thị sẵn để không phải sửa lại UI khi API sẵn sàng.
+  const uploadStatus = useSelector(state => getUploadKycDocV2Status(state));
+  const uploadErr = useSelector(state => getUploadKycDocV2Err(state));
   const uploadedDocs = useSelector(state => getUploadedKycDocsV2(state));
 
   const [showError, setShowError] = useState('');
@@ -57,13 +63,56 @@ const KycSubmit = ({ navigation }) => {
     if (submitErr) setShowError(submitErr);
   }, [submitErr]);
 
+  useEffect(() => {
+    if (uploadErr) setShowError(uploadErr);
+  }, [uploadErr]);
+
   const currentStatus = kyc?.kyc_status || 'unverified';
   const statusInfo = KYC_STATUS_LABEL[currentStatus] || KYC_STATUS_LABEL.unverified;
   const canEdit = currentStatus === 'unverified' || currentStatus === 'rejected';
   const submitting = submitStatus === Status.LOADING;
+  const uploading = uploadStatus === Status.LOADING;
 
-  // Chưa có ảnh thật (FR-KYC-MEDIA chưa mở) nên gửi docs rỗng — vẫn gọi
-  // API thật để test được chuỗi trạng thái kyc_status, không mock kết quả.
+  const addPhoto = source => {
+    const options = { mediaType: 'photo', quality: 0.8 };
+    const onPicked = response => {
+      const picked = response?.assets?.[0];
+      if (!picked) return;
+      dispatch(
+        uploadKycDocV2({
+          uri: picked.uri,
+          mime: picked.type || 'image/jpeg',
+          sizeBytes: picked.fileSize || 0,
+          fileName: picked.fileName || `gpp-${Date.now()}.jpg`,
+          kind: 'gpp',
+        }),
+      );
+    };
+    if (source === 'camera') {
+      launchCamera(options, onPicked);
+    } else {
+      launchImageLibrary(options, onPicked);
+    }
+  };
+
+  const onAddPhotoPress = () => {
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        { options: ['Huỷ', 'Chụp ảnh', 'Chọn từ thư viện'], cancelButtonIndex: 0 },
+        buttonIndex => {
+          if (buttonIndex === 1) addPhoto('camera');
+          if (buttonIndex === 2) addPhoto('library');
+        },
+      );
+    } else {
+      Alert.alert('Ảnh giấy phép GPP', '', [
+        { text: 'Huỷ', style: 'cancel' },
+        { text: 'Chụp ảnh', onPress: () => addPhoto('camera') },
+        { text: 'Chọn từ thư viện', onPress: () => addPhoto('library') },
+      ]);
+    }
+  };
+
   const onSubmit = () => {
     dispatch(submitKycV2(uploadedDocs.map(d => ({ asset_id: d.assetId, kind: d.kind }))));
   };
@@ -100,18 +149,19 @@ const KycSubmit = ({ navigation }) => {
                 {uploadedDocs.map((doc, index) => (
                   <Image key={`${doc.assetId}-${index}`} source={{ uri: doc.previewUri }} style={styles.photoThumb} />
                 ))}
-                {/* Tải ảnh KYC (purpose=legal_doc, private) chưa chạy được
-                    — backend chưa mở endpoint upload phía surface customer
-                    (FR-KYC-MEDIA, xem [[marketplace-core-business-model]]).
-                    Khoá nút, không gọi API sẽ chắc chắn lỗi. */}
-                <PressScale disabled style={styles.addPhotoTile}>
-                  <Icon type="feather" name="camera-off" color={brandColors.mutedLight} size={s(22)} />
-                  <Text style={styles.addPhotoText}>Chưa hỗ trợ</Text>
+                <PressScale onPress={onAddPhotoPress} disabled={uploading} style={styles.addPhotoTile}>
+                  {uploading ? (
+                    <Text style={styles.addPhotoText}>...</Text>
+                  ) : (
+                    <>
+                      <Icon type="feather" name="camera" color={brandColors.tealDark} size={s(22)} />
+                      <Text style={[styles.addPhotoText, { color: brandColors.tealDark }]}>Thêm ảnh</Text>
+                    </>
+                  )}
                 </PressScale>
               </View>
               <Text style={styles.noteText}>
-                Tính năng tải ảnh giấy phép đang chờ đội backend hoàn
-                thiện. Bạn vẫn có thể gửi hồ sơ trước, bổ sung ảnh sau.
+                Chụp hoặc chọn ảnh rõ nét Giấy chứng nhận GPP (có thể thêm nhiều ảnh).
               </Text>
 
               <PressScale onPress={onSubmit} disabled={submitting} style={styles.submitButton}>
@@ -137,6 +187,7 @@ const KycSubmit = ({ navigation }) => {
         onClose={() => {
           setShowError('');
           dispatch(resetSubmitKycV2());
+          dispatch(resetUploadKycDocV2());
         }}
       />
     </AppBackground>

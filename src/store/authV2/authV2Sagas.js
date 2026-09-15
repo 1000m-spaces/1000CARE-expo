@@ -1,8 +1,7 @@
-import { takeLatest, call, put, select } from 'redux-saga/effects'
+import { takeLatest, call, put } from 'redux-saga/effects'
 import { AUTH_V2 } from '../actionsTypes'
 import { AuthV2 } from '~/neomed/AuthV2API'
 import { asyncStorage, store } from '../index'
-import { getMeV2 } from './authV2Selector'
 
 function* register({ payload }) {
   try {
@@ -137,31 +136,31 @@ function* submitKyc({ payload }) {
 // Upload 1 ảnh giấy tờ KYC theo đúng luồng 2 bước của module media (xem
 // docs/media-module-design.md — LƯU Ý purpose='legal_doc' còn ghi "còn
 // nợ" ở backend tại 2026-09-07, có thể lỗi thật, không mock ở đây).
+// FR-KYC-MEDIA xong 2026-09-15: POST /customer/v1/kyc/documents (gắn theo
+// identity, gọi được cả khi CHƯA có hồ sơ nhà thuốc) → {asset_id,
+// put_url, method, headers} → PUT file thẳng lên put_url (khớp đúng
+// header trả về, đặc biệt Content-Length/Content-Type) → confirm.
 function* uploadKycDoc({ payload }) {
   const { asset } = payload
   try {
     yield put({ type: AUTH_V2.UPLOAD_KYC_DOC_LOADING })
-    const me = yield select(getMeV2)
     const upload = yield call(
-      { content: AuthV2, fn: AuthV2.createMediaUpload },
+      { content: AuthV2, fn: AuthV2.createKycDocumentUpload },
       {
-        ownerKind: 'customer',
-        ownerId: me.activeCustomer,
-        purpose: 'legal_doc',
         mime: asset.mime || 'image/jpeg',
-        sizeBytes: asset.sizeBytes || 0,
-        originalName: asset.fileName || 'gpp.jpg',
+        size: asset.sizeBytes || 0,
+        filename: asset.fileName || 'gpp.jpg',
       },
     )
     // PUT thẳng file lên presigned URL (object storage), không qua BFF.
     const fileResponse = yield call(fetch, asset.uri)
     const blob = yield call([fileResponse, fileResponse.blob])
-    yield call(fetch, upload.upload_url, {
-      method: 'PUT',
-      headers: { 'Content-Type': asset.mime || 'image/jpeg', ...(upload.headers || {}) },
+    yield call(fetch, upload.put_url, {
+      method: upload.method || 'PUT',
+      headers: upload.headers || { 'Content-Type': asset.mime || 'image/jpeg' },
       body: blob,
     })
-    yield call({ content: AuthV2, fn: AuthV2.confirmMediaUpload }, upload.asset_id)
+    yield call({ content: AuthV2, fn: AuthV2.confirmKycDocumentUpload }, upload.asset_id)
     yield put({
       type: AUTH_V2.UPLOAD_KYC_DOC_SUCCESS,
       payload: { doc: { assetId: upload.asset_id, kind: asset.kind, previewUri: asset.uri } },
