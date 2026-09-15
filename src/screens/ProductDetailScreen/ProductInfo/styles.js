@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native'
 import Colors from '~/common/Colors/Colors'
 import dimension from '~/constants/dimens'
 import { s } from '~/utils/responsive'
+import { brandColors } from '~/design-system/tokens'
 
 export default StyleSheet.create({
   mainContainer: {
@@ -231,11 +232,11 @@ export default StyleSheet.create({
     width: s(34),
     flex: 1,
     borderRadius: s(17),
-    backgroundColor: 'rgba(255,255,255,0.58)',
+    backgroundColor: brandColors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.82)',
+    borderColor: brandColors.border,
   },
   productNameContainer: {
     display: 'flex',
