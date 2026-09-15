@@ -16,11 +16,7 @@ const styles = StyleSheet.create({
     padding: s(20),
     marginTop: s(4),
     marginBottom: s(16),
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(14) },
-    shadowOpacity: 0.24,
-    shadowRadius: s(28),
-    elevation: 8,
+    ...brandShadow.button,
   },
   walletTitle: {
     fontSize: fs(13),

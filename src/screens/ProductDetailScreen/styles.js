@@ -160,11 +160,7 @@ export default StyleSheet.create({
     borderRadius: s(16),
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(10) },
-    shadowOpacity: 0.28,
-    shadowRadius: s(20),
-    elevation: 6,
+    ...brandShadow.button,
   },
   stickyFooterButtonText: {
     fontFamily: Fonts.bold,

@@ -238,11 +238,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: s(16),
     overflow: 'hidden',
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(10) },
-    shadowOpacity: 0.24,
-    shadowRadius: s(20),
-    elevation: 6,
+    ...brandShadow.button,
   },
   submitButtonGradient: {
     height: s(52),

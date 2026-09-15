@@ -1,26 +1,24 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, Text, StyleSheet } from 'react-native';
 import { s, fs } from '../utils/responsive';
 import { brandColors, brandGradients, brandShadow, radiusScale } from './tokens';
 import { Fonts } from '~/assets/config';
 import PressScale from './PressScale';
 
+// Design system mới không dùng gradient ở nút — màu phẳng (mặc định
+// brandColors.tealPrimary, giữ prop `colors` cho tương thích ngược,
+// chỉ lấy màu đầu tiên của mảng).
 const PremiumButton = ({ text, onPress, style, textStyle, colors = brandGradients.primary, disabled }) => {
+  const backgroundColor = disabled ? brandColors.border : colors[0] || brandColors.tealPrimary;
   return (
     <PressScale
       onPress={onPress}
       style={[styles.container, disabled && styles.disabled, style]}
       disabled={disabled}
     >
-      <LinearGradient
-        colors={disabled ? [brandColors.border, brandColors.border] : colors}
-        style={styles.gradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-      >
+      <View style={[styles.gradient, { backgroundColor }]}>
         <Text style={[styles.text, textStyle]}>{text}</Text>
-      </LinearGradient>
+      </View>
     </PressScale>
   );
 };

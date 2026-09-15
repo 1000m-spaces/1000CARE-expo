@@ -19,11 +19,7 @@ const styles = StyleSheet.create({
   walletCard: {
     borderRadius: s(radiusScale.xxxl),
     marginBottom: s(12),
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(14) },
-    shadowOpacity: 0.24,
-    shadowRadius: s(28),
-    elevation: 8,
+    ...brandShadow.button,
   },
   walletCardInner: {
     padding: s(20),
@@ -170,11 +166,7 @@ const styles = StyleSheet.create({
   ctaButton: {
     borderRadius: s(radiusScale.xxl),
     overflow: 'hidden',
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(10) },
-    shadowOpacity: 0.24,
-    shadowRadius: s(20),
-    elevation: 6,
+    ...brandShadow.button,
   },
   ctaGradient: {
     height: s(50),

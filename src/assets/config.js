@@ -23,19 +23,20 @@ const X_WIDTH = 375
 const X_HEIGHT = 812
 
 // Design system "1000M Order App" khai báo --font-sans: 'Inter','Plus Jakarta
-// Sans',-apple-system... nhưng chính file đó ghi chú Inter chỉ là webfont thế
-// chỗ vì bản gốc dùng SF Pro (không cấp phép cho web/Android) — tức ý định
-// thật là font hệ thống kiểu SF Pro, đúng cái SanFranciscoText* đang dùng ở
-// đây rồi nên giữ nguyên family, chỉ đồng bộ lại size/weight (xem typeScale
-// trong design-system/tokens.js).
+// Sans',-apple-system... — tức font HỆ THỐNG, không phải file custom đóng
+// gói riêng. Đợt làm mới hoàn toàn 2026-09-15: bỏ hẳn bộ
+// SanFranciscoText*.otf (đã bỏ Font.loadAsync ở App.js) — `undefined` để
+// RN dùng font mặc định của OS (SF Pro/iOS, Roboto/Android), weight vẫn
+// điều khiển qua `fontWeight` ở từng style (xem typeScale trong
+// design-system/tokens.js).
 export const Fonts = {
-  regular: 'SanFranciscoText-Regular',
-  base: 'SanFranciscoText-Regular',
-  medium: 'SanFranciscoText-Regular',
-  meidum: 'SanFranciscoText-Regular', // legacy typo alias
-  semiBold: 'SanFranciscoText-Semibold',
-  bold: 'SanFranciscoText-Heavy',
-  rounded: 'SanFranciscoText-Regular',
+  regular: undefined,
+  base: undefined,
+  medium: undefined,
+  meidum: undefined, // legacy typo alias
+  semiBold: undefined,
+  bold: undefined,
+  rounded: undefined,
 }
 
 // const { PlatformConstants = {} } = NativeModules;

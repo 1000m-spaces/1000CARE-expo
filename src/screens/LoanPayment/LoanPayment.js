@@ -139,11 +139,7 @@ const styles = StyleSheet.create({
   ctaButton: {
     borderRadius: s(16),
     overflow: 'hidden',
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(10) },
-    shadowOpacity: 0.24,
-    shadowRadius: s(20),
-    elevation: 6,
+    ...brandShadow.button,
   },
   ctaGradient: {
     height: s(50),

@@ -40,11 +40,7 @@ const styles = StyleSheet.create({
     height: s(52),
     borderRadius: s(16),
     overflow: 'hidden',
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(8) },
-    shadowOpacity: 0.22,
-    shadowRadius: s(16),
-    elevation: 5,
+    ...brandShadow.button,
   },
 
   nextStepBtnGradient: {

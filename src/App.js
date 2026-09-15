@@ -7,15 +7,17 @@ import {store} from './store';
 import {setCustomText, setCustomTextInput} from 'react-native-global-props';
 import {TextInput} from 'react-native';
 import {Host} from 'react-native-portalize';
-import {Fonts} from './assets/config';
-import * as Font from 'expo-font';
 import UpdatePrompt from './design-system/UpdatePrompt';
 
+// Design system mới ("1000M Order App") dùng --font-sans: font HỆ THỐNG
+// (SF Pro trên iOS, Roboto trên Android), KHÔNG phải font custom đóng gói
+// riêng — bỏ hẳn bộ SanFranciscoText*.otf + Font.loadAsync (từng gate cả
+// màn hình đầu chờ tải font). fontFamily để undefined = RN tự dùng font
+// mặc định của OS.
 const customTextInputProps = {
   allowFontScaling: false,
   underlineColorAndroid: 'rgba(0,0,0,0)',
   style: {
-    fontFamily: Fonts.base,
     fontWeight: 'normal',
     fontSize: 14,
   },
@@ -24,7 +26,6 @@ const customTextInputProps = {
 const customTextProps = {
   allowFontScaling: false,
   style: {
-    fontFamily: Fonts.base,
     fontWeight: 'normal',
   },
 };
@@ -37,20 +38,6 @@ const App = () => {
 
     const prepareApp = async () => {
       console.disableYellowBox = true;
-      const regular = require('../assets/fonts/SanFranciscoText-Regular.otf');
-      const semiBold = require('../assets/fonts/SanFranciscoText-Semibold.otf');
-      const bold = require('../assets/fonts/SanFranciscoText-Heavy.otf');
-
-      await Font.loadAsync({
-        Roboto: regular,
-        [Fonts.regular]: regular,
-        [Fonts.base]: regular,
-        [Fonts.medium]: regular,
-        [Fonts.meidum]: regular,
-        [Fonts.rounded]: regular,
-        [Fonts.semiBold]: semiBold,
-        [Fonts.bold]: bold,
-      });
 
       if (!isMounted) {
         return;

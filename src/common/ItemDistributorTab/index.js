@@ -5,7 +5,7 @@ import {
   logoNeoMed, log_mb_bank_landscape,
 } from '~/assets/constants'
 import { s, fs } from '~/utils/responsive'
-import { brandColors } from '~/design-system/tokens'
+import { brandColors, brandShadow } from '~/design-system/tokens'
 
 const ItemDistributorTab = ({ data, onItemPress, selected, showLabel = false, selectedScale = 1 }) => {
   let imageSource = {
@@ -67,11 +67,7 @@ const styles = StyleSheet.create({
   containerSelected: {
     backgroundColor: brandColors.tealPrimary,
     borderColor: brandColors.tealPrimary,
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.22,
-    shadowRadius: 14,
-    elevation: 6,
+    ...brandShadow.button,
   },
   image: {
     width: s(48),

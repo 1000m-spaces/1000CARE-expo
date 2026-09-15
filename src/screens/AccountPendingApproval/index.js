@@ -179,11 +179,7 @@ const styles = StyleSheet.create({
     borderRadius: s(16),
     overflow: 'hidden',
     marginBottom: s(14),
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(10) },
-    shadowOpacity: 0.24,
-    shadowRadius: s(20),
-    elevation: 6,
+    ...brandShadow.button,
   },
   checkButtonGradient: {
     height: s(52),

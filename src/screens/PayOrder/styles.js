@@ -33,11 +33,7 @@ const styles = StyleSheet.create({
     marginBottom: s(10),
     borderRadius: s(radiusScale.xxl),
     padding: s(16),
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(10) },
-    shadowOpacity: 0.2,
-    shadowRadius: s(20),
-    elevation: 6,
+    ...brandShadow.button,
   },
   sourceCardOutline: {
     marginHorizontal: s(16),

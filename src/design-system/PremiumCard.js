@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '~/common';
 import { s, fs } from '../utils/responsive';
 import { brandColors, brandGradients, brandShadow, radiusScale } from './tokens';
@@ -9,6 +8,9 @@ import PressScale from './PressScale';
 
 const { width } = Dimensions.get('window');
 
+// "Hero card" theo design system mới: nền màu ĐẶC (--ink), không
+// gradient — giữ prop `colors` cho tương thích ngược, chỉ lấy màu đầu
+// tiên của mảng.
 const PremiumCard = ({
   title,
   subtitle,
@@ -16,14 +18,10 @@ const PremiumCard = ({
   colors = brandGradients.primary,
   image
 }) => {
+  const backgroundColor = colors[0] || brandColors.tealPrimary;
   return (
     <PressScale onPress={onPress} style={styles.wrapper}>
-      <LinearGradient
-        colors={colors}
-        style={styles.card}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
+      <View style={[styles.card, { backgroundColor }]}>
         <View style={styles.content}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{title}</Text>
@@ -38,7 +36,7 @@ const PremiumCard = ({
         {image && (
           <Image source={image} style={styles.cardImage} resizeMode="contain" />
         )}
-      </LinearGradient>
+      </View>
     </PressScale>
   );
 };
@@ -46,11 +44,7 @@ const PremiumCard = ({
 const styles = StyleSheet.create({
   wrapper: {
     marginVertical: s(12),
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: s(14) },
-    shadowOpacity: 0.24,
-    shadowRadius: s(28),
-    elevation: 8,
+    ...brandShadow.button,
   },
   card: {
     width: width - s(32),

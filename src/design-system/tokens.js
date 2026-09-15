@@ -101,8 +101,22 @@ export const stateRules = {
 export const selectedTint = 'rgba(2,158,157,0.08)'; // brandColors.tealPrimary (--ink) ở alpha 8%, dùng khi 1 lựa chọn/hàng đang active
 
 export const brandShadow = {
+  // Shadow trung tính cho nút CTA — thay hẳn kiểu "glow màu teal dưới nút"
+  // cũ (shadowColor: brandColors.tealPrimary, opacity cao) không có trong
+  // design system mới (chỉ dùng shadow trung tính --shadow/--shadow-lg,
+  // không đổ bóng màu thương hiệu).
+  button: {
+    shadowColor: '#0A2F38',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.14,
+    shadowRadius: 20,
+    elevation: 6,
+  },
+  // Giữ tên cũ (nhiều nơi còn tham chiếu `brandShadow.teal`) nhưng đổi
+  // hẳn màu shadow sang trung tính — design system mới không đổ bóng màu
+  // thương hiệu ở đâu cả.
   teal: {
-    shadowColor: brandColors.tealPrimary,
+    shadowColor: '#0A2F38',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.14,
     shadowRadius: 16,
@@ -118,9 +132,10 @@ export const brandShadow = {
     shadowRadius: 22,
     elevation: 5,
   },
-  // Card đang được chọn/nổi bật (địa chỉ mặc định...) dùng shadow tint teal.
+  // Card đang được chọn/nổi bật (địa chỉ mặc định...) — trạng thái chọn
+  // thể hiện qua border teal (xem selectedTint), shadow vẫn trung tính.
   softSelected: {
-    shadowColor: brandColors.tealPrimary,
+    shadowColor: '#0A2F38',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
@@ -143,19 +158,16 @@ export const brandShadow = {
 // (background/backgroundStrong/border/shadow...) vì ~40 file khắp app
 // đang tham chiếu qua tên — chỉ đổi giá trị từ rgba trong suốt sang màu
 // đặc phẳng (--surface/--border thật), để không phải sửa từng file mà
-// cascade tự động. `gradient`/`gradientLocations` không còn nơi nào
-// dùng (LiquidGlassView.js không còn được gọi ở đâu trong app) — giữ
-// lại phòng khi cần, không xoá component.
+// cascade tự động. Component `LiquidGlassView` (blur thật, expo-blur)
+// đã bị XOÁ hẳn (không còn nơi nào gọi) trong đợt làm mới hoàn toàn
+// cùng ngày — `gradient`/`gradientLocations` cũng bỏ theo vì chỉ phục
+// vụ component đó.
 export const liquidGlass = {
   background: '#FFFFFF',
   backgroundStrong: '#FFFFFF',
   backgroundTint: '#FFFFFF',
   border: '#DDEBED', // brandColors.border thật — trước là viền trắng mờ ăn theo blur, giờ phải là viền xám thấy được
   borderTint: 'rgba(2,158,157,0.14)', // brandColors.tealPrimary (--ink)
-  // Gradient chéo dùng cho chất liệu "kính lỏng" (search bar, cart button,
-  // back button, sticky footer) — linear-gradient(135deg, ...) từ bản redesign.
-  gradient: ['rgba(255,255,255,0.8)', 'rgba(237,251,252,0.35)', 'rgba(255,255,255,0.6)'],
-  gradientLocations: [0, 0.55, 1],
   // = --shadow của design system mới (0 2px 4px rgba(...,.05), 0 9px 22px
   // rgba(...,.075)) — cùng công thức đã dùng cho brandShadow.soft.
   shadow: {
@@ -174,8 +186,13 @@ export const backgroundWash = {
   blobs: [],
 };
 
+// Design system mới KHÔNG dùng gradient ở đâu cả (nút/hero card đều màu
+// phẳng: --ink solid, --gold solid) — làm mới hoàn toàn 2026-09-15: mỗi
+// "gradient" giờ là 1 màu lặp lại 2 lần để mọi <LinearGradient
+// colors={brandGradients.x}> render ra phẳng tuyệt đối mà không phải sửa
+// từng file dùng nó (giữ tên/API cũ, chỉ đổi giá trị tại nguồn).
 export const brandGradients = {
-  primary: [brandColors.tealDark, brandColors.tealPrimary],
-  light: ['#FFFFFF', brandColors.tealLight],
-  gold: [brandColors.goldAccent, '#FFC04D'],
+  primary: [brandColors.tealPrimary, brandColors.tealPrimary],
+  light: [brandColors.surface, brandColors.surface],
+  gold: [brandColors.goldAccent, brandColors.goldAccent],
 };
