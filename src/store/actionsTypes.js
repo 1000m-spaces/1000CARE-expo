@@ -221,3 +221,20 @@ export const AUTH_V2 = createRequestTypes(
   ],
   suffixTypes,
 )
+
+// Catalog/giỏ hàng THẬT (backend mới) — màn RIÊNG, chưa đụng tab "Giỏ quà"
+// hay checkout thật. Xem [[marketplace-core-business-model]] mục shape
+// catalog/cart đổi 2026-09-14/15.
+export const CATALOG_V2 = createRequestTypes(
+  'CATALOG_V2',
+  [
+    'GET_STORES', // GET /customer/v1/stores
+    'GET_STORE_PRODUCTS', // GET /customer/v1/stores/{id}/products
+    'GET_STORE_CART', // GET /customer/v1/stores/{id}/cart?member=
+    'UPDATE_CART_ITEM', // PUT /customer/v1/stores/{id}/cart/items/{productId}
+    'DELETE_CART_ITEM', // DELETE /customer/v1/stores/{id}/cart/items/{productId}
+    'GET_PRODUCT_MESSAGES', // GET /customer/v1/product-messages
+    'APPLY_PRODUCT_MESSAGE', // POST /customer/v1/product-messages/{id}/apply-to-cart
+  ],
+  suffixTypes,
+)

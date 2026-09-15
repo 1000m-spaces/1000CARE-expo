@@ -13,6 +13,10 @@ import {
   OrdersV2,
   OrderDetailV2,
   NotificationsV2,
+  StoresV2,
+  StoreCatalogV2,
+  StoreCartV2,
+  ProductMessagesV2,
   RechargeOnline,
   ProfileScreen,
   AccountStatement,
@@ -126,6 +130,10 @@ import {
   NAVIGATION_ORDERS_V2,
   NAVIGATION_ORDER_DETAIL_V2,
   NAVIGATION_NOTIFICATIONS_V2,
+  NAVIGATION_STORES_V2,
+  NAVIGATION_STORE_CATALOG_V2,
+  NAVIGATION_STORE_CART_V2,
+  NAVIGATION_PRODUCT_MESSAGES_V2,
 } from './routes';
 import PaymentByNeomedScreen from '~/screens/PaymentByNeomedScreen/index';
 import AddressChooseScreen from '~/screens/AddressChooseScreen/index';
@@ -371,6 +379,34 @@ const StackNavigator = () => {
       <Stack.Screen
         name={NAVIGATION_NOTIFICATIONS_V2}
         component={NotificationsV2}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_STORES_V2}
+        component={StoresV2}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_STORE_CATALOG_V2}
+        component={StoreCatalogV2}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_STORE_CART_V2}
+        component={StoreCartV2}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_PRODUCT_MESSAGES_V2}
+        component={ProductMessagesV2}
         options={{
           header: () => null,
         }}

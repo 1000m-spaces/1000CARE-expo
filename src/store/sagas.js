@@ -24,6 +24,7 @@ import trademarks from './trademarks/TrademarksSaga'
 import ads from './ads/adsSagas'
 import versionSaga from './version/versionSagas'
 import authV2Saga from './authV2/authV2Sagas'
+import catalogV2Saga from './catalogV2/catalogV2Sagas'
 /**
  * rootSaga
  */
@@ -52,4 +53,5 @@ export default function* root() {
   yield fork(ads)
   yield fork(versionSaga)
   yield fork(authV2Saga)
+  yield fork(catalogV2Saga)
 }

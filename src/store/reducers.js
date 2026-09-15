@@ -22,6 +22,7 @@ import trademarksReducer from './trademarks/TrademarksReducer'
 import adsReducer from './ads/adsReducer'
 import versionReducer from './version/versionReducer'
 import authV2Reducer from './authV2/authV2Reducer'
+import catalogV2Reducer from './catalogV2/catalogV2Reducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   ads: adsReducer,
   version: versionReducer,
   authV2: authV2Reducer,
+  catalogV2: catalogV2Reducer,
 })
 
 export default (state, action) => rootReducer(state, action)

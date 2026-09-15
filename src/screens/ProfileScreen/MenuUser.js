@@ -8,7 +8,8 @@ import {
   NAVIGATION_KYC_SUBMIT,
   NAVIGATION_MARKETER_LINKS,
   NAVIGATION_ORDERS_V2,
-  NAVIGATION_NOTIFICATIONS_V2
+  NAVIGATION_NOTIFICATIONS_V2,
+  NAVIGATION_STORES_V2
 } from '~/navigation/routes'
 import { logout, resetCart } from '~/store/actions'
 import { getAuthStore } from '~/store/selector'
@@ -86,6 +87,16 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
       icon: mail,
       colorIcon: brandColors.tealPrimary,
       routePath: NAVIGATION_NOTIFICATIONS_V2,
+      isClickAvailable: true,
+    },
+    {
+      // Catalog/giỏ hàng THẬT (backend mới) — màn RIÊNG, chưa đụng
+      // checkout thật. Xem [[marketplace-core-business-model]].
+      text: 'Đặt hàng theo nhà thuốc (bản thử nghiệm mới)',
+      background: 'rgba(2, 158, 157, 0.1)',
+      icon: gift,
+      colorIcon: brandColors.tealPrimary,
+      routePath: NAVIGATION_STORES_V2,
       isClickAvailable: true,
     },
     {

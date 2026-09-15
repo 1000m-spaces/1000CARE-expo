@@ -78,3 +78,7 @@ export const NAVIGATION_MARKETER_LINKS = 'MarketerLinks';
 export const NAVIGATION_ORDERS_V2 = 'OrdersV2';
 export const NAVIGATION_ORDER_DETAIL_V2 = 'OrderDetailV2';
 export const NAVIGATION_NOTIFICATIONS_V2 = 'NotificationsV2';
+export const NAVIGATION_STORES_V2 = 'StoresV2';
+export const NAVIGATION_STORE_CATALOG_V2 = 'StoreCatalogV2';
+export const NAVIGATION_STORE_CART_V2 = 'StoreCartV2';
+export const NAVIGATION_PRODUCT_MESSAGES_V2 = 'ProductMessagesV2';

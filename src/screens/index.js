@@ -68,6 +68,10 @@ import MarketerLinks from './MarketerLinks';
 import OrdersV2 from './OrdersV2';
 import OrderDetailV2 from './OrdersV2/OrderDetail';
 import NotificationsV2 from './NotificationsV2';
+import StoresV2 from './StoresV2';
+import StoreCatalogV2 from './StoreCatalogV2';
+import StoreCartV2 from './StoreCartV2';
+import ProductMessagesV2 from './ProductMessagesV2';
 import AuthoritySupplier from './AuthoritySupplier/AuthoritySupplier';
 export {
   MainScreen,
@@ -141,4 +145,8 @@ export {
   OrdersV2,
   OrderDetailV2,
   NotificationsV2,
+  StoresV2,
+  StoreCatalogV2,
+  StoreCartV2,
+  ProductMessagesV2,
 };
