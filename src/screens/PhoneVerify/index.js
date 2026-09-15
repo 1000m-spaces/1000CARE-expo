@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TextInput } from 'react-native'
 import PressScale from '~/design-system/PressScale'
-import LiquidGlassView from '~/design-system/LiquidGlassView'
 import { LinearGradient } from 'expo-linear-gradient'
 import strings from '~/i18n'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,7 +11,7 @@ import { getSignUpStatus, getConfirmSignUpStatus, getSignUpError } from '~/store
 import Status from '~/common/Status/Status'
 import { NAVIGATION_CONFIRM } from '~/navigation/routes'
 import AppBackground from '~/design-system/AppBackground'
-import { brandColors, brandGradients } from '~/design-system/tokens'
+import { brandColors, brandGradients, brandShadow } from '~/design-system/tokens'
 import { fs, s } from '~/utils/responsive'
 
 // Cùng bố cục tối giản với LoginPhone/RegisterScreen — back button nổi,
@@ -54,9 +53,9 @@ const PhoneVerify = ({ navigation, route }) => {
     <AppBackground>
       <View style={styles.screen}>
         <PressScale onPress={() => navigation.pop()} style={styles.backButton}>
-          <LiquidGlassView intensity="regular" style={styles.backButtonGlass}>
+          <View style={styles.backButtonGlass}>
             <Icon type="feather" name="chevron-left" color={brandColors.tealPrimary} size={s(18)} />
-          </LiquidGlassView>
+          </View>
         </PressScale>
 
         <View style={styles.content}>
@@ -120,6 +119,10 @@ const styles = StyleSheet.create({
     borderRadius: s(19),
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
+    ...brandShadow.soft,
   },
   content: {
     flex: 1,

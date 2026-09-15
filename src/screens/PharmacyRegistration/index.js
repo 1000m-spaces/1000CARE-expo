@@ -3,14 +3,13 @@ import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import PressScale from '~/design-system/PressScale';
-import LiquidGlassView from '~/design-system/LiquidGlassView';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
 import ErrorView from '~/common/ErrorView';
 import { registerCustomerV2, resetRegisterCustomerV2 } from '~/store/authV2/authV2Actions';
 import { getRegisterCustomerV2Status, getRegisterCustomerV2Err } from '~/store/authV2/authV2Selector';
 import Status from '~/common/Status/Status';
-import { brandColors, brandGradients } from '~/design-system/tokens';
+import { brandColors, brandGradients, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
 // Nhà thuốc TỰ đăng ký — POST /customer/v1/registration (đính chính
@@ -58,9 +57,9 @@ const PharmacyRegistration = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="always">
         <View style={styles.headerRow}>
           <PressScale onPress={() => navigation.pop()} style={styles.backButton}>
-            <LiquidGlassView intensity="regular" style={styles.backButtonGlass}>
+            <View style={styles.backButtonGlass}>
               <Icon type="feather" name="chevron-left" color={brandColors.tealPrimary} size={s(18)} />
-            </LiquidGlassView>
+            </View>
           </PressScale>
           <Text style={styles.headerTitle}>Đăng ký nhà thuốc</Text>
         </View>
@@ -181,6 +180,10 @@ const styles = StyleSheet.create({
     borderRadius: s(19),
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
+    ...brandShadow.soft,
   },
   headerTitle: {
     color: brandColors.textDark,

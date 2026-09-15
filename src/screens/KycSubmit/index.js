@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import PressScale from '~/design-system/PressScale';
-import LiquidGlassView from '~/design-system/LiquidGlassView';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
 import ErrorView from '~/common/ErrorView';
@@ -20,7 +19,7 @@ import {
   getUploadedKycDocsV2,
 } from '~/store/authV2/authV2Selector';
 import Status from '~/common/Status/Status';
-import { brandColors, brandGradients } from '~/design-system/tokens';
+import { brandColors, brandGradients, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
 const KYC_STATUS_LABEL = {
@@ -73,9 +72,9 @@ const KycSubmit = ({ navigation }) => {
     <AppBackground>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <PressScale onPress={() => navigation.pop()} style={styles.backButton}>
-          <LiquidGlassView intensity="regular" style={styles.backButtonGlass}>
+          <View style={styles.backButtonGlass}>
             <Icon type="feather" name="chevron-left" color={brandColors.tealPrimary} size={s(18)} />
-          </LiquidGlassView>
+          </View>
         </PressScale>
 
         <View style={styles.content}>
@@ -158,6 +157,10 @@ const styles = StyleSheet.create({
     borderRadius: s(19),
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
+    ...brandShadow.soft,
   },
   content: {
     paddingHorizontal: s(24),

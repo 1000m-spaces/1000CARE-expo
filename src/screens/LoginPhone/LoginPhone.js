@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TextInput } from 'react-native';
 import PressScale from '~/design-system/PressScale';
-import LiquidGlassView from '~/design-system/LiquidGlassView';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -25,7 +24,7 @@ const logo1000care = require('~/assets/configNeoMed/splash-logo-mark.png');
 import { NAVIGATION_TO_MAIN_SCREEN, NAVIGATION_ACCOUNT_PENDING_APPROVAL } from '~/navigation/routes';
 import Status from '~/common/Status/Status';
 import { Fonts } from '~/assets/config';
-import { brandColors, brandGradients } from '~/design-system/tokens';
+import { brandColors, brandGradients, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
 // Màn đăng nhập theo spec redesign: bố cục tối giản, canh giữa — thay cho
@@ -83,9 +82,9 @@ const LoginPhone = ({ navigation }) => {
           onPress={() => navigation.pop()}
           style={styles.backButton}
         >
-          <LiquidGlassView intensity="regular" style={styles.backButtonGlass}>
+          <View style={styles.backButtonGlass}>
             <Icon type="feather" name="chevron-left" color={brandColors.tealPrimary} size={s(18)} />
-          </LiquidGlassView>
+          </View>
         </PressScale>
 
         <View style={styles.content}>
@@ -177,6 +176,10 @@ const styles = StyleSheet.create({
     borderRadius: s(19),
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
+    ...brandShadow.soft,
   },
   content: {
     flex: 1,

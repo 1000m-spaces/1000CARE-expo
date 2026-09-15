@@ -2,10 +2,9 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import InputSearch from './InputSearch'
 import PressScale from '~/design-system/PressScale'
-import LiquidGlassView from '~/design-system/LiquidGlassView'
 import CartHeaderButton from '~/common/CartHeaderButton/CartHeaderButton'
 import { Icon } from '~/common/index'
-import { brandColors } from '~/design-system/tokens'
+import { brandColors, brandShadow } from '~/design-system/tokens'
 import { s } from '~/utils/responsive'
 
 // Header tìm kiếm theo spec redesign: 1 hàng phẳng (nút back kính +
@@ -14,9 +13,9 @@ const SearchBar = ({ navigation, onBack, onChangeText, idSearchDistri, textSearc
   return (
     <View style={styles.wrap}>
       <PressScale onPress={onBack} style={styles.backButton}>
-        <LiquidGlassView intensity="regular" style={styles.backButtonGlass}>
+        <View style={styles.backButtonGlass}>
           <Icon type="feather" name="chevron-left" color={brandColors.tealPrimary} size={18} />
-        </LiquidGlassView>
+        </View>
       </PressScale>
       <InputSearch
         ref_input={ref_input}
@@ -49,6 +48,10 @@ const styles = StyleSheet.create({
     borderRadius: s(19),
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
+    ...brandShadow.soft,
   },
 })
 

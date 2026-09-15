@@ -2,14 +2,13 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import PressScale from '~/design-system/PressScale';
-import LiquidGlassView from '~/design-system/LiquidGlassView';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
 import { getNotificationsV2, markNotificationReadV2 } from '~/store/authV2/authV2Actions';
 import { getNotificationsV2Status, getNotificationsV2 as getNotificationsV2Data } from '~/store/authV2/authV2Selector';
 import Status from '~/common/Status/Status';
 import { NAVIGATION_ORDER_DETAIL_V2 } from '~/navigation/routes';
-import { brandColors } from '~/design-system/tokens';
+import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
 const KIND_META = {
@@ -64,9 +63,9 @@ const NotificationsV2 = ({ navigation }) => {
     <AppBackground>
       <View style={styles.headerRow}>
         <PressScale onPress={() => navigation.pop()} style={styles.backButton}>
-          <LiquidGlassView intensity="regular" style={styles.backButtonGlass}>
+          <View style={styles.backButtonGlass}>
             <Icon type="feather" name="chevron-left" color={brandColors.tealPrimary} size={s(18)} />
-          </LiquidGlassView>
+          </View>
         </PressScale>
         <Text style={styles.headerTitle}>Thông báo</Text>
       </View>
@@ -108,6 +107,10 @@ const styles = StyleSheet.create({
     borderRadius: s(19),
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
+    ...brandShadow.soft,
   },
   headerTitle: {
     color: brandColors.textDark,
