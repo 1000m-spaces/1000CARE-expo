@@ -7,7 +7,7 @@ import { Icon } from '~/common/index';
 import { getStoresV2 } from '~/store/catalogV2/catalogV2Actions';
 import { getStoresV2Status, getStoresV2 as selectStoresV2 } from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
-import { NAVIGATION_STORE_CATALOG_V2, NAVIGATION_PRODUCT_MESSAGES_V2 } from '~/navigation/routes';
+import { NAVIGATION_STORE_CATALOG_V2 } from '~/navigation/routes';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
@@ -52,15 +52,6 @@ const StoresV2 = ({ navigation }) => {
         </PressScale>
         <Text style={styles.headerTitle}>Đặt hàng theo nhà thuốc</Text>
       </View>
-
-      <PressScale
-        style={styles.messagesEntry}
-        onPress={() => navigation.navigate(NAVIGATION_PRODUCT_MESSAGES_V2)}
-      >
-        <Icon type="feather" name="gift" color={brandColors.goldDark} size={s(18)} />
-        <Text style={styles.messagesEntryText}>Sản phẩm marketer gửi</Text>
-        <Icon type="feather" name="chevron-right" color={brandColors.goldDark} size={s(16)} />
-      </PressScale>
 
       <FlatList
         data={stores}
@@ -109,23 +100,6 @@ const styles = StyleSheet.create({
     fontSize: fs(17),
     fontWeight: '800',
     flexShrink: 1,
-  },
-  messagesEntry: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: s(8),
-    marginHorizontal: s(20),
-    marginBottom: s(14),
-    paddingVertical: s(12),
-    paddingHorizontal: s(14),
-    borderRadius: s(14),
-    backgroundColor: brandColors.warningTint,
-  },
-  messagesEntryText: {
-    flex: 1,
-    color: brandColors.goldDark,
-    fontSize: fs(13),
-    fontWeight: '700',
   },
   listContent: {
     paddingHorizontal: s(20),

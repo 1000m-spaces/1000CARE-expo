@@ -71,7 +71,8 @@ import NotificationsV2 from './NotificationsV2';
 import StoresV2 from './StoresV2';
 import StoreCatalogV2 from './StoreCatalogV2';
 import StoreCartV2 from './StoreCartV2';
-import ProductMessagesV2 from './ProductMessagesV2';
+import ChatListV2 from './ChatListV2';
+import ChatThreadV2 from './ChatThreadV2';
 import AuthoritySupplier from './AuthoritySupplier/AuthoritySupplier';
 export {
   MainScreen,
@@ -148,5 +149,6 @@ export {
   StoresV2,
   StoreCatalogV2,
   StoreCartV2,
-  ProductMessagesV2,
+  ChatListV2,
+  ChatThreadV2,
 };

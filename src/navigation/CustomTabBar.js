@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import { Animated, View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform, LayoutAnimation, UIManager } from 'react-native';
-import { Image } from '~/common/index';
+import { useSelector } from 'react-redux';
+import { Image, Icon } from '~/common/index';
 import { shopping_bag, home, gift, account } from '~/assets/constants';
 import {
   NAVIGATION_TO_HOME_SCREEN,
   NAVIGATION_ORDERS_SCREEN,
   NAVIGATION_TO_HOT_DEAL_SCREEN,
   NAVIGATION_TO_PROFILE_SCREEN,
+  NAVIGATION_CHAT_LIST_V2,
 } from '~/navigation/routes';
+import { getProductMessageThreadsV2 } from '~/store/catalogV2/catalogV2Selector';
 import { s, fs } from '~/utils/responsive';
 import { brandColors, radiusScale, brandShadow } from '~/design-system/tokens';
 import { useTabBarVisibility } from './TabBarVisibilityContext';
@@ -39,6 +42,13 @@ const CustomTabBar = ({ state, navigation }) => {
     [NAVIGATION_TO_HOT_DEAL_SCREEN]: gift,
     [NAVIGATION_TO_PROFILE_SCREEN]: account,
   };
+
+  // Nút chat marketer nổi (FAB) — theo thống nhất với 1000care-seller-app-f1
+  // 2026-09-15: KHÔNG nhét vào pill 4-tab (chật), tách hẳn thành 1 nút
+  // tròn riêng kiểu Messenger/Zalo, nổi phía trên-phải pill. Badge đếm số
+  // hội thoại còn gợi ý sản phẩm CHƯA áp dụng (dữ liệu thật).
+  const chatThreads = useSelector(state => getProductMessageThreadsV2(state));
+  const chatUnreadCount = chatThreads.reduce((sum, t) => sum + (t.unappliedCount > 0 ? 1 : 0), 0);
 
   useEffect(() => {
     Animated.spring(translateY, {
@@ -104,6 +114,19 @@ const CustomTabBar = ({ state, navigation }) => {
           );
         })}
       </View>
+
+      <TouchableOpacity
+        style={styles.chatFab}
+        activeOpacity={0.85}
+        onPress={() => navigation.navigate(NAVIGATION_CHAT_LIST_V2)}
+      >
+        <Icon type="feather" name="message-circle" color={brandColors.surface} size={s(22)} />
+        {chatUnreadCount > 0 && (
+          <View style={styles.chatFabBadge}>
+            <Text style={styles.chatFabBadgeText}>{chatUnreadCount > 9 ? '9+' : chatUnreadCount}</Text>
+          </View>
+        )}
+      </TouchableOpacity>
     </Animated.View>
   );
 };
@@ -140,6 +163,37 @@ const styles = StyleSheet.create({
   label: {
     fontSize: fs(10.5),
     fontWeight: '600',
+  },
+  chatFab: {
+    position: 'absolute',
+    right: s(16),
+    bottom: s(100), // nổi phía trên pill (height 66 + khoảng cách), không chung 1 khối
+    width: s(52),
+    height: s(52),
+    borderRadius: s(26),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: brandColors.goldAccent,
+    ...brandShadow.sheet,
+  },
+  chatFabBadge: {
+    position: 'absolute',
+    top: -s(2),
+    right: -s(2),
+    minWidth: s(18),
+    height: s(18),
+    borderRadius: s(9),
+    paddingHorizontal: s(4),
+    backgroundColor: brandColors.danger,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: brandColors.surface,
+  },
+  chatFabBadgeText: {
+    color: brandColors.surface,
+    fontSize: fs(9.5),
+    fontWeight: '800',
   },
 });
 

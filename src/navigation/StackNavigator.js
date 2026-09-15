@@ -16,7 +16,8 @@ import {
   StoresV2,
   StoreCatalogV2,
   StoreCartV2,
-  ProductMessagesV2,
+  ChatListV2,
+  ChatThreadV2,
   RechargeOnline,
   ProfileScreen,
   AccountStatement,
@@ -133,7 +134,8 @@ import {
   NAVIGATION_STORES_V2,
   NAVIGATION_STORE_CATALOG_V2,
   NAVIGATION_STORE_CART_V2,
-  NAVIGATION_PRODUCT_MESSAGES_V2,
+  NAVIGATION_CHAT_LIST_V2,
+  NAVIGATION_CHAT_THREAD_V2,
 } from './routes';
 import PaymentByNeomedScreen from '~/screens/PaymentByNeomedScreen/index';
 import AddressChooseScreen from '~/screens/AddressChooseScreen/index';
@@ -405,8 +407,15 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name={NAVIGATION_PRODUCT_MESSAGES_V2}
-        component={ProductMessagesV2}
+        name={NAVIGATION_CHAT_LIST_V2}
+        component={ChatListV2}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_CHAT_THREAD_V2}
+        component={ChatThreadV2}
         options={{
           header: () => null,
         }}

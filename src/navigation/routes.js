@@ -81,4 +81,5 @@ export const NAVIGATION_NOTIFICATIONS_V2 = 'NotificationsV2';
 export const NAVIGATION_STORES_V2 = 'StoresV2';
 export const NAVIGATION_STORE_CATALOG_V2 = 'StoreCatalogV2';
 export const NAVIGATION_STORE_CART_V2 = 'StoreCartV2';
-export const NAVIGATION_PRODUCT_MESSAGES_V2 = 'ProductMessagesV2';
+export const NAVIGATION_CHAT_LIST_V2 = 'ChatListV2';
+export const NAVIGATION_CHAT_THREAD_V2 = 'ChatThreadV2';
