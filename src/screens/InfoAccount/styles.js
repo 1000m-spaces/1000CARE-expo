@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
         padding: 20
     },
     bank: {
-        backgroundColor: '#0B7B8A',
+        backgroundColor: '#029E9D',
         height: fullHeight*0.3 - 40,
         borderRadius: 12,
         justifyContent: 'flex-end',
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     },
     styleButton: {
         borderRadius: 50,
-        backgroundColor: '#0B7B8A',
+        backgroundColor: '#029E9D',
         width: fullWith - 40,
     },
     containerInput: {

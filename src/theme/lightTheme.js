@@ -165,14 +165,14 @@ export default {
     history_wait: '#1769ff',
   },
   appColor: {
-    colorMain: '#0B7B8A',
+    colorMain: '#029E9D',
     title: '#fff',//màu chữ Tài khoản trong Account
     tabBarActiveTextColor: '#fff',//màu chữ tabTop
     tabBarBackgroundColor: 'black',
-    tabBarUnderline: '#0B7B8A',//thanh kẻ dưới của tabTop
+    tabBarUnderline: '#029E9D',//thanh kẻ dưới của tabTop
     bg_container: '#fff',
     input_login_text_color: 'rgb(137,143,113)',
-    btn_login: '#0B7B8A',//nút đăng nhập
+    btn_login: '#029E9D',//nút đăng nhập
     text_btn_login: '#fff',
     text_btn_login_other: '#fff',
     btn_login_facebook: '#30377D',//màu button login face
@@ -182,26 +182,26 @@ export default {
     gradient_home: ['#F1E1D2', '#F1E1D2', '#F1E1D2', '#F1E1D2'],
     btn_login_phone: '#737270',//màu button login phone
     text_footer: '#062480',//màu chữ cuối trang login FFF700
-    header_tab_active: '#0B7B8A',//màu vạch kẻ trên cùng tab
-    txt_user_name: '#0B7B8A',// màu name use
-    gradient_error_btn: ['#0B7B8A', '#0B7B8A', '#0B7B8A'],//màu button Trải nghiệm ngay lần đầu đăng nhập
-    line_profile: '#0B7B8A',//màu boder ảnh profile,đường kẻ nhỏ ở dưới ảnh
+    header_tab_active: '#029E9D',//màu vạch kẻ trên cùng tab
+    txt_user_name: '#029E9D',// màu name use
+    gradient_error_btn: ['#029E9D', '#029E9D', '#029E9D'],//màu button Trải nghiệm ngay lần đầu đăng nhập
+    line_profile: '#029E9D',//màu boder ảnh profile,đường kẻ nhỏ ở dưới ảnh
     priceDisplay: '#D88F33',//màu giá bán
     prodprice: '#AFA69D',// màu giá cũ
-    btn_order: ['#0B7B8A', '#0B7B8A', '#0B7B8A'],//button order
-    btn_update_pass: '#0B7B8A',//background số lượng thông báo hôp thư
+    btn_order: ['#029E9D', '#029E9D', '#029E9D'],//button order
+    btn_update_pass: '#029E9D',//background số lượng thông báo hôp thư
     btn_language: '#fff', //color chữ ok language
     bg_lang_modal: '#E6E6E6',//background cả modal thay đổi ngôn ngữ
     txt_option_side_menu: '#383A3A',//màu chữ các mục trong drawer
     txt_user_id: '#1E1F21',// màu chữ id và Point trong drawar
-    btn_gradient: ['#0B7B8A', '#0B7B8A', '#0B7B8A'],//color button bật GPS
+    btn_gradient: ['#029E9D', '#029E9D', '#029E9D'],//color button bật GPS
     gradient_select_shop: ['#BDD647', '#BDD647', '#BDD647'],//nút ok chọn shop
     btn_option_side_menu_focus: '#EEEAEA',//background mục được chọn drawer
     textName_Profile: '#470704',
     textOther_Profile: '#000',//màu chữ id và Point trong thông tin account
-    button_language: '#0B7B8A',//background button Ok language
-    button_add: '#0B7B8A',
-    number_in_order: '#0B7B8A',
-    backgroundColor: '#0B7B8A',
+    button_language: '#029E9D',//background button Ok language
+    button_add: '#029E9D',
+    number_in_order: '#029E9D',
+    backgroundColor: '#029E9D',
   },
 }

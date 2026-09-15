@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     width: BUBBLE_SIZE,
     height: BUBBLE_SIZE,
     borderRadius: BUBBLE_SIZE / 2,
-    backgroundColor: 'rgba(11,123,138,0.68)',
+    backgroundColor: 'rgba(2, 158, 157,0.68)',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.54)',
     shadowColor: brandColors.tealPrimary,

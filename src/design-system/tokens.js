@@ -1,19 +1,32 @@
+// Đồng bộ theo design system app Marketer (bản handoff chính thức chủ dự
+// án gửi riêng, 2026-09-15) — giữ nguyên TÊN token để không phải sửa lại
+// hàng trăm chỗ dùng `brandColors.tealPrimary`/`tealDark`, chỉ đổi giá
+// trị hex sang "ink"/"gold" của bộ nhận diện mới. `tealPrimary`/`tealDark`
+// giờ mang đúng giá trị --ink/--ink-2 của design system đó.
 export const brandColors = {
-  tealPrimary: '#0B7B8A',
-  tealDark: '#075E6B',
-  tealLight: '#EDFBFC',
-  goldAccent: '#F5A623',
-  textDark: '#1A1A2E',
-  background: '#F5F6F7',
+  tealPrimary: '#029E9D', // --ink
+  tealDark: '#017472', // --ink-2
+  tealLight: '#EDFBFC', // --surface-2 (không đổi, đã khớp sẵn)
+  goldAccent: '#F5A623', // --gold (không đổi, đã khớp sẵn)
+  goldDark: '#9D6A16', // --gold-dark
+  goldTint: '#FFDD9E', // --gold-tint
+  textDark: '#1A1A2E', // --text
+  background: '#F5F6F7', // --bg
   surface: '#FFFFFF',
   surfaceAlt: '#FDFBFF',
   border: '#DDEBED',
   borderSoft: '#EEF5F6',
-  muted: '#6D787E',
+  muted: '#6D787E', // --text-2
   mutedLight: '#9AA8AD',
+  mutedFaint: '#6D777B', // --text-3
   danger: '#FF3B30',
+  dangerTint: '#FFF1F0',
+  dangerText: '#D13027',
   success: '#10B981',
+  successTint: '#ECFDF5',
+  successText: '#0B825A',
   warning: '#F5A623',
+  warningTint: '#FFF7E6',
 };
 
 export const brandTypography = {
@@ -51,15 +64,17 @@ export const brandRadius = {
 };
 
 // Thang bo góc cố định — chọn theo loại component, không tự do.
+// xxxl nâng 20->24 theo --r-lg của design system app Marketer (card lớn/
+// modal bo tròn hơn hẳn — bản trước "goc-nhon" hơn thang mới).
 export const radiusScale = {
   xs: 8,   // nút +/-, banner cảnh báo nhỏ
   sm: 9,   // badge, thumb toggle
   md: 10,  // nút phụ, logo nhỏ trong header
-  lg: 12,  // hàng lựa chọn (payment/voucher row), ảnh trong giỏ hàng
+  lg: 12,  // hàng lựa chọn (payment/voucher row), ảnh trong giỏ hàng — = --r-sm
   xl: 14,  // ô lựa chọn (size/topping tương đương), input pin
-  xxl: 16, // ảnh sản phẩm, khối section, thanh nổi dưới
-  xxxl: 20, // card lớn, modal xác nhận
-  pill: 999, // nút chính rộng, chip, segmented control
+  xxl: 16, // ảnh sản phẩm, khối section, thanh nổi dưới — = --r-md
+  xxxl: 24, // card lớn, modal xác nhận — = --r-lg
+  pill: 999, // nút chính rộng, chip, segmented control — = --r-pill
 };
 
 // Thời lượng & easing cho các chuyển động lặp lại.
@@ -83,7 +98,7 @@ export const stateRules = {
   empty: 'icon mờ (mutedLight) + tiêu đề (textDark) + mô tả (muted) + 1 CTA quay lại',
 };
 
-export const selectedTint = 'rgba(11,123,138,0.08)'; // brandColors.tealPrimary ở alpha 8%, dùng khi 1 lựa chọn/hàng đang active
+export const selectedTint = 'rgba(2,158,157,0.08)'; // brandColors.tealPrimary (--ink) ở alpha 8%, dùng khi 1 lựa chọn/hàng đang active
 
 export const brandShadow = {
   teal: {
@@ -111,6 +126,15 @@ export const brandShadow = {
     shadowRadius: 20,
     elevation: 5,
   },
+  // --shadow-sheet của design system app Marketer — modal/bottom sheet nổi
+  // hẳn lên (đậm hơn `soft` nhiều), RN 1 lớp nên lấy lớp ngoài (20px/.16).
+  sheet: {
+    shadowColor: '#0A2F38',
+    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 0.16,
+    shadowRadius: 40,
+    elevation: 12,
+  },
 };
 
 export const liquidGlass = {
@@ -118,7 +142,7 @@ export const liquidGlass = {
   backgroundStrong: 'rgba(255,255,255,0.96)',
   backgroundTint: 'rgba(248,254,255,0.88)',
   border: 'rgba(255,255,255,0.95)',
-  borderTint: 'rgba(11,123,138,0.14)',
+  borderTint: 'rgba(2,158,157,0.14)', // brandColors.tealPrimary (--ink)
   // Gradient chéo dùng cho chất liệu "kính lỏng" (search bar, cart button,
   // back button, sticky footer) — linear-gradient(135deg, ...) từ bản redesign.
   gradient: ['rgba(255,255,255,0.8)', 'rgba(237,251,252,0.35)', 'rgba(255,255,255,0.6)'],

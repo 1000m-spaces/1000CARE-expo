@@ -109,7 +109,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.72)',
     borderWidth: 1,
-    borderColor: 'rgba(11,123,138,0.18)',
+    borderColor: 'rgba(2, 158, 157,0.18)',
     overflow: 'hidden',
   },
   cartBadge: {
@@ -148,7 +148,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: s(14),
     borderWidth: 1,
-    borderColor: 'rgba(11,123,138,0.08)',
+    borderColor: 'rgba(2, 158, 157,0.08)',
     shadowColor: '#0A2F38',
     shadowOpacity: 0.08,
     shadowRadius: s(14),

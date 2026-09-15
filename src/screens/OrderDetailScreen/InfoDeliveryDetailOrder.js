@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   dot: {
     width: 12,
     height: 12,
-    backgroundColor: '#0B7B8A',
+    backgroundColor: '#029E9D',
 
     borderRadius: 6,
   },

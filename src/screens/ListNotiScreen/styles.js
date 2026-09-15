@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     paddingLeft: s(14),
     borderRadius: s(22),
     borderWidth: 1,
-    borderColor: read || isReadAll ? liquidGlass.border : 'rgba(11,123,138,0.18)',
+    borderColor: read || isReadAll ? liquidGlass.border : 'rgba(2, 158, 157,0.18)',
     ...liquidGlass.shadow,
   }),
   statusRail: (read, isReadAll) => ({
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     height: s(46),
     width: s(46),
     borderRadius: s(17),
-    backgroundColor: read || isReadAll ? 'rgba(238,252,253,0.5)' : 'rgba(11,123,138,0.1)',
+    backgroundColor: read || isReadAll ? 'rgba(238,252,253,0.5)' : 'rgba(2, 158, 157,0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-start',

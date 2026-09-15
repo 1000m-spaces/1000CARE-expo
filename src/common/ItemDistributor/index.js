@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   containerSelected: {
-    borderColor: 'rgba(11,123,138,0.28)',
+    borderColor: 'rgba(2, 158, 157,0.28)',
     backgroundColor: 'rgba(224,244,246,0.62)',
   },
   containerPending: {
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(11, 123, 138, 0.6)',
+    backgroundColor: 'rgba(2, 158, 157, 0.6)',
     zIndex: 999,
     justifyContent: 'center',
     alignItems: 'center',

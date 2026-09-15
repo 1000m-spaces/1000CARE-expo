@@ -119,7 +119,7 @@ const HeaderApp = ({ navigation }) => {
           </Text>
           <View
             style={{
-              backgroundColor: '#0B7B8A',
+              backgroundColor: '#029E9D',
               marginTop: -2,
               paddingHorizontal: 5,
               borderRadius: 10,

@@ -56,7 +56,7 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
     },
     {
       text: 'Xác thực hồ sơ (GPP)',
-      background: 'rgba(11, 123, 138, 0.1)',
+      background: 'rgba(2, 158, 157, 0.1)',
       icon: safety_certificate,
       colorIcon: brandColors.tealPrimary,
       routePath: NAVIGATION_KYC_SUBMIT,
@@ -64,7 +64,7 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
     },
     {
       text: 'Liên kết Marketer',
-      background: 'rgba(11, 123, 138, 0.1)',
+      background: 'rgba(2, 158, 157, 0.1)',
       icon: group_people,
       colorIcon: brandColors.tealPrimary,
       routePath: NAVIGATION_MARKETER_LINKS,
@@ -74,7 +74,7 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
       // Màn đơn hàng RIÊNG (backend mới) — chưa thay tab "Đơn hàng"
       // chính (vẫn backend cũ), xem [[marketplace-core-business-model]].
       text: 'Đơn hàng (bản thử nghiệm mới)',
-      background: 'rgba(11, 123, 138, 0.1)',
+      background: 'rgba(2, 158, 157, 0.1)',
       icon: credit_card,
       colorIcon: brandColors.tealPrimary,
       routePath: NAVIGATION_ORDERS_V2,
@@ -82,7 +82,7 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
     },
     {
       text: 'Thông báo (bản thử nghiệm mới)',
-      background: 'rgba(11, 123, 138, 0.1)',
+      background: 'rgba(2, 158, 157, 0.1)',
       icon: mail,
       colorIcon: brandColors.tealPrimary,
       routePath: NAVIGATION_NOTIFICATIONS_V2,

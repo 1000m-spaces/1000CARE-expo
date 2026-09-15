@@ -101,7 +101,7 @@ const InfoAccount = props => {
               <Button
                 text={'Thanh toán'}
                 styleView={styles.styleView}
-                styleButton={[styles.styleButton, { backgroundColor: (accountNumber && nameAccount && date != '') ? '#0B7B8A' : '#F5F5F5' }]}
+                styleButton={[styles.styleButton, { backgroundColor: (accountNumber && nameAccount && date != '') ? '#029E9D' : '#F5F5F5' }]}
                 styleText={{ color: (accountNumber && nameAccount && date != '') ? 'white' : '#8C8C8C' }}
               />
             </View>

@@ -182,7 +182,7 @@ export default StyleSheet.create({
     padding: 0,
     paddingHorizontal: 0,
     borderRadius: 36,
-    backgroundColor: 'rgba(11,123,138,0.1)',
+    backgroundColor: 'rgba(2, 158, 157,0.1)',
     borderWidth: 1,
     borderColor: liquidGlass.border,
   },
@@ -327,7 +327,7 @@ export default StyleSheet.create({
   tabContainer: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'rgba(11,123,138,0.1)',
+    backgroundColor: 'rgba(2, 158, 157,0.1)',
     borderRadius: 42,
     padding: 4,
     alignSelf: 'center',

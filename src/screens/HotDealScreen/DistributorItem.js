@@ -7,7 +7,7 @@ import PressScale from '~/design-system/PressScale'
 const DistributorItem = ({ data, selected, changeDistrinutor }) => {
   return (
     <PressScale
-      style={[styles.wrapper, { borderColor: selected ? '#0B7B8A' : '#FFF' }]}
+      style={[styles.wrapper, { borderColor: selected ? '#029E9D' : '#FFF' }]}
       onPress={() => changeDistrinutor(data.id)}
     >
       <Image

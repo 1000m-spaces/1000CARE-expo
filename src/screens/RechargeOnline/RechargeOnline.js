@@ -25,11 +25,11 @@ const RechargeOnline = props => {
                 <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:10}}>
                     <Text style={{fontSize:16}}>Thông tin tài khoản</Text>
                     <View style={{flexDirection:'row'}}>
-                        <Text style={{color:'#0B7B8A',marginRight:5}}>123.568đ</Text>
-                        <Icon name={'eye'} size={20} color={'#0B7B8A'} />
+                        <Text style={{color:'#029E9D',marginRight:5}}>123.568đ</Text>
+                        <Icon name={'eye'} size={20} color={'#029E9D'} />
                     </View>
                 </View>
-                <Text style={{marginLeft:10,color:'#0B7B8A',fontSize:16}}>9686262868682826</Text>
+                <Text style={{marginLeft:10,color:'#029E9D',fontSize:16}}>9686262868682826</Text>
                 <View style={{flexDirection:'row',justifyContent:'space-between',margin:20}}>
                     <PressScale style={{alignItems:'center'}}>
                         <Image resizeMode={'contain'} source={Point} style={{height:35,width:35}} />

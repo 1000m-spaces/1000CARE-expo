@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   bigCircle: {
-    backgroundColor: 'rgba(11,123,138,0.14)',
+    backgroundColor: 'rgba(2, 158, 157,0.14)',
     borderRadius: 100,
     height: 100,
     width: 100,

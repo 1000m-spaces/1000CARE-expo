@@ -63,7 +63,7 @@ const InformationOrder = props => {
                     <Text>Thành tiền</Text>
                     <View style={{alignItems:'flex-end'}}>
                         <Text style={{color:'red'}}>100.000.000 đ</Text>
-                        <Text style={{color:'#0B7B8A'}}>100.000.000 p</Text>
+                        <Text style={{color:'#029E9D'}}>100.000.000 p</Text>
                         <Text>Đã bao gồm VAT nếu có</Text>
                     </View>
                 </View>
@@ -79,7 +79,7 @@ const InformationOrder = props => {
                     <Text>Chia sẻ những điều bạn thích về sản phẩm này nhé</Text>
                 </PressScale>
                 <View style={{justifyContent:'center',alignItems:'center',marginHorizontal:20,marginTop:10}}>
-                    <PressScale style={{backgroundColor:'#0B7B8A',width:'100%',padding:10,alignItems:'center'}}>
+                    <PressScale style={{backgroundColor:'#029E9D',width:'100%',padding:10,alignItems:'center'}}>
                         <Text style={{color:'white',fontSize:16}}>Đặt lại</Text>
                     </PressScale>
                 </View>

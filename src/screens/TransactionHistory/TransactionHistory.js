@@ -22,9 +22,9 @@ const TransactionHistory = props => {
         renderTabBar={() => <ScrollableTabBar />}
         style={{ marginTop:10 }}
         tabBarBackgroundColor={'white'}
-        tabBarActiveTextColor={'#0B7B8A'}
+        tabBarActiveTextColor={'#029E9D'}
         tabBarInactiveTextColor ={'#8C8C8C'}
-        tabBarUnderlineStyle={{ backgroundColor:'#0B7B8A',height:1 }}
+        tabBarUnderlineStyle={{ backgroundColor:'#029E9D',height:1 }}
       >
         <AllHistory
           data={data}

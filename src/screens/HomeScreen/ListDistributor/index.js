@@ -544,7 +544,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.78)',
     borderWidth: 1,
-    borderColor: 'rgba(11,123,138,0.1)',
+    borderColor: 'rgba(2, 158, 157,0.1)',
   },
   tagText: {
     color: brandColors.tealDark,
@@ -777,7 +777,7 @@ const styles = StyleSheet.create({
     marginHorizontal: s(16),
     marginBottom: s(24),
     borderRadius: s(radiusScale.xxl),
-    backgroundColor: 'rgba(11,123,138,0.035)',
+    backgroundColor: 'rgba(2, 158, 157,0.035)',
     paddingTop: s(16),
     paddingBottom: s(14),
   },
