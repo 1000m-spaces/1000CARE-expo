@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { Animated, View, TouchableOpacity, StyleSheet, Dimensions, Platform, LayoutAnimation, UIManager } from 'react-native';
+import React, { useEffect } from 'react';
+import { Animated, View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform, LayoutAnimation, UIManager } from 'react-native';
 import { Image } from '~/common/index';
 import { shopping_bag, home, gift, account } from '~/assets/constants';
 import {
@@ -8,9 +8,8 @@ import {
   NAVIGATION_TO_HOT_DEAL_SCREEN,
   NAVIGATION_TO_PROFILE_SCREEN,
 } from '~/navigation/routes';
-import { s } from '~/utils/responsive';
-import { brandColors } from '~/design-system/tokens';
-import LiquidGlassView from '~/design-system/LiquidGlassView';
+import { s, fs } from '~/utils/responsive';
+import { brandColors, radiusScale, brandShadow } from '~/design-system/tokens';
 import { useTabBarVisibility } from './TabBarVisibilityContext';
 
 // Enable LayoutAnimation on Android
@@ -19,17 +18,21 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 const { width } = Dimensions.get('window');
-const PILL_WIDTH = Math.min(width - s(96), s(292));
-const PILL_PADDING = s(8);
-const BUBBLE_SIZE = s(42);
+
+// Pill nổi nền `--ink` đặc + icon/label vàng gold khi active — theo đúng
+// bản handoff thiết kế mới (app Marketer, 2026-09-15), thay bản kính mờ
+// + bubble nổi trước đó. Xem [[marketplace-core-business-model]] không
+// liên quan — đây là redesign UI thuần theo yêu cầu chủ dự án.
+const TAB_LABEL = {
+  [NAVIGATION_TO_HOME_SCREEN]: 'Trang chủ',
+  [NAVIGATION_ORDERS_SCREEN]: 'Đơn hàng',
+  [NAVIGATION_TO_HOT_DEAL_SCREEN]: 'Giỏ quà',
+  [NAVIGATION_TO_PROFILE_SCREEN]: 'Tài khoản',
+};
 
 const CustomTabBar = ({ state, navigation }) => {
   const { visible, setVisible } = useTabBarVisibility();
-  const itemWidth = useMemo(() => (PILL_WIDTH - PILL_PADDING * 2) / state.routes.length, [state.routes.length]);
-  const initialBubbleX = PILL_PADDING + itemWidth * state.index + (itemWidth - BUBBLE_SIZE) / 2;
-  const translateY = useRef(new Animated.Value(0)).current;
-  const activeX = useRef(new Animated.Value(initialBubbleX)).current;
-  const activeScale = useRef(new Animated.Value(1)).current;
+  const translateY = React.useRef(new Animated.Value(0)).current;
   const icons = {
     [NAVIGATION_TO_HOME_SCREEN]: home,
     [NAVIGATION_ORDERS_SCREEN]: shopping_bag,
@@ -47,33 +50,6 @@ const CustomTabBar = ({ state, navigation }) => {
     }).start();
   }, [translateY, visible]);
 
-  useEffect(() => {
-    const nextX = PILL_PADDING + itemWidth * state.index + (itemWidth - BUBBLE_SIZE) / 2;
-
-    Animated.parallel([
-      Animated.spring(activeX, {
-        toValue: nextX,
-        useNativeDriver: true,
-        damping: 14,
-        stiffness: 170,
-        mass: 0.82,
-      }),
-      Animated.sequence([
-        Animated.timing(activeScale, {
-          toValue: 1.12,
-          duration: 120,
-          useNativeDriver: true,
-        }),
-        Animated.spring(activeScale, {
-          toValue: 1,
-          useNativeDriver: true,
-          damping: 9,
-          stiffness: 140,
-        }),
-      ]),
-    ]).start();
-  }, [activeScale, activeX, itemWidth, state.index]);
-
   return (
     <Animated.View
       pointerEvents={visible ? 'auto' : 'none'}
@@ -89,21 +65,7 @@ const CustomTabBar = ({ state, navigation }) => {
         },
       ]}
     >
-      <LiquidGlassView intensity="strong" variant="droplet" style={styles.tabBar}>
-        <Animated.View
-          pointerEvents="none"
-          style={[
-            styles.activeBubble,
-            {
-              transform: [
-                { translateX: activeX },
-                { scale: activeScale },
-              ],
-            },
-          ]}
-        >
-          <View style={styles.bubbleShine} />
-        </Animated.View>
+      <View style={styles.tabBar}>
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
 
@@ -115,32 +77,33 @@ const CustomTabBar = ({ state, navigation }) => {
             });
 
             if (!isFocused && !event.defaultPrevented) {
-              // Trigger smooth animation before navigating
               LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
               setVisible(true);
               navigation.navigate(route.name);
             }
           };
 
+          const tintColor = isFocused ? brandColors.goldAccent : 'rgba(255,255,255,0.75)';
+
           return (
             <TouchableOpacity
               key={index}
               onPress={onPress}
-              style={[styles.tabItem, { width: itemWidth }]}
+              style={styles.tabItem}
               activeOpacity={0.7}
             >
               <Image
                 source={icons[route.name]}
-                style={[
-                  styles.icon,
-                  { tintColor: isFocused ? brandColors.surface : 'rgba(4,86,98,0.95)' },
-                ]}
+                style={[styles.icon, { tintColor }]}
                 resizeMode="contain"
               />
+              <Text style={[styles.label, { color: tintColor }]} numberOfLines={1}>
+                {TAB_LABEL[route.name]}
+              </Text>
             </TouchableOpacity>
           );
         })}
-      </LiquidGlassView>
+      </View>
     </Animated.View>
   );
 };
@@ -149,61 +112,34 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: 0,
-    width: width,
+    width,
     alignItems: 'center',
     paddingBottom: Platform.OS === 'ios' ? s(22) : s(16),
     backgroundColor: 'transparent',
   },
   tabBar: {
-    width: PILL_WIDTH,
+    width: width - s(32), // left:16 + right:16 theo bản handoff
     flexDirection: 'row',
-    borderRadius: s(32),
-    height: s(64),
+    borderRadius: radiusScale.pill,
+    height: s(66),
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: PILL_PADDING,
-    backgroundColor: 'rgba(255,255,255,0.02)',
-    borderWidth: 0,
-    borderColor: 'transparent',
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 0,
+    justifyContent: 'space-around',
+    backgroundColor: brandColors.tealPrimary, // --ink đặc, không còn kính mờ
+    ...brandShadow.sheet,
   },
   tabItem: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: s(50),
-    borderRadius: s(25),
+    gap: s(3),
   },
   icon: {
-    width: s(24),
-    height: s(24),
+    width: s(22),
+    height: s(22),
   },
-  activeBubble: {
-    position: 'absolute',
-    left: 0,
-    top: s(11),
-    width: BUBBLE_SIZE,
-    height: BUBBLE_SIZE,
-    borderRadius: BUBBLE_SIZE / 2,
-    backgroundColor: 'rgba(2, 158, 157,0.68)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.54)',
-    shadowColor: brandColors.tealPrimary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.38,
-    shadowRadius: 18,
-    elevation: 8,
-    overflow: 'hidden',
-  },
-  bubbleShine: {
-    position: 'absolute',
-    top: s(4),
-    left: s(6),
-    width: s(15),
-    height: s(15),
-    borderRadius: s(8),
-    backgroundColor: 'rgba(255,255,255,0.38)',
+  label: {
+    fontSize: fs(10.5),
+    fontWeight: '600',
   },
 });
 
