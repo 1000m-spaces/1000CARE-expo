@@ -16,7 +16,8 @@ import ItemDistributorTab from '~/common/ItemDistributorTab';
 import ListDistributor from './ListDistributor';
 import styles from './styles';
 import DistributorData from './DistributorData/index';
-import { NAVIGATION_BANK_ACCOUNT, NAVIGATION_TO_CART_SCREEN, NAVIGATION_TO_SEARCH } from '~/navigation/routes';
+import { NAVIGATION_BANK_ACCOUNT, NAVIGATION_TO_CART_SCREEN, NAVIGATION_TO_SEARCH, NAVIGATION_CHAT_LIST_V2 } from '~/navigation/routes';
+import { getProductMessageThreadsV2 } from '~/store/catalogV2/catalogV2Selector';
 import strings from '~/i18n';
 import Status from '~/common/Status/Status';
 import ListAllProduct from './ListAllProduct/ListAllProduct';
@@ -74,6 +75,27 @@ const HomeCartButton = ({ navigation }) => {
   );
 };
 
+// Nút chat marketer — dời từ FAB nổi (CustomTabBar) vào đây theo yêu cầu
+// 2026-09-15: thu gọn thanh tìm kiếm thành icon để lấy chỗ cho nút này.
+// Badge đếm số hội thoại còn gợi ý sản phẩm CHƯA áp dụng (dữ liệu thật).
+const HomeChatButton = ({ navigation }) => {
+  const chatThreads = useSelector(state => getProductMessageThreadsV2(state));
+  const unreadCount = chatThreads.reduce((sum, t) => sum + (t.unappliedCount > 0 ? 1 : 0), 0);
+
+  return (
+    <PressScale style={styles.cartTouch} onPress={() => navigation.navigate(NAVIGATION_CHAT_LIST_V2)}>
+      <View style={styles.cartPill}>
+        <Icon type="feather" name="message-circle" color={brandColors.tealDark} size={22} />
+      </View>
+      {unreadCount > 0 && (
+        <View style={styles.cartBadge}>
+          <Text style={styles.cartBadgeText}>{unreadCount > 9 ? '9+' : unreadCount}</Text>
+        </View>
+      )}
+    </PressScale>
+  );
+};
+
 const MarketplaceHeader = ({ navigation, selectedDistri }) => {
   return (
     <View style={styles.marketHeader}>
@@ -89,14 +111,11 @@ const MarketplaceHeader = ({ navigation, selectedDistri }) => {
           onPress={() => navigation.navigate(NAVIGATION_TO_SEARCH)}
         >
           <View style={styles.searchDock}>
-            <View style={styles.searchIconBubble}>
-              <Icon type="feather" name="search" color={brandColors.tealDark} size={20} />
-            </View>
-            <View style={styles.searchTextWrap}>
-              <Text style={styles.searchText}>Tìm sản phẩm</Text>
-            </View>
+            <Icon type="feather" name="search" color={brandColors.tealDark} size={20} />
           </View>
         </PressScale>
+        <View style={styles.marketHeaderSpacer} />
+        <HomeChatButton navigation={navigation} />
         <HomeCartButton navigation={navigation} />
       </View>
     </View>
