@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { brandColors, radiusScale } from '~/design-system/tokens'
+import { brandColors, radiusScale, brandShadow } from '~/design-system/tokens'
 import { s, fs } from '~/utils/responsive'
 import { Fonts } from '~/assets/config'
 

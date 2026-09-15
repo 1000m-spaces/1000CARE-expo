@@ -2,7 +2,7 @@ import { Platform, StyleSheet } from 'react-native'
 import Colors from '~/common/Colors/Colors'
 import dimension from '~/constants/dimens'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { brandColors, liquidGlass, brandShadow } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 
 export default StyleSheet.create({

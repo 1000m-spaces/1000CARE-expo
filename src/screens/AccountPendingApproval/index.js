@@ -15,7 +15,7 @@ import {
   NAVIGATION_TO_MAIN_SCREEN,
   NAVIGATION_PHARMACY_REGISTRATION,
 } from '~/navigation/routes';
-import { brandColors, brandGradients } from '~/design-system/tokens';
+import { brandColors, brandGradients, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
 // Key cục bộ đánh dấu "đã gửi đăng ký nhà thuốc từ máy này" — backend

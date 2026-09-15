@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { Fonts } from '~/assets/config'
-import { brandColors, liquidGlass } from '~/design-system/tokens'
+import { brandColors, liquidGlass, brandShadow } from '~/design-system/tokens'
 import { s, fs } from '~/utils/responsive'
 
 const styles = StyleSheet.create({

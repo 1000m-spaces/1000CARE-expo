@@ -21,7 +21,7 @@ import { CommonActions } from '@react-navigation/native';
 
 import PressScale from '~/design-system/PressScale';
 import BackgroundWash from '~/design-system/BackgroundWash';
-import { brandColors, brandGradients } from '~/design-system/tokens';
+import { brandColors, brandGradients, brandShadow } from '~/design-system/tokens';
 import { s, fs } from '~/utils/responsive';
 import { Fonts } from '~/assets/config';
 import { NAVIGATION_BANK_LINKS_CONFIRM, NAVIGATION_TO_MAIN_SCREEN, NAVIGATION_UPDATE_PROFILE } from '~/navigation/routes';
