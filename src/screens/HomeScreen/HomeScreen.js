@@ -18,6 +18,7 @@ import styles from './styles';
 import DistributorData from './DistributorData/index';
 import { NAVIGATION_BANK_ACCOUNT, NAVIGATION_TO_CART_SCREEN, NAVIGATION_TO_SEARCH, NAVIGATION_CHAT_LIST_V2 } from '~/navigation/routes';
 import { getProductMessageThreadsV2 } from '~/store/catalogV2/catalogV2Selector';
+import { getIsLoggedInV2 } from '~/store/authV2/authV2Selector';
 import strings from '~/i18n';
 import Status from '~/common/Status/Status';
 import ListAllProduct from './ListAllProduct/ListAllProduct';
@@ -81,13 +82,26 @@ const HomeCartButton = ({ navigation }) => {
 const HomeChatButton = ({ navigation }) => {
   const chatThreads = useSelector(state => getProductMessageThreadsV2(state));
   const unreadCount = chatThreads.reduce((sum, t) => sum + (t.unappliedCount > 0 ? 1 : 0), 0);
+  // Chat đọc dữ liệu từ backend mới (marketplace-core/AuthV2, GET
+  // /customer/v1/product-messages) — phải kiểm tra đăng nhập ĐÚNG hệ
+  // này (isLoggedInV2), không phải isLoggedIn cũ (Firebase), vì 2 phiên
+  // đăng nhập độc lập nhau.
+  const isLoggedInV2 = useSelector(state => getIsLoggedInV2(state));
+
+  const onPress = () => {
+    if (!isLoggedInV2) {
+      showToast(strings.common.requireLogin);
+      return;
+    }
+    navigation.navigate(NAVIGATION_CHAT_LIST_V2);
+  };
 
   return (
-    <PressScale style={styles.cartTouch} onPress={() => navigation.navigate(NAVIGATION_CHAT_LIST_V2)}>
+    <PressScale style={styles.cartTouch} onPress={onPress}>
       <View style={styles.cartPill}>
         <Icon type="feather" name="message-circle" color={brandColors.tealDark} size={22} />
       </View>
-      {unreadCount > 0 && (
+      {isLoggedInV2 && unreadCount > 0 && (
         <View style={styles.cartBadge}>
           <Text style={styles.cartBadgeText}>{unreadCount > 9 ? '9+' : unreadCount}</Text>
         </View>
