@@ -4,18 +4,20 @@ import {
   Text,
   StyleSheet,
 } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import { Image } from '~/common/index'
 import strings from '~/i18n'
 import { NAVIGATION_PHONE_VERIFY, NAVIGATION_TO_LOGIN_SCREEN } from '~/navigation/routes'
 import { user } from '../../assets/constants'
 import { s, fs } from '~/utils/responsive'
-import { brandColors, brandGradients, brandShadow } from '~/design-system/tokens'
+import { brandColors, brandShadow } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 import PressScale from '~/design-system/PressScale'
 
 // Card trắng đúng theo hệ thống card mới (thay panel tối trước đó) — nút
-// đăng nhập dùng gradient teal thống nhất với CTA chính của app.
+// đăng nhập màu phẳng teal (bỏ hẳn gradient). `style` full-width phải
+// gán thẳng lên PressScale (không phải lên View con) — xem ghi chú ở
+// PressScale.js, nếu không nút sẽ co lại theo nội dung thay vì giãn hết
+// hàng.
 const NoAuth = ({ navigation }) => {
   return (
     <View style={styles.wrapper}>
@@ -35,16 +37,10 @@ const NoAuth = ({ navigation }) => {
       </View>
       <View style={styles.btnGroup}>
         <PressScale
+          style={styles.btnSignIn}
           onPress={() => navigation.navigate(NAVIGATION_TO_LOGIN_SCREEN)}
         >
-          <LinearGradient
-            colors={brandGradients.primary}
-            style={styles.btnSignIn}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            <Text style={styles.textSignIn}>{strings.profileScreen.noAuth.login}</Text>
-          </LinearGradient>
+          <Text style={styles.textSignIn}>{strings.profileScreen.noAuth.login}</Text>
         </PressScale>
         {/* <TouchableOpacity
           style={styles.btnSignUp}
@@ -104,15 +100,12 @@ const styles = StyleSheet.create({
   },
   btnGroup: {
     marginTop: s(16),
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   btnSignIn: {
     width: '100%',
     height: s(50),
     borderRadius: s(999),
-    display: 'flex',
+    backgroundColor: brandColors.tealPrimary,
     justifyContent: 'center',
     alignItems: 'center',
   },

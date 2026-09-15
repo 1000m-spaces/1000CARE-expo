@@ -22,7 +22,8 @@ const ErrorView = ({ isOpen, onClose, error, icon = info }) => {
     <Modal
       animationType="fade"
       transparent={true}
-      backdropColor="transparent"
+      backdropColor="#0A2F38"
+      backdropOpacity={0.4}
       animationInTiming={500}
       animationOutTiming={500}
       backdropTransitionInTiming={200}

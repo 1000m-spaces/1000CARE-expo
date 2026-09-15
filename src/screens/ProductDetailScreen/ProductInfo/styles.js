@@ -224,13 +224,17 @@ export default StyleSheet.create({
     lineHeight: 22,
   },
   iconWhitelist: {
-    height: 25,
-    width: 28,
+    height: s(18),
+    width: s(18),
   },
+  // BUG đã sửa: có cả `flex: 1` lẫn width/height cố định — trong hàng flex
+  // (cạnh Text flex:9) thì flex:1 thắng, kéo dãn nút thành hình bầu dục
+  // thay vì hình tròn dù borderRadius = nửa width cố định. Bỏ flex, thêm
+  // flexShrink:0 để text dài không bóp méo nút.
   iconWhitelistContainer: {
     height: s(34),
     width: s(34),
-    flex: 1,
+    flexShrink: 0,
     borderRadius: s(17),
     backgroundColor: brandColors.surface,
     alignItems: 'center',

@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   backButton: {
-    marginTop: s(58),
+    marginTop: s(8),
     marginLeft: s(16),
   },
   backButtonGlass: {

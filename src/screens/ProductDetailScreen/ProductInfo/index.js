@@ -1,11 +1,10 @@
 import React from 'react'
 import { View } from 'react-native'
 import Colors from '~/common/Colors/Colors'
-import { Image, Text } from '~/common/index'
+import { Text, Icon } from '~/common/index'
 import PressScale from '~/design-system/PressScale'
 
 import styles from './styles'
-import { heart, heart_red } from '~/assets/constants'
 import SliderBox from '~/common/SliderBox/index'
 import placeholder from '~/assets/images/placeholder.png'
 import { getProductImages } from '~/utils/image'
@@ -54,11 +53,14 @@ const ProductInfo = ({ product, favorClick, openImage }) => {
             onPress={() => favorClick && favorClick()}
             style={styles.iconWhitelistContainer}
           >
-            <Image
-              style={styles.iconWhitelist}
-              resizeMode={'contain'}
-              source={safeProduct.is_wishlist ? heart_red : heart}
-              tintColor={Colors.errorColor}
+            {/* Icon vector (không phải PNG tint 2 asset) — tô đặc thật sự
+                khi đã thích, không chỉ đổi tint 1 màu lên 2 ảnh gần giống
+                nhau khiến người dùng khó nhận ra đã bấm hay chưa. */}
+            <Icon
+              type="ionicon"
+              name={safeProduct.is_wishlist ? 'heart' : 'heart-outline'}
+              color={Colors.errorColor}
+              size={20}
             />
           </PressScale>
         </View>
