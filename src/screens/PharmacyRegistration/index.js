@@ -15,13 +15,17 @@ import { fs, s } from '~/utils/responsive';
 // Nhà thuốc TỰ đăng ký — POST /customer/v1/registration (đính chính
 // 2026-09-08: không cần backoffice tạo trước). Xem
 // [[marketplace-core-business-model]] mục "Duyệt user". Ảnh giấy phép
-// (docs[]) chưa gửi kèm ở bước này — media upload cho KYC đang mock/
-// chờ backend (FR-KYC-MEDIA), nộp bổ sung sau ở màn KycSubmit khi có.
+// (docs[]) chưa gửi kèm ở bước này — nộp bổ sung sau ở màn KycSubmit
+// (FR-KYC-MEDIA đã xong, xem KycSubmit/index.js).
+// `contact_name` (người liên hệ, KHÁC dược sĩ phụ trách) BẮT BUỘC theo
+// quyết định Q-ORG-14 (2026-09-16) — trước đó tài liệu ghi tuỳ chọn nên
+// form từng thiếu hẳn ô này, đã bổ sung.
 const PharmacyRegistration = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
+  const [contactName, setContactName] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [pharmacistName, setPharmacistName] = useState('');
   const [email, setEmail] = useState('');
@@ -30,7 +34,7 @@ const PharmacyRegistration = ({ navigation }) => {
   const err = useSelector(state => getRegisterCustomerV2Err(state));
   const submitting = status === Status.LOADING;
 
-  const canSubmit = name.trim() && address.trim() && contactPhone.trim() && pharmacistName.trim() && !submitting;
+  const canSubmit = name.trim() && address.trim() && contactName.trim() && contactPhone.trim() && pharmacistName.trim() && !submitting;
 
   const onSubmit = () => {
     if (!canSubmit) return;
@@ -38,6 +42,7 @@ const PharmacyRegistration = ({ navigation }) => {
       registerCustomerV2({
         name,
         address,
+        contactName,
         contactPhone,
         pharmacistName,
         email,
@@ -90,6 +95,18 @@ const PharmacyRegistration = ({ navigation }) => {
               value={address}
               onChangeText={setAddress}
               placeholder="Số nhà, đường, phường/xã, tỉnh/thành"
+              placeholderTextColor={brandColors.mutedLight}
+            />
+          </View>
+
+          <Text style={styles.inputLabel}>Tên người liên hệ</Text>
+          <View style={styles.inputOuter}>
+            <Icon type="feather" name="user-check" color={brandColors.tealDark} size={s(18)} />
+            <TextInput
+              style={styles.input}
+              value={contactName}
+              onChangeText={setContactName}
+              placeholder="Người đứng ra liên hệ đăng ký"
               placeholderTextColor={brandColors.mutedLight}
             />
           </View>
