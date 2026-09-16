@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Animated, Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import PressScale from '~/design-system/PressScale'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
@@ -32,6 +32,34 @@ const SUPPLIER_CARD_STEP = SUPPLIER_CARD_WIDTH + SUPPLIER_CARD_GAP
 const bannerHeight = Math.round(bannerWidth / 2.8)
 const hasItems = data => Array.isArray(data) && data.length > 0
 const CONTENT_TOP_PADDING = s(10)
+
+// BUG đã sửa (2026-09-16, sếp báo trang chủ "load chậm"): các khối
+// banner/flash-sale/deal hời/bán chạy trước đây chỉ dựa vào
+// `hasItems(data)` để quyết định hiện skeleton hay nội dung thật —
+// KHÔNG phân biệt được "đang tải" với "đã tải xong nhưng rỗng" (hay lỗi
+// mạng), nên nếu API trả về rỗng thật (vd nhà thuốc/NCC chưa có deal
+// nào đang chạy) thì skeleton xám hiện MÃI MÃI, nhìn giống app bị đứng.
+// Hook này chỉ đổi sang trạng thái "chưa có nội dung" sau 1 khoảng chờ
+// hợp lý, không còn treo skeleton vô thời hạn.
+const EMPTY_STATE_TIMEOUT_MS = 7000
+const useSkeletonTimeout = hasData => {
+  const [timedOut, setTimedOut] = useState(false)
+  useEffect(() => {
+    if (hasData) {
+      setTimedOut(false)
+      return undefined
+    }
+    const timer = setTimeout(() => setTimedOut(true), EMPTY_STATE_TIMEOUT_MS)
+    return () => clearTimeout(timer)
+  }, [hasData])
+  return !hasData && timedOut
+}
+
+const EmptySectionState = ({ text }) => (
+  <View style={styles.emptySectionWrap}>
+    <Text style={styles.emptySectionText}>{text}</Text>
+  </View>
+)
 
 const shoppingTags = ['Hàng mới', 'Đang giảm giá', 'Bán chạy', 'Giao nhanh']
 const foodAppFont = Fonts.bold
@@ -245,9 +273,12 @@ const CampaignBanner = ({ listAdsBanner }) => {
 
 const PromotionBannerRail = ({ navigation, products }) => {
   const safeProducts = Array.isArray(products) ? products.slice(0, 6) : []
+  const timedOut = useSkeletonTimeout(safeProducts.length > 0)
 
   if (!safeProducts.length) {
-    return <HomeModuleSkeleton variant="promo" count={4} />
+    return timedOut
+      ? <EmptySectionState text="Chưa có ưu đãi nào dành cho bạn lúc này" />
+      : <HomeModuleSkeleton variant="promo" count={4} />
   }
 
   return (
@@ -377,9 +408,12 @@ const SupplierDealRail = ({ navigation, onItemPress, distributors }) => {
 
 const FlashSalePriceSock = ({ navigation, products }) => {
   const safeProducts = Array.isArray(products) ? products.slice(0, 8) : []
+  const timedOut = useSkeletonTimeout(safeProducts.length > 0)
 
   if (!safeProducts.length) {
-    return <HomeModuleSkeleton variant="flash" withHeader count={3} />
+    return timedOut
+      ? <EmptySectionState text="Chưa có giá sốc nào lúc này" />
+      : <HomeModuleSkeleton variant="flash" withHeader count={3} />
   }
 
   return (
@@ -450,6 +484,8 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
   const hotDeals = useSelector(state => getListProductsHotDeal(state))
   const priceSockProducts = useSelector(state => getListProductPriceSockHome(state))
   const bestSellerProducts = useSelector(state => getListProductsBestSeller(state))
+  const bannerTimedOut = useSkeletonTimeout(hasItems(listAdsBanner))
+  const bestSellerTimedOut = useSkeletonTimeout(hasItems(bestSellerProducts))
 
   useEffect(() => {
     dispatch(requestGetListAdsBannerHomeNeomedByDistributor(1, 1, 1, 100, 1))
@@ -468,6 +504,8 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
       <AppSection title="Chương trình khuyến mãi">
         {hasItems(listAdsBanner) ? (
           <CampaignBanner listAdsBanner={listAdsBanner} />
+        ) : bannerTimedOut ? (
+          <EmptySectionState text="Chưa có chương trình khuyến mãi nào" />
         ) : (
           <HomeModuleSkeleton variant="banner" />
         )}
@@ -497,6 +535,8 @@ const ListDistributor = ({ navigation, onItemPress, selectedDistri, onFavorClick
             onAddProduct={onAddProduct}
             onMessage={onMessage}
           />
+        ) : bestSellerTimedOut ? (
+          <EmptySectionState text="Chưa có sản phẩm bán chạy nào lúc này" />
         ) : (
           <HomeModuleSkeleton variant="bestSeller" />
         )}
@@ -591,6 +631,19 @@ const styles = StyleSheet.create({
   },
   skeletonSection: {
     marginTop: s(27),
+  },
+  emptySectionWrap: {
+    marginHorizontal: s(16),
+    paddingVertical: s(24),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: s(16),
+    backgroundColor: brandColors.tealLight,
+  },
+  emptySectionText: {
+    color: brandColors.muted,
+    fontSize: fs(12.5),
+    fontWeight: '600',
   },
   skeletonHeader: {
     paddingHorizontal: s(18),
