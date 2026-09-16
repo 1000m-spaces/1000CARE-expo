@@ -4,32 +4,44 @@ import { useDispatch, useSelector } from 'react-redux';
 import PressScale from '~/design-system/PressScale';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
-import { getStoreCartV2, getStoresV2, updateCartItemV2, deleteCartItemV2 } from '~/store/catalogV2/catalogV2Actions';
+import { getStoreCartV2, getStoresV2, updateCartItemV2, deleteCartItemV2, checkoutCartV2, resetCheckoutCartV2 } from '~/store/catalogV2/catalogV2Actions';
 import {
   getStoreCartV2 as selectStoreCartV2,
   getStoreCartV2Status,
   getCartItemV2ActionStatus,
   getStoreMinOrderValueV2,
+  getCheckoutCartV2Status,
+  getCheckoutCartV2Order,
+  getCheckoutCartV2Err,
 } from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
 import { formatMoney } from '~/utils/format';
+import ErrorView from '~/common/ErrorView';
+import { NAVIGATION_ORDER_DETAIL_V2 } from '~/navigation/routes';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
 // GET/PUT/DELETE /customer/v1/stores/{id}/cart — giỏ hàng THẬT, có
-// subtotal. `min_order_value` KHÔNG nằm trong response cart (xác nhận
-// bằng curl thật 2026-09-16) — nó thuộc Store (backoffice đặt, KHÔNG
-// phải NCC), lấy từ GET /customer/v1/stores. Màn RIÊNG, CHƯA đụng
-// checkout thật — nút "Đặt hàng" ở cuối chỉ bật khi đủ min_order_value
-// nhưng hiện chỉ để dành chỗ, chưa nối API đặt đơn. Xem
-// [[marketplace-core-business-model]].
+// subtotal. `min_order_value` KHÔNG nằm trong response cart lúc = 0
+// (server dùng `omitempty`, marketplace-core-21 xác nhận 2026-09-16) —
+// đọc từ GET /customer/v1/stores cho chắc, khớp cả 2 trường hợp. Đặt
+// đơn THẬT: POST /customer/v1/orders {cart_id} — 1 giỏ = 1 đơn (1 store
+// = 1 NCC, Q-STORE-M2). Chặn phía UI bằng min_order_value trước khi bật
+// nút, 422 min_order_not_met chỉ là lưới an toàn dự phòng. Sau khi đặt
+// thành công, điều hướng sang OrderDetailV2 (đơn vừa tạo) — KHÔNG thu
+// thập địa chỉ giao ở đây (field `delivery` optional, server tự lấy từ
+// hồ sơ nhà thuốc). Xem [[marketplace-core-business-model]].
 const StoreCartV2 = ({ navigation, route }) => {
   const { storeId, storeName } = route.params || {};
   const dispatch = useDispatch();
   const status = useSelector(state => getStoreCartV2Status(state, storeId));
   const cart = useSelector(state => selectStoreCartV2(state, storeId));
   const minOrderValue = useSelector(state => getStoreMinOrderValueV2(state, storeId));
+  const checkoutStatus = useSelector(state => getCheckoutCartV2Status(state, storeId));
+  const checkoutOrder = useSelector(state => getCheckoutCartV2Order(state, storeId));
+  const checkoutErr = useSelector(state => getCheckoutCartV2Err(state, storeId));
   const loading = status === Status.LOADING;
+  const checkingOut = checkoutStatus === Status.LOADING;
 
   const load = () => dispatch(getStoreCartV2(storeId));
 
@@ -41,10 +53,30 @@ const StoreCartV2 = ({ navigation, route }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeId]);
 
+  useEffect(() => {
+    if (checkoutStatus === Status.SUCCESS && checkoutOrder?.id) {
+      dispatch(resetCheckoutCartV2(storeId));
+      navigation.replace(NAVIGATION_ORDER_DETAIL_V2, { orderId: checkoutOrder.id });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkoutStatus]);
+
   const items = cart?.items || [];
   const subtotal = cart?.subtotal || 0;
   const meetsMinOrder = minOrderValue === 0 || subtotal >= minOrderValue;
   const progress = minOrderValue > 0 ? Math.min(1, subtotal / minOrderValue) : 1;
+
+  const onCheckout = () => {
+    if (!meetsMinOrder || checkingOut || !cart?.id) return;
+    Alert.alert(
+      'Xác nhận đặt hàng',
+      `Đặt đơn hàng ${formatMoney(subtotal, { unit: 'đ' })} cho ${items.length} sản phẩm?`,
+      [
+        { text: 'Huỷ', style: 'cancel' },
+        { text: 'Đặt hàng', onPress: () => dispatch(checkoutCartV2(storeId, cart.id)) },
+      ],
+    );
+  };
 
   const onChangeQty = (productId, nextQty) => {
     if (nextQty <= 0) {
@@ -110,13 +142,23 @@ const StoreCartV2 = ({ navigation, route }) => {
             <Text style={styles.summaryLabel}>Tạm tính</Text>
             <Text style={styles.summaryValue}>{formatMoney(subtotal, { unit: 'đ' })}</Text>
           </View>
-          <View style={[styles.checkoutButton, !meetsMinOrder && styles.checkoutButtonDisabled]}>
+          <PressScale
+            style={[styles.checkoutButton, (!meetsMinOrder || checkingOut) && styles.checkoutButtonDisabled]}
+            disabled={!meetsMinOrder || checkingOut}
+            onPress={onCheckout}
+          >
             <Text style={styles.checkoutButtonText}>
-              {meetsMinOrder ? 'Đặt hàng (sắp ra mắt)' : 'Chưa đủ đơn tối thiểu'}
+              {checkingOut ? 'Đang đặt hàng...' : meetsMinOrder ? 'Đặt hàng' : 'Chưa đủ đơn tối thiểu'}
             </Text>
-          </View>
+          </PressScale>
         </View>
       )}
+
+      <ErrorView
+        error={checkoutErr}
+        isOpen={!!checkoutErr}
+        onClose={() => dispatch(resetCheckoutCartV2(storeId))}
+      />
     </AppBackground>
   );
 };

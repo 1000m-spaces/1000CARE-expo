@@ -235,6 +235,7 @@ export const CATALOG_V2 = createRequestTypes(
     'DELETE_CART_ITEM', // DELETE /customer/v1/stores/{id}/cart/items/{productId}
     'GET_PRODUCT_MESSAGES', // GET /customer/v1/product-messages
     'APPLY_PRODUCT_MESSAGE', // POST /customer/v1/product-messages/{id}/apply-to-cart
+    'CHECKOUT_CART', // POST /customer/v1/orders {cart_id} — đặt đơn thật, 1 giỏ → 1 đơn
   ],
   suffixTypes,
 )

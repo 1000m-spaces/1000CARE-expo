@@ -16,6 +16,10 @@ const initialState = {
   productMessagesStatus: Status.DEFAULT,
   productMessages: [], // [ProductMessage]
   applyProductMessageStatus: {}, // { [messageId]: Status }
+
+  checkoutStatus: {}, // { [storeId]: Status } — đặt đơn thật, POST /customer/v1/orders
+  checkoutOrder: {}, // { [storeId]: Order } — đơn vừa tạo, dùng điều hướng sang OrderDetailV2
+  checkoutErr: {}, // { [storeId]: string }
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -117,6 +121,34 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         applyProductMessageStatus: { ...state.applyProductMessageStatus, [payload.messageId]: Status.ERROR },
+      }
+
+    case CATALOG_V2.CHECKOUT_CART_LOADING:
+      return {
+        ...state,
+        checkoutStatus: { ...state.checkoutStatus, [payload.storeId]: Status.LOADING },
+        checkoutErr: { ...state.checkoutErr, [payload.storeId]: '' },
+      }
+    case CATALOG_V2.CHECKOUT_CART_SUCCESS:
+      return {
+        ...state,
+        checkoutStatus: { ...state.checkoutStatus, [payload.storeId]: Status.SUCCESS },
+        checkoutOrder: { ...state.checkoutOrder, [payload.storeId]: payload.order },
+        // Đặt đơn xong giỏ coi như đã dùng — xoá cache cart cũ, màn nào
+        // quay lại StoreCatalogV2 sẽ tự getStoreCartV2 lại giỏ mới (rỗng).
+        storeCart: { ...state.storeCart, [payload.storeId]: undefined },
+      }
+    case CATALOG_V2.CHECKOUT_CART_FAILURE:
+      return {
+        ...state,
+        checkoutStatus: { ...state.checkoutStatus, [payload.storeId]: Status.ERROR },
+        checkoutErr: { ...state.checkoutErr, [payload.storeId]: payload.errorMsg },
+      }
+    case 'RESET_CATALOG_V2_CHECKOUT':
+      return {
+        ...state,
+        checkoutStatus: { ...state.checkoutStatus, [payload.storeId]: Status.DEFAULT },
+        checkoutErr: { ...state.checkoutErr, [payload.storeId]: '' },
       }
 
     case 'CATALOG_V2_RESET':

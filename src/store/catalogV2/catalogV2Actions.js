@@ -31,4 +31,17 @@ export const applyProductMessageV2 = messageId => ({
   payload: { messageId },
 })
 
+// Đặt đơn THẬT — 1 giỏ (storeId) → 1 đơn. Chặn phía UI trước khi gọi
+// (đủ min_order_value mới bật nút), 422 min_order_not_met chỉ là lưới
+// an toàn dự phòng phía server.
+export const checkoutCartV2 = (storeId, cartId) => ({
+  type: CATALOG_V2.CHECKOUT_CART_REQUEST,
+  payload: { storeId, cartId },
+})
+
+export const resetCheckoutCartV2 = storeId => ({
+  type: 'RESET_CATALOG_V2_CHECKOUT',
+  payload: { storeId },
+})
+
 export const resetCatalogV2 = () => ({ type: 'CATALOG_V2_RESET' })

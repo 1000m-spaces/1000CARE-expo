@@ -180,6 +180,14 @@ class AuthV2API {
     })
   }
 
+  // POST /customer/v1/orders {cart_id} → Order — đặt đơn THẬT. 1 giỏ
+  // luôn ra đúng 1 đơn (1 store = 1 NCC, Q-STORE-M2, xác nhận
+  // marketplace-core-21 2026-09-16). `delivery` bỏ trống được — server
+  // tự lấy địa chỉ/tên/SĐT từ hồ sơ nhà thuốc đã đăng ký.
+  checkoutCart = cartId => {
+    return customerV2Client.post('/orders', { cart_id: cartId })
+  }
+
   // GET /customer/v1/product-messages → {items:[ProductMessage]} — bộ SP marketer gửi
   getProductMessages = () => {
     return customerV2Client.get('/product-messages')

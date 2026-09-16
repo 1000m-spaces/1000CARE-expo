@@ -92,6 +92,23 @@ function* deleteCartItem({ payload }) {
   }
 }
 
+// Đặt đơn THẬT — POST /customer/v1/orders {cart_id}. 1 giỏ = 1 đơn (1
+// store = 1 NCC, Q-STORE-M2). UI (StoreCartV2) đã chặn trước bằng
+// min_order_value nên 422 hiếm khi xảy ra, chỉ là lưới an toàn.
+function* checkoutCart({ payload }) {
+  const { storeId, cartId } = payload
+  try {
+    yield put({ type: CATALOG_V2.CHECKOUT_CART_LOADING, payload: { storeId } })
+    const order = yield call({ content: AuthV2, fn: AuthV2.checkoutCart }, cartId)
+    yield put({ type: CATALOG_V2.CHECKOUT_CART_SUCCESS, payload: { storeId, order } })
+  } catch (error) {
+    yield put({
+      type: CATALOG_V2.CHECKOUT_CART_FAILURE,
+      payload: { storeId, errorMsg: error?.message || 'Đặt đơn thất bại' },
+    })
+  }
+}
+
 function* getProductMessages() {
   try {
     yield put({ type: CATALOG_V2.GET_PRODUCT_MESSAGES_LOADING })
@@ -130,4 +147,5 @@ export default function* watcherSaga() {
   yield takeLatest(CATALOG_V2.DELETE_CART_ITEM_REQUEST, deleteCartItem)
   yield takeLatest(CATALOG_V2.GET_PRODUCT_MESSAGES_REQUEST, getProductMessages)
   yield takeLatest(CATALOG_V2.APPLY_PRODUCT_MESSAGE_REQUEST, applyProductMessage)
+  yield takeLatest(CATALOG_V2.CHECKOUT_CART_REQUEST, checkoutCart)
 }

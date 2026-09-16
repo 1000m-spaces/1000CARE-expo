@@ -29,6 +29,14 @@ const ERROR_MESSAGES = {
   otp_too_many_retries: 'Nhập sai OTP quá số lần cho phép',
   locked_out: 'Tài khoản tạm khoá do đăng nhập sai nhiều lần',
   rate_limited: 'Thao tác quá nhanh, vui lòng thử lại sau',
+  // Đặt đơn thật (POST /customer/v1/orders) — chặn phía UI trước bằng
+  // min_order_value (StoreCartV2), 422 chỉ là lưới an toàn dự phòng
+  // (giỏ đổi giữa chừng), xem [[marketplace-core-business-model]].
+  min_order_not_met: 'Giỏ hàng chưa đạt giá trị đơn tối thiểu',
+  customer_not_verified: 'Hồ sơ nhà thuốc chưa được duyệt, chưa thể đặt đơn',
+  cart_empty: 'Giỏ hàng đang trống',
+  invalid_transition: 'Đơn hàng không ở trạng thái cho phép thao tác này',
+  conflict: 'Giỏ hàng đã thay đổi, vui lòng thử lại',
 }
 
 // Chuẩn hoá lỗi RFC 9457 (application/problem+json) của backend mới thành
