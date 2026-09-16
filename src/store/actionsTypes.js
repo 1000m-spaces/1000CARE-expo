@@ -229,6 +229,7 @@ export const CATALOG_V2 = createRequestTypes(
   'CATALOG_V2',
   [
     'GET_STORES', // GET /customer/v1/stores
+    'GET_CARTS', // GET /customer/v1/carts — mọi giỏ đang mở (theo store)
     'GET_STORE_PRODUCTS', // GET /customer/v1/stores/{id}/products
     'GET_STORE_CART', // GET /customer/v1/stores/{id}/cart?member=
     'UPDATE_CART_ITEM', // PUT /customer/v1/stores/{id}/cart/items/{productId}

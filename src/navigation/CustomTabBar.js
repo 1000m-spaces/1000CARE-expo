@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Animated, View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform, LayoutAnimation, UIManager } from 'react-native';
-import { Image } from '~/common/index';
-import { shopping_bag, home, gift, account } from '~/assets/constants';
+import { Icon } from '~/common/index';
 import {
   NAVIGATION_TO_HOME_SCREEN,
   NAVIGATION_ORDERS_SCREEN,
-  NAVIGATION_TO_HOT_DEAL_SCREEN,
+  NAVIGATION_MY_CARTS_V2,
   NAVIGATION_TO_PROFILE_SCREEN,
 } from '~/navigation/routes';
 import { s, fs } from '~/utils/responsive';
@@ -29,19 +28,22 @@ const { width } = Dimensions.get('window');
 const TAB_LABEL = {
   [NAVIGATION_TO_HOME_SCREEN]: 'Trang chủ',
   [NAVIGATION_ORDERS_SCREEN]: 'Đơn hàng',
-  [NAVIGATION_TO_HOT_DEAL_SCREEN]: 'Giỏ quà',
+  [NAVIGATION_MY_CARTS_V2]: 'Giỏ hàng',
   [NAVIGATION_TO_PROFILE_SCREEN]: 'Tài khoản',
+};
+
+// Icon vector (feather) thay PNG tint — đồng bộ luôn với icon dùng ở
+// header/màn khác từ đợt redesign, không cần asset riêng cho tab bar.
+const TAB_ICON = {
+  [NAVIGATION_TO_HOME_SCREEN]: 'home',
+  [NAVIGATION_ORDERS_SCREEN]: 'file-text',
+  [NAVIGATION_MY_CARTS_V2]: 'shopping-cart',
+  [NAVIGATION_TO_PROFILE_SCREEN]: 'user',
 };
 
 const CustomTabBar = ({ state, navigation }) => {
   const { visible, setVisible } = useTabBarVisibility();
   const translateY = React.useRef(new Animated.Value(0)).current;
-  const icons = {
-    [NAVIGATION_TO_HOME_SCREEN]: home,
-    [NAVIGATION_ORDERS_SCREEN]: shopping_bag,
-    [NAVIGATION_TO_HOT_DEAL_SCREEN]: gift,
-    [NAVIGATION_TO_PROFILE_SCREEN]: account,
-  };
 
   useEffect(() => {
     Animated.spring(translateY, {
@@ -95,11 +97,7 @@ const CustomTabBar = ({ state, navigation }) => {
               style={styles.tabItem}
               activeOpacity={0.7}
             >
-              <Image
-                source={icons[route.name]}
-                style={[styles.icon, { tintColor }]}
-                resizeMode="contain"
-              />
+              <Icon type="feather" name={TAB_ICON[route.name]} color={tintColor} size={s(22)} />
               <Text style={[styles.label, { color: tintColor }]} numberOfLines={1}>
                 {TAB_LABEL[route.name]}
               </Text>
@@ -135,10 +133,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: s(3),
-  },
-  icon: {
-    width: s(22),
-    height: s(22),
   },
   label: {
     fontSize: fs(10.5),

@@ -23,9 +23,11 @@ const ORDER_STATUS_LABEL = {
 };
 
 // GET /customer/v1/orders — đơn hàng thật từ backend mới. Xem
-// [[marketplace-core-business-model]] mục "shape Order thật". Màn RIÊNG
-// (vào từ Profile), chưa thay tab "Đơn hàng" chính (vẫn backend cũ) theo
-// quyết định 2026-09-08 — chờ dữ liệu test + xác nhận trước khi thay hẳn.
+// [[marketplace-core-business-model]] mục "shape Order thật".
+// CẬP NHẬT 2026-09-16: giờ LÀ tab "Đơn hàng" CHÍNH (MainScreen.js) —
+// đã thay hẳn khỏi backend NeoMed cũ theo quyết định "đổi luôn". Vẫn
+// còn reachable qua route riêng nếu có nơi khác navigate thẳng tới,
+// header tự ẩn nút back khi không có gì để pop (navigation.canGoBack()).
 const OrdersV2 = ({ navigation }) => {
   const dispatch = useDispatch();
   const status = useSelector(state => getOrdersV2Status(state));
@@ -58,11 +60,13 @@ const OrdersV2 = ({ navigation }) => {
   return (
     <AppBackground>
       <View style={styles.headerRow}>
-        <PressScale onPress={() => navigation.pop()} style={styles.backButton}>
-          <View style={styles.backButtonGlass}>
-            <Icon type="feather" name="chevron-left" color={brandColors.tealPrimary} size={s(18)} />
-          </View>
-        </PressScale>
+        {navigation.canGoBack() && (
+          <PressScale onPress={() => navigation.pop()} style={styles.backButton}>
+            <View style={styles.backButtonGlass}>
+              <Icon type="feather" name="chevron-left" color={brandColors.tealPrimary} size={s(18)} />
+            </View>
+          </PressScale>
+        )}
         <Text style={styles.headerTitle}>Đơn hàng</Text>
       </View>
 

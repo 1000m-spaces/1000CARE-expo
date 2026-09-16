@@ -7,9 +7,7 @@ import {
   NAVIGATION_LIST_NOTI_SCREEN, NAVIGATION_VOUCHER, NAVIGATION_WALLET, NAVIGATION_FAVOURITE_SUPPLIER, NAVIGATION_AUTHORITY,
   NAVIGATION_KYC_SUBMIT,
   NAVIGATION_MARKETER_LINKS,
-  NAVIGATION_ORDERS_V2,
   NAVIGATION_NOTIFICATIONS_V2,
-  NAVIGATION_STORES_V2
 } from '~/navigation/routes'
 import { logout, resetCart } from '~/store/actions'
 import { getAuthStore } from '~/store/selector'
@@ -66,25 +64,9 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
       isClickAvailable: true,
     },
     {
-      // Màn đơn hàng RIÊNG (backend mới) — chưa thay tab "Đơn hàng"
-      // chính (vẫn backend cũ), xem [[marketplace-core-business-model]].
-      text: 'Đơn hàng (bản thử nghiệm mới)',
-      icon: credit_card,
-      routePath: NAVIGATION_ORDERS_V2,
-      isClickAvailable: true,
-    },
-    {
       text: 'Thông báo (bản thử nghiệm mới)',
       icon: mail,
       routePath: NAVIGATION_NOTIFICATIONS_V2,
-      isClickAvailable: true,
-    },
-    {
-      // Catalog/giỏ hàng THẬT (backend mới) — màn RIÊNG, chưa đụng
-      // checkout thật. Xem [[marketplace-core-business-model]].
-      text: 'Đặt hàng theo nhà thuốc (bản thử nghiệm mới)',
-      icon: gift,
-      routePath: NAVIGATION_STORES_V2,
       isClickAvailable: true,
     },
     {

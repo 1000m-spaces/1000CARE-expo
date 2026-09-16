@@ -5,17 +5,17 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { shopping_bag, fire, home, gift, pill, account } from '../../assets/constants'
 import HomeScreen from '../HomeScreen/HomeScreen'
 import ProfileScreen from '../ProfileScreen/ProfileScreen'
-import OrdersScreen from '../OrdersScreen'
-import HotDealScreen from '../HotDealScreen'
+import OrdersV2 from '../OrdersV2'
+import MyCartsV2 from '../MyCartsV2'
 import {
   NAVIGATION_TO_HOME_SCREEN,
   NAVIGATION_FAVOURITE_PRODUCT_SCREEN,
-  NAVIGATION_TO_HOT_DEAL_SCREEN,
   NAVIGATION_TO_REWARD_REDEMPTION_SCREEN,
   NAVIGATION_CONFIRM_ORDER_PRODUCTS_SCREEN,
   NAVIGATION_VOUCHER,
   NAVIGATION_ORDER_DETAIL_SCREEN,
   NAVIGATION_ORDERS_SCREEN,
+  NAVIGATION_MY_CARTS_V2,
   NAVIGATION_TOPUP_SCREEN,
   NAVIGATION_PROMOTION_DETAIL,
   NAVIGATION_TO_PROFILE_SCREEN,
@@ -24,7 +24,7 @@ import {
 // import FavouriteProductScreen from '../FavouriteProductScreen'
 // Firebase messaging removed — use expo-notifications instead
 // import PushNotification from 'react-native-push-notification'
-import { saveTokenFcm, requestGetItemHistory, offOpenNoti, setSelectedDistri } from '~/store/actions'
+import { saveTokenFcm, requestGetItemHistory, offOpenNoti } from '~/store/actions'
 import { getOpenNoti } from '~/store/selector'
 import { useDispatch, useSelector } from 'react-redux'
 import { Fonts } from '~/assets/config'
@@ -67,26 +67,16 @@ const MainScreen = ({ navigation }) => {
           name={NAVIGATION_TO_HOME_SCREEN}
           component={HomeScreen}
           options={{ title: 'Trang chủ' }}
-          listeners={({ navigation, route }) => ({
-            tabPress: e => {
-              dispatch(setSelectedDistri({
-                id: -1,
-                logo: null,
-                name: 'Neomed',
-                currentScreen: 'home',
-              }))
-            },
-          })}
         />
         <Tab.Screen
           name={NAVIGATION_ORDERS_SCREEN}
-          component={OrdersScreen}
+          component={OrdersV2}
           options={{ title: 'Đơn hàng' }}
         />
       <Tab.Screen
-        name={NAVIGATION_TO_HOT_DEAL_SCREEN}
-        component={HotDealScreen}
-        options={{ title: 'Giỏ quà' }}
+        name={NAVIGATION_MY_CARTS_V2}
+        component={MyCartsV2}
+        options={{ title: 'Giỏ hàng' }}
       />
       {/* <Tab.Screen
         name={NAVIGATION_TO_REWARD_REDEMPTION_SCREEN}

@@ -5,6 +5,9 @@ const initialState = {
   storesStatus: Status.DEFAULT,
   stores: [], // [{id, name, ...}]
 
+  cartsStatus: Status.DEFAULT,
+  carts: [], // [{id, store_id, status, items[], updated_at}] — GET /customer/v1/carts, cho tab "Giỏ hàng"
+
   // theo storeId — nhiều store có thể xem catalog song song
   storeProductsStatus: {}, // { [storeId]: Status }
   storeProducts: {}, // { [storeId]: [{product_id,name,brand,rx,media,price,currency}] }
@@ -30,6 +33,13 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, storesStatus: Status.SUCCESS, stores: payload.items }
     case CATALOG_V2.GET_STORES_FAILURE:
       return { ...state, storesStatus: Status.ERROR }
+
+    case CATALOG_V2.GET_CARTS_LOADING:
+      return { ...state, cartsStatus: Status.LOADING }
+    case CATALOG_V2.GET_CARTS_SUCCESS:
+      return { ...state, cartsStatus: Status.SUCCESS, carts: payload.items }
+    case CATALOG_V2.GET_CARTS_FAILURE:
+      return { ...state, cartsStatus: Status.ERROR }
 
     case CATALOG_V2.GET_STORE_PRODUCTS_LOADING:
       return {

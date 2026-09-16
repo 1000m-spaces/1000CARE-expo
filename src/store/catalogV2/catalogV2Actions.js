@@ -2,6 +2,11 @@ import { CATALOG_V2 } from '../actionsTypes'
 
 export const getStoresV2 = () => ({ type: CATALOG_V2.GET_STORES_REQUEST })
 
+// GET /customer/v1/carts — dùng cho tab "Giỏ hàng" chính (thay tab
+// "Giỏ quà" cũ) — liệt kê mọi giỏ đang mở của nhà thuốc theo TẤT CẢ
+// store, không chỉ 1 store như getStoreCartV2.
+export const getCartsV2 = () => ({ type: CATALOG_V2.GET_CARTS_REQUEST })
+
 export const getStoreProductsV2 = storeId => ({
   type: CATALOG_V2.GET_STORE_PRODUCTS_REQUEST,
   payload: { storeId },

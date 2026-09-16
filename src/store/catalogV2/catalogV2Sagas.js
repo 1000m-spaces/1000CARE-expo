@@ -12,6 +12,16 @@ function* getStores() {
   }
 }
 
+function* getCarts() {
+  try {
+    yield put({ type: CATALOG_V2.GET_CARTS_LOADING })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getCarts })
+    yield put({ type: CATALOG_V2.GET_CARTS_SUCCESS, payload: { items: data?.items || [] } })
+  } catch (error) {
+    yield put({ type: CATALOG_V2.GET_CARTS_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
 function* getStoreProducts({ payload }) {
   const { storeId } = payload
   try {
@@ -141,6 +151,7 @@ function* applyProductMessage({ payload }) {
 
 export default function* watcherSaga() {
   yield takeLatest(CATALOG_V2.GET_STORES_REQUEST, getStores)
+  yield takeLatest(CATALOG_V2.GET_CARTS_REQUEST, getCarts)
   yield takeLatest(CATALOG_V2.GET_STORE_PRODUCTS_REQUEST, getStoreProducts)
   yield takeLatest(CATALOG_V2.GET_STORE_CART_REQUEST, getStoreCart)
   yield takeLatest(CATALOG_V2.UPDATE_CART_ITEM_REQUEST, updateCartItem)

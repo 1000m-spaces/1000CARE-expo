@@ -5,6 +5,73 @@ import { brandColors, brandShadow, liquidGlass } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 
 export default StyleSheet.create({
+  // Danh sách "Store" (marketplace-core) thay hẳn khối
+  // banner/distributor/deal-hời/bán-chạy NeoMed cũ ở Home — 2026-09-16.
+  homeStoreListContent: {
+    paddingHorizontal: s(20),
+    paddingTop: s(100),
+    paddingBottom: s(120),
+    flexGrow: 1,
+  },
+  homeStoreListHeader: {
+    marginBottom: s(16),
+  },
+  homeStoreListTitle: {
+    color: brandColors.textDark,
+    fontSize: fs(19),
+    fontWeight: '800',
+  },
+  homeStoreListSubtitle: {
+    marginTop: s(4),
+    color: brandColors.muted,
+    fontSize: fs(12.5),
+    fontWeight: '600',
+  },
+  storeCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(12),
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(16),
+    padding: s(14),
+    marginBottom: s(12),
+    ...brandShadow.soft,
+  },
+  storeCardIcon: {
+    width: s(44),
+    height: s(44),
+    borderRadius: s(14),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: brandColors.tealLight,
+  },
+  storeCardBody: {
+    flex: 1,
+  },
+  storeCardName: {
+    color: brandColors.textDark,
+    fontSize: fs(14.5),
+    fontWeight: '700',
+  },
+  storeCardAddress: {
+    marginTop: s(3),
+    color: brandColors.muted,
+    fontSize: fs(11.5),
+    fontWeight: '600',
+  },
+  homeStoreEmptyWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: s(60),
+    gap: s(10),
+  },
+  homeStoreEmptyText: {
+    color: brandColors.mutedLight,
+    fontSize: fs(13),
+    fontWeight: '600',
+  },
   safeArea: {
     flex: 1,
     backgroundColor: 'transparent',

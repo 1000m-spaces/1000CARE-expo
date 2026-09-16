@@ -1,6 +1,9 @@
 export const getStoresV2Status = state => state.catalogV2.storesStatus
 export const getStoresV2 = state => state.catalogV2.stores
 
+export const getCartsV2Status = state => state.catalogV2.cartsStatus
+export const getCartsV2 = state => state.catalogV2.carts
+
 // min_order_value THUỘC STORE (backoffice đặt), KHÔNG nằm trong response
 // cart (xác nhận bằng curl thật 2026-09-16: GET .../cart không có field
 // này) — trước đó lỡ đọc nhầm từ cart, luôn ra undefined nên thanh tiến
