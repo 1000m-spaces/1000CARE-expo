@@ -3,24 +3,30 @@ import { Alert, View, StyleSheet, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import strings from '~/i18n'
 import {
-  NAVIGATION_INFO_CUSTOMER, NAVIGATION_REFERRAL_SCREEN, NAVIGATION_TO_SPLASH_SCREEN,
-  NAVIGATION_LIST_NOTI_SCREEN, NAVIGATION_VOUCHER, NAVIGATION_WALLET, NAVIGATION_FAVOURITE_SUPPLIER, NAVIGATION_AUTHORITY,
   NAVIGATION_KYC_SUBMIT,
   NAVIGATION_MARKETER_LINKS,
   NAVIGATION_NOTIFICATIONS_V2,
 } from '~/navigation/routes'
-import { logout, resetCart } from '~/store/actions'
-import { getAuthStore } from '~/store/selector'
-import { safety_certificate, poweroff, mail, credit_card, group_people, gift, account, heart, exception } from '../../assets/constants'
+import { resetCart } from '~/store/actions'
+import { logoutV2 } from '~/store/authV2/authV2Actions'
+import { getIsLoggedInV2 } from '~/store/authV2/authV2Selector'
+import { safety_certificate, poweroff, mail, group_people } from '../../assets/constants'
 import packageJson from '../../../package.json'
 
 import MenuItem from './MenuItem'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, brandShadow } from '~/design-system/tokens'
 
+// Danh sách menu — 2026-09-16: dọn sạch các mục dùng backend NeoMed cũ
+// KHÔNG có tương đương ở marketplace-core (Thông tin khách hàng/Voucher/
+// Điểm mua hàng/Người giới thiệu/Nhà cung cấp yêu thích/Ủy quyền — toàn
+// bộ phụ thuộc session `auth` cũ giờ không còn được thiết lập nữa vì
+// đăng nhập đi qua AuthV2, nên các màn đó sẽ luôn trống/lỗi nếu giữ lại).
+// Chỉ giữ mục nào ĐÃ CÓ backend mới thật. Xem
+// [[marketplace-core-business-model]].
 const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
   const dispatch = useDispatch()
-  const { isLoggedIn } = useSelector(state => getAuthStore(state))
+  const isLoggedIn = useSelector(state => getIsLoggedInV2(state))
   const [lengthNotiNonRead, setLengthNotiNonRead] = useState([])
   const versionApp = packageJson.version
 
@@ -37,7 +43,10 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
           text: 'OK',
           onPress: () => {
             dispatch(resetCart())
-            dispatch(logout())
+            // Đăng xuất phải dọn CẢ 2 phiên — trước đây chỉ dọn phiên
+            // NeoMed cũ (`logout()`), phiên AuthV2 (backend mới, đang
+            // dùng thật) vẫn còn nguyên, đăng xuất "giả" không dọn token.
+            dispatch(logoutV2())
           },
         },
       ],
@@ -45,12 +54,6 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
   }
 
   const data = [
-    {
-      text: 'Thông tin khách hàng',
-      icon: account,
-      routePath: NAVIGATION_INFO_CUSTOMER,
-      isClickAvailable: true,
-    },
     {
       text: 'Xác thực hồ sơ (GPP)',
       icon: safety_certificate,
@@ -64,52 +67,9 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
       isClickAvailable: true,
     },
     {
-      text: 'Thông báo (bản thử nghiệm mới)',
+      text: 'Thông báo',
       icon: mail,
       routePath: NAVIGATION_NOTIFICATIONS_V2,
-      isClickAvailable: true,
-    },
-    {
-      text: 'Voucher của bạn',
-      icon: gift,
-      routePath: NAVIGATION_VOUCHER,
-      icon1: 'gift',
-      type: 'feather',
-      isClickAvailable: true,
-    },
-    {
-      text: 'Điểm mua hàng',
-      icon: credit_card,
-      routePath: NAVIGATION_WALLET,
-      isClickAvailable: true,
-    },
-    {
-      text: strings.profileScreen.notification,
-      icon: mail,
-      routePath: NAVIGATION_LIST_NOTI_SCREEN,
-      isClickAvailable: true,
-      // routePath: ''
-    },
-    {
-      text: 'Người giới thiệu',
-      icon: group_people,
-      routePath: NAVIGATION_REFERRAL_SCREEN,
-      isClickAvailable: true,
-    },
-    {
-      text: 'Nhà cung cấp yêu thích',
-      icon: heart,
-      icon1: 'heart',
-      type: 'feather',
-      routePath: NAVIGATION_FAVOURITE_SUPPLIER,
-      isClickAvailable: true,
-    },
-    {
-      text: 'Ủy quyền',
-      // icon: heart,
-      icon: exception,
-      // type: 'feather',
-      routePath: NAVIGATION_AUTHORITY,
       isClickAvailable: true,
     },
     {
@@ -118,11 +78,6 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
       isClickAvailable: true,
       routePath: '',
     },
-    // {
-    //   text: strings.profileScreen.language'),
-    //   icon: global,
-    //   routePath: '',
-    // },
   ]
 
   if (isLoggedIn) {

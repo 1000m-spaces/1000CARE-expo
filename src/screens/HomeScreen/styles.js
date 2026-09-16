@@ -7,9 +7,12 @@ import { Fonts } from '~/assets/config'
 export default StyleSheet.create({
   // Danh sách "Store" (marketplace-core) thay hẳn khối
   // banner/distributor/deal-hời/bán-chạy NeoMed cũ ở Home — 2026-09-16.
+  homeStoreList: {
+    flex: 1,
+  },
   homeStoreListContent: {
     paddingHorizontal: s(20),
-    paddingTop: s(100),
+    paddingTop: s(4),
     paddingBottom: s(120),
     flexGrow: 1,
   },
@@ -102,23 +105,18 @@ export default StyleSheet.create({
   supplierContentLayer: {
     paddingTop: s(84),
   },
+  // BUG đã sửa (2026-09-16, sếp báo có 1 icon xoay bị "đứng hình" giữa
+  // header): header trước `position:absolute` đè LÊN TRÊN FlatList, nên
+  // spinner pull-to-refresh gốc của hệ điều hành (render bên trong vùng
+  // scroll, phía dưới lớp overlay trong suốt) hiện xuyên qua đúng hàng
+  // icon header — nhìn như 1 icon lạ đứng yên. Đổi hẳn header về flow
+  // bình thường (không còn absolute/zIndex/scrim) nằm TRÊN FlatList,
+  // spinner giờ hiện đúng chỗ (ngay dưới header, trong vùng scroll).
   marketHeader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 30,
     paddingHorizontal: s(16),
     paddingTop: s(8),
     paddingBottom: s(10),
     backgroundColor: 'transparent',
-  },
-  marketHeaderScrim: {
-    position: 'absolute',
-    top: -s(80),
-    left: 0,
-    right: 0,
-    height: 0,
   },
   marketHeaderTop: {
     flexDirection: 'row',

@@ -4,18 +4,16 @@ import { StyleSheet, View, Text } from 'react-native'
 import { Image, Icon } from '~/common/index'
 import { user } from '~/assets/constants'
 import strings from '~/i18n'
-import { getListNoti } from '~/store/actions'
-import { useDispatch } from 'react-redux'
+import { NAVIGATION_NOTIFICATIONS_V2 } from '~/navigation/routes'
 import { s, fs } from '~/utils/responsive'
 import { brandColors } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 import PressScale from '~/design-system/PressScale'
 
+// Danh sách thông báo (NotificationsV2, backend mới) được tải sẵn ở
+// ProfileScreen khi vào màn — không cần tự fetch lại ở đây nữa như bản
+// cũ (đã bỏ dispatch getListNoti cũ, xem [[marketplace-core-business-model]]).
 const MenuItem = ({ data, navigation, isLoggedIn, onShowMessage, lengthNotiNonRead, isLast }) => {
-  const dispatch = useDispatch()
-  const getListNotiAll = () => {
-    dispatch(getListNoti(10, 1, false))
-  }
   return (
     <PressScale
       onPress={() => {
@@ -25,9 +23,6 @@ const MenuItem = ({ data, navigation, isLoggedIn, onShowMessage, lengthNotiNonRe
         if (!isLoggedIn) {
           onShowMessage(strings.common.requireLogin)
           return
-        }
-        if (data.text == strings.profileScreen.notification) {
-          getListNotiAll()
         }
         if (data.routePath !== '') {
           if (data.onPress)
@@ -58,7 +53,7 @@ const MenuItem = ({ data, navigation, isLoggedIn, onShowMessage, lengthNotiNonRe
             />
         }
         <Text style={styles.text}>{data.text}</Text>
-        {data.text == strings.profileScreen.notification && lengthNotiNonRead != 0 ? (
+        {data.routePath === NAVIGATION_NOTIFICATIONS_V2 && lengthNotiNonRead != 0 ? (
           <View style={styles.unreadBadge}>
             <Text style={styles.unreadBadgeText}>{lengthNotiNonRead >= 100 ? '99+' : lengthNotiNonRead}</Text>
           </View>

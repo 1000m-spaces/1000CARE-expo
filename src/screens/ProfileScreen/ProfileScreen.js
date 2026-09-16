@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getProfile, getListNoti } from '~/store/actions'
-import { getAuthStore, getUser, isGetListNotiNonRead } from '~/store/selector'
+import { getKycV2 as getKycV2Action, getNotificationsV2 as getNotificationsV2Action } from '~/store/authV2/authV2Actions'
+import { getIsLoggedInV2, getKycV2, getNotificationsV2 } from '~/store/authV2/authV2Selector'
 import InformationUser from './InformationUser'
 import MenuUser from './MenuUser'
 import NoAuth from './NoAuth'
@@ -13,21 +13,30 @@ import { s } from '~/utils/responsive'
 import { useTabBarVisibility } from '~/navigation/TabBarVisibilityContext'
 import AppBackground from '~/design-system/AppBackground'
 
+// Header tài khoản giờ dùng identity backend mới (marketplace-core/
+// AuthV2) — 2026-09-16, cùng đợt thay hẳn Home/Đơn hàng/Giỏ hàng. `kyc`
+// (GET /customer/v1/kyc) có sẵn `name`/`contact_phone` của nhà thuốc,
+// dùng làm tên/SĐT hiển thị thay vì `user` (backend NeoMed cũ, luôn
+// rỗng vì đăng nhập giờ qua AuthV2, không còn ghi vào `auth`/`user`
+// reducer cũ). Xem [[marketplace-core-business-model]].
 const ProfileScreen = props => {
   const { handleScroll } = useTabBarVisibility()
   const [openMessage, setOpenMessage] = useState(false)
   const [message, setMessage] = useState('')
 
-  const { isLoggedIn } = useSelector(state => getAuthStore(state))
-  const listNotiNonRead = useSelector(state => isGetListNotiNonRead(state))
+  const isLoggedIn = useSelector(state => getIsLoggedInV2(state))
+  const notificationsV2 = useSelector(state => getNotificationsV2(state))
+  const listNotiNonRead = notificationsV2.filter(n => !n.read_at)
 
   const dispatch = useDispatch()
-  const user = useSelector(state => getUser(state))
+  const kyc = useSelector(state => getKycV2(state))
 
   useEffect(() => {
-    dispatch(getProfile())
-    dispatch(getListNoti(0, 1, false, 0))
-  }, [])
+    if (isLoggedIn) {
+      dispatch(getKycV2Action())
+      dispatch(getNotificationsV2Action())
+    }
+  }, [isLoggedIn])
 
   const onShowMessage = (msg) => {
     setMessage(msg)
@@ -49,7 +58,7 @@ const ProfileScreen = props => {
         isLoggedIn ? (
           <InformationUser
             navigation={props.navigation}
-            user={user}
+            kyc={kyc}
           />
         ) :
           (

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Animated, View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform, LayoutAnimation, UIManager } from 'react-native';
+import { Animated, View, Text, TouchableOpacity, StyleSheet, Platform, LayoutAnimation, UIManager } from 'react-native';
 import { Icon } from '~/common/index';
 import {
   NAVIGATION_TO_HOME_SCREEN,
@@ -15,8 +15,6 @@ import { useTabBarVisibility } from './TabBarVisibilityContext';
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-
-const { width } = Dimensions.get('window');
 
 // Pill nổi nền `--ink` đặc + icon/label vàng gold khi active — theo đúng
 // bản handoff thiết kế mới (app Marketer, 2026-09-15), thay bản kính mờ
@@ -110,16 +108,27 @@ const CustomTabBar = ({ state, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  // BUG đã sửa (2026-09-16, sếp báo pill bị lệch/đẩy về phải): trước
+  // dùng `Dimensions.get('window').width` đọc 1 LẦN lúc module load để
+  // tự tính `width - 32` rồi canh giữa bằng `alignItems:'center'` — nếu
+  // giá trị width đọc được lúc đó không khớp kích thước thật (rotate,
+  // fold, fast-refresh...) thì pill bị lệch hẳn sang 1 bên. Đổi hẳn
+  // sang định vị `left`/`right` tuyệt đối — không phụ thuộc Dimensions,
+  // luôn đối xứng đúng 16px mỗi bên bất kể kích thước màn hình thật.
   container: {
     position: 'absolute',
+    left: 0,
+    right: 0,
     bottom: 0,
-    width,
     alignItems: 'center',
     paddingBottom: Platform.OS === 'ios' ? s(22) : s(16),
     backgroundColor: 'transparent',
   },
   tabBar: {
-    width: width - s(32), // left:16 + right:16 theo bản handoff
+    position: 'absolute',
+    left: s(16),
+    right: s(16),
+    bottom: 0,
     flexDirection: 'row',
     borderRadius: radiusScale.pill,
     height: s(66),

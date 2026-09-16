@@ -3,7 +3,6 @@ import { View, Image, Linking, Platform, FlatList, RefreshControl } from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { LinearGradient } from 'expo-linear-gradient';
 
 import { getVersionNew, getForceUpdate, getUpdate } from '~/store/selector';
 import { getListItem } from '~/store/cart/cartSelectors';
@@ -89,12 +88,6 @@ const HomeChatButton = ({ navigation }) => {
 const MarketplaceHeader = ({ navigation }) => {
   return (
     <View style={styles.marketHeader}>
-      <LinearGradient
-        pointerEvents="none"
-        colors={['rgba(238,252,253,1)', 'rgba(238,252,253,0.9)', 'rgba(238,252,253,0)']}
-        locations={[0, 0.72, 1]}
-        style={styles.marketHeaderScrim}
-      />
       <View style={styles.marketHeaderTop}>
         <PressScale
           style={styles.searchTouch}
@@ -155,7 +148,9 @@ const HomeScreen = ({ navigation }) => {
       <BackgroundWash />
       <SafeAreaView edges={['top']} style={styles.safeArea}>
         <View style={styles.container}>
+          <MarketplaceHeader navigation={navigation} />
           <FlatList
+            style={styles.homeStoreList}
             data={stores}
             keyExtractor={item => String(item.id)}
             renderItem={renderStore}
@@ -176,7 +171,6 @@ const HomeScreen = ({ navigation }) => {
               )
             }
           />
-          <MarketplaceHeader navigation={navigation} />
         </View>
 
         <Modal

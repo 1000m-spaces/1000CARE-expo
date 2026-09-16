@@ -1,33 +1,25 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { Image } from '~/common/index'
-import { avt_dafault } from '../../assets/constants'
+import { Icon } from '~/common/index'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, brandShadow } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
-import PressScale from '~/design-system/PressScale'
-import { NAVIGATION_UPDATE_PROFILE } from '~/navigation/routes'
 
-// Card tài khoản theo spec redesign: nền trắng, viền #EEF5F6, shadow "lifted"
-// (thay panel tối trước đó). Vẫn giữ avatar ảnh thật (tính năng có sẵn) thay
-// vì chữ cái viết tắt trong bản mock, vì app đã hỗ trợ upload ảnh đại diện.
-const InformationUser = ({ user, navigation }) => {
+// Card tài khoản theo spec redesign: nền trắng, viền #EEF5F6, shadow "lifted".
+// 2026-09-16: đổi hẳn sang hiển thị dữ liệu backend mới (`kyc` —
+// GET /customer/v1/kyc, có `name`/`contact_phone` của nhà thuốc) thay vì
+// avatar ảnh thật của backend NeoMed cũ (marketplace-core chưa có upload
+// avatar) — dùng icon nhà thuốc thay ảnh đại diện.
+const InformationUser = ({ kyc }) => {
   return (
     <View style={styles.wrapper}>
-      <Image
-        style={styles.avatar}
-        source={user?.avatar_url && user?.avatar_url !== '' ? {
-          uri: user?.avatar_url,
-        } : avt_dafault}
-        errorImage={avt_dafault}
-      />
-      <View style={styles.information}>
-        <Text style={styles.fullName} numberOfLines={1}>{user?.username}</Text>
-        <Text style={styles.username}>{user?.mobile}</Text>
+      <View style={styles.avatar}>
+        <Icon type="feather" name="shopping-bag" color={brandColors.tealPrimary} size={s(24)} />
       </View>
-      <PressScale onPress={() => navigation.navigate(NAVIGATION_UPDATE_PROFILE)}>
-        <Text style={styles.editLink}>Sửa</Text>
-      </PressScale>
+      <View style={styles.information}>
+        <Text style={styles.fullName} numberOfLines={1}>{kyc?.name || 'Nhà thuốc'}</Text>
+        <Text style={styles.username}>{kyc?.contact_phone || ''}</Text>
+      </View>
     </View>
   )
 }
@@ -51,6 +43,8 @@ const styles = StyleSheet.create({
     height: s(56),
     borderRadius: s(28),
     flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: brandColors.tealLight,
   },
   information: {
@@ -67,12 +61,6 @@ const styles = StyleSheet.create({
     fontSize: fs(12.5),
     fontWeight: 'normal',
     color: brandColors.muted,
-  },
-  editLink: {
-    fontFamily: Fonts.bold,
-    fontSize: fs(12),
-    fontWeight: 'normal',
-    color: brandColors.tealPrimary,
   },
 })
 
