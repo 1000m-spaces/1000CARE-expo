@@ -5,7 +5,7 @@ import PressScale from '~/design-system/PressScale';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
 import { getOrdersListV2 } from '~/store/authV2/authV2Actions';
-import { getOrdersV2Status, getOrdersV2 } from '~/store/authV2/authV2Selector';
+import { getOrdersV2Status, getOrdersV2, getIsLoggedInV2 } from '~/store/authV2/authV2Selector';
 import Status from '~/common/Status/Status';
 import { formatMoney } from '~/utils/format';
 import { NAVIGATION_ORDER_DETAIL_V2 } from '~/navigation/routes';
@@ -33,10 +33,13 @@ const OrdersV2 = ({ navigation }) => {
   const status = useSelector(state => getOrdersV2Status(state));
   const orders = useSelector(state => getOrdersV2(state));
   const loading = status === Status.LOADING;
+  // Refetch khi phiên AuthV2 khôi phục xong lúc mở lại app (phòng trường
+  // hợp màn này mount trước, xem authV2Sagas.restoreAuthV2Session).
+  const isLoggedInV2 = useSelector(state => getIsLoggedInV2(state));
 
   useEffect(() => {
     dispatch(getOrdersListV2());
-  }, []);
+  }, [isLoggedInV2]);
 
   const renderItem = ({ item }) => {
     const statusInfo = ORDER_STATUS_LABEL[item.status] || { text: item.status, color: brandColors.muted };

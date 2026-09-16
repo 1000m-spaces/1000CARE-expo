@@ -120,15 +120,18 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    alignItems: 'center',
-    paddingBottom: Platform.OS === 'ios' ? s(22) : s(16),
     backgroundColor: 'transparent',
   },
+  // BUG đã sửa (2026-09-16, sếp báo pill bị đẩy sát đáy màn hình): con
+  // absolute trong RN định vị theo mép BORDER của cha, không theo mép
+  // PADDING như CSS — nên `paddingBottom` ở `container` không đẩy được
+  // `tabBar` lên nữa khi tabBar tự thành absolute. Ghi thẳng khoảng cách
+  // đáy lên `bottom` của chính tabBar thay vì trông chờ padding cha.
   tabBar: {
     position: 'absolute',
     left: s(16),
     right: s(16),
-    bottom: 0,
+    bottom: Platform.OS === 'ios' ? s(22) : s(16),
     flexDirection: 'row',
     borderRadius: radiusScale.pill,
     height: s(66),

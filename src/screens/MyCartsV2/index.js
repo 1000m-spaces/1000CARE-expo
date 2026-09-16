@@ -6,6 +6,7 @@ import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
 import { getCartsV2, getStoresV2 } from '~/store/catalogV2/catalogV2Actions';
 import { getCartsV2Status, getCartsV2 as selectCartsV2, getStoresV2 as selectStoresV2 } from '~/store/catalogV2/catalogV2Selector';
+import { getIsLoggedInV2 } from '~/store/authV2/authV2Selector';
 import Status from '~/common/Status/Status';
 import { formatMoney } from '~/utils/format';
 import { NAVIGATION_STORE_CART_V2, NAVIGATION_STORES_V2 } from '~/navigation/routes';
@@ -25,6 +26,9 @@ const MyCartsV2 = ({ navigation }) => {
   const carts = useSelector(state => selectCartsV2(state));
   const stores = useSelector(state => selectStoresV2(state));
   const loading = status === Status.LOADING;
+  // Refetch khi phiên AuthV2 khôi phục xong lúc mở lại app (phòng trường
+  // hợp màn này mount trước, xem authV2Sagas.restoreAuthV2Session).
+  const isLoggedInV2 = useSelector(state => getIsLoggedInV2(state));
 
   const load = () => {
     dispatch(getCartsV2());
@@ -33,7 +37,7 @@ const MyCartsV2 = ({ navigation }) => {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [isLoggedInV2]);
 
   // Chỉ hiện giỏ có sản phẩm — giỏ rỗng (server tự tạo sẵn khi ghé 1
   // store) không có ý nghĩa hiển thị ở đây.

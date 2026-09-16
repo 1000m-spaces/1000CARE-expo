@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects'
+import { takeLatest, call, put, fork } from 'redux-saga/effects'
 import { AUTH_V2 } from '../actionsTypes'
 import { AuthV2 } from '~/neomed/AuthV2API'
 import { asyncStorage, store } from '../index'
@@ -258,6 +258,34 @@ function* markNotificationReadSaga({ payload }) {
   }
 }
 
+// BUG đã sửa (2026-09-16, sếp hỏi "không lưu session à?"): token V2 vẫn
+// ĐƯỢC LƯU vào asyncStorage lúc login (setV2AccessToken/setV2RefreshToken),
+// nhưng KHÔNG CÓ bước nào đọc lại lúc app mở lần sau — SplashScreen.js
+// restoreSession() chỉ khôi phục phiên NeoMed cũ, không đụng gì tới
+// authV2TokenManager (biến in-memory, reset về null mỗi lần mở app).
+// Kết quả: dù token vẫn còn hạn trong storage, mọi request customerV2
+// vẫn đi KHÔNG có Authorization → 401 → coi như phải đăng nhập lại mỗi
+// lần mở app. Chạy 1 lần lúc saga khởi động: nạp lại token đã lưu vào
+// token manager + set isLoggedInV2 ngay + gọi memberships để đồng bộ
+// tiếp (giống hệt luồng sau login thật).
+function* restoreAuthV2Session() {
+  try {
+    const refreshToken = yield asyncStorage.getV2RefreshToken()
+    if (!refreshToken) return
+    const accessToken = yield asyncStorage.getV2AccessToken()
+    const activeCustomerId = yield asyncStorage.getV2ActiveCustomerId()
+    AuthV2.setSession({ accessToken, refreshToken })
+    if (activeCustomerId) {
+      AuthV2.setActiveCustomerId(activeCustomerId)
+    }
+    yield put({ type: 'RESTORE_AUTH_V2_SESSION', payload: { accessToken, refreshToken } })
+    yield put({ type: AUTH_V2.MEMBERSHIPS_REQUEST })
+  } catch (error) {
+    // Khôi phục thất bại (token hỏng, lỗi đọc storage...) — coi như
+    // chưa đăng nhập, không chặn app khởi động vì lỗi này.
+  }
+}
+
 function* logout() {
   try {
     const refreshToken = yield asyncStorage.getV2RefreshToken()
@@ -286,6 +314,8 @@ export default function* watcherSaga() {
       store.dispatch({ type: 'AUTH_V2_RESET' })
     },
   })
+
+  yield fork(restoreAuthV2Session)
 
   yield takeLatest(AUTH_V2.REGISTER_REQUEST, register)
   yield takeLatest(AUTH_V2.VERIFY_PHONE_REQUEST, verifyPhone)

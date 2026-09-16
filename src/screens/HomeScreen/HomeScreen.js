@@ -117,13 +117,17 @@ const HomeScreen = ({ navigation }) => {
   const storesStatus = useSelector(state => getStoresV2Status(state));
   const stores = useSelector(state => selectStoresV2(state));
   const loading = storesStatus === Status.LOADING;
+  // Phòng trường hợp màn này mount TRƯỚC khi phiên AuthV2 kịp khôi phục
+  // xong lúc mở app (xem authV2Sagas.restoreAuthV2Session) — request đầu
+  // có thể 401 vì chưa có token, refetch lại ngay khi isLoggedInV2 lên true.
+  const isLoggedInV2 = useSelector(state => getIsLoggedInV2(state));
 
   const load = () => dispatch(getStoresV2());
 
   useEffect(() => {
     load();
     asyncStorage.getSkipForceUpdate().then(setSkip);
-  }, []);
+  }, [isLoggedInV2]);
 
   const renderStore = ({ item }) => (
     <PressScale

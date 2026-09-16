@@ -85,6 +85,15 @@ export default (state = initialState, { type, payload }) => {
         refreshToken: payload.refreshToken,
         isLoggedInV2: true,
       }
+    // Khôi phục phiên đã lưu lúc mở lại app (xem authV2Sagas.restoreAuthV2Session)
+    // — không phải "login" thật nên không đụng loginStatus.
+    case 'RESTORE_AUTH_V2_SESSION':
+      return {
+        ...state,
+        accessToken: payload.accessToken,
+        refreshToken: payload.refreshToken,
+        isLoggedInV2: true,
+      }
     case AUTH_V2.LOGIN_FAILURE:
       return { ...state, loginStatus: Status.ERROR, loginErr: payload.errorMsg, isLoggedInV2: false }
     case 'RESET_AUTH_V2_LOGIN':
