@@ -4,39 +4,45 @@ import { useDispatch, useSelector } from 'react-redux';
 import PressScale from '~/design-system/PressScale';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
-import { getStoreCartV2, updateCartItemV2, deleteCartItemV2 } from '~/store/catalogV2/catalogV2Actions';
+import { getStoreCartV2, getStoresV2, updateCartItemV2, deleteCartItemV2 } from '~/store/catalogV2/catalogV2Actions';
 import {
   getStoreCartV2 as selectStoreCartV2,
   getStoreCartV2Status,
   getCartItemV2ActionStatus,
+  getStoreMinOrderValueV2,
 } from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
 import { formatMoney } from '~/utils/format';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
-// GET/PUT/DELETE /customer/v1/stores/{id}/cart — giỏ hàng THẬT, kèm
-// subtotal + min_order_value (0 = không giới hạn, do Store/backoffice đặt,
-// KHÔNG phải NCC). Màn RIÊNG, CHƯA đụng checkout thật — nút "Đặt hàng" ở
-// cuối chỉ bật khi đủ min_order_value nhưng hiện chỉ để dành chỗ, chưa nối
-// API đặt đơn. Xem [[marketplace-core-business-model]].
+// GET/PUT/DELETE /customer/v1/stores/{id}/cart — giỏ hàng THẬT, có
+// subtotal. `min_order_value` KHÔNG nằm trong response cart (xác nhận
+// bằng curl thật 2026-09-16) — nó thuộc Store (backoffice đặt, KHÔNG
+// phải NCC), lấy từ GET /customer/v1/stores. Màn RIÊNG, CHƯA đụng
+// checkout thật — nút "Đặt hàng" ở cuối chỉ bật khi đủ min_order_value
+// nhưng hiện chỉ để dành chỗ, chưa nối API đặt đơn. Xem
+// [[marketplace-core-business-model]].
 const StoreCartV2 = ({ navigation, route }) => {
   const { storeId, storeName } = route.params || {};
   const dispatch = useDispatch();
   const status = useSelector(state => getStoreCartV2Status(state, storeId));
   const cart = useSelector(state => selectStoreCartV2(state, storeId));
+  const minOrderValue = useSelector(state => getStoreMinOrderValueV2(state, storeId));
   const loading = status === Status.LOADING;
 
   const load = () => dispatch(getStoreCartV2(storeId));
 
   useEffect(() => {
     load();
+    // Đảm bảo có sẵn danh sách store (nguồn min_order_value thật) — phòng
+    // khi màn này được mở thẳng mà chưa qua StoresV2.
+    dispatch(getStoresV2());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeId]);
 
   const items = cart?.items || [];
   const subtotal = cart?.subtotal || 0;
-  const minOrderValue = cart?.min_order_value || 0;
   const meetsMinOrder = minOrderValue === 0 || subtotal >= minOrderValue;
   const progress = minOrderValue > 0 ? Math.min(1, subtotal / minOrderValue) : 1;
 

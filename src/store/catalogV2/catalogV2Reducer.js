@@ -106,6 +106,12 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         applyProductMessageStatus: { ...state.applyProductMessageStatus, [payload.messageId]: Status.SUCCESS },
+        // Patch applied_at ngay tại chỗ — API apply-to-cart trả Cart chứ
+        // không trả ProductMessage đã cập nhật, nên phải tự đánh dấu để
+        // UI (nút Áp dụng ẩn, badge giảm) cập nhật tức thì.
+        productMessages: state.productMessages.map(m =>
+          m.id === payload.messageId ? { ...m, applied_at: payload.appliedAt } : m,
+        ),
       }
     case CATALOG_V2.APPLY_PRODUCT_MESSAGE_FAILURE:
       return {

@@ -40,20 +40,26 @@ function* getStoreCart({ payload }) {
   }
 }
 
+// PUT/DELETE cart item trả 204 KHÔNG có body (xác nhận bằng curl thật
+// 2026-09-16 với dữ liệu test marketplace-core-21 cấp) — trước đó lỡ
+// coi response của chính PUT/DELETE là Cart mới, thực chất là undefined,
+// khiến giỏ hàng hiện rỗng ngay sau khi bấm +/-/xoá cho tới lần refetch
+// kế tiếp. Phải tự GET lại cart sau khi mutation thành công.
 function* updateCartItem({ payload }) {
   const { storeId, productId, qty, memberMarketerId } = payload
   try {
     yield put({ type: CATALOG_V2.UPDATE_CART_ITEM_LOADING, payload: { storeId, productId } })
-    const data = yield call(
+    yield call(
       { content: AuthV2, fn: AuthV2.updateCartItem },
       storeId,
       productId,
       qty,
       memberMarketerId,
     )
+    const cart = yield call({ content: AuthV2, fn: AuthV2.getStoreCart }, storeId, memberMarketerId)
     yield put({
       type: CATALOG_V2.UPDATE_CART_ITEM_SUCCESS,
-      payload: { storeId, productId, cart: data },
+      payload: { storeId, productId, cart },
     })
   } catch (error) {
     yield put({
@@ -67,15 +73,16 @@ function* deleteCartItem({ payload }) {
   const { storeId, productId, memberMarketerId } = payload
   try {
     yield put({ type: CATALOG_V2.DELETE_CART_ITEM_LOADING, payload: { storeId, productId } })
-    const data = yield call(
+    yield call(
       { content: AuthV2, fn: AuthV2.deleteCartItem },
       storeId,
       productId,
       memberMarketerId,
     )
+    const cart = yield call({ content: AuthV2, fn: AuthV2.getStoreCart }, storeId, memberMarketerId)
     yield put({
       type: CATALOG_V2.DELETE_CART_ITEM_SUCCESS,
-      payload: { storeId, productId, cart: data },
+      payload: { storeId, productId, cart },
     })
   } catch (error) {
     yield put({
@@ -100,7 +107,13 @@ function* applyProductMessage({ payload }) {
   try {
     yield put({ type: CATALOG_V2.APPLY_PRODUCT_MESSAGE_LOADING, payload: { messageId } })
     yield call({ content: AuthV2, fn: AuthV2.applyProductMessageToCart }, messageId)
-    yield put({ type: CATALOG_V2.APPLY_PRODUCT_MESSAGE_SUCCESS, payload: { messageId } })
+    // API trả Cart (theo marketplace-core-21), không phải ProductMessage
+    // đã cập nhật — tự patch applied_at ngay để UI (badge/nút) cập nhật
+    // tức thì, không phải đợi refetch getProductMessagesV2.
+    yield put({
+      type: CATALOG_V2.APPLY_PRODUCT_MESSAGE_SUCCESS,
+      payload: { messageId, appliedAt: new Date().toISOString() },
+    })
   } catch (error) {
     yield put({
       type: CATALOG_V2.APPLY_PRODUCT_MESSAGE_FAILURE,
