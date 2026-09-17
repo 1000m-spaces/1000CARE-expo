@@ -237,6 +237,10 @@ export const CATALOG_V2 = createRequestTypes(
     'GET_PRODUCT_MESSAGES', // GET /customer/v1/product-messages
     'APPLY_PRODUCT_MESSAGE', // POST /customer/v1/product-messages/{id}/apply-to-cart
     'CHECKOUT_CART', // POST /customer/v1/orders {cart_id} — đặt đơn thật, 1 giỏ → 1 đơn
+    'GET_HOME_BANNERS', // GET /customer/v1/home-banners
+    'GET_FEATURED_SUPPLIERS', // GET /customer/v1/featured-suppliers
+    'GET_SUPPLIER_PRODUCTS', // GET /customer/v1/suppliers/{id}/products?limit=
+    'GET_SEARCH_SUGGESTIONS', // GET /customer/v1/search-suggestions
   ],
   suffixTypes,
 )

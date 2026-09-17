@@ -49,4 +49,16 @@ export const resetCheckoutCartV2 = storeId => ({
   payload: { storeId },
 })
 
+// Trang chủ mới (2026-09-17) — xem [[marketplace-core-business-model]].
+export const getHomeBannersV2 = () => ({ type: CATALOG_V2.GET_HOME_BANNERS_REQUEST })
+
+export const getFeaturedSuppliersV2 = () => ({ type: CATALOG_V2.GET_FEATURED_SUPPLIERS_REQUEST })
+
+export const getSupplierProductsV2 = (supplierId, limit) => ({
+  type: CATALOG_V2.GET_SUPPLIER_PRODUCTS_REQUEST,
+  payload: { supplierId, limit },
+})
+
+export const getSearchSuggestionsV2 = () => ({ type: CATALOG_V2.GET_SEARCH_SUGGESTIONS_REQUEST })
+
 export const resetCatalogV2 = () => ({ type: 'CATALOG_V2_RESET' })

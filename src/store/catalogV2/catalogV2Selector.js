@@ -60,3 +60,16 @@ export const getProductMessageByIdV2 = (state, messageId) =>
 export const getCheckoutCartV2Status = (state, storeId) => state.catalogV2.checkoutStatus[storeId]
 export const getCheckoutCartV2Order = (state, storeId) => state.catalogV2.checkoutOrder[storeId]
 export const getCheckoutCartV2Err = (state, storeId) => state.catalogV2.checkoutErr[storeId]
+
+// Trang chủ mới (2026-09-17) — xem [[marketplace-core-business-model]].
+export const getHomeBannersV2Status = state => state.catalogV2.homeBannersStatus
+export const getHomeBannersV2 = state => state.catalogV2.homeBanners
+
+export const getFeaturedSuppliersV2Status = state => state.catalogV2.featuredSuppliersStatus
+export const getFeaturedSuppliersV2 = state => state.catalogV2.featuredSuppliers
+
+export const getSupplierProductsV2Status = (state, supplierId) => state.catalogV2.supplierProductsStatus[supplierId]
+export const getSupplierProductsV2 = (state, supplierId) => state.catalogV2.supplierProducts[supplierId] || []
+
+export const getSearchSuggestionsV2Status = state => state.catalogV2.searchSuggestionsStatus
+export const getSearchSuggestionsV2 = state => state.catalogV2.searchSuggestions

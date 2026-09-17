@@ -1,20 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Linking, Platform, FlatList, RefreshControl } from 'react-native';
+import { View, Image, Linking, Platform, FlatList, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getVersionNew, getForceUpdate, getUpdate } from '~/store/selector';
-import { getListItem } from '~/store/cart/cartSelectors';
 import { getAuthStore } from '~/store/selector';
 import styles from './styles';
 import { NAVIGATION_TO_SEARCH, NAVIGATION_CHAT_LIST_V2, NAVIGATION_MY_CARTS_V2, NAVIGATION_STORE_CATALOG_V2 } from '~/navigation/routes';
 import { getProductMessageThreadsV2 } from '~/store/catalogV2/catalogV2Selector';
 import { getIsLoggedInV2 } from '~/store/authV2/authV2Selector';
-import { getStoresV2 } from '~/store/catalogV2/catalogV2Actions';
-import { getStoresV2Status, getStoresV2 as selectStoresV2 } from '~/store/catalogV2/catalogV2Selector';
+import {
+  getStoresV2,
+  getHomeBannersV2,
+  getFeaturedSuppliersV2,
+  getSupplierProductsV2,
+  getSearchSuggestionsV2,
+} from '~/store/catalogV2/catalogV2Actions';
+import {
+  getStoresV2Status,
+  getStoresV2 as selectStoresV2,
+  getHomeBannersV2Status,
+  getHomeBannersV2 as selectHomeBannersV2,
+  getFeaturedSuppliersV2Status,
+  getFeaturedSuppliersV2 as selectFeaturedSuppliersV2,
+  getSupplierProductsV2 as selectSupplierProductsV2,
+  getSearchSuggestionsV2Status,
+  getSearchSuggestionsV2 as selectSearchSuggestionsV2,
+} from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
 import { Icon, Text } from '~/common/index';
+import { formatMoney } from '~/utils/format';
 import { asyncStorage } from '~/store/index';
 import packageJson from '../../../package.json';
 import PremiumButton from '~/design-system/PremiumButton';
@@ -85,6 +101,105 @@ const HomeChatButton = ({ navigation }) => {
   );
 };
 
+// Trang chủ mới (2026-09-17, marketplace-core-21) — layout đã chốt với
+// chủ dự án: banner carousel → NCC nổi bật (banner riêng + dòng SP
+// ngang mỗi NCC) → "Gợi ý hôm nay". Dữ liệu hiện là MOCK (backoffice
+// nhập tay), CHƯA deploy lên dev-api-mkp.1000m.vn lúc code — code theo
+// đúng contract, chưa tự verify bằng curl thật. Xem
+// [[marketplace-core-business-model]].
+const HomeBannerCarousel = ({ banners }) => {
+  if (!banners.length) return null;
+  return (
+    <ScrollView
+      horizontal
+      pagingEnabled
+      showsHorizontalScrollIndicator={false}
+      style={styles.bannerCarousel}
+    >
+      {banners.map(item => (
+        <Image
+          key={item.asset_id}
+          source={{ uri: item.url }}
+          style={styles.bannerImage}
+          resizeMode="cover"
+        />
+      ))}
+    </ScrollView>
+  );
+};
+
+const SupplierProductCard = ({ product }) => (
+  <View style={styles.supplierProductCard}>
+    {product.media ? (
+      <Image source={{ uri: product.media }} style={styles.supplierProductImage} resizeMode="contain" />
+    ) : (
+      <View style={[styles.supplierProductImage, styles.supplierProductImagePlaceholder]}>
+        <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(22)} />
+      </View>
+    )}
+    <Text style={styles.supplierProductName} numberOfLines={2}>{product.name}</Text>
+    <Text style={styles.supplierProductPrice}>{formatMoney(product.price, { unit: 'đ' })}</Text>
+  </View>
+);
+
+// Mỗi NCC nổi bật: banner riêng + dòng sản phẩm ngang (~2.5 SP/màn).
+// CHƯA gắn onPress vào từng SP — chưa rõ shape có store_id để biết mở
+// đúng giỏ hàng nào (giỏ scope theo store, không theo supplier), để
+// tránh đoán mò khi backend còn mock. Xem ghi chú ở AuthV2API.js.
+const FeaturedSupplierBlock = ({ supplier }) => {
+  const dispatch = useDispatch();
+  const products = useSelector(state => selectSupplierProductsV2(state, supplier.supplier_id));
+
+  useEffect(() => {
+    dispatch(getSupplierProductsV2(supplier.supplier_id, 10));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [supplier.supplier_id]);
+
+  return (
+    <View style={styles.featuredSupplierBlock}>
+      {!!supplier.banner_url && (
+        <Image source={{ uri: supplier.banner_url }} style={styles.featuredSupplierBanner} resizeMode="cover" />
+      )}
+      <View style={styles.featuredSupplierHeader}>
+        {!!supplier.logo_url && (
+          <Image source={{ uri: supplier.logo_url }} style={styles.featuredSupplierLogo} resizeMode="contain" />
+        )}
+        <Text style={styles.featuredSupplierName} numberOfLines={1}>{supplier.legal_name}</Text>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.supplierProductRail}>
+        {products.map(p => (
+          <SupplierProductCard key={p.product_id} product={p} />
+        ))}
+      </ScrollView>
+    </View>
+  );
+};
+
+// "Gợi ý hôm nay" — có product_id thì lẽ ra mở thẳng SP, nhưng chưa có
+// màn chi tiết SP theo product_id trần (StoreCatalogV2 cần storeId) nên
+// tạm xử lý đồng nhất: điền từ khoá vào ô tìm kiếm (màn Search cũ,
+// endpoint /search thật để dành làm sau — xem AuthV2API.searchProductsV2).
+const TodaySuggestions = ({ suggestions, navigation }) => {
+  if (!suggestions.length) return null;
+  return (
+    <View style={styles.suggestionsSection}>
+      <Text style={styles.suggestionsTitle}>Gợi ý hôm nay</Text>
+      <View style={styles.suggestionsWrap}>
+        {suggestions.map(item => (
+          <PressScale
+            key={item.id}
+            style={styles.suggestionChip}
+            onPress={() => navigation.navigate(NAVIGATION_TO_SEARCH, { prefill: item.keyword })}
+          >
+            <Icon type="feather" name="search" color={brandColors.tealDark} size={s(13)} />
+            <Text style={styles.suggestionChipText} numberOfLines={1}>{item.keyword}</Text>
+          </PressScale>
+        ))}
+      </View>
+    </View>
+  );
+};
+
 const MarketplaceHeader = ({ navigation }) => {
   return (
     <View style={styles.marketHeader}>
@@ -122,7 +237,16 @@ const HomeScreen = ({ navigation }) => {
   // có thể 401 vì chưa có token, refetch lại ngay khi isLoggedInV2 lên true.
   const isLoggedInV2 = useSelector(state => getIsLoggedInV2(state));
 
-  const load = () => dispatch(getStoresV2());
+  const banners = useSelector(state => selectHomeBannersV2(state));
+  const featuredSuppliers = useSelector(state => selectFeaturedSuppliersV2(state));
+  const suggestions = useSelector(state => selectSearchSuggestionsV2(state));
+
+  const load = () => {
+    dispatch(getStoresV2());
+    dispatch(getHomeBannersV2());
+    dispatch(getFeaturedSuppliersV2());
+    dispatch(getSearchSuggestionsV2());
+  };
 
   useEffect(() => {
     load();
@@ -161,10 +285,17 @@ const HomeScreen = ({ navigation }) => {
             contentContainerStyle={styles.homeStoreListContent}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}
             ListHeaderComponent={
-              <View style={styles.homeStoreListHeader}>
-                <Text style={styles.homeStoreListTitle}>Đặt hàng theo nhà thuốc</Text>
-                <Text style={styles.homeStoreListSubtitle}>Chọn 1 cửa hàng để xem sản phẩm và giá</Text>
-              </View>
+              <>
+                <HomeBannerCarousel banners={banners} />
+                {featuredSuppliers.map(supplier => (
+                  <FeaturedSupplierBlock key={supplier.supplier_id} supplier={supplier} />
+                ))}
+                <TodaySuggestions suggestions={suggestions} navigation={navigation} />
+                <View style={styles.homeStoreListHeader}>
+                  <Text style={styles.homeStoreListTitle}>Đặt hàng theo nhà thuốc</Text>
+                  <Text style={styles.homeStoreListSubtitle}>Chọn 1 cửa hàng để xem sản phẩm và giá</Text>
+                </View>
+              </>
             }
             ListEmptyComponent={
               !loading && (

@@ -5,6 +5,106 @@ import { brandColors, brandShadow, liquidGlass } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 
 export default StyleSheet.create({
+  // Trang chủ mới (2026-09-17) — banner carousel → NCC nổi bật → gợi ý.
+  bannerCarousel: {
+    marginBottom: s(16),
+  },
+  bannerImage: {
+    width: s(343),
+    height: s(140),
+    borderRadius: s(18),
+    marginRight: s(12),
+    backgroundColor: brandColors.tealLight,
+  },
+  featuredSupplierBlock: {
+    marginBottom: s(20),
+  },
+  featuredSupplierBanner: {
+    width: '100%',
+    height: s(100),
+    borderRadius: s(16),
+    backgroundColor: brandColors.tealLight,
+    marginBottom: s(10),
+  },
+  featuredSupplierHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(8),
+    marginBottom: s(10),
+  },
+  featuredSupplierLogo: {
+    width: s(24),
+    height: s(24),
+    borderRadius: s(6),
+  },
+  featuredSupplierName: {
+    flex: 1,
+    color: brandColors.textDark,
+    fontSize: fs(14),
+    fontWeight: '700',
+  },
+  supplierProductRail: {
+    gap: s(10),
+  },
+  supplierProductCard: {
+    width: s(132),
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.borderSoft,
+    borderRadius: s(14),
+    padding: s(10),
+  },
+  supplierProductImage: {
+    width: '100%',
+    height: s(90),
+    borderRadius: s(10),
+    backgroundColor: brandColors.tealLight,
+    marginBottom: s(8),
+  },
+  supplierProductImagePlaceholder: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  supplierProductName: {
+    color: brandColors.textDark,
+    fontSize: fs(11.5),
+    fontWeight: '600',
+    marginBottom: s(4),
+  },
+  supplierProductPrice: {
+    color: brandColors.tealDark,
+    fontSize: fs(12.5),
+    fontWeight: '800',
+  },
+  suggestionsSection: {
+    marginBottom: s(20),
+  },
+  suggestionsTitle: {
+    color: brandColors.textDark,
+    fontSize: fs(15),
+    fontWeight: '800',
+    marginBottom: s(10),
+  },
+  suggestionsWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: s(8),
+  },
+  suggestionChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(6),
+    paddingHorizontal: s(12),
+    paddingVertical: s(8),
+    borderRadius: s(999),
+    backgroundColor: brandColors.tealLight,
+    maxWidth: s(200),
+  },
+  suggestionChipText: {
+    color: brandColors.tealDark,
+    fontSize: fs(12),
+    fontWeight: '600',
+  },
   // Danh sách "Store" (marketplace-core) thay hẳn khối
   // banner/distributor/deal-hời/bán-chạy NeoMed cũ ở Home — 2026-09-16.
   homeStoreList: {

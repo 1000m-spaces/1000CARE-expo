@@ -119,6 +119,54 @@ function* checkoutCart({ payload }) {
   }
 }
 
+// Trang chủ mới (2026-09-17) — xem [[marketplace-core-business-model]].
+function* getHomeBanners() {
+  try {
+    yield put({ type: CATALOG_V2.GET_HOME_BANNERS_LOADING })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getHomeBanners })
+    yield put({ type: CATALOG_V2.GET_HOME_BANNERS_SUCCESS, payload: { items: data?.items || [] } })
+  } catch (error) {
+    yield put({ type: CATALOG_V2.GET_HOME_BANNERS_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
+function* getFeaturedSuppliers() {
+  try {
+    yield put({ type: CATALOG_V2.GET_FEATURED_SUPPLIERS_LOADING })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getFeaturedSuppliers })
+    yield put({ type: CATALOG_V2.GET_FEATURED_SUPPLIERS_SUCCESS, payload: { items: data?.items || [] } })
+  } catch (error) {
+    yield put({ type: CATALOG_V2.GET_FEATURED_SUPPLIERS_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
+function* getSupplierProducts({ payload }) {
+  const { supplierId, limit } = payload
+  try {
+    yield put({ type: CATALOG_V2.GET_SUPPLIER_PRODUCTS_LOADING, payload: { supplierId } })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getSupplierProducts }, supplierId, limit)
+    yield put({
+      type: CATALOG_V2.GET_SUPPLIER_PRODUCTS_SUCCESS,
+      payload: { supplierId, items: data?.items || [] },
+    })
+  } catch (error) {
+    yield put({
+      type: CATALOG_V2.GET_SUPPLIER_PRODUCTS_FAILURE,
+      payload: { supplierId, errorMsg: error?.message },
+    })
+  }
+}
+
+function* getSearchSuggestions() {
+  try {
+    yield put({ type: CATALOG_V2.GET_SEARCH_SUGGESTIONS_LOADING })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getSearchSuggestions })
+    yield put({ type: CATALOG_V2.GET_SEARCH_SUGGESTIONS_SUCCESS, payload: { items: data?.items || [] } })
+  } catch (error) {
+    yield put({ type: CATALOG_V2.GET_SEARCH_SUGGESTIONS_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
 function* getProductMessages() {
   try {
     yield put({ type: CATALOG_V2.GET_PRODUCT_MESSAGES_LOADING })
@@ -159,4 +207,8 @@ export default function* watcherSaga() {
   yield takeLatest(CATALOG_V2.GET_PRODUCT_MESSAGES_REQUEST, getProductMessages)
   yield takeLatest(CATALOG_V2.APPLY_PRODUCT_MESSAGE_REQUEST, applyProductMessage)
   yield takeLatest(CATALOG_V2.CHECKOUT_CART_REQUEST, checkoutCart)
+  yield takeLatest(CATALOG_V2.GET_HOME_BANNERS_REQUEST, getHomeBanners)
+  yield takeLatest(CATALOG_V2.GET_FEATURED_SUPPLIERS_REQUEST, getFeaturedSuppliers)
+  yield takeLatest(CATALOG_V2.GET_SUPPLIER_PRODUCTS_REQUEST, getSupplierProducts)
+  yield takeLatest(CATALOG_V2.GET_SEARCH_SUGGESTIONS_REQUEST, getSearchSuggestions)
 }

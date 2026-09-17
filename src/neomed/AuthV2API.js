@@ -147,6 +147,40 @@ class AuthV2API {
     return customerV2Client.get('/stores')
   }
 
+  // Trang chủ mới (2026-09-17, marketplace-core-21) — layout: tìm kiếm →
+  // banner carousel → NCC nổi bật (mỗi NCC 1 banner + dòng SP ngang) →
+  // "Gợi ý hôm nay". Cùng guard hiện có (JWT bắt buộc, KHÔNG cần hồ sơ
+  // nhà thuốc). Dữ liệu hiện là MOCK do backoffice nhập tay (ảnh
+  // placeholder), shape KHÔNG đổi khi backend thay ảnh/dữ liệu thật.
+  // CHƯA deploy lên dev-api-mkp.1000m.vn lúc code (đang ở PR #6, chờ
+  // review+merge+deploy) — code theo đúng contract, chưa tự verify
+  // bằng curl thật. Xem [[marketplace-core-business-model]].
+  getHomeBanners = () => {
+    return customerV2Client.get('/home-banners')
+  }
+
+  getFeaturedSuppliers = () => {
+    return customerV2Client.get('/featured-suppliers')
+  }
+
+  // GET /customer/v1/suppliers/{id}/products?limit= — đã tự gộp SP từ
+  // mọi store đang active của NCC đó, app không cần lo phần đó.
+  getSupplierProducts = (supplierId, limit = 10) => {
+    return customerV2Client.get(`/suppliers/${supplierId}/products`, { params: { limit } })
+  }
+
+  // "Gợi ý hôm nay" — {items:[{id,keyword,product_id?}]}. Có product_id
+  // → mở thẳng SP; không có → prefill ô tìm kiếm bằng `keyword`.
+  getSearchSuggestions = () => {
+    return customerV2Client.get('/search-suggestions')
+  }
+
+  // Full-text search xuyên mọi NCC, có bỏ dấu, chỉ SP đang bán — để dành
+  // cho batch sau (làm lại màn Search), stub sẵn API cho tiện.
+  searchProductsV2 = (q, limit, offset) => {
+    return customerV2Client.get('/search', { params: { q, limit, offset } })
+  }
+
   // GET /customer/v1/stores/{id}/products → {items:[{product_id,name,brand,rx,media,price,currency}]}
   // Đổi shape 2026-09-14 (trước là {product_ids:[]}), xem
   // [[marketplace-core-business-model]].

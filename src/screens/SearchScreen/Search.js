@@ -22,9 +22,11 @@ const SEARCH_TABS = {
   PHARMACY: 3,
 }
 
-const Search = ({ navigation }) => {
+const Search = ({ navigation, route }) => {
   const [tab, setTab] = useState(SEARCH_TABS.PRODUCT)
-  const [textSearch, setTextSearch] = useState('')
+  // Gợi ý "Gợi ý hôm nay" ở Home (marketplace-core) điền sẵn từ khoá qua
+  // route.params.prefill — xem HomeScreen.js TodaySuggestions.
+  const [textSearch, setTextSearch] = useState(route?.params?.prefill || '')
   const [isLoading, setIsLoading] = useState(false)
   const ref_input = useRef()
 
@@ -90,6 +92,14 @@ const Search = ({ navigation }) => {
     }, 300),
     []
   )
+
+  // Có prefill (từ "Gợi ý hôm nay" ở Home) thì chạy tìm ngay, không đợi
+  // người dùng gõ.
+  useEffect(() => {
+    if (route?.params?.prefill) {
+      performSearch(route.params.prefill, tab)
+    }
+  }, [])
 
   const onBack = () => {
     navigation.pop()
