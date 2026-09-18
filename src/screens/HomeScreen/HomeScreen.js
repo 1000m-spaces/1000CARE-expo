@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Image, Linking, Platform, FlatList, ScrollView, RefreshControl } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Image, Linking, Platform, FlatList, ScrollView, RefreshControl, Animated, Easing } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -107,24 +107,88 @@ const HomeChatButton = ({ navigation }) => {
 // nhập tay), CHƯA deploy lên dev-api-mkp.1000m.vn lúc code — code theo
 // đúng contract, chưa tự verify bằng curl thật. Xem
 // [[marketplace-core-business-model]].
-const HomeBannerCarousel = ({ banners }) => {
-  if (!banners.length) return null;
+// Trong lúc chờ banner thật (API chưa deploy hoặc đang tải): thanh
+// trượt bo tròn 2 đầu + "viên thuốc" chạy qua lại — theo đúng ý sếp,
+// thay vì để trống trơn không có gì.
+// Quãng đường trượt = bề rộng track - bề rộng viên thuốc - lề 2 đầu.
+const BANNER_CAPSULE_TRACK_WIDTH = s(343) - s(48) - s(24);
+const BannerLoadingCapsule = () => {
+  const progress = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(progress, {
+          toValue: 1,
+          duration: 950,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(progress, {
+          toValue: 0,
+          duration: 950,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [progress]);
+
+  const translateX = progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, BANNER_CAPSULE_TRACK_WIDTH],
+  });
+
   return (
-    <ScrollView
-      horizontal
-      pagingEnabled
-      showsHorizontalScrollIndicator={false}
-      style={styles.bannerCarousel}
-    >
-      {banners.map(item => (
-        <Image
-          key={item.asset_id}
-          source={{ uri: item.url }}
-          style={styles.bannerImage}
-          resizeMode="cover"
-        />
-      ))}
-    </ScrollView>
+    <View style={styles.bannerLoadingTrack}>
+      <Animated.View style={[styles.bannerLoadingCapsule, { transform: [{ translateX }] }]} />
+    </View>
+  );
+};
+
+const HomeBannerCarousel = ({ banners, status }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  if (!banners.length) {
+    return status === Status.LOADING ? <BannerLoadingCapsule /> : null;
+  }
+
+  const onMomentumScrollEnd = e => {
+    const { contentOffset, layoutMeasurement } = e.nativeEvent;
+    setActiveIndex(Math.round(contentOffset.x / layoutMeasurement.width));
+  };
+
+  return (
+    <View style={styles.bannerCarouselWrap}>
+      <ScrollView
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        style={styles.bannerCarousel}
+        onMomentumScrollEnd={onMomentumScrollEnd}
+      >
+        {banners.map(item => (
+          <Image
+            key={item.asset_id}
+            source={{ uri: item.url }}
+            style={styles.bannerImage}
+            resizeMode="cover"
+          />
+        ))}
+      </ScrollView>
+      {banners.length > 1 && (
+        <View style={styles.bannerDotsRow}>
+          {banners.map((_, index) => (
+            <View
+              key={index}
+              style={[styles.bannerDot, index === activeIndex && styles.bannerDotActive]}
+            />
+          ))}
+        </View>
+      )}
+    </View>
   );
 };
 
@@ -238,6 +302,7 @@ const HomeScreen = ({ navigation }) => {
   const isLoggedInV2 = useSelector(state => getIsLoggedInV2(state));
 
   const banners = useSelector(state => selectHomeBannersV2(state));
+  const bannersStatus = useSelector(state => getHomeBannersV2Status(state));
   const featuredSuppliers = useSelector(state => selectFeaturedSuppliersV2(state));
   const suggestions = useSelector(state => selectSearchSuggestionsV2(state));
 
@@ -286,7 +351,7 @@ const HomeScreen = ({ navigation }) => {
             refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}
             ListHeaderComponent={
               <>
-                <HomeBannerCarousel banners={banners} />
+                <HomeBannerCarousel banners={banners} status={bannersStatus} />
                 {featuredSuppliers.map(supplier => (
                   <FeaturedSupplierBlock key={supplier.supplier_id} supplier={supplier} />
                 ))}

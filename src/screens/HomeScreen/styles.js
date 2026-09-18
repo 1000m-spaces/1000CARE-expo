@@ -6,15 +6,50 @@ import { Fonts } from '~/assets/config'
 
 export default StyleSheet.create({
   // Trang chủ mới (2026-09-17) — banner carousel → NCC nổi bật → gợi ý.
-  bannerCarousel: {
+  bannerCarouselWrap: {
     marginBottom: s(16),
   },
+  bannerCarousel: {},
   bannerImage: {
     width: s(343),
     height: s(140),
     borderRadius: s(18),
     marginRight: s(12),
     backgroundColor: brandColors.tealLight,
+  },
+  bannerDotsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: s(6),
+    marginTop: s(10),
+  },
+  bannerDot: {
+    width: s(6),
+    height: s(6),
+    borderRadius: s(3),
+    backgroundColor: brandColors.border,
+  },
+  bannerDotActive: {
+    width: s(18),
+    backgroundColor: brandColors.tealPrimary,
+  },
+  // Khung chờ banner — thanh trượt bo tròn 2 đầu + "viên thuốc" chạy
+  // qua lại, theo đúng ý sếp thay vì để trống trơn lúc chưa có dữ liệu.
+  bannerLoadingTrack: {
+    width: s(343),
+    height: s(28),
+    borderRadius: s(999),
+    backgroundColor: brandColors.tealLight,
+    justifyContent: 'center',
+    marginBottom: s(16),
+    overflow: 'hidden',
+  },
+  bannerLoadingCapsule: {
+    width: s(48),
+    height: s(18),
+    marginLeft: s(12),
+    borderRadius: s(999),
+    backgroundColor: brandColors.tealPrimary,
   },
   featuredSupplierBlock: {
     marginBottom: s(20),
