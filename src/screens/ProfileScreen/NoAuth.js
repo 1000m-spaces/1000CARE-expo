@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
 } from 'react-native'
+import { useSelector } from 'react-redux'
 import { Image } from '~/common/index'
 import strings from '~/i18n'
 import { NAVIGATION_PHONE_VERIFY, NAVIGATION_TO_LOGIN_SCREEN } from '~/navigation/routes'
@@ -12,6 +13,7 @@ import { s, fs } from '~/utils/responsive'
 import { brandColors, brandShadow } from '~/design-system/tokens'
 import { Fonts } from '~/assets/config'
 import PressScale from '~/design-system/PressScale'
+import { getRestoreDebugV2 } from '~/store/authV2/authV2Selector'
 
 // Card trắng đúng theo hệ thống card mới (thay panel tối trước đó) — nút
 // đăng nhập màu phẳng teal (bỏ hẳn gradient). `style` full-width phải
@@ -19,8 +21,13 @@ import PressScale from '~/design-system/PressScale'
 // PressScale.js, nếu không nút sẽ co lại theo nội dung thay vì giãn hết
 // hàng.
 const NoAuth = ({ navigation }) => {
+  // TẠM THỜI 2026-09-18 — debug bug "kill app phải đăng nhập lại", xoá
+  // dòng chữ này + import liên quan sau khi xác định xong nguyên nhân
+  // (xem authV2Sagas.restoreAuthV2Session).
+  const restoreDebug = useSelector(state => getRestoreDebugV2(state))
   return (
     <View style={styles.wrapper}>
+      {!!restoreDebug && <Text style={styles.debugText}>Debug: {restoreDebug}</Text>}
       <View style={styles.notification}>
         <View style={styles.imageWrap}>
           <Image
@@ -133,6 +140,12 @@ const styles = StyleSheet.create({
   textSignUp: {
     color: brandColors.tealPrimary,
     fontSize: fs(14),
+    fontWeight: '600',
+  },
+  debugText: {
+    marginBottom: s(10),
+    fontSize: fs(10.5),
+    color: brandColors.danger,
     fontWeight: '600',
   },
 })

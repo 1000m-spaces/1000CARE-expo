@@ -268,10 +268,21 @@ function* markNotificationReadSaga({ payload }) {
 // lần mở app. Chạy 1 lần lúc saga khởi động: nạp lại token đã lưu vào
 // token manager + set isLoggedInV2 ngay + gọi memberships để đồng bộ
 // tiếp (giống hệt luồng sau login thật).
+// TẠM THỜI 2026-09-18: ghi lại kết quả khôi phục vào redux
+// (`restoreDebug`) để hiện 1 dòng chữ nhỏ ở màn NoAuth — sếp báo vẫn bị
+// bắt đăng nhập lại dù đã sửa, cần bằng chứng thật từ máy sếp thay vì
+// đoán tiếp. Xoá dòng debug này (và UI hiện nó ở NoAuth.js) sau khi xác
+// định xong nguyên nhân.
 function* restoreAuthV2Session() {
   try {
     const refreshToken = yield asyncStorage.getV2RefreshToken()
-    if (!refreshToken) return
+    if (!refreshToken) {
+      yield put({
+        type: 'RESTORE_AUTH_V2_SESSION_DEBUG',
+        payload: { debug: `no_saved_token (value=${JSON.stringify(refreshToken)})` },
+      })
+      return
+    }
     const accessToken = yield asyncStorage.getV2AccessToken()
     const activeCustomerId = yield asyncStorage.getV2ActiveCustomerId()
     AuthV2.setSession({ accessToken, refreshToken })
@@ -279,10 +290,15 @@ function* restoreAuthV2Session() {
       AuthV2.setActiveCustomerId(activeCustomerId)
     }
     yield put({ type: 'RESTORE_AUTH_V2_SESSION', payload: { accessToken, refreshToken } })
+    yield put({ type: 'RESTORE_AUTH_V2_SESSION_DEBUG', payload: { debug: 'restored_ok' } })
     yield put({ type: AUTH_V2.MEMBERSHIPS_REQUEST })
   } catch (error) {
     // Khôi phục thất bại (token hỏng, lỗi đọc storage...) — coi như
     // chưa đăng nhập, không chặn app khởi động vì lỗi này.
+    yield put({
+      type: 'RESTORE_AUTH_V2_SESSION_DEBUG',
+      payload: { debug: `error: ${error?.message || String(error)}` },
+    })
   }
 }
 

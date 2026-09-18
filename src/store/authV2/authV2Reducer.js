@@ -53,6 +53,10 @@ const initialState = {
 
   notificationsV2Status: Status.DEFAULT,
   notificationsV2: [], // [{id, kind, title, body, order_id?, read_at?, created_at}]
+
+  // TẠM THỜI 2026-09-18 — debug bug "kill app phải đăng nhập lại", xoá
+  // sau khi xác định xong nguyên nhân (xem authV2Sagas.restoreAuthV2Session).
+  restoreDebug: null,
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -94,6 +98,8 @@ export default (state = initialState, { type, payload }) => {
         refreshToken: payload.refreshToken,
         isLoggedInV2: true,
       }
+    case 'RESTORE_AUTH_V2_SESSION_DEBUG':
+      return { ...state, restoreDebug: payload.debug }
     case AUTH_V2.LOGIN_FAILURE:
       return { ...state, loginStatus: Status.ERROR, loginErr: payload.errorMsg, isLoggedInV2: false }
     case 'RESET_AUTH_V2_LOGIN':
