@@ -1,7 +1,21 @@
 import { takeLatest, call, put, fork } from 'redux-saga/effects'
 import { AUTH_V2 } from '../actionsTypes'
 import { AuthV2 } from '~/neomed/AuthV2API'
-import { asyncStorage, store } from '../index'
+// BUG THẬT đã tìm ra (2026-09-18, sếp gửi debug "Cannot read property
+// 'getV2RefreshToken' of undefined"): `asyncStorage` import từ '../index'
+// bị CIRCULAR — store/index.js gọi `sagaMiddleware.run(rootSaga)` (chạy
+// đồng bộ ngay, fork luôn restoreAuthV2Session bên dưới) TRƯỚC dòng
+// `export const asyncStorage = async_storage` của chính nó, nên tại
+// đúng thời điểm restoreAuthV2Session gọi asyncStorage.getV2RefreshToken()
+// lần đầu (đồng bộ, ngay lúc saga khởi động) thì binding `asyncStorage`
+// từ vòng import tròn đó VẪN CÒN undefined — mọi thứ khác dùng
+// asyncStorage bên trong CALLBACK (chạy sau, bất đồng bộ — như
+// onRefreshed/onRefreshFailed, hay saga chạy do user bấm nút như
+// logout) không dính vì module đã load xong từ lâu lúc đó. Import
+// thẳng từ async_storage/index.js (không đi qua store/index.js) để
+// tránh vòng lặp này hẳn.
+import asyncStorage from '../async_storage/index'
+import { store } from '../index'
 
 function* register({ payload }) {
   try {
@@ -268,21 +282,10 @@ function* markNotificationReadSaga({ payload }) {
 // lần mở app. Chạy 1 lần lúc saga khởi động: nạp lại token đã lưu vào
 // token manager + set isLoggedInV2 ngay + gọi memberships để đồng bộ
 // tiếp (giống hệt luồng sau login thật).
-// TẠM THỜI 2026-09-18: ghi lại kết quả khôi phục vào redux
-// (`restoreDebug`) để hiện 1 dòng chữ nhỏ ở màn NoAuth — sếp báo vẫn bị
-// bắt đăng nhập lại dù đã sửa, cần bằng chứng thật từ máy sếp thay vì
-// đoán tiếp. Xoá dòng debug này (và UI hiện nó ở NoAuth.js) sau khi xác
-// định xong nguyên nhân.
 function* restoreAuthV2Session() {
   try {
     const refreshToken = yield asyncStorage.getV2RefreshToken()
-    if (!refreshToken) {
-      yield put({
-        type: 'RESTORE_AUTH_V2_SESSION_DEBUG',
-        payload: { debug: `no_saved_token (value=${JSON.stringify(refreshToken)})` },
-      })
-      return
-    }
+    if (!refreshToken) return
     const accessToken = yield asyncStorage.getV2AccessToken()
     const activeCustomerId = yield asyncStorage.getV2ActiveCustomerId()
     AuthV2.setSession({ accessToken, refreshToken })
@@ -290,15 +293,10 @@ function* restoreAuthV2Session() {
       AuthV2.setActiveCustomerId(activeCustomerId)
     }
     yield put({ type: 'RESTORE_AUTH_V2_SESSION', payload: { accessToken, refreshToken } })
-    yield put({ type: 'RESTORE_AUTH_V2_SESSION_DEBUG', payload: { debug: 'restored_ok' } })
     yield put({ type: AUTH_V2.MEMBERSHIPS_REQUEST })
   } catch (error) {
     // Khôi phục thất bại (token hỏng, lỗi đọc storage...) — coi như
     // chưa đăng nhập, không chặn app khởi động vì lỗi này.
-    yield put({
-      type: 'RESTORE_AUTH_V2_SESSION_DEBUG',
-      payload: { debug: `error: ${error?.message || String(error)}` },
-    })
   }
 }
 

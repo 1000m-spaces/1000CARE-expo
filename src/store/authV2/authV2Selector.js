@@ -7,9 +7,6 @@ export const getVerifyPhoneV2Err = state => state.authV2.verifyPhoneErr
 export const getLoginV2Status = state => state.authV2.loginStatus
 export const getLoginV2Err = state => state.authV2.loginErr
 export const getIsLoggedInV2 = state => state.authV2.isLoggedInV2
-// TẠM THỜI 2026-09-18 — debug bug "kill app phải đăng nhập lại", xoá
-// sau khi xác định xong nguyên nhân.
-export const getRestoreDebugV2 = state => state.authV2.restoreDebug
 export const getMeV2 = state => ({
   status: state.authV2.meStatus,
   identity: state.authV2.identity,
