@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects'
+import { takeLatest, takeEvery, call, put } from 'redux-saga/effects'
 import { CATALOG_V2 } from '../actionsTypes'
 import { AuthV2 } from '~/neomed/AuthV2API'
 
@@ -223,7 +223,12 @@ export default function* watcherSaga() {
   yield takeLatest(CATALOG_V2.CHECKOUT_CART_REQUEST, checkoutCart)
   yield takeLatest(CATALOG_V2.GET_HOME_BANNERS_REQUEST, getHomeBanners)
   yield takeLatest(CATALOG_V2.GET_FEATURED_SUPPLIERS_REQUEST, getFeaturedSuppliers)
-  yield takeLatest(CATALOG_V2.GET_SUPPLIER_PRODUCTS_REQUEST, getSupplierProducts)
+  // takeEvery (KHÔNG phải takeLatest): mỗi FeaturedSupplierBlock tự dispatch
+  // request này song song lúc mount (1 request/NCC, khác supplierId). Dùng
+  // takeLatest sẽ HỦY request của NCC trước đó ngay khi NCC sau dispatch —
+  // đây là lý do NCC đầu tiên (Nam Hà) bị kẹt LOADING vĩnh viễn, không lỗi
+  // không data. Bug phát hiện 2026-09-18 qua báo cáo thật trên máy user.
+  yield takeEvery(CATALOG_V2.GET_SUPPLIER_PRODUCTS_REQUEST, getSupplierProducts)
   yield takeLatest(CATALOG_V2.GET_SEARCH_SUGGESTIONS_REQUEST, getSearchSuggestions)
   yield takeLatest(CATALOG_V2.SEARCH_PRODUCTS_REQUEST, searchProducts)
 }
