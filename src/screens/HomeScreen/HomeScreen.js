@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Image, Linking, Platform, FlatList, ScrollView, RefreshControl, Animated, Easing } from 'react-native';
+import { View, Image, Linking, Platform, FlatList, ScrollView, RefreshControl, Animated, Easing, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +25,7 @@ import {
   getFeaturedSuppliersV2Status,
   getFeaturedSuppliersV2 as selectFeaturedSuppliersV2,
   getSupplierProductsV2 as selectSupplierProductsV2,
+  getSupplierProductsV2Status,
   getSearchSuggestionsV2Status,
   getSearchSuggestionsV2 as selectSearchSuggestionsV2,
 } from '~/store/catalogV2/catalogV2Selector';
@@ -107,11 +108,19 @@ const HomeChatButton = ({ navigation }) => {
 // nhập tay), CHƯA deploy lên dev-api-mkp.1000m.vn lúc code — code theo
 // đúng contract, chưa tự verify bằng curl thật. Xem
 // [[marketplace-core-business-model]].
+// Banner phải rộng ĐÚNG BẰNG bề ngang nội dung (màn hình - lề 20 mỗi
+// bên, khớp `homeStoreListContent.paddingHorizontal`) — trước để cứng
+// s(343) nên bị hụt/dư so với máy thật, lộ viền trắng + slide kế bên
+// lấp ló 2 bên (sếp báo 2026-09-18). Paging chỉ khớp khít khi bề rộng
+// item = đúng bề rộng ScrollView, không cộng thêm marginRight.
+const { width: DEVICE_WIDTH } = Dimensions.get('window');
+const BANNER_WIDTH = DEVICE_WIDTH - s(40);
+
 // Trong lúc chờ banner thật (API chưa deploy hoặc đang tải): thanh
 // trượt bo tròn 2 đầu + "viên thuốc" chạy qua lại — theo đúng ý sếp,
 // thay vì để trống trơn không có gì.
 // Quãng đường trượt = bề rộng track - bề rộng viên thuốc - lề 2 đầu.
-const BANNER_CAPSULE_TRACK_WIDTH = s(343) - s(48) - s(24);
+const BANNER_CAPSULE_TRACK_WIDTH = BANNER_WIDTH - s(48) - s(24);
 const BannerLoadingCapsule = () => {
   const progress = useRef(new Animated.Value(0)).current;
 
@@ -142,7 +151,7 @@ const BannerLoadingCapsule = () => {
   });
 
   return (
-    <View style={styles.bannerLoadingTrack}>
+    <View style={[styles.bannerLoadingTrack, { width: BANNER_WIDTH }]}>
       <Animated.View style={[styles.bannerLoadingCapsule, { transform: [{ translateX }] }]} />
     </View>
   );
@@ -166,14 +175,16 @@ const HomeBannerCarousel = ({ banners, status }) => {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        style={styles.bannerCarousel}
+        style={[styles.bannerCarousel, { width: BANNER_WIDTH }]}
+        snapToInterval={BANNER_WIDTH}
+        decelerationRate="fast"
         onMomentumScrollEnd={onMomentumScrollEnd}
       >
         {banners.map(item => (
           <Image
             key={item.asset_id}
             source={{ uri: item.url }}
-            style={styles.bannerImage}
+            style={[styles.bannerImage, { width: BANNER_WIDTH }]}
             resizeMode="cover"
           />
         ))}
@@ -192,8 +203,8 @@ const HomeBannerCarousel = ({ banners, status }) => {
   );
 };
 
-const SupplierProductCard = ({ product }) => (
-  <View style={styles.supplierProductCard}>
+const SupplierProductCard = ({ product, onPress }) => (
+  <PressScale style={styles.supplierProductCard} onPress={() => onPress(product)}>
     {product.media ? (
       <Image source={{ uri: product.media }} style={styles.supplierProductImage} resizeMode="contain" />
     ) : (
@@ -203,16 +214,29 @@ const SupplierProductCard = ({ product }) => (
     )}
     <Text style={styles.supplierProductName} numberOfLines={2}>{product.name}</Text>
     <Text style={styles.supplierProductPrice}>{formatMoney(product.price, { unit: 'đ' })}</Text>
+  </PressScale>
+);
+
+const SupplierProductRailSkeleton = () => (
+  <View style={styles.supplierProductRail}>
+    {[0, 1, 2].map(i => (
+      <View key={i} style={styles.supplierProductSkeletonCard} />
+    ))}
   </View>
 );
 
-// Mỗi NCC nổi bật: banner riêng + dòng sản phẩm ngang (~2.5 SP/màn).
-// CHƯA gắn onPress vào từng SP — chưa rõ shape có store_id để biết mở
-// đúng giỏ hàng nào (giỏ scope theo store, không theo supplier), để
-// tránh đoán mò khi backend còn mock. Xem ghi chú ở AuthV2API.js.
-const FeaturedSupplierBlock = ({ supplier }) => {
+// Mỗi NCC nổi bật: CHỈ banner (đã bỏ dòng tên NCC theo yêu cầu 2026-09-18)
+// + dòng sản phẩm ngang (~2.5 SP/màn), luôn hiện khung chờ thay vì trống
+// trơn trong lúc tải (trước đó SP tải xong lệch nhau giữa các NCC nên
+// nhìn như bị thiếu). Bấm vào 1 SP mở xem nhanh (`onProductPress`) — CHƯA
+// có "thêm vào giỏ" ở đây vì API supplier/products không trả store_id
+// (giỏ scope theo store, không theo supplier) nên chưa biết chắc thêm
+// vào giỏ nào, xem ghi chú AuthV2API.js.
+const FeaturedSupplierBlock = ({ supplier, onProductPress }) => {
   const dispatch = useDispatch();
   const products = useSelector(state => selectSupplierProductsV2(state, supplier.supplier_id));
+  const productsStatus = useSelector(state => getSupplierProductsV2Status(state, supplier.supplier_id));
+  const loading = productsStatus === Status.LOADING || productsStatus === undefined;
 
   useEffect(() => {
     dispatch(getSupplierProductsV2(supplier.supplier_id, 10));
@@ -224,20 +248,49 @@ const FeaturedSupplierBlock = ({ supplier }) => {
       {!!supplier.banner_url && (
         <Image source={{ uri: supplier.banner_url }} style={styles.featuredSupplierBanner} resizeMode="cover" />
       )}
-      <View style={styles.featuredSupplierHeader}>
-        {!!supplier.logo_url && (
-          <Image source={{ uri: supplier.logo_url }} style={styles.featuredSupplierLogo} resizeMode="contain" />
-        )}
-        <Text style={styles.featuredSupplierName} numberOfLines={1}>{supplier.legal_name}</Text>
-      </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.supplierProductRail}>
-        {products.map(p => (
-          <SupplierProductCard key={p.product_id} product={p} />
-        ))}
-      </ScrollView>
+      {loading ? (
+        <SupplierProductRailSkeleton />
+      ) : (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.supplierProductRail}>
+          {products.map(p => (
+            <SupplierProductCard key={p.product_id} product={p} onPress={onProductPress} />
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };
+
+// Xem nhanh 1 SP từ dòng "NCC nổi bật" — chỉ hiện đúng field API có sẵn
+// (tên/giá/kê đơn), CHƯA có nút thêm giỏ hàng vì thiếu store_id (xem
+// ghi chú FeaturedSupplierBlock).
+const ProductQuickViewModal = ({ product, onClose }) => (
+  <Modal
+    isVisible={!!product}
+    onBackdropPress={onClose}
+    animationIn="slideInUp"
+    animationOut="slideOutDown"
+    style={styles.quickViewModalWrap}
+  >
+    <View style={styles.quickViewCard}>
+      <View style={styles.quickViewImage}>
+        {product?.media ? (
+          <Image source={{ uri: product.media }} style={styles.quickViewImageInner} resizeMode="contain" />
+        ) : (
+          <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(36)} />
+        )}
+      </View>
+      <Text style={styles.quickViewName}>{product?.name}</Text>
+      <View style={styles.quickViewPriceRow}>
+        <Text style={styles.quickViewPrice}>{formatMoney(product?.price, { unit: 'đ' })}</Text>
+        {product?.rx ? <Text style={styles.quickViewRxBadge}>Kê đơn (Rx)</Text> : null}
+      </View>
+      <PressScale style={styles.quickViewCloseButton} onPress={onClose}>
+        <Text style={styles.quickViewCloseText}>Đóng</Text>
+      </PressScale>
+    </View>
+  </Modal>
+);
 
 // "Gợi ý hôm nay" — có product_id thì lẽ ra mở thẳng SP, nhưng chưa có
 // màn chi tiết SP theo product_id trần (StoreCatalogV2 cần storeId) nên
@@ -292,6 +345,7 @@ const HomeScreen = ({ navigation }) => {
   const isUpdate = useSelector(state => getUpdate(state));
   const versionApp = packageJson.version;
   const [isSkip, setSkip] = useState('');
+  const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   const storesStatus = useSelector(state => getStoresV2Status(state));
   const stores = useSelector(state => selectStoresV2(state));
@@ -353,7 +407,11 @@ const HomeScreen = ({ navigation }) => {
               <>
                 <HomeBannerCarousel banners={banners} status={bannersStatus} />
                 {featuredSuppliers.map(supplier => (
-                  <FeaturedSupplierBlock key={supplier.supplier_id} supplier={supplier} />
+                  <FeaturedSupplierBlock
+                    key={supplier.supplier_id}
+                    supplier={supplier}
+                    onProductPress={setQuickViewProduct}
+                  />
                 ))}
                 <TodaySuggestions suggestions={suggestions} navigation={navigation} />
                 <View style={styles.homeStoreListHeader}>
@@ -372,6 +430,8 @@ const HomeScreen = ({ navigation }) => {
             }
           />
         </View>
+
+        <ProductQuickViewModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />
 
         <Modal
           onBackdropPress={() => { }}

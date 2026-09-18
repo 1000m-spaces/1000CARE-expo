@@ -10,11 +10,12 @@ export default StyleSheet.create({
     marginBottom: s(16),
   },
   bannerCarousel: {},
+  // Bề rộng thật gán inline (= bề rộng màn hình - lề, xem HomeScreen.js
+  // BANNER_WIDTH) — KHÔNG có marginRight vì paging phải khớp khít đúng
+  // bằng bề rộng ScrollView, cộng thêm lề sẽ làm lệch dần qua từng trang.
   bannerImage: {
-    width: s(343),
     height: s(140),
     borderRadius: s(18),
-    marginRight: s(12),
     backgroundColor: brandColors.tealLight,
   },
   bannerDotsRow: {
@@ -36,7 +37,6 @@ export default StyleSheet.create({
   // Khung chờ banner — thanh trượt bo tròn 2 đầu + "viên thuốc" chạy
   // qua lại, theo đúng ý sếp thay vì để trống trơn lúc chưa có dữ liệu.
   bannerLoadingTrack: {
-    width: s(343),
     height: s(28),
     borderRadius: s(999),
     backgroundColor: brandColors.tealLight,
@@ -61,24 +61,8 @@ export default StyleSheet.create({
     backgroundColor: brandColors.tealLight,
     marginBottom: s(10),
   },
-  featuredSupplierHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: s(8),
-    marginBottom: s(10),
-  },
-  featuredSupplierLogo: {
-    width: s(24),
-    height: s(24),
-    borderRadius: s(6),
-  },
-  featuredSupplierName: {
-    flex: 1,
-    color: brandColors.textDark,
-    fontSize: fs(14),
-    fontWeight: '700',
-  },
   supplierProductRail: {
+    flexDirection: 'row',
     gap: s(10),
   },
   supplierProductCard: {
@@ -88,6 +72,12 @@ export default StyleSheet.create({
     borderColor: brandColors.borderSoft,
     borderRadius: s(14),
     padding: s(10),
+  },
+  supplierProductSkeletonCard: {
+    width: s(132),
+    height: s(150),
+    borderRadius: s(14),
+    backgroundColor: brandColors.tealLight,
   },
   supplierProductImage: {
     width: '100%',
@@ -139,6 +129,73 @@ export default StyleSheet.create({
     color: brandColors.tealDark,
     fontSize: fs(12),
     fontWeight: '600',
+  },
+  // Xem nhanh 1 SP (bấm từ dòng NCC nổi bật) — CHƯA có nút thêm giỏ
+  // hàng vì thiếu store_id, xem ghi chú FeaturedSupplierBlock.
+  quickViewModalWrap: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  quickViewCard: {
+    backgroundColor: brandColors.surface,
+    borderTopLeftRadius: s(24),
+    borderTopRightRadius: s(24),
+    padding: s(24),
+    alignItems: 'center',
+  },
+  quickViewImage: {
+    width: s(96),
+    height: s(96),
+    borderRadius: s(16),
+    backgroundColor: brandColors.tealLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: s(16),
+  },
+  quickViewImageInner: {
+    width: '100%',
+    height: '100%',
+  },
+  quickViewName: {
+    color: brandColors.textDark,
+    fontSize: fs(16),
+    fontWeight: '800',
+    textAlign: 'center',
+    marginBottom: s(8),
+  },
+  quickViewPriceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(8),
+    marginBottom: s(20),
+  },
+  quickViewPrice: {
+    color: brandColors.tealDark,
+    fontSize: fs(18),
+    fontWeight: '800',
+  },
+  quickViewRxBadge: {
+    color: brandColors.dangerText,
+    backgroundColor: brandColors.dangerTint,
+    fontSize: fs(10.5),
+    fontWeight: '800',
+    paddingHorizontal: s(8),
+    paddingVertical: s(3),
+    borderRadius: s(6),
+    overflow: 'hidden',
+  },
+  quickViewCloseButton: {
+    width: '100%',
+    height: s(48),
+    borderRadius: s(14),
+    backgroundColor: brandColors.tealLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quickViewCloseText: {
+    color: brandColors.tealDark,
+    fontSize: fs(14),
+    fontWeight: '700',
   },
   // Danh sách "Store" (marketplace-core) thay hẳn khối
   // banner/distributor/deal-hời/bán-chạy NeoMed cũ ở Home — 2026-09-16.
