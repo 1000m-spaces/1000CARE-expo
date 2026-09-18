@@ -112,7 +112,10 @@ const MenuUser = ({ navigation, onShowMessage, listNotiNonRead }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    width: '100%',
+    // KHÔNG đặt width:'100%' cùng marginHorizontal — RN cộng dồn 2 giá
+    // trị này (100% container + margin 2 bên) thay vì trừ margin ra như
+    // box-sizing:border-box ở CSS, khiến khối tràn ra ngoài mép phải màn
+    // hình (bug 2026-09-18). Bỏ width, để marginHorizontal tự co lại.
     marginTop: s(16),
     marginHorizontal: s(16),
     backgroundColor: brandColors.surface,
