@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { useFocusEffect } from '@react-navigation/native'
 
 import { getKycV2 as getKycV2Action, getNotificationsV2 as getNotificationsV2Action } from '~/store/authV2/authV2Actions'
-import { getIsLoggedInV2, getKycV2, getNotificationsV2 } from '~/store/authV2/authV2Selector'
+import { getIsLoggedInV2, getKycV2, getKycV2Status, getNotificationsV2 } from '~/store/authV2/authV2Selector'
 import InformationUser from './InformationUser'
 import MenuUser from './MenuUser'
 import NoAuth from './NoAuth'
@@ -30,6 +31,10 @@ const ProfileScreen = props => {
 
   const dispatch = useDispatch()
   const kyc = useSelector(state => getKycV2(state))
+  // TẠM THỜI 2026-09-18 — debug bug "tên nhà thuốc không hiện" (sếp báo
+  // vào được Tài khoản nhưng tên vẫn ghi chung chung "Nhà thuốc"), xoá
+  // sau khi xác định xong nguyên nhân.
+  const kycStatus = useSelector(state => getKycV2Status(state))
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -37,6 +42,17 @@ const ProfileScreen = props => {
       dispatch(getNotificationsV2Action())
     }
   }, [isLoggedIn])
+
+  // Tự tải lại KYC mỗi lần quay lại tab này — phòng trường hợp lần gọi
+  // đầu (lúc mount) bị lỗi mạng thoáng qua và không có cách nào tự hồi
+  // phục trước đây (ScrollView không kéo-để-làm-mới).
+  useFocusEffect(
+    useCallback(() => {
+      if (isLoggedIn) {
+        dispatch(getKycV2Action())
+      }
+    }, [isLoggedIn]),
+  )
 
   const onShowMessage = (msg) => {
     setMessage(msg)
@@ -59,6 +75,7 @@ const ProfileScreen = props => {
           <InformationUser
             navigation={props.navigation}
             kyc={kyc}
+            debugKycStatus={kycStatus}
           />
         ) :
           (

@@ -10,7 +10,7 @@ import { Fonts } from '~/assets/config'
 // GET /customer/v1/kyc, có `name`/`contact_phone` của nhà thuốc) thay vì
 // avatar ảnh thật của backend NeoMed cũ (marketplace-core chưa có upload
 // avatar) — dùng icon nhà thuốc thay ảnh đại diện.
-const InformationUser = ({ kyc }) => {
+const InformationUser = ({ kyc, debugKycStatus }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.avatar}>
@@ -19,6 +19,11 @@ const InformationUser = ({ kyc }) => {
       <View style={styles.information}>
         <Text style={styles.fullName} numberOfLines={1}>{kyc?.name || 'Nhà thuốc'}</Text>
         <Text style={styles.username}>{kyc?.contact_phone || ''}</Text>
+        {/* TẠM THỜI 2026-09-18 — debug bug "tên nhà thuốc không hiện",
+            xoá dòng này sau khi xác định xong nguyên nhân. */}
+        {!kyc?.name && (
+          <Text style={styles.debugText}>Debug: kycStatus={String(debugKycStatus)}</Text>
+        )}
       </View>
     </View>
   )
@@ -61,6 +66,12 @@ const styles = StyleSheet.create({
     fontSize: fs(12.5),
     fontWeight: 'normal',
     color: brandColors.muted,
+  },
+  debugText: {
+    marginTop: s(4),
+    fontSize: fs(10.5),
+    color: brandColors.danger,
+    fontWeight: '600',
   },
 })
 

@@ -20,6 +20,7 @@ export const getRegisterCustomerV2Status = state => state.authV2.registerCustome
 export const getRegisterCustomerV2Err = state => state.authV2.registerCustomerErr
 export const getKycV2Status = state => state.authV2.kycStatus
 export const getKycV2 = state => state.authV2.kyc
+export const getKycV2Err = state => state.authV2.kycErr
 export const getSubmitKycV2Status = state => state.authV2.submitKycStatus
 export const getSubmitKycV2Err = state => state.authV2.submitKycErr
 export const getUploadKycDocV2Status = state => state.authV2.uploadKycDocStatus

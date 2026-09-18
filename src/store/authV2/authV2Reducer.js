@@ -32,6 +32,7 @@ const initialState = {
 
   kycStatus: Status.DEFAULT,
   kyc: null, // {kyc_status, kyc_note, docs[]}
+  kycErr: '',
 
   submitKycStatus: Status.DEFAULT,
   submitKycErr: '',
@@ -130,11 +131,11 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, registerCustomerStatus: Status.DEFAULT, registerCustomerErr: '' }
 
     case AUTH_V2.GET_KYC_LOADING:
-      return { ...state, kycStatus: Status.LOADING }
+      return { ...state, kycStatus: Status.LOADING, kycErr: '' }
     case AUTH_V2.GET_KYC_SUCCESS:
       return { ...state, kycStatus: Status.SUCCESS, kyc: payload.kyc }
     case AUTH_V2.GET_KYC_FAILURE:
-      return { ...state, kycStatus: Status.ERROR }
+      return { ...state, kycStatus: Status.ERROR, kycErr: payload.errorMsg || '' }
 
     case AUTH_V2.SUBMIT_KYC_LOADING:
       return { ...state, submitKycStatus: Status.LOADING, submitKycErr: '' }
