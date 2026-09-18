@@ -86,3 +86,4 @@ export const NAVIGATION_CHAT_THREAD_V2 = 'ChatThreadV2';
 export const NAVIGATION_PRODUCT_MESSAGE_PREVIEW_V2 = 'ProductMessagePreviewV2';
 export const NAVIGATION_MY_CARTS_V2 = 'MyCartsV2';
 export const NAVIGATION_SEARCH_V2 = 'SearchV2';
+export const NAVIGATION_SEARCH_RESULTS_V2 = 'SearchResultsV2';

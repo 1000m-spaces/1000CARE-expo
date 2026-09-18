@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getVersionNew, getForceUpdate, getUpdate } from '~/store/selector';
 import { getAuthStore } from '~/store/selector';
 import styles from './styles';
-import { NAVIGATION_SEARCH_V2, NAVIGATION_CHAT_LIST_V2, NAVIGATION_MY_CARTS_V2, NAVIGATION_STORE_CATALOG_V2 } from '~/navigation/routes';
+import { NAVIGATION_SEARCH_V2, NAVIGATION_SEARCH_RESULTS_V2, NAVIGATION_CHAT_LIST_V2, NAVIGATION_MY_CARTS_V2, NAVIGATION_STORE_CATALOG_V2 } from '~/navigation/routes';
 import { getProductMessageThreadsV2 } from '~/store/catalogV2/catalogV2Selector';
 import { getIsLoggedInV2 } from '~/store/authV2/authV2Selector';
 import {
@@ -306,7 +306,7 @@ const TodaySuggestions = ({ suggestions, navigation }) => {
           <PressScale
             key={item.id}
             style={styles.suggestionChip}
-            onPress={() => navigation.navigate(NAVIGATION_SEARCH_V2, { prefill: item.keyword })}
+            onPress={() => navigation.navigate(NAVIGATION_SEARCH_RESULTS_V2, { keyword: item.keyword })}
           >
             <Icon type="feather" name="search" color={brandColors.tealDark} size={s(13)} />
             <Text style={styles.suggestionChipText} numberOfLines={1}>{item.keyword}</Text>
