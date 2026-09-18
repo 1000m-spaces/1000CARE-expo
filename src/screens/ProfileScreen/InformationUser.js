@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Icon } from '~/common/index'
 import { s, fs } from '~/utils/responsive'
 import { brandColors, brandShadow } from '~/design-system/tokens'
@@ -10,7 +10,7 @@ import { Fonts } from '~/assets/config'
 // GET /customer/v1/kyc, có `name`/`contact_phone` của nhà thuốc) thay vì
 // avatar ảnh thật của backend NeoMed cũ (marketplace-core chưa có upload
 // avatar) — dùng icon nhà thuốc thay ảnh đại diện.
-const InformationUser = ({ kyc, debugKycStatus }) => {
+const InformationUser = ({ kyc, debugKycStatus, debugKycErr, onRetryKyc }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.avatar}>
@@ -20,9 +20,19 @@ const InformationUser = ({ kyc, debugKycStatus }) => {
         <Text style={styles.fullName} numberOfLines={1}>{kyc?.name || 'Nhà thuốc'}</Text>
         <Text style={styles.username}>{kyc?.contact_phone || ''}</Text>
         {/* TẠM THỜI 2026-09-18 — debug bug "tên nhà thuốc không hiện",
-            xoá dòng này sau khi xác định xong nguyên nhân. */}
+            xoá sau khi xác định xong nguyên nhân. Thêm err + nút thử lại
+            (bản trước chỉ có status, không đủ để biết đang kẹt LOADING
+            thật hay chỉ là 1 khung hình lúc đang tải). */}
         {!kyc?.name && (
-          <Text style={styles.debugText}>Debug: kycStatus={String(debugKycStatus)}</Text>
+          <View>
+            <Text style={styles.debugText}>
+              Debug: kycStatus={String(debugKycStatus)}
+              {debugKycErr ? ` err=${debugKycErr}` : ''}
+            </Text>
+            <TouchableOpacity onPress={onRetryKyc}>
+              <Text style={styles.debugRetry}>↻ Thử lại tải KYC</Text>
+            </TouchableOpacity>
+          </View>
         )}
       </View>
     </View>
@@ -72,6 +82,12 @@ const styles = StyleSheet.create({
     fontSize: fs(10.5),
     color: brandColors.danger,
     fontWeight: '600',
+  },
+  debugRetry: {
+    marginTop: s(4),
+    fontSize: fs(11),
+    color: brandColors.tealDark,
+    fontWeight: '700',
   },
 })
 

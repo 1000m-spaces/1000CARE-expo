@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native'
 
 import { getKycV2 as getKycV2Action, getNotificationsV2 as getNotificationsV2Action } from '~/store/authV2/authV2Actions'
-import { getIsLoggedInV2, getKycV2, getKycV2Status, getNotificationsV2 } from '~/store/authV2/authV2Selector'
+import { getIsLoggedInV2, getKycV2, getKycV2Status, getKycV2Err, getNotificationsV2 } from '~/store/authV2/authV2Selector'
 import InformationUser from './InformationUser'
 import MenuUser from './MenuUser'
 import NoAuth from './NoAuth'
@@ -35,6 +35,7 @@ const ProfileScreen = props => {
   // vào được Tài khoản nhưng tên vẫn ghi chung chung "Nhà thuốc"), xoá
   // sau khi xác định xong nguyên nhân.
   const kycStatus = useSelector(state => getKycV2Status(state))
+  const kycErr = useSelector(state => getKycV2Err(state))
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -76,6 +77,8 @@ const ProfileScreen = props => {
             navigation={props.navigation}
             kyc={kyc}
             debugKycStatus={kycStatus}
+            debugKycErr={kycErr}
+            onRetryKyc={() => dispatch(getKycV2Action())}
           />
         ) :
           (
