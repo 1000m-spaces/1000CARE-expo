@@ -87,3 +87,4 @@ export const NAVIGATION_PRODUCT_MESSAGE_PREVIEW_V2 = 'ProductMessagePreviewV2';
 export const NAVIGATION_MY_CARTS_V2 = 'MyCartsV2';
 export const NAVIGATION_SEARCH_V2 = 'SearchV2';
 export const NAVIGATION_SEARCH_RESULTS_V2 = 'SearchResultsV2';
+export const NAVIGATION_PRODUCT_DETAIL_V2 = 'ProductDetailV2';

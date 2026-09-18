@@ -101,6 +101,20 @@ export default StyleSheet.create({
     fontSize: fs(12.5),
     fontWeight: '800',
   },
+  flashSaleSection: {
+    marginBottom: s(20),
+  },
+  flashSaleTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(6),
+    marginBottom: s(10),
+  },
+  flashSaleTitle: {
+    color: brandColors.textDark,
+    fontSize: fs(15),
+    fontWeight: '800',
+  },
   suggestionsSection: {
     marginBottom: s(20),
   },

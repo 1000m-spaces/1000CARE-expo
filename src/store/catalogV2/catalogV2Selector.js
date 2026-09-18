@@ -61,15 +61,16 @@ export const getCheckoutCartV2Status = (state, storeId) => state.catalogV2.check
 export const getCheckoutCartV2Order = (state, storeId) => state.catalogV2.checkoutOrder[storeId]
 export const getCheckoutCartV2Err = (state, storeId) => state.catalogV2.checkoutErr[storeId]
 
-// Trang chủ mới (2026-09-17) — xem [[marketplace-core-business-model]].
-export const getHomeBannersV2Status = state => state.catalogV2.homeBannersStatus
-export const getHomeBannersV2 = state => state.catalogV2.homeBanners
+// Trang chủ — kiến trúc Campaign (2026-09-18) — xem
+// [[marketplace-core-business-model]]. `campaignType`: 'banner' | 'featured_supplier' | 'flash_sale'.
+export const getCampaignsV2Status = (state, campaignType) => state.catalogV2.campaignsStatus[campaignType]
+export const getCampaignsV2 = (state, campaignType) => state.catalogV2.campaigns[campaignType] || []
 
-export const getFeaturedSuppliersV2Status = state => state.catalogV2.featuredSuppliersStatus
-export const getFeaturedSuppliersV2 = state => state.catalogV2.featuredSuppliers
+export const getProductDetailV2Status = (state, productId) => state.catalogV2.productDetailStatus[productId]
+export const getProductDetailV2 = (state, productId) => state.catalogV2.productDetail[productId]
 
-export const getSupplierProductsV2Status = (state, supplierId) => state.catalogV2.supplierProductsStatus[supplierId]
-export const getSupplierProductsV2 = (state, supplierId) => state.catalogV2.supplierProducts[supplierId] || []
+export const getStoreCategoriesV2Status = (state, storeId) => state.catalogV2.storeCategoriesStatus[storeId]
+export const getStoreCategoriesV2 = (state, storeId) => state.catalogV2.storeCategories[storeId] || []
 
 export const getSearchSuggestionsV2Status = state => state.catalogV2.searchSuggestionsStatus
 export const getSearchSuggestionsV2 = state => state.catalogV2.searchSuggestions

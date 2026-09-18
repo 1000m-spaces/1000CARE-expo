@@ -23,10 +23,10 @@ function* getCarts() {
 }
 
 function* getStoreProducts({ payload }) {
-  const { storeId } = payload
+  const { storeId, categoryId } = payload
   try {
     yield put({ type: CATALOG_V2.GET_STORE_PRODUCTS_LOADING, payload: { storeId } })
-    const data = yield call({ content: AuthV2, fn: AuthV2.getStoreProducts }, storeId)
+    const data = yield call({ content: AuthV2, fn: AuthV2.getStoreProducts }, storeId, categoryId)
     yield put({
       type: CATALOG_V2.GET_STORE_PRODUCTS_SUCCESS,
       payload: { storeId, items: data?.items || [] },
@@ -119,40 +119,56 @@ function* checkoutCart({ payload }) {
   }
 }
 
-// Trang chủ mới (2026-09-17) — xem [[marketplace-core-business-model]].
-function* getHomeBanners() {
+// Trang chủ — kiến trúc Campaign (2026-09-18) — xem
+// [[marketplace-core-business-model]]. HomeScreen dispatch 3 lần song
+// song (banner/featured_supplier/flash_sale), key theo `type` ở reducer.
+function* getCampaigns({ payload }) {
+  const { type: campaignType } = payload
   try {
-    yield put({ type: CATALOG_V2.GET_HOME_BANNERS_LOADING })
-    const data = yield call({ content: AuthV2, fn: AuthV2.getHomeBanners })
-    yield put({ type: CATALOG_V2.GET_HOME_BANNERS_SUCCESS, payload: { items: data?.items || [] } })
-  } catch (error) {
-    yield put({ type: CATALOG_V2.GET_HOME_BANNERS_FAILURE, payload: { errorMsg: error?.message } })
-  }
-}
-
-function* getFeaturedSuppliers() {
-  try {
-    yield put({ type: CATALOG_V2.GET_FEATURED_SUPPLIERS_LOADING })
-    const data = yield call({ content: AuthV2, fn: AuthV2.getFeaturedSuppliers })
-    yield put({ type: CATALOG_V2.GET_FEATURED_SUPPLIERS_SUCCESS, payload: { items: data?.items || [] } })
-  } catch (error) {
-    yield put({ type: CATALOG_V2.GET_FEATURED_SUPPLIERS_FAILURE, payload: { errorMsg: error?.message } })
-  }
-}
-
-function* getSupplierProducts({ payload }) {
-  const { supplierId, limit } = payload
-  try {
-    yield put({ type: CATALOG_V2.GET_SUPPLIER_PRODUCTS_LOADING, payload: { supplierId } })
-    const data = yield call({ content: AuthV2, fn: AuthV2.getSupplierProducts }, supplierId, limit)
+    yield put({ type: CATALOG_V2.GET_CAMPAIGNS_LOADING, payload: { type: campaignType } })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getCampaigns }, campaignType)
     yield put({
-      type: CATALOG_V2.GET_SUPPLIER_PRODUCTS_SUCCESS,
-      payload: { supplierId, items: data?.items || [] },
+      type: CATALOG_V2.GET_CAMPAIGNS_SUCCESS,
+      payload: { type: campaignType, items: data?.items || [] },
     })
   } catch (error) {
     yield put({
-      type: CATALOG_V2.GET_SUPPLIER_PRODUCTS_FAILURE,
-      payload: { supplierId, errorMsg: error?.message },
+      type: CATALOG_V2.GET_CAMPAIGNS_FAILURE,
+      payload: { type: campaignType, errorMsg: error?.message },
+    })
+  }
+}
+
+function* getProductDetail({ payload }) {
+  const { productId } = payload
+  try {
+    yield put({ type: CATALOG_V2.GET_PRODUCT_DETAIL_LOADING, payload: { productId } })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getProductDetail }, productId)
+    yield put({
+      type: CATALOG_V2.GET_PRODUCT_DETAIL_SUCCESS,
+      payload: { productId, product: data },
+    })
+  } catch (error) {
+    yield put({
+      type: CATALOG_V2.GET_PRODUCT_DETAIL_FAILURE,
+      payload: { productId, errorMsg: error?.message },
+    })
+  }
+}
+
+function* getStoreCategories({ payload }) {
+  const { storeId } = payload
+  try {
+    yield put({ type: CATALOG_V2.GET_STORE_CATEGORIES_LOADING, payload: { storeId } })
+    const data = yield call({ content: AuthV2, fn: AuthV2.getStoreCategories }, storeId)
+    yield put({
+      type: CATALOG_V2.GET_STORE_CATEGORIES_SUCCESS,
+      payload: { storeId, items: data?.items || [] },
+    })
+  } catch (error) {
+    yield put({
+      type: CATALOG_V2.GET_STORE_CATEGORIES_FAILURE,
+      payload: { storeId, errorMsg: error?.message },
     })
   }
 }
@@ -221,14 +237,14 @@ export default function* watcherSaga() {
   yield takeLatest(CATALOG_V2.GET_PRODUCT_MESSAGES_REQUEST, getProductMessages)
   yield takeLatest(CATALOG_V2.APPLY_PRODUCT_MESSAGE_REQUEST, applyProductMessage)
   yield takeLatest(CATALOG_V2.CHECKOUT_CART_REQUEST, checkoutCart)
-  yield takeLatest(CATALOG_V2.GET_HOME_BANNERS_REQUEST, getHomeBanners)
-  yield takeLatest(CATALOG_V2.GET_FEATURED_SUPPLIERS_REQUEST, getFeaturedSuppliers)
-  // takeEvery (KHÔNG phải takeLatest): mỗi FeaturedSupplierBlock tự dispatch
-  // request này song song lúc mount (1 request/NCC, khác supplierId). Dùng
-  // takeLatest sẽ HỦY request của NCC trước đó ngay khi NCC sau dispatch —
-  // đây là lý do NCC đầu tiên (Nam Hà) bị kẹt LOADING vĩnh viễn, không lỗi
-  // không data. Bug phát hiện 2026-09-18 qua báo cáo thật trên máy user.
-  yield takeEvery(CATALOG_V2.GET_SUPPLIER_PRODUCTS_REQUEST, getSupplierProducts)
+  // takeEvery (KHÔNG phải takeLatest): HomeScreen dispatch request này 3
+  // lần liên tiếp lúc mount (banner/featured_supplier/flash_sale, khác
+  // `type`) — takeLatest sẽ HỦY request trước đó ngay khi request sau
+  // dispatch (bài học từ bug GET_SUPPLIER_PRODUCTS kẹt LOADING vĩnh viễn
+  // 2026-09-18 do đúng lỗi này).
+  yield takeEvery(CATALOG_V2.GET_CAMPAIGNS_REQUEST, getCampaigns)
+  yield takeEvery(CATALOG_V2.GET_PRODUCT_DETAIL_REQUEST, getProductDetail)
+  yield takeLatest(CATALOG_V2.GET_STORE_CATEGORIES_REQUEST, getStoreCategories)
   yield takeLatest(CATALOG_V2.GET_SEARCH_SUGGESTIONS_REQUEST, getSearchSuggestions)
   yield takeLatest(CATALOG_V2.SEARCH_PRODUCTS_REQUEST, searchProducts)
 }

@@ -147,26 +147,33 @@ class AuthV2API {
     return customerV2Client.get('/stores')
   }
 
-  // Trang chủ mới (2026-09-17, marketplace-core-21) — layout: tìm kiếm →
-  // banner carousel → NCC nổi bật (mỗi NCC 1 banner + dòng SP ngang) →
-  // "Gợi ý hôm nay". Cùng guard hiện có (JWT bắt buộc, KHÔNG cần hồ sơ
-  // nhà thuốc). Dữ liệu hiện là MOCK do backoffice nhập tay (ảnh
-  // placeholder), shape KHÔNG đổi khi backend thay ảnh/dữ liệu thật.
-  // CHƯA deploy lên dev-api-mkp.1000m.vn lúc code (đang ở PR #6, chờ
-  // review+merge+deploy) — code theo đúng contract, chưa tự verify
-  // bằng curl thật. Xem [[marketplace-core-business-model]].
-  getHomeBanners = () => {
-    return customerV2Client.get('/home-banners')
+  // Trang chủ — kiến trúc Campaign (2026-09-18, thay hẳn 3 route cũ
+  // home-banners/featured-suppliers/suppliers/{id}/products đã XOÁ khỏi
+  // backend — gọi lại 3 route đó giờ ra 404). 1 route DUY NHẤT, gọi
+  // riêng theo từng loại: `type=banner` (chỉ banner, không SP),
+  // `type=featured_supplier` (NCC nổi bật, mỗi campaign kèm sẵn
+  // `products[]` — không cần gọi thêm API sản phẩm riêng như trước),
+  // `type=flash_sale` ("Giá sốc", SP có thể thuộc nhiều NCC/nhiều store
+  // khác nhau, giá là giá thật). Field `products[].store_id` là store
+  // THẬT của đúng SP đó — 1 NCC có thể có nhiều store nên KHÔNG được suy
+  // ra store từ `metadata.supplier_id`. Xem
+  // [[marketplace-core-business-model]].
+  getCampaigns = type => {
+    return customerV2Client.get('/campaigns', { params: { type } })
   }
 
-  getFeaturedSuppliers = () => {
-    return customerV2Client.get('/featured-suppliers')
+  // GET /customer/v1/products/{id} — trang "Chi tiết sản phẩm" đầy đủ
+  // field backoffice quản lý (sku, barcode, vertical_code, category_name,
+  // unit, controlled, brand, description...) + `store_id` để bấm "Xem
+  // shop" điều hướng đúng store.
+  getProductDetail = productId => {
+    return customerV2Client.get(`/products/${productId}`)
   }
 
-  // GET /customer/v1/suppliers/{id}/products?limit= — đã tự gộp SP từ
-  // mọi store đang active của NCC đó, app không cần lo phần đó.
-  getSupplierProducts = (supplierId, limit = 10) => {
-    return customerV2Client.get(`/suppliers/${supplierId}/products`, { params: { limit } })
+  // GET /customer/v1/stores/{id}/categories — danh mục CÓ SP đang bán
+  // trong store đó, dùng làm thanh lọc kiểu Shopee ở trang shop.
+  getStoreCategories = storeId => {
+    return customerV2Client.get(`/stores/${storeId}/categories`)
   }
 
   // "Gợi ý hôm nay" — {items:[{id,keyword,product_id?}]}. Có product_id
@@ -183,9 +190,13 @@ class AuthV2API {
 
   // GET /customer/v1/stores/{id}/products → {items:[{product_id,name,brand,rx,media,price,currency}]}
   // Đổi shape 2026-09-14 (trước là {product_ids:[]}), xem
-  // [[marketplace-core-business-model]].
-  getStoreProducts = storeId => {
-    return customerV2Client.get(`/stores/${storeId}/products`)
+  // [[marketplace-core-business-model]]. `categoryId` (2026-09-18, tuỳ
+  // chọn) lọc theo đúng danh mục — xem `getStoreCategories`; không
+  // truyền = hiện tất cả (hành vi cũ).
+  getStoreProducts = (storeId, categoryId) => {
+    return customerV2Client.get(`/stores/${storeId}/products`, {
+      params: categoryId ? { category_id: categoryId } : undefined,
+    })
   }
 
   // GET /customer/v1/carts → mọi giỏ đang mở (theo store + theo member soạn)

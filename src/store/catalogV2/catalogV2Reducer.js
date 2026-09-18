@@ -24,15 +24,17 @@ const initialState = {
   checkoutOrder: {}, // { [storeId]: Order } — đơn vừa tạo, dùng điều hướng sang OrderDetailV2
   checkoutErr: {}, // { [storeId]: string }
 
-  // Trang chủ mới (2026-09-17) — xem [[marketplace-core-business-model]].
-  homeBannersStatus: Status.DEFAULT,
-  homeBanners: [], // [{asset_id, url}]
+  // Trang chủ — kiến trúc Campaign (2026-09-18, thay hẳn home-banners/
+  // featured-suppliers/suppliers/{id}/products). Xem
+  // [[marketplace-core-business-model]].
+  campaignsStatus: {}, // { [campaignType]: Status } — banner | featured_supplier | flash_sale
+  campaigns: {}, // { [campaignType]: [{id, campaign_type, banner_url, metadata?, position, products?}] }
 
-  featuredSuppliersStatus: Status.DEFAULT,
-  featuredSuppliers: [], // [{supplier_id, legal_name, logo_url, banner_url, position}]
+  productDetailStatus: {}, // { [productId]: Status }
+  productDetail: {}, // { [productId]: Product } — GET /customer/v1/products/{id}
 
-  supplierProductsStatus: {}, // { [supplierId]: Status }
-  supplierProducts: {}, // { [supplierId]: [product] } — GET /suppliers/{id}/products
+  storeCategoriesStatus: {}, // { [storeId]: Status }
+  storeCategories: {}, // { [storeId]: [{category_id, category_name}] }
 
   searchSuggestionsStatus: Status.DEFAULT,
   searchSuggestions: [], // [{id, keyword, product_id?}]
@@ -178,39 +180,62 @@ export default (state = initialState, { type, payload }) => {
         checkoutErr: { ...state.checkoutErr, [payload.storeId]: '' },
       }
 
-    case CATALOG_V2.GET_HOME_BANNERS_LOADING:
-      return { ...state, homeBannersStatus: Status.LOADING }
-    case CATALOG_V2.GET_HOME_BANNERS_SUCCESS:
-      return { ...state, homeBannersStatus: Status.SUCCESS, homeBanners: payload.items }
-    case CATALOG_V2.GET_HOME_BANNERS_FAILURE:
-      return { ...state, homeBannersStatus: Status.ERROR }
+    // Campaign — 1 route duy nhất theo `type` (banner/featured_supplier/
+    // flash_sale), thay hẳn home-banners/featured-suppliers/
+    // suppliers/{id}/products (backend xoá 2026-09-18). Key theo `type`
+    // vì HomeScreen gọi cả 3 song song, không được đè lẫn nhau.
+    case CATALOG_V2.GET_CAMPAIGNS_LOADING:
+      return {
+        ...state,
+        campaignsStatus: { ...state.campaignsStatus, [payload.type]: Status.LOADING },
+      }
+    case CATALOG_V2.GET_CAMPAIGNS_SUCCESS:
+      return {
+        ...state,
+        campaignsStatus: { ...state.campaignsStatus, [payload.type]: Status.SUCCESS },
+        campaigns: {
+          ...state.campaigns,
+          [payload.type]: [...payload.items].sort((a, b) => (a.position || 0) - (b.position || 0)),
+        },
+      }
+    case CATALOG_V2.GET_CAMPAIGNS_FAILURE:
+      return {
+        ...state,
+        campaignsStatus: { ...state.campaignsStatus, [payload.type]: Status.ERROR },
+      }
 
-    case CATALOG_V2.GET_FEATURED_SUPPLIERS_LOADING:
-      return { ...state, featuredSuppliersStatus: Status.LOADING }
-    case CATALOG_V2.GET_FEATURED_SUPPLIERS_SUCCESS:
+    case CATALOG_V2.GET_PRODUCT_DETAIL_LOADING:
       return {
         ...state,
-        featuredSuppliersStatus: Status.SUCCESS,
-        featuredSuppliers: [...payload.items].sort((a, b) => (a.position || 0) - (b.position || 0)),
+        productDetailStatus: { ...state.productDetailStatus, [payload.productId]: Status.LOADING },
       }
-    case CATALOG_V2.GET_FEATURED_SUPPLIERS_FAILURE:
-      return { ...state, featuredSuppliersStatus: Status.ERROR }
+    case CATALOG_V2.GET_PRODUCT_DETAIL_SUCCESS:
+      return {
+        ...state,
+        productDetailStatus: { ...state.productDetailStatus, [payload.productId]: Status.SUCCESS },
+        productDetail: { ...state.productDetail, [payload.productId]: payload.product },
+      }
+    case CATALOG_V2.GET_PRODUCT_DETAIL_FAILURE:
+      return {
+        ...state,
+        productDetailStatus: { ...state.productDetailStatus, [payload.productId]: Status.ERROR },
+      }
 
-    case CATALOG_V2.GET_SUPPLIER_PRODUCTS_LOADING:
+    case CATALOG_V2.GET_STORE_CATEGORIES_LOADING:
       return {
         ...state,
-        supplierProductsStatus: { ...state.supplierProductsStatus, [payload.supplierId]: Status.LOADING },
+        storeCategoriesStatus: { ...state.storeCategoriesStatus, [payload.storeId]: Status.LOADING },
       }
-    case CATALOG_V2.GET_SUPPLIER_PRODUCTS_SUCCESS:
+    case CATALOG_V2.GET_STORE_CATEGORIES_SUCCESS:
       return {
         ...state,
-        supplierProductsStatus: { ...state.supplierProductsStatus, [payload.supplierId]: Status.SUCCESS },
-        supplierProducts: { ...state.supplierProducts, [payload.supplierId]: payload.items },
+        storeCategoriesStatus: { ...state.storeCategoriesStatus, [payload.storeId]: Status.SUCCESS },
+        storeCategories: { ...state.storeCategories, [payload.storeId]: payload.items },
       }
-    case CATALOG_V2.GET_SUPPLIER_PRODUCTS_FAILURE:
+    case CATALOG_V2.GET_STORE_CATEGORIES_FAILURE:
       return {
         ...state,
-        supplierProductsStatus: { ...state.supplierProductsStatus, [payload.supplierId]: Status.ERROR },
+        storeCategoriesStatus: { ...state.storeCategoriesStatus, [payload.storeId]: Status.ERROR },
       }
 
     case CATALOG_V2.GET_SEARCH_SUGGESTIONS_LOADING:

@@ -7,31 +7,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getVersionNew, getForceUpdate, getUpdate } from '~/store/selector';
 import { getAuthStore } from '~/store/selector';
 import styles from './styles';
-import { NAVIGATION_SEARCH_V2, NAVIGATION_SEARCH_RESULTS_V2, NAVIGATION_CHAT_LIST_V2, NAVIGATION_MY_CARTS_V2, NAVIGATION_STORE_CATALOG_V2 } from '~/navigation/routes';
+import { NAVIGATION_SEARCH_V2, NAVIGATION_SEARCH_RESULTS_V2, NAVIGATION_CHAT_LIST_V2, NAVIGATION_MY_CARTS_V2, NAVIGATION_STORE_CATALOG_V2, NAVIGATION_PRODUCT_DETAIL_V2 } from '~/navigation/routes';
 import { getProductMessageThreadsV2 } from '~/store/catalogV2/catalogV2Selector';
 import { getIsLoggedInV2 } from '~/store/authV2/authV2Selector';
 import {
   getStoresV2,
-  getHomeBannersV2,
-  getFeaturedSuppliersV2,
-  getSupplierProductsV2,
+  getCampaignsV2,
   getSearchSuggestionsV2,
 } from '~/store/catalogV2/catalogV2Actions';
 import {
   getStoresV2Status,
   getStoresV2 as selectStoresV2,
-  getHomeBannersV2Status,
-  getHomeBannersV2 as selectHomeBannersV2,
-  getFeaturedSuppliersV2Status,
-  getFeaturedSuppliersV2 as selectFeaturedSuppliersV2,
-  getSupplierProductsV2 as selectSupplierProductsV2,
-  getSupplierProductsV2Status,
+  getCampaignsV2Status,
+  getCampaignsV2 as selectCampaignsV2,
   getSearchSuggestionsV2Status,
   getSearchSuggestionsV2 as selectSearchSuggestionsV2,
 } from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
 import { Icon, Text } from '~/common/index';
 import { formatMoney } from '~/utils/format';
+import { getV2ProductThumb } from '~/utils/image';
 import { asyncStorage } from '~/store/index';
 import packageJson from '../../../package.json';
 import PremiumButton from '~/design-system/PremiumButton';
@@ -102,11 +97,11 @@ const HomeChatButton = ({ navigation }) => {
   );
 };
 
-// Trang chủ mới (2026-09-17, marketplace-core-21) — layout đã chốt với
-// chủ dự án: banner carousel → NCC nổi bật (banner riêng + dòng SP
-// ngang mỗi NCC) → "Gợi ý hôm nay". Dữ liệu hiện là MOCK (backoffice
-// nhập tay), CHƯA deploy lên dev-api-mkp.1000m.vn lúc code — code theo
-// đúng contract, chưa tự verify bằng curl thật. Xem
+// Trang chủ — kiến trúc Campaign (2026-09-18, thay hẳn home-banners/
+// featured-suppliers/suppliers/{id}/products): banner carousel → NCC
+// nổi bật (banner riêng + dòng SP ngang mỗi NCC, SP đã kèm sẵn trong
+// campaign — không cần gọi thêm API riêng) → "Giá sốc" → "Gợi ý hôm
+// nay". Dữ liệu thật, đã tự verify bằng curl. Xem
 // [[marketplace-core-business-model]].
 // Banner phải rộng ĐÚNG BẰNG bề ngang nội dung (màn hình - lề 20 mỗi
 // bên, khớp `homeStoreListContent.paddingHorizontal`) — trước để cứng
@@ -182,8 +177,8 @@ const HomeBannerCarousel = ({ banners, status }) => {
       >
         {banners.map(item => (
           <Image
-            key={item.asset_id}
-            source={{ uri: item.url }}
+            key={item.id}
+            source={{ uri: item.banner_url }}
             style={[styles.bannerImage, { width: BANNER_WIDTH }]}
             resizeMode="cover"
           />
@@ -203,94 +198,69 @@ const HomeBannerCarousel = ({ banners, status }) => {
   );
 };
 
-const SupplierProductCard = ({ product, onPress }) => (
-  <PressScale style={styles.supplierProductCard} onPress={() => onPress(product)}>
-    {product.media ? (
-      <Image source={{ uri: product.media }} style={styles.supplierProductImage} resizeMode="contain" />
-    ) : (
-      <View style={[styles.supplierProductImage, styles.supplierProductImagePlaceholder]}>
-        <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(22)} />
-      </View>
-    )}
-    <Text style={styles.supplierProductName} numberOfLines={2}>{product.name}</Text>
-    <Text style={styles.supplierProductPrice}>{formatMoney(product.price, { unit: 'đ' })}</Text>
-  </PressScale>
-);
+const SupplierProductCard = ({ product, onPress }) => {
+  const thumb = getV2ProductThumb(product);
+  return (
+    <PressScale style={styles.supplierProductCard} onPress={() => onPress(product)}>
+      {thumb ? (
+        <Image source={{ uri: thumb }} style={styles.supplierProductImage} resizeMode="contain" />
+      ) : (
+        <View style={[styles.supplierProductImage, styles.supplierProductImagePlaceholder]}>
+          <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(22)} />
+        </View>
+      )}
+      <Text style={styles.supplierProductName} numberOfLines={2}>{product.name}</Text>
+      <Text style={styles.supplierProductPrice}>{formatMoney(product.price, { unit: 'đ' })}</Text>
+    </PressScale>
+  );
+};
 
-const SupplierProductRailSkeleton = () => (
-  <View style={styles.supplierProductRail}>
-    {[0, 1, 2].map(i => (
-      <View key={i} style={styles.supplierProductSkeletonCard} />
-    ))}
-  </View>
-);
-
-// Mỗi NCC nổi bật: CHỈ banner (đã bỏ dòng tên NCC theo yêu cầu 2026-09-18)
-// + dòng sản phẩm ngang (~2.5 SP/màn), luôn hiện khung chờ thay vì trống
-// trơn trong lúc tải (trước đó SP tải xong lệch nhau giữa các NCC nên
-// nhìn như bị thiếu). Bấm vào 1 SP mở xem nhanh (`onProductPress`) — CHƯA
-// có "thêm vào giỏ" ở đây vì API supplier/products không trả store_id
-// (giỏ scope theo store, không theo supplier) nên chưa biết chắc thêm
-// vào giỏ nào, xem ghi chú AuthV2API.js.
-const FeaturedSupplierBlock = ({ supplier, onProductPress }) => {
-  const dispatch = useDispatch();
-  const products = useSelector(state => selectSupplierProductsV2(state, supplier.supplier_id));
-  const productsStatus = useSelector(state => getSupplierProductsV2Status(state, supplier.supplier_id));
-  const loading = productsStatus === Status.LOADING || productsStatus === undefined;
-
-  useEffect(() => {
-    dispatch(getSupplierProductsV2(supplier.supplier_id, 10));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [supplier.supplier_id]);
-
+// Mỗi NCC nổi bật = 1 campaign `featured_supplier`, đã kèm sẵn
+// `products[]` ngay trong response — KHÔNG cần gọi thêm API sản phẩm
+// riêng như bản home-banners/featured-suppliers cũ (2026-09-18). Bấm SP
+// → trang chi tiết thật (có store_id để "Xem shop"/sau này thêm giỏ).
+const FeaturedSupplierBlock = ({ campaign, onProductPress }) => {
+  const products = campaign.products || [];
   return (
     <View style={styles.featuredSupplierBlock}>
-      {!!supplier.banner_url && (
-        <Image source={{ uri: supplier.banner_url }} style={styles.featuredSupplierBanner} resizeMode="cover" />
+      {!!campaign.banner_url && (
+        <Image source={{ uri: campaign.banner_url }} style={styles.featuredSupplierBanner} resizeMode="cover" />
       )}
-      {loading ? (
-        <SupplierProductRailSkeleton />
-      ) : (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.supplierProductRail}>
-          {products.map(p => (
-            <SupplierProductCard key={p.product_id} product={p} onPress={onProductPress} />
-          ))}
-        </ScrollView>
-      )}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.supplierProductRail}>
+        {products.map(p => (
+          <SupplierProductCard key={p.product_id} product={p} onPress={onProductPress} />
+        ))}
+      </ScrollView>
     </View>
   );
 };
 
-// Xem nhanh 1 SP từ dòng "NCC nổi bật" — chỉ hiện đúng field API có sẵn
-// (tên/giá/kê đơn), CHƯA có nút thêm giỏ hàng vì thiếu store_id (xem
-// ghi chú FeaturedSupplierBlock).
-const ProductQuickViewModal = ({ product, onClose }) => (
-  <Modal
-    isVisible={!!product}
-    onBackdropPress={onClose}
-    animationIn="slideInUp"
-    animationOut="slideOutDown"
-    style={styles.quickViewModalWrap}
-  >
-    <View style={styles.quickViewCard}>
-      <View style={styles.quickViewImage}>
-        {product?.media ? (
-          <Image source={{ uri: product.media }} style={styles.quickViewImageInner} resizeMode="contain" />
-        ) : (
-          <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(36)} />
-        )}
+// "Giá sốc" (campaign `flash_sale`) — SP có thể thuộc NHIỀU NCC/store
+// khác nhau gộp chung 1 dải, giá là giá thật của SP (không có giá riêng
+// campaign) — hiển thị y hệt dòng SP nổi bật, chỉ khác tiêu đề + icon.
+const FlashSaleSection = ({ campaigns, onProductPress }) => {
+  if (!campaigns.length) return null;
+  return (
+    <View style={styles.flashSaleSection}>
+      <View style={styles.flashSaleTitleRow}>
+        <Icon type="feather" name="zap" color={brandColors.warning || brandColors.tealDark} size={s(16)} />
+        <Text style={styles.flashSaleTitle}>Giá sốc</Text>
       </View>
-      <Text style={styles.quickViewName}>{product?.name}</Text>
-      <View style={styles.quickViewPriceRow}>
-        <Text style={styles.quickViewPrice}>{formatMoney(product?.price, { unit: 'đ' })}</Text>
-        {product?.rx ? <Text style={styles.quickViewRxBadge}>Kê đơn (Rx)</Text> : null}
-      </View>
-      <PressScale style={styles.quickViewCloseButton} onPress={onClose}>
-        <Text style={styles.quickViewCloseText}>Đóng</Text>
-      </PressScale>
+      {campaigns.map(campaign => (
+        <ScrollView
+          key={campaign.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.supplierProductRail}
+        >
+          {(campaign.products || []).map(p => (
+            <SupplierProductCard key={p.product_id} product={p} onPress={onProductPress} />
+          ))}
+        </ScrollView>
+      ))}
     </View>
-  </Modal>
-);
+  );
+};
 
 // "Gợi ý hôm nay" — có product_id thì lẽ ra mở thẳng SP, nhưng chưa có
 // màn chi tiết SP theo product_id trần (StoreCatalogV2 cần storeId) nên
@@ -345,7 +315,6 @@ const HomeScreen = ({ navigation }) => {
   const isUpdate = useSelector(state => getUpdate(state));
   const versionApp = packageJson.version;
   const [isSkip, setSkip] = useState('');
-  const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   const storesStatus = useSelector(state => getStoresV2Status(state));
   const stores = useSelector(state => selectStoresV2(state));
@@ -355,15 +324,21 @@ const HomeScreen = ({ navigation }) => {
   // có thể 401 vì chưa có token, refetch lại ngay khi isLoggedInV2 lên true.
   const isLoggedInV2 = useSelector(state => getIsLoggedInV2(state));
 
-  const banners = useSelector(state => selectHomeBannersV2(state));
-  const bannersStatus = useSelector(state => getHomeBannersV2Status(state));
-  const featuredSuppliers = useSelector(state => selectFeaturedSuppliersV2(state));
+  const banners = useSelector(state => selectCampaignsV2(state, 'banner'));
+  const bannersStatus = useSelector(state => getCampaignsV2Status(state, 'banner'));
+  const featuredSupplierCampaigns = useSelector(state => selectCampaignsV2(state, 'featured_supplier'));
+  const flashSaleCampaigns = useSelector(state => selectCampaignsV2(state, 'flash_sale'));
   const suggestions = useSelector(state => selectSearchSuggestionsV2(state));
+
+  const goToProductDetail = product => {
+    navigation.navigate(NAVIGATION_PRODUCT_DETAIL_V2, { productId: product.product_id });
+  };
 
   const load = () => {
     dispatch(getStoresV2());
-    dispatch(getHomeBannersV2());
-    dispatch(getFeaturedSuppliersV2());
+    dispatch(getCampaignsV2('banner'));
+    dispatch(getCampaignsV2('featured_supplier'));
+    dispatch(getCampaignsV2('flash_sale'));
     dispatch(getSearchSuggestionsV2());
   };
 
@@ -406,13 +381,14 @@ const HomeScreen = ({ navigation }) => {
             ListHeaderComponent={
               <>
                 <HomeBannerCarousel banners={banners} status={bannersStatus} />
-                {featuredSuppliers.map(supplier => (
+                {featuredSupplierCampaigns.map(campaign => (
                   <FeaturedSupplierBlock
-                    key={supplier.supplier_id}
-                    supplier={supplier}
-                    onProductPress={setQuickViewProduct}
+                    key={campaign.id}
+                    campaign={campaign}
+                    onProductPress={goToProductDetail}
                   />
                 ))}
+                <FlashSaleSection campaigns={flashSaleCampaigns} onProductPress={goToProductDetail} />
                 <TodaySuggestions suggestions={suggestions} navigation={navigation} />
                 <View style={styles.homeStoreListHeader}>
                   <Text style={styles.homeStoreListTitle}>Đặt hàng theo nhà thuốc</Text>
@@ -430,8 +406,6 @@ const HomeScreen = ({ navigation }) => {
             }
           />
         </View>
-
-        <ProductQuickViewModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />
 
         <Modal
           onBackdropPress={() => { }}

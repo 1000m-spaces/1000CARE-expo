@@ -12,6 +12,7 @@ import {
 } from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
 import { formatMoney } from '~/utils/format';
+import { getV2ProductThumb } from '~/utils/image';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
@@ -90,8 +91,8 @@ const ProductMessagePreviewV2 = ({ navigation, route }) => {
 
         {matchedProducts.map(p => (
           <View key={p.product_id} style={styles.productRow}>
-            {p.media ? (
-              <Image source={{ uri: p.media }} style={styles.thumb} />
+            {getV2ProductThumb(p) ? (
+              <Image source={{ uri: getV2ProductThumb(p) }} style={styles.thumb} />
             ) : (
               <View style={[styles.thumb, styles.thumbPlaceholder]}>
                 <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(18)} />

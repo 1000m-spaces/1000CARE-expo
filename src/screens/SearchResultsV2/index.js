@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Image, TextInput, FlatList, StyleSheet } from 'react-native';
-import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import PressScale from '~/design-system/PressScale';
@@ -10,6 +9,8 @@ import { searchProductsV2, resetSearchProductsV2 } from '~/store/catalogV2/catal
 import { getSearchProductsV2Status, getSearchProductsV2 } from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
 import { formatMoney } from '~/utils/format';
+import { getV2ProductThumb } from '~/utils/image';
+import { NAVIGATION_PRODUCT_DETAIL_V2 } from '~/navigation/routes';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
@@ -17,11 +18,12 @@ import { fs, s } from '~/utils/responsive';
 // (SearchV2) tách riêng khỏi màn danh sách kết quả này) — nhận
 // `route.params.keyword` từ SearchV2, tự search ngay lúc mount. Vẫn cho
 // sửa từ khoá ngay trên thanh search ở đây (debounce lại) thay vì bắt
-// quay lại màn trước. Xem [[marketplace-core-business-model]].
+// quay lại màn trước. Bấm 1 kết quả → mở thẳng ProductDetailV2 (chỉ cần
+// product_id, không cần store_id trước — trang đó tự trả store_id).
+// Xem [[marketplace-core-business-model]].
 const SearchResultsV2 = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [query, setQuery] = useState(route?.params?.keyword || '');
-  const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   const status = useSelector(state => getSearchProductsV2Status(state));
   const results = useSelector(state => getSearchProductsV2(state));
@@ -54,9 +56,12 @@ const SearchResultsV2 = ({ navigation, route }) => {
   };
 
   const renderItem = ({ item }) => (
-    <PressScale style={styles.resultRow} onPress={() => setQuickViewProduct(item)}>
-      {item.media ? (
-        <Image source={{ uri: item.media }} style={styles.resultThumb} />
+    <PressScale
+      style={styles.resultRow}
+      onPress={() => navigation.navigate(NAVIGATION_PRODUCT_DETAIL_V2, { productId: item.product_id })}
+    >
+      {getV2ProductThumb(item) ? (
+        <Image source={{ uri: getV2ProductThumb(item) }} style={styles.resultThumb} />
       ) : (
         <View style={[styles.resultThumb, styles.resultThumbPlaceholder]}>
           <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(18)} />
@@ -119,32 +124,6 @@ const SearchResultsV2 = ({ navigation, route }) => {
           ) : null
         }
       />
-
-      <Modal
-        isVisible={!!quickViewProduct}
-        onBackdropPress={() => setQuickViewProduct(null)}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-        style={styles.quickViewModalWrap}
-      >
-        <View style={styles.quickViewCard}>
-          <View style={styles.quickViewImage}>
-            {quickViewProduct?.media ? (
-              <Image source={{ uri: quickViewProduct.media }} style={styles.quickViewImageInner} resizeMode="contain" />
-            ) : (
-              <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(32)} />
-            )}
-          </View>
-          <Text style={styles.quickViewName}>{quickViewProduct?.name}</Text>
-          <View style={styles.quickViewPriceRow}>
-            <Text style={styles.quickViewPrice}>{formatMoney(quickViewProduct?.price, { unit: 'đ' })}</Text>
-            {quickViewProduct?.rx ? <Text style={styles.rxBadge}>Kê đơn (Rx)</Text> : null}
-          </View>
-          <PressScale style={styles.quickViewCloseButton} onPress={() => setQuickViewProduct(null)}>
-            <Text style={styles.quickViewCloseText}>Đóng</Text>
-          </PressScale>
-        </View>
-      </Modal>
     </AppBackground>
   );
 };

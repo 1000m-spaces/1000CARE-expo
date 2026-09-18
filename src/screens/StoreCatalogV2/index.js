@@ -1,42 +1,50 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, RefreshControl, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, ScrollView, RefreshControl, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import PressScale from '~/design-system/PressScale';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon } from '~/common/index';
-import { getStoreProductsV2, getStoreCartV2, updateCartItemV2 } from '~/store/catalogV2/catalogV2Actions';
+import { getStoreProductsV2, getStoreCartV2, updateCartItemV2, getStoreCategoriesV2 } from '~/store/catalogV2/catalogV2Actions';
 import {
   getStoreProductsV2Status,
   getStoreProductsV2 as selectStoreProductsV2,
   getStoreCartV2 as selectStoreCartV2,
   getCartItemV2ActionStatus,
+  getStoreCategoriesV2 as selectStoreCategoriesV2,
 } from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
 import { formatMoney } from '~/utils/format';
-import { NAVIGATION_STORE_CART_V2 } from '~/navigation/routes';
+import { getV2ProductThumb } from '~/utils/image';
+import { NAVIGATION_STORE_CART_V2, NAVIGATION_PRODUCT_DETAIL_V2 } from '~/navigation/routes';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
-const ProductRow = ({ item, qty, storeId, onChangeQty }) => {
+const ProductRow = ({ item, qty, storeId, onChangeQty, navigation }) => {
   const actionStatus = useSelector(state => getCartItemV2ActionStatus(state, storeId, item.product_id));
   const busy = actionStatus === Status.LOADING;
+  const thumb = getV2ProductThumb(item);
   return (
     <View style={styles.card}>
-      {item.media ? (
-        <Image source={{ uri: item.media }} style={styles.thumb} />
-      ) : (
-        <View style={[styles.thumb, styles.thumbPlaceholder]}>
-          <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(20)} />
+      <PressScale
+        style={styles.cardTapArea}
+        onPress={() => navigation.navigate(NAVIGATION_PRODUCT_DETAIL_V2, { productId: item.product_id })}
+      >
+        {thumb ? (
+          <Image source={{ uri: thumb }} style={styles.thumb} />
+        ) : (
+          <View style={[styles.thumb, styles.thumbPlaceholder]}>
+            <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(20)} />
+          </View>
+        )}
+        <View style={styles.info}>
+          <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
+          {!!item.brand && <Text style={styles.brand} numberOfLines={1}>{item.brand}</Text>}
+          <View style={styles.priceRow}>
+            <Text style={styles.price}>{formatMoney(item.price, { unit: 'đ' })}</Text>
+            {item.rx ? <Text style={styles.rxBadge}>Rx</Text> : null}
+          </View>
         </View>
-      )}
-      <View style={styles.info}>
-        <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
-        {!!item.brand && <Text style={styles.brand} numberOfLines={1}>{item.brand}</Text>}
-        <View style={styles.priceRow}>
-          <Text style={styles.price}>{formatMoney(item.price, { unit: 'đ' })}</Text>
-          {item.rx ? <Text style={styles.rxBadge}>Rx</Text> : null}
-        </View>
-      </View>
+      </PressScale>
       <View style={styles.stepper}>
         <PressScale
           style={[styles.stepperBtn, (busy || qty === 0) && styles.stepperBtnDisabled]}
@@ -60,13 +68,18 @@ const ProductRow = ({ item, qty, storeId, onChangeQty }) => {
 
 // GET /customer/v1/stores/{id}/products — catalog THẬT theo nhà thuốc.
 // PUT /customer/v1/stores/{id}/cart/items/{productId} để +/- số lượng
-// ngay tại đây (giỏ hàng thật, chưa đụng checkout). Xem
+// ngay tại đây (giỏ hàng thật, chưa đụng checkout). Thanh danh mục
+// (2026-09-18, kiến trúc Campaign) kiểu Shopee: GET .../categories liệt
+// kê danh mục CÓ hàng trong store này, bấm 1 danh mục thì gọi lại
+// .../products?category_id= để lọc. Xem
 // [[marketplace-core-business-model]].
 const StoreCatalogV2 = ({ navigation, route }) => {
   const { storeId, storeName } = route.params || {};
   const dispatch = useDispatch();
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
   const status = useSelector(state => getStoreProductsV2Status(state, storeId));
   const products = useSelector(state => selectStoreProductsV2(state, storeId));
+  const categories = useSelector(state => selectStoreCategoriesV2(state, storeId));
   const cart = useSelector(state => selectStoreCartV2(state, storeId));
   const loading = status === Status.LOADING;
 
@@ -77,14 +90,21 @@ const StoreCatalogV2 = ({ navigation, route }) => {
   const cartCount = (cart?.items || []).reduce((sum, item) => sum + (item.qty || 0), 0);
 
   const load = () => {
-    dispatch(getStoreProductsV2(storeId));
+    dispatch(getStoreProductsV2(storeId, activeCategoryId));
     dispatch(getStoreCartV2(storeId));
+    dispatch(getStoreCategoriesV2(storeId));
   };
 
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeId]);
+
+  const onSelectCategory = categoryId => {
+    const nextId = categoryId === activeCategoryId ? null : categoryId;
+    setActiveCategoryId(nextId);
+    dispatch(getStoreProductsV2(storeId, nextId));
+  };
 
   const onChangeQty = (productId, nextQty) => {
     dispatch(updateCartItemV2(storeId, productId, Math.max(0, nextQty)));
@@ -96,6 +116,7 @@ const StoreCatalogV2 = ({ navigation, route }) => {
       qty={cartQtyByProduct[item.product_id] || 0}
       storeId={storeId}
       onChangeQty={onChangeQty}
+      navigation={navigation}
     />
   );
 
@@ -109,6 +130,40 @@ const StoreCatalogV2 = ({ navigation, route }) => {
         </PressScale>
         <Text style={styles.headerTitle} numberOfLines={1}>{storeName || 'Catalog'}</Text>
       </View>
+
+      {categories.length > 0 && (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoryRow}
+        >
+          <PressScale
+            style={[styles.categoryChip, !activeCategoryId && styles.categoryChipActive]}
+            onPress={() => onSelectCategory(null)}
+          >
+            <Text style={[styles.categoryChipText, !activeCategoryId && styles.categoryChipTextActive]}>
+              Tất cả
+            </Text>
+          </PressScale>
+          {categories.map(cat => (
+            <PressScale
+              key={cat.category_id}
+              style={[styles.categoryChip, activeCategoryId === cat.category_id && styles.categoryChipActive]}
+              onPress={() => onSelectCategory(cat.category_id)}
+            >
+              <Text
+                style={[
+                  styles.categoryChipText,
+                  activeCategoryId === cat.category_id && styles.categoryChipTextActive,
+                ]}
+                numberOfLines={1}
+              >
+                {cat.category_name}
+              </Text>
+            </PressScale>
+          ))}
+        </ScrollView>
+      )}
 
       <FlatList
         data={products}
@@ -170,6 +225,31 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     flexShrink: 1,
   },
+  categoryRow: {
+    paddingHorizontal: s(20),
+    gap: s(8),
+    marginBottom: s(14),
+  },
+  categoryChip: {
+    paddingHorizontal: s(14),
+    paddingVertical: s(9),
+    borderRadius: s(999),
+    backgroundColor: brandColors.surface,
+    borderWidth: 1,
+    borderColor: brandColors.border,
+  },
+  categoryChipActive: {
+    backgroundColor: brandColors.tealPrimary,
+    borderColor: brandColors.tealPrimary,
+  },
+  categoryChipText: {
+    color: brandColors.textDark,
+    fontSize: fs(12),
+    fontWeight: '700',
+  },
+  categoryChipTextActive: {
+    color: brandColors.surface,
+  },
   listContent: {
     paddingHorizontal: s(20),
     paddingBottom: s(100),
@@ -185,6 +265,12 @@ const styles = StyleSheet.create({
     borderRadius: s(16),
     padding: s(12),
     marginBottom: s(12),
+  },
+  cardTapArea: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(12),
   },
   thumb: {
     width: s(56),

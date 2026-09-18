@@ -16,6 +16,7 @@ import {
 } from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
 import { formatMoney } from '~/utils/format';
+import { getV2ProductThumb } from '~/utils/image';
 import ErrorView from '~/common/ErrorView';
 import { NAVIGATION_ORDER_DETAIL_V2 } from '~/navigation/routes';
 import { brandColors, brandShadow } from '~/design-system/tokens';
@@ -166,10 +167,11 @@ const StoreCartV2 = ({ navigation, route }) => {
 const CartRow = ({ item, storeId, onChangeQty, onRemove }) => {
   const actionStatus = useSelector(state => getCartItemV2ActionStatus(state, storeId, item.product_id));
   const busy = actionStatus === Status.LOADING;
+  const thumb = getV2ProductThumb(item);
   return (
     <View style={styles.card}>
-      {item.media ? (
-        <Image source={{ uri: item.media }} style={styles.thumb} />
+      {thumb ? (
+        <Image source={{ uri: thumb }} style={styles.thumb} />
       ) : (
         <View style={[styles.thumb, styles.thumbPlaceholder]}>
           <Icon type="feather" name="package" color={brandColors.mutedLight} size={s(20)} />

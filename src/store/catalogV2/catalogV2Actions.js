@@ -7,9 +7,11 @@ export const getStoresV2 = () => ({ type: CATALOG_V2.GET_STORES_REQUEST })
 // store, không chỉ 1 store như getStoreCartV2.
 export const getCartsV2 = () => ({ type: CATALOG_V2.GET_CARTS_REQUEST })
 
-export const getStoreProductsV2 = storeId => ({
+// `categoryId` (2026-09-18, tuỳ chọn) lọc theo danh mục — xem
+// getStoreCategoriesV2. Không truyền = hiện tất cả.
+export const getStoreProductsV2 = (storeId, categoryId) => ({
   type: CATALOG_V2.GET_STORE_PRODUCTS_REQUEST,
-  payload: { storeId },
+  payload: { storeId, categoryId },
 })
 
 export const getStoreCartV2 = (storeId, memberMarketerId) => ({
@@ -49,14 +51,21 @@ export const resetCheckoutCartV2 = storeId => ({
   payload: { storeId },
 })
 
-// Trang chủ mới (2026-09-17) — xem [[marketplace-core-business-model]].
-export const getHomeBannersV2 = () => ({ type: CATALOG_V2.GET_HOME_BANNERS_REQUEST })
+// Trang chủ — kiến trúc Campaign (2026-09-18) — xem
+// [[marketplace-core-business-model]]. `type`: 'banner' | 'featured_supplier' | 'flash_sale'.
+export const getCampaignsV2 = campaignType => ({
+  type: CATALOG_V2.GET_CAMPAIGNS_REQUEST,
+  payload: { type: campaignType },
+})
 
-export const getFeaturedSuppliersV2 = () => ({ type: CATALOG_V2.GET_FEATURED_SUPPLIERS_REQUEST })
+export const getProductDetailV2 = productId => ({
+  type: CATALOG_V2.GET_PRODUCT_DETAIL_REQUEST,
+  payload: { productId },
+})
 
-export const getSupplierProductsV2 = (supplierId, limit) => ({
-  type: CATALOG_V2.GET_SUPPLIER_PRODUCTS_REQUEST,
-  payload: { supplierId, limit },
+export const getStoreCategoriesV2 = storeId => ({
+  type: CATALOG_V2.GET_STORE_CATEGORIES_REQUEST,
+  payload: { storeId },
 })
 
 export const getSearchSuggestionsV2 = () => ({ type: CATALOG_V2.GET_SEARCH_SUGGESTIONS_REQUEST })

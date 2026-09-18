@@ -21,6 +21,7 @@ import {
   ProductMessagePreviewV2,
   SearchV2,
   SearchResultsV2,
+  ProductDetailV2,
   RechargeOnline,
   ProfileScreen,
   AccountStatement,
@@ -142,6 +143,7 @@ import {
   NAVIGATION_PRODUCT_MESSAGE_PREVIEW_V2,
   NAVIGATION_SEARCH_V2,
   NAVIGATION_SEARCH_RESULTS_V2,
+  NAVIGATION_PRODUCT_DETAIL_V2,
 } from './routes';
 import PaymentByNeomedScreen from '~/screens/PaymentByNeomedScreen/index';
 import AddressChooseScreen from '~/screens/AddressChooseScreen/index';
@@ -443,6 +445,13 @@ const StackNavigator = () => {
       <Stack.Screen
         name={NAVIGATION_SEARCH_RESULTS_V2}
         component={SearchResultsV2}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name={NAVIGATION_PRODUCT_DETAIL_V2}
+        component={ProductDetailV2}
         options={{
           header: () => null,
         }}
