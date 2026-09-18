@@ -241,6 +241,7 @@ export const CATALOG_V2 = createRequestTypes(
     'GET_FEATURED_SUPPLIERS', // GET /customer/v1/featured-suppliers
     'GET_SUPPLIER_PRODUCTS', // GET /customer/v1/suppliers/{id}/products?limit=
     'GET_SEARCH_SUGGESTIONS', // GET /customer/v1/search-suggestions
+    'SEARCH_PRODUCTS', // GET /customer/v1/search?q=&limit=&offset=
   ],
   suffixTypes,
 )

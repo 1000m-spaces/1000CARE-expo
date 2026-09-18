@@ -74,6 +74,7 @@ import StoreCartV2 from './StoreCartV2';
 import ChatListV2 from './ChatListV2';
 import ChatThreadV2 from './ChatThreadV2';
 import ProductMessagePreviewV2 from './ProductMessagePreviewV2';
+import SearchV2 from './SearchV2';
 import AuthoritySupplier from './AuthoritySupplier/AuthoritySupplier';
 export {
   MainScreen,
@@ -153,4 +154,5 @@ export {
   ChatListV2,
   ChatThreadV2,
   ProductMessagePreviewV2,
+  SearchV2,
 };

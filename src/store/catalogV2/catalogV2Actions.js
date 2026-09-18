@@ -61,4 +61,13 @@ export const getSupplierProductsV2 = (supplierId, limit) => ({
 
 export const getSearchSuggestionsV2 = () => ({ type: CATALOG_V2.GET_SEARCH_SUGGESTIONS_REQUEST })
 
+// GET /customer/v1/search?q=&limit=&offset= — full-text xuyên mọi NCC,
+// bỏ dấu, chỉ SP đang bán. Màn SearchV2.
+export const searchProductsV2 = (q, limit, offset) => ({
+  type: CATALOG_V2.SEARCH_PRODUCTS_REQUEST,
+  payload: { q, limit, offset },
+})
+
+export const resetSearchProductsV2 = () => ({ type: 'RESET_CATALOG_V2_SEARCH' })
+
 export const resetCatalogV2 = () => ({ type: 'CATALOG_V2_RESET' })

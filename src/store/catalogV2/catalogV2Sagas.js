@@ -167,6 +167,20 @@ function* getSearchSuggestions() {
   }
 }
 
+function* searchProducts({ payload }) {
+  const { q, limit, offset } = payload
+  try {
+    yield put({ type: CATALOG_V2.SEARCH_PRODUCTS_LOADING })
+    const data = yield call({ content: AuthV2, fn: AuthV2.searchProductsV2 }, q, limit, offset)
+    yield put({
+      type: CATALOG_V2.SEARCH_PRODUCTS_SUCCESS,
+      payload: { items: data?.items || [], total: data?.total || 0 },
+    })
+  } catch (error) {
+    yield put({ type: CATALOG_V2.SEARCH_PRODUCTS_FAILURE, payload: { errorMsg: error?.message } })
+  }
+}
+
 function* getProductMessages() {
   try {
     yield put({ type: CATALOG_V2.GET_PRODUCT_MESSAGES_LOADING })
@@ -211,4 +225,5 @@ export default function* watcherSaga() {
   yield takeLatest(CATALOG_V2.GET_FEATURED_SUPPLIERS_REQUEST, getFeaturedSuppliers)
   yield takeLatest(CATALOG_V2.GET_SUPPLIER_PRODUCTS_REQUEST, getSupplierProducts)
   yield takeLatest(CATALOG_V2.GET_SEARCH_SUGGESTIONS_REQUEST, getSearchSuggestions)
+  yield takeLatest(CATALOG_V2.SEARCH_PRODUCTS_REQUEST, searchProducts)
 }

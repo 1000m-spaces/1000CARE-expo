@@ -36,6 +36,10 @@ const initialState = {
 
   searchSuggestionsStatus: Status.DEFAULT,
   searchSuggestions: [], // [{id, keyword, product_id?}]
+
+  searchProductsStatus: Status.DEFAULT,
+  searchProducts: [], // [{product_id,name,rx,price,currency}]
+  searchProductsTotal: 0,
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -215,6 +219,20 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, searchSuggestionsStatus: Status.SUCCESS, searchSuggestions: payload.items }
     case CATALOG_V2.GET_SEARCH_SUGGESTIONS_FAILURE:
       return { ...state, searchSuggestionsStatus: Status.ERROR }
+
+    case CATALOG_V2.SEARCH_PRODUCTS_LOADING:
+      return { ...state, searchProductsStatus: Status.LOADING }
+    case CATALOG_V2.SEARCH_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        searchProductsStatus: Status.SUCCESS,
+        searchProducts: payload.items,
+        searchProductsTotal: payload.total,
+      }
+    case CATALOG_V2.SEARCH_PRODUCTS_FAILURE:
+      return { ...state, searchProductsStatus: Status.ERROR }
+    case 'RESET_CATALOG_V2_SEARCH':
+      return { ...state, searchProductsStatus: Status.DEFAULT, searchProducts: [], searchProductsTotal: 0 }
 
     case 'CATALOG_V2_RESET':
       return initialState

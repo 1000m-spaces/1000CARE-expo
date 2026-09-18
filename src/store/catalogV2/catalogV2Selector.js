@@ -73,3 +73,7 @@ export const getSupplierProductsV2 = (state, supplierId) => state.catalogV2.supp
 
 export const getSearchSuggestionsV2Status = state => state.catalogV2.searchSuggestionsStatus
 export const getSearchSuggestionsV2 = state => state.catalogV2.searchSuggestions
+
+export const getSearchProductsV2Status = state => state.catalogV2.searchProductsStatus
+export const getSearchProductsV2 = state => state.catalogV2.searchProducts
+export const getSearchProductsV2Total = state => state.catalogV2.searchProductsTotal
