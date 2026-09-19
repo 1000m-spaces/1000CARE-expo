@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Image, Linking, Platform, FlatList, ScrollView, RefreshControl, Animated, Easing, Dimensions } from 'react-native';
+import { View, Image, Linking, Platform, ScrollView, RefreshControl, Animated, Easing, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,17 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getVersionNew, getForceUpdate, getUpdate } from '~/store/selector';
 import { getAuthStore } from '~/store/selector';
 import styles from './styles';
-import { NAVIGATION_SEARCH_V2, NAVIGATION_SEARCH_RESULTS_V2, NAVIGATION_CHAT_LIST_V2, NAVIGATION_MY_CARTS_V2, NAVIGATION_STORE_CATALOG_V2, NAVIGATION_PRODUCT_DETAIL_V2 } from '~/navigation/routes';
+import { NAVIGATION_SEARCH_V2, NAVIGATION_SEARCH_RESULTS_V2, NAVIGATION_CHAT_LIST_V2, NAVIGATION_MY_CARTS_V2, NAVIGATION_PRODUCT_DETAIL_V2 } from '~/navigation/routes';
 import { getProductMessageThreadsV2 } from '~/store/catalogV2/catalogV2Selector';
 import { getIsLoggedInV2 } from '~/store/authV2/authV2Selector';
 import {
-  getStoresV2,
   getCampaignsV2,
   getSearchSuggestionsV2,
 } from '~/store/catalogV2/catalogV2Actions';
 import {
-  getStoresV2Status,
-  getStoresV2 as selectStoresV2,
   getCampaignsV2Status,
   getCampaignsV2 as selectCampaignsV2,
   getSearchSuggestionsV2Status,
@@ -316,9 +313,6 @@ const HomeScreen = ({ navigation }) => {
   const versionApp = packageJson.version;
   const [isSkip, setSkip] = useState('');
 
-  const storesStatus = useSelector(state => getStoresV2Status(state));
-  const stores = useSelector(state => selectStoresV2(state));
-  const loading = storesStatus === Status.LOADING;
   // Phòng trường hợp màn này mount TRƯỚC khi phiên AuthV2 kịp khôi phục
   // xong lúc mở app (xem authV2Sagas.restoreAuthV2Session) — request đầu
   // có thể 401 vì chưa có token, refetch lại ngay khi isLoggedInV2 lên true.
@@ -329,13 +323,13 @@ const HomeScreen = ({ navigation }) => {
   const featuredSupplierCampaigns = useSelector(state => selectCampaignsV2(state, 'featured_supplier'));
   const flashSaleCampaigns = useSelector(state => selectCampaignsV2(state, 'flash_sale'));
   const suggestions = useSelector(state => selectSearchSuggestionsV2(state));
+  const loading = bannersStatus === Status.LOADING;
 
   const goToProductDetail = product => {
     navigation.navigate(NAVIGATION_PRODUCT_DETAIL_V2, { productId: product.product_id });
   };
 
   const load = () => {
-    dispatch(getStoresV2());
     dispatch(getCampaignsV2('banner'));
     dispatch(getCampaignsV2('featured_supplier'));
     dispatch(getCampaignsV2('flash_sale'));
@@ -347,64 +341,28 @@ const HomeScreen = ({ navigation }) => {
     asyncStorage.getSkipForceUpdate().then(setSkip);
   }, [isLoggedInV2]);
 
-  const renderStore = ({ item }) => (
-    <PressScale
-      style={styles.storeCard}
-      onPress={() => navigation.navigate(NAVIGATION_STORE_CATALOG_V2, { storeId: item.id, storeName: item.name })}
-    >
-      <View style={styles.storeCardIcon}>
-        <Icon type="feather" name="shopping-bag" color={brandColors.tealPrimary} size={s(20)} />
-      </View>
-      <View style={styles.storeCardBody}>
-        <Text style={styles.storeCardName} numberOfLines={2}>{item.name}</Text>
-        {!!item.address && (
-          <Text style={styles.storeCardAddress} numberOfLines={1}>{item.address}</Text>
-        )}
-      </View>
-      <Icon type="feather" name="chevron-right" color={brandColors.mutedLight} size={s(18)} />
-    </PressScale>
-  );
-
   return (
     <View style={styles.backgroundImage}>
       <BackgroundWash />
       <SafeAreaView edges={['top']} style={styles.safeArea}>
         <View style={styles.container}>
           <MarketplaceHeader navigation={navigation} />
-          <FlatList
+          <ScrollView
             style={styles.homeStoreList}
-            data={stores}
-            keyExtractor={item => String(item.id)}
-            renderItem={renderStore}
             contentContainerStyle={styles.homeStoreListContent}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}
-            ListHeaderComponent={
-              <>
-                <HomeBannerCarousel banners={banners} status={bannersStatus} />
-                {featuredSupplierCampaigns.map(campaign => (
-                  <FeaturedSupplierBlock
-                    key={campaign.id}
-                    campaign={campaign}
-                    onProductPress={goToProductDetail}
-                  />
-                ))}
-                <FlashSaleSection campaigns={flashSaleCampaigns} onProductPress={goToProductDetail} />
-                <TodaySuggestions suggestions={suggestions} navigation={navigation} />
-                <View style={styles.homeStoreListHeader}>
-                  <Text style={styles.homeStoreListTitle}>Đặt hàng theo nhà thuốc</Text>
-                  <Text style={styles.homeStoreListSubtitle}>Chọn 1 cửa hàng để xem sản phẩm và giá</Text>
-                </View>
-              </>
-            }
-            ListEmptyComponent={
-              !loading && (
-                <View style={styles.homeStoreEmptyWrap}>
-                  <Icon type="feather" name="home" color={brandColors.mutedLight} size={s(32)} />
-                  <Text style={styles.homeStoreEmptyText}>Chưa có cửa hàng nào</Text>
-                </View>
-              )
-            }
-          />
+          >
+            <HomeBannerCarousel banners={banners} status={bannersStatus} />
+            <FlashSaleSection campaigns={flashSaleCampaigns} onProductPress={goToProductDetail} />
+            {featuredSupplierCampaigns.map(campaign => (
+              <FeaturedSupplierBlock
+                key={campaign.id}
+                campaign={campaign}
+                onProductPress={goToProductDetail}
+              />
+            ))}
+            <TodaySuggestions suggestions={suggestions} navigation={navigation} />
+          </ScrollView>
         </View>
 
         <Modal

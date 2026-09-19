@@ -1,16 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Image, ScrollView, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import PressScale from '~/design-system/PressScale';
 import AppBackground from '~/design-system/AppBackground';
 import { Icon, Text } from '~/common/index';
-import { getProductDetailV2 as getProductDetailV2Action } from '~/store/catalogV2/catalogV2Actions';
-import { getProductDetailV2Status, getProductDetailV2 as selectProductDetailV2 } from '~/store/catalogV2/catalogV2Selector';
+import {
+  getProductDetailV2 as getProductDetailV2Action,
+  getStoreCartV2,
+  updateCartItemV2,
+} from '~/store/catalogV2/catalogV2Actions';
+import {
+  getProductDetailV2Status,
+  getProductDetailV2 as selectProductDetailV2,
+  getStoreCartV2 as selectStoreCartV2,
+  getCartItemV2ActionStatus,
+} from '~/store/catalogV2/catalogV2Selector';
 import Status from '~/common/Status/Status';
 import { formatMoney } from '~/utils/format';
 import { getV2ProductThumb } from '~/utils/image';
 import { NAVIGATION_STORE_CATALOG_V2 } from '~/navigation/routes';
 import { brandColors, brandShadow } from '~/design-system/tokens';
+import { showToast } from '~/utils/toast';
 import { fs, s } from '~/utils/responsive';
 
 // Trang "Chi tiết sản phẩm" (2026-09-18, kiến trúc Campaign) —
@@ -41,10 +51,37 @@ const ProductDetailV2 = ({ navigation, route }) => {
   }, [productId]);
 
   const thumb = getV2ProductThumb(product);
+  const storeId = product?.store_id;
+
+  // Giỏ hàng scope theo store — cần biết đang có bao nhiêu SP này trong
+  // giỏ của ĐÚNG store đó để "+1" đúng thay vì ghi đè (PUT nhận qty tuyệt
+  // đối, không phải delta). Chỉ fetch khi đã biết store_id (sau khi
+  // GET /products/{id} về xong).
+  useEffect(() => {
+    if (storeId) dispatch(getStoreCartV2(storeId));
+  }, [storeId]);
+
+  const cart = useSelector(state => selectStoreCartV2(state, storeId));
+  const currentQty = (cart?.items || []).find(i => i.product_id === productId)?.qty || 0;
+  const addStatus = useSelector(state => getCartItemV2ActionStatus(state, storeId, productId));
+  const adding = addStatus === Status.LOADING;
+  const prevAddStatus = useRef(addStatus);
+
+  useEffect(() => {
+    if (prevAddStatus.current === Status.LOADING && addStatus === Status.SUCCESS) {
+      showToast('Đã thêm vào giỏ hàng');
+    }
+    prevAddStatus.current = addStatus;
+  }, [addStatus]);
 
   const goToShop = () => {
-    if (!product?.store_id) return;
-    navigation.navigate(NAVIGATION_STORE_CATALOG_V2, { storeId: product.store_id });
+    if (!storeId) return;
+    navigation.navigate(NAVIGATION_STORE_CATALOG_V2, { storeId });
+  };
+
+  const onAddToCart = () => {
+    if (!storeId) return;
+    dispatch(updateCartItemV2(storeId, productId, currentQty + 1));
   };
 
   return (
@@ -103,9 +140,17 @@ const ProductDetailV2 = ({ navigation, route }) => {
           </ScrollView>
 
           <View style={styles.footer}>
-            <PressScale style={styles.shopButton} onPress={goToShop} disabled={!product.store_id}>
-              <Icon type="feather" name="shopping-bag" color={brandColors.surface} size={s(16)} />
+            <PressScale style={styles.shopButton} onPress={goToShop} disabled={!storeId}>
+              <Icon type="feather" name="shopping-bag" color={brandColors.tealPrimary} size={s(16)} />
               <Text style={styles.shopButtonText}>Xem shop</Text>
+            </PressScale>
+            <PressScale
+              style={[styles.addCartButton, (!storeId || adding) && styles.addCartButtonDisabled]}
+              onPress={onAddToCart}
+              disabled={!storeId || adding}
+            >
+              <Icon type="feather" name="shopping-cart" color={brandColors.surface} size={s(16)} />
+              <Text style={styles.addCartButtonText}>{adding ? 'Đang thêm...' : 'Thêm vào giỏ hàng'}</Text>
             </PressScale>
           </View>
         </>
@@ -259,12 +304,30 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    flexDirection: 'row',
+    gap: s(10),
     padding: s(16),
     backgroundColor: brandColors.surface,
     borderTopWidth: 1,
     borderTopColor: brandColors.borderSoft,
   },
   shopButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: s(8),
+    height: s(50),
+    borderRadius: s(999),
+    backgroundColor: brandColors.tealLight,
+  },
+  shopButtonText: {
+    color: brandColors.tealPrimary,
+    fontSize: fs(14),
+    fontWeight: '800',
+  },
+  addCartButton: {
+    flex: 1.4,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -273,9 +336,12 @@ const styles = StyleSheet.create({
     borderRadius: s(999),
     backgroundColor: brandColors.tealPrimary,
   },
-  shopButtonText: {
+  addCartButtonDisabled: {
+    opacity: 0.5,
+  },
+  addCartButtonText: {
     color: brandColors.surface,
-    fontSize: fs(14),
+    fontSize: fs(13),
     fontWeight: '800',
   },
 });

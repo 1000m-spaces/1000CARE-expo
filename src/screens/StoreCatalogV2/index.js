@@ -231,6 +231,12 @@ const styles = StyleSheet.create({
     marginBottom: s(14),
   },
   categoryChip: {
+    // maxWidth CHỦ Ý — không đặt thì Text bên trong không có bề rộng cố
+    // định để `numberOfLines={1}` biết chỗ nào cắt "…", nên chip cuối
+    // cùng đang cuộn dở bị cắt cụt ngang từ giữa chữ bởi rìa màn hình
+    // (không thấy cả viền bo tròn kết thúc), nhìn như lỗi hiển thị thay
+    // vì 1 chip đã rút gọn gọn gàng (báo lỗi 2026-09-19).
+    maxWidth: s(160),
     paddingHorizontal: s(14),
     paddingVertical: s(9),
     borderRadius: s(999),
