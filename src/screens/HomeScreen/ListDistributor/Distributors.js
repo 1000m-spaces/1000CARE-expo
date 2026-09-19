@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     paddingVertical: s(6),
     borderRadius: s(20),
     borderWidth: 1,
-    borderColor: 'rgba(2, 158, 157,0.16)',
+    borderColor: 'rgba(76, 29, 149,0.16)',
   },
   seeAllText: {
     color: brandColors.tealPrimary,

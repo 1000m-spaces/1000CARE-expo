@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: brandColors.tealLight,
   },
   iconWrapNegative: {
-    backgroundColor: 'rgba(255,59,48,0.1)',
+    backgroundColor: 'rgba(220,38,38,0.1)',
   },
   iconSign: {
     fontSize: fs(16),

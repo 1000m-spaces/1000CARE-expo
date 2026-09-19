@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     marginTop: s(6),
   },
   rejectBox: {
-    backgroundColor: 'rgba(255,59,48,0.08)',
+    backgroundColor: 'rgba(220,38,38,0.08)',
     borderRadius: s(12),
     padding: s(10),
     marginTop: s(10),

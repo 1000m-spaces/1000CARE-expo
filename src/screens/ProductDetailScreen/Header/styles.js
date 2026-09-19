@@ -23,7 +23,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.72)',
     borderWidth: 1,
-    borderColor: 'rgba(2, 158, 157,0.12)',
+    borderColor: 'rgba(76, 29, 149,0.12)',
   },
   backIcon: {
     width: s(16),

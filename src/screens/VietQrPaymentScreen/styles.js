@@ -136,9 +136,9 @@ export default StyleSheet.create({
     },
     instructionContainer: {
         width: '100%',
-        backgroundColor: 'rgba(245,166,35,0.1)',
+        backgroundColor: 'rgba(217,119,6,0.1)',
         borderWidth: 1,
-        borderColor: 'rgba(245,166,35,0.25)',
+        borderColor: 'rgba(217,119,6,0.25)',
         borderRadius: s(radiusScale.xxl),
         padding: s(16),
         marginBottom: s(20),

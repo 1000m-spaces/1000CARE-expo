@@ -6,17 +6,17 @@ import { Fonts } from '~/assets/config';
 
 const variants = {
   success: {
-    backgroundColor: '#ECFDF5',
+    backgroundColor: brandColors.successTint,
     borderColor: '#D1FAE5',
     color: brandColors.success,
   },
   warning: {
-    backgroundColor: '#FFF7E6',
+    backgroundColor: brandColors.warningTint,
     borderColor: '#FFE6B3',
     color: brandColors.warning,
   },
   danger: {
-    backgroundColor: '#FFF1F0',
+    backgroundColor: brandColors.dangerTint,
     borderColor: '#FFD4D0',
     color: brandColors.danger,
   },

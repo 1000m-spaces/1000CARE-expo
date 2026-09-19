@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#029E9D',
+    borderColor: brandColors.tealPrimary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: LAYOUTPADDING,
     paddingVertical: 4,
     fontSize: 12,
-    color: '#029E9D',
+    color: brandColors.tealPrimary,
   },
   listProductsContainer: {
     marginTop: 20,

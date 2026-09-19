@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   },
   orderLimitBanner: {
     marginTop: s(10),
-    backgroundColor: 'rgba(255,59,48,0.08)',
+    backgroundColor: 'rgba(220,38,38,0.08)',
     borderRadius: s(12),
     padding: s(9),
   },
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     marginTop: s(8),
     height: s(5),
     borderRadius: s(999),
-    backgroundColor: 'rgba(255,59,48,0.16)',
+    backgroundColor: 'rgba(220,38,38,0.16)',
     overflow: 'hidden',
   },
   orderLimitProgressFill: {

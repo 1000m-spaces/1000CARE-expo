@@ -3,11 +3,12 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Image } from '~/common/index'
 import PressScale from '~/design-system/PressScale'
+import { brandColors } from '~/design-system/tokens'
 
 const DistributorItem = ({ data, selected, changeDistrinutor }) => {
   return (
     <PressScale
-      style={[styles.wrapper, { borderColor: selected ? '#029E9D' : '#FFF' }]}
+      style={[styles.wrapper, { borderColor: selected ? brandColors.tealPrimary : '#FFF' }]}
       onPress={() => changeDistrinutor(data.id)}
     >
       <Image

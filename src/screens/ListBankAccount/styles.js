@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { brandColors } from '~/design-system/tokens';
 const fullWith = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     },
     buttonStatement: {
         width: fullWith-70,
-        backgroundColor: '#029E9D',
+        backgroundColor: brandColors.tealPrimary,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 50,
