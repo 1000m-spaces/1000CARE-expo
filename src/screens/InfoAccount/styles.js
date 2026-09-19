@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { brandColors } from '~/design-system/tokens';
 const fullHeight = Dimensions.get('window').height;
 const fullWith = Dimensions.get('window').width;
 
@@ -9,7 +10,7 @@ const styles = StyleSheet.create({
         padding: 20
     },
     bank: {
-        backgroundColor: '#029E9D',
+        backgroundColor: brandColors.tealPrimary,
         height: fullHeight*0.3 - 40,
         borderRadius: 12,
         justifyContent: 'flex-end',
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     },
     styleButton: {
         borderRadius: 50,
-        backgroundColor: '#029E9D',
+        backgroundColor: brandColors.tealPrimary,
         width: fullWith - 40,
     },
     containerInput: {

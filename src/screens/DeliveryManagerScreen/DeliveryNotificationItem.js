@@ -10,6 +10,7 @@ import { delivered } from '~/assets/constants'
 import { NAVIGATION_ORDER_DETAIL_SCREEN } from '~/navigation/routes'
 import { getDateString } from '~/utils/date'
 import PressScale from '~/design-system/PressScale'
+import { brandColors } from '~/design-system/tokens'
 
 const DeliveryNotificationItem = ({ data, navigation, goBack }) => {
   return (
@@ -83,8 +84,8 @@ const styles = StyleSheet.create({
   },
   textOrderCode: {
     fontSize: 14,
-    color: '#029E9D',
-    
+    color: brandColors.tealPrimary,
+
   },
   textNotification: {
     fontSize: 14,
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   button: {
     width: 90,
     height: 36,
-    backgroundColor: '#029E9D',
+    backgroundColor: brandColors.tealPrimary,
     borderRadius: 18,
 
     display: 'flex',

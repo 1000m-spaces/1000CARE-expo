@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
 
   bigCircle: {
-    backgroundColor: 'rgba(16,185,129,0.15)',
+    backgroundColor: 'rgba(27,158,90,0.15)',
     borderRadius: s(50),
     height: s(100),
     width: s(100),

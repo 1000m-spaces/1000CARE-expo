@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: s(12), 
     alignItems: 'center',
-    backgroundColor: 'rgba(2, 158, 157,0.1)',
+    backgroundColor: 'rgba(76, 29, 149,0.1)',
   },
   headerContainer: {
     display: 'flex',
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 22,
     fontWeight: '600',
-    backgroundColor: 'rgba(2, 158, 157,0.06)',
+    backgroundColor: 'rgba(76, 29, 149,0.06)',
     color: brandColors.textDark,
   },
 

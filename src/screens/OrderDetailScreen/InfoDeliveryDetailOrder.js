@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import { brandColors } from '~/design-system/tokens'
 
 const InfoDeliveryDetailOrder = ({ title, time, status }) => {
   return (
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   dot: {
     width: 12,
     height: 12,
-    backgroundColor: '#029E9D',
+    backgroundColor: brandColors.tealPrimary,
 
     borderRadius: 6,
   },

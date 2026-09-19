@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(18),
     paddingVertical: s(10),
     borderRadius: s(16),
-    backgroundColor: '#FFF1F0',
+    backgroundColor: brandColors.dangerTint,
   },
   preview: {
     flex: 1,

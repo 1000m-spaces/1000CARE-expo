@@ -9,6 +9,7 @@ import { Button } from '~/common'
 import TextInput from '~/common/Input/Input'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import card from '~/assets/configNeoMed/bank/cardBank.png'
+import { brandColors } from '~/design-system/tokens'
 const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 6, 8, 6, 8, 6, 8, 8]
 const data2 = [1, 2]
 
@@ -101,7 +102,7 @@ const InfoAccount = props => {
               <Button
                 text={'Thanh toán'}
                 styleView={styles.styleView}
-                styleButton={[styles.styleButton, { backgroundColor: (accountNumber && nameAccount && date != '') ? '#029E9D' : '#F5F5F5' }]}
+                styleButton={[styles.styleButton, { backgroundColor: (accountNumber && nameAccount && date != '') ? brandColors.tealPrimary : '#F5F5F5' }]}
                 styleText={{ color: (accountNumber && nameAccount && date != '') ? 'white' : '#8C8C8C' }}
               />
             </View>

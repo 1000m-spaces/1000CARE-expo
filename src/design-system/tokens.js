@@ -1,32 +1,35 @@
-// Đồng bộ theo design system app Marketer (bản handoff chính thức chủ dự
-// án gửi riêng, 2026-09-15) — giữ nguyên TÊN token để không phải sửa lại
-// hàng trăm chỗ dùng `brandColors.tealPrimary`/`tealDark`, chỉ đổi giá
-// trị hex sang "ink"/"gold" của bộ nhận diện mới. `tealPrimary`/`tealDark`
-// giờ mang đúng giá trị --ink/--ink-2 của design system đó.
+// Đồng bộ theo design system "1000CARE" (Bio Violet / Acid Lime) trên
+// Claude Design, 2026-09-19 — thay hẳn bộ teal/gold "app Marketer" (sync
+// 2026-09-15) vì 1000CARE giờ độc lập hoàn toàn với nhận diện hệ 1000M.
+// Giữ nguyên TÊN token để không phải sửa hàng trăm chỗ dùng
+// `brandColors.tealPrimary`/`tealDark`..., chỉ đổi giá trị hex sang bộ
+// violet/lime/neutral mới. `tealPrimary`/`tealDark` giờ mang giá trị
+// `brand`/`brand-hover` (violet-700/800); `goldAccent`/`goldDark` mang
+// giá trị `cta-bg`/hover (lime-400/500) của design system đó.
 export const brandColors = {
-  tealPrimary: '#029E9D', // --ink
-  tealDark: '#017472', // --ink-2
-  tealLight: '#EDFBFC', // --surface-2 (không đổi, đã khớp sẵn)
-  goldAccent: '#F5A623', // --gold (không đổi, đã khớp sẵn)
-  goldDark: '#9D6A16', // --gold-dark
-  goldTint: '#FFDD9E', // --gold-tint
-  textDark: '#1A1A2E', // --text
-  background: '#F5F6F7', // --bg
-  surface: '#FFFFFF',
-  surfaceAlt: '#FDFBFF',
-  border: '#DDEBED',
-  borderSoft: '#EEF5F6',
-  muted: '#6D787E', // --text-2
-  mutedLight: '#9AA8AD',
-  mutedFaint: '#6D777B', // --text-3
-  danger: '#FF3B30',
-  dangerTint: '#FFF1F0',
-  dangerText: '#D13027',
-  success: '#10B981',
-  successTint: '#ECFDF5',
-  successText: '#0B825A',
-  warning: '#F5A623',
-  warningTint: '#FFF7E6',
+  tealPrimary: '#4C1D95', // brand — violet-700
+  tealDark: '#3B1478', // brand-hover — violet-800
+  tealLight: '#EDE6FA', // brand-subtle — violet-100
+  goldAccent: '#B8E62E', // cta-bg — lime-400 (CHỈ dùng làm nền, không dùng làm chữ)
+  goldDark: '#A0CC1E', // cta-bg-hover — lime-500
+  goldTint: '#EEF9C6', // lime-100
+  textDark: '#262135', // text-primary — neutral-900
+  background: '#FAF9FC', // bg-page — neutral-50
+  surface: '#FFFFFF', // bg-surface — neutral-0
+  surfaceAlt: '#F6F3FC', // bg-subtle — violet-50
+  border: '#E5E2EE', // border — neutral-200
+  borderSoft: '#F2F0F7', // neutral-100
+  muted: '#635C78', // text-muted — neutral-600
+  mutedLight: '#A9A3BC', // neutral-400
+  mutedFaint: '#837C98', // neutral-500
+  danger: '#DC2626',
+  dangerTint: '#FDEBEB', // danger-bg
+  dangerText: '#DC2626', // không có sắc riêng trong 1000CARE, dùng lại danger
+  success: '#1B9E5A',
+  successTint: '#E7F6EE', // success-bg
+  successText: '#1B9E5A', // không có sắc riêng trong 1000CARE, dùng lại success
+  warning: '#D97706',
+  warningTint: '#FDF3E3', // warning-bg
 };
 
 export const brandTypography = {
@@ -98,7 +101,7 @@ export const stateRules = {
   empty: 'icon mờ (mutedLight) + tiêu đề (textDark) + mô tả (muted) + 1 CTA quay lại',
 };
 
-export const selectedTint = 'rgba(2,158,157,0.08)'; // brandColors.tealPrimary (--ink) ở alpha 8%, dùng khi 1 lựa chọn/hàng đang active
+export const selectedTint = 'rgba(76,29,149,0.08)'; // brandColors.tealPrimary (violet-700) ở alpha 8%, dùng khi 1 lựa chọn/hàng đang active
 
 export const brandShadow = {
   // Shadow trung tính cho nút CTA — thay hẳn kiểu "glow màu teal dưới nút"
@@ -166,8 +169,8 @@ export const liquidGlass = {
   background: '#FFFFFF',
   backgroundStrong: '#FFFFFF',
   backgroundTint: '#FFFFFF',
-  border: '#DDEBED', // brandColors.border thật — trước là viền trắng mờ ăn theo blur, giờ phải là viền xám thấy được
-  borderTint: 'rgba(2,158,157,0.14)', // brandColors.tealPrimary (--ink)
+  border: '#E5E2EE', // brandColors.border thật — trước là viền trắng mờ ăn theo blur, giờ phải là viền xám thấy được
+  borderTint: 'rgba(76,29,149,0.14)', // brandColors.tealPrimary (violet-700)
   // = --shadow của design system mới (0 2px 4px rgba(...,.05), 0 9px 22px
   // rgba(...,.075)) — cùng công thức đã dùng cho brandShadow.soft.
   shadow: {
@@ -182,7 +185,7 @@ export const liquidGlass = {
 // Nền "wash" mới phía sau toàn bộ nội dung màn hình — 3 quầng màu radial
 // mờ (teal + gold) thay cho nền phẳng, dùng với component BackgroundWash.
 export const backgroundWash = {
-  base: '#F5F6F7',
+  base: '#FAF9FC', // brandColors.background — neutral-50
   blobs: [],
 };
 

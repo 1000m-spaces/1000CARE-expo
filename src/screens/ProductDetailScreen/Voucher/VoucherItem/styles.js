@@ -1,5 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native'
 import Colors from '~/common/Colors/Colors'
+import { brandColors } from '~/design-system/tokens'
 
 export default StyleSheet.create({
   wrapper: {
@@ -74,7 +75,7 @@ export default StyleSheet.create({
     width: 86,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#029E9D',
+    backgroundColor: brandColors.tealPrimary,
 
     marginTop: 6,
 
