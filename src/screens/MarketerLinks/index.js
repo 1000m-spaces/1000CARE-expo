@@ -18,7 +18,6 @@ import Status from '~/common/Status/Status';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
 
-const SOURCE_LABEL = { invite: 'Marketer mời', admin: 'Backoffice gán' };
 const STATUS_LABEL = {
   pending: { text: 'Chờ xác nhận', color: brandColors.goldAccent },
   confirmed: { text: 'Đã xác nhận', color: brandColors.success },
@@ -52,7 +51,6 @@ const MarketerLinks = ({ navigation }) => {
             <Text style={styles.marketerName} numberOfLines={1}>
               {item.marketer_name || `Marketer #${item.marketer_id}`}
             </Text>
-            <Text style={styles.sourceText}>{SOURCE_LABEL[item.source] || item.source}</Text>
           </View>
           <Text style={[styles.statusText, { color: statusInfo.color }]}>{statusInfo.text}</Text>
         </View>

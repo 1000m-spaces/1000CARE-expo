@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Modal, View, Text, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Modal, View, Text, StyleSheet, AppState } from 'react-native';
 import * as Updates from 'expo-updates';
 import PressScale from './PressScale';
 import { brandColors, radiusScale } from './tokens';
@@ -7,22 +7,30 @@ import { Fonts } from '~/assets/config';
 import { s, fs } from '~/utils/responsive';
 
 /**
- * Kiểm tra bản cập nhật OTA (expo-updates) khi app mở lên. Nếu có bản mới,
- * tải sẵn rồi hiện popup giữa màn hình — CHỈ áp dụng khi người dùng bấm OK
- * (gọi Updates.reloadAsync()), không tự khởi động lại app.
+ * Kiểm tra bản cập nhật OTA (expo-updates) khi app mở lên VÀ mỗi lần quay
+ * lại foreground (2026-09-19, theo góp ý app Marketer — trước chỉ check 1
+ * lần lúc mount nên phiên đang mở dài không bao giờ thấy popup dù bản mới
+ * đã lên từ lâu). Có bản mới → tải sẵn rồi hiện popup giữa màn hình — CHỈ
+ * áp dụng khi người dùng bấm "Đồng ý" (gọi Updates.reloadAsync()), không
+ * tự khởi động lại app. `app.json` đã đặt `checkAutomatically:
+ * "ON_ERROR_RECOVERY"` (không phải mặc định "ON_LOAD") để expo-updates
+ * không tự âm thầm tải + áp dụng bản mới ở lần mở kế tiếp trước khi
+ * component này kịp hỏi ý người dùng.
  */
 const UpdatePrompt = () => {
   const [visible, setVisible] = useState(false);
   const [reloading, setReloading] = useState(false);
+  const checkingRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
 
     const checkForUpdate = async () => {
       // Updates không hoạt động trên Expo Go / dev client build local
-      if (!Updates.isEnabled) {
+      if (!Updates.isEnabled || checkingRef.current) {
         return;
       }
+      checkingRef.current = true;
       try {
         const result = await Updates.checkForUpdateAsync();
         if (!result.isAvailable || cancelled) {
@@ -34,13 +42,19 @@ const UpdatePrompt = () => {
         }
       } catch (e) {
         // Mất mạng / server lỗi -> bỏ qua âm thầm, không chặn người dùng dùng app
+      } finally {
+        checkingRef.current = false;
       }
     };
 
     checkForUpdate();
+    const subscription = AppState.addEventListener('change', nextState => {
+      if (nextState === 'active') checkForUpdate();
+    });
 
     return () => {
       cancelled = true;
+      subscription.remove();
     };
   }, []);
 

@@ -173,9 +173,13 @@ const StoreCatalogV2 = ({ navigation, route }) => {
               của MỌI thanh cuộn ngang (không phải lỗi chữ), không có
               cách nào tránh 100% trừ khi che bằng 1 dải mờ dần để nhìn
               như CHỦ Ý gợi ý "còn nữa, cuộn tiếp đi" thay vì trông như
-              vỡ layout. pointerEvents="none" để không chặn cuộn/bấm. */}
+              vỡ layout. pointerEvents="none" để không chặn cuộn/bấm.
+              DÙNG rgba(...,0) THAY VÌ chuỗi 'transparent' — 'transparent'
+              literal khiến LinearGradient nội suy màu ra 1 vệt đen/xám
+              giữa 2 điểm dừng trên 1 số máy thật (bug 2026-09-19, y hệt
+              màu nền #F5F6F7 nhưng alpha 0 mới nội suy đúng). */}
           <LinearGradient
-            colors={['transparent', brandColors.background]}
+            colors={['rgba(245,246,247,0)', brandColors.background]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.categoryFade}

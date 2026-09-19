@@ -445,25 +445,26 @@ export default StyleSheet.create({
     fontWeight: 'normal',
     color: brandColors.surface,
   },
-  // Thu gọn thành icon tròn (giống cartTouch/cartPill) thay vì thanh dài
-  // "Tìm sản phẩm" — theo yêu cầu 2026-09-15, nhường chỗ cho nút chat.
-  searchTouch: {
-    width: s(42),
-    height: s(42),
-    borderRadius: s(18),
-    zIndex: 2,
-    overflow: 'visible',
-  },
-  searchDock: {
-    width: '100%',
-    height: '100%',
-    borderRadius: s(20),
+  // Thanh tìm kiếm dời từ header xuống đầu nội dung cuộn (2026-09-19,
+  // header giờ CHỈ còn nút chat) — dạng thanh đầy đủ thay vì icon tròn,
+  // dễ nhận ra hơn khi không còn nằm cạnh các nút khác trong header.
+  searchEntryBar: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    gap: s(10),
+    height: s(44),
+    borderRadius: s(22),
+    paddingHorizontal: s(16),
+    marginBottom: s(16),
     backgroundColor: brandColors.surface,
     borderWidth: 1,
     borderColor: brandColors.border,
     ...brandShadow.soft,
+  },
+  searchEntryText: {
+    color: brandColors.mutedLight,
+    fontSize: fs(13),
+    fontWeight: '600',
   },
   headerMetrics: {
     marginTop: s(10),

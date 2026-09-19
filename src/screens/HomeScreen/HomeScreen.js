@@ -5,9 +5,8 @@ import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getVersionNew, getForceUpdate, getUpdate } from '~/store/selector';
-import { getAuthStore } from '~/store/selector';
 import styles from './styles';
-import { NAVIGATION_SEARCH_V2, NAVIGATION_SEARCH_RESULTS_V2, NAVIGATION_CHAT_LIST_V2, NAVIGATION_MY_CARTS_V2, NAVIGATION_PRODUCT_DETAIL_V2 } from '~/navigation/routes';
+import { NAVIGATION_SEARCH_V2, NAVIGATION_SEARCH_RESULTS_V2, NAVIGATION_CHAT_LIST_V2, NAVIGATION_PRODUCT_DETAIL_V2 } from '~/navigation/routes';
 import { getProductMessageThreadsV2 } from '~/store/catalogV2/catalogV2Selector';
 import { getIsLoggedInV2 } from '~/store/authV2/authV2Selector';
 import {
@@ -43,27 +42,6 @@ import { s, fs } from '~/utils/responsive';
 // [[marketplace-core-business-model]]) — bấm vào 1 store để xem
 // catalog/giỏ hàng của store đó (StoreCatalogV2). Toàn bộ luồng
 // distributor/hot-deal/best-seller/banner NeoMed cũ đã gỡ khỏi màn này.
-const HomeCartButton = ({ navigation }) => {
-  const { isLoggedIn } = useSelector(state => getAuthStore(state));
-  const isLoggedInV2 = useSelector(state => getIsLoggedInV2(state));
-
-  const onPress = () => {
-    if (!isLoggedInV2) {
-      showToast(strings.common.requireLogin);
-      return;
-    }
-    navigation.navigate(NAVIGATION_MY_CARTS_V2);
-  };
-
-  return (
-    <PressScale style={styles.cartTouch} onPress={onPress}>
-      <View style={styles.cartPill}>
-        <Icon type="feather" name="shopping-cart" color={brandColors.tealDark} size={22} />
-      </View>
-    </PressScale>
-  );
-};
-
 // Nút chat marketer — dời từ FAB nổi (CustomTabBar) vào đây theo yêu cầu
 // 2026-09-15: thu gọn thanh tìm kiếm thành icon để lấy chỗ cho nút này.
 // Badge đếm số hội thoại còn gợi ý sản phẩm CHƯA áp dụng (dữ liệu thật).
@@ -331,25 +309,28 @@ const TodaySuggestions = ({ suggestions, navigation }) => {
   );
 };
 
+// Header thu gọn CHỈ còn nút chat (2026-09-19, theo yêu cầu) — bỏ icon
+// tìm kiếm và giỏ hàng khỏi đây. Giỏ hàng dời xuống nút tròn nổi riêng
+// ở CustomTabBar (xem [[marketplace-core-business-model]]); tìm kiếm dời
+// xuống 1 thanh riêng ngay đầu nội dung cuộn (`SearchEntryBar` bên dưới)
+// để không mất hẳn lối vào — header không có chỗ cho input đầy đủ.
 const MarketplaceHeader = ({ navigation }) => {
   return (
     <View style={styles.marketHeader}>
       <View style={styles.marketHeaderTop}>
-        <PressScale
-          style={styles.searchTouch}
-          onPress={() => navigation.navigate(NAVIGATION_SEARCH_V2)}
-        >
-          <View style={styles.searchDock}>
-            <Icon type="feather" name="search" color={brandColors.tealDark} size={20} />
-          </View>
-        </PressScale>
         <View style={styles.marketHeaderSpacer} />
         <HomeChatButton navigation={navigation} />
-        <HomeCartButton navigation={navigation} />
       </View>
     </View>
   );
 };
+
+const SearchEntryBar = ({ navigation }) => (
+  <PressScale style={styles.searchEntryBar} onPress={() => navigation.navigate(NAVIGATION_SEARCH_V2)}>
+    <Icon type="feather" name="search" color={brandColors.tealDark} size={s(16)} />
+    <Text style={styles.searchEntryText}>Bạn đang tìm sản phẩm gì?</Text>
+  </PressScale>
+);
 
 const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -399,6 +380,7 @@ const HomeScreen = ({ navigation }) => {
             contentContainerStyle={styles.homeStoreListContent}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}
           >
+            <SearchEntryBar navigation={navigation} />
             <HomeBannerCarousel banners={banners} status={bannersStatus} />
             <FlashSaleSection campaigns={flashSaleCampaigns} onProductPress={goToProductDetail} />
             {featuredSupplierCampaigns.map(campaign => (

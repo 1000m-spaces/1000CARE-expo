@@ -39,6 +39,13 @@ const TAB_ICON = {
   [NAVIGATION_TO_PROFILE_SCREEN]: 'user',
 };
 
+const BOTTOM_INSET = Platform.OS === 'ios' ? s(22) : s(16);
+
+// Giỏ hàng tách RIÊNG thành 1 nút tròn nổi bên phải (2026-09-19, theo
+// ảnh mẫu app giao đồ ăn sếp gửi) — pill chính giờ chỉ còn 3 module
+// đều nhau (Trang chủ/Đơn hàng/Tài khoản), route Giỏ hàng vẫn đăng ký
+// bình thường trong tab navigator (MainScreen.js) nên vẫn nhận đúng
+// `state.index`/điều hướng — chỉ khác chỗ RENDER ở đây.
 const CustomTabBar = ({ state, navigation }) => {
   const { visible, setVisible } = useTabBarVisibility();
   const translateY = React.useRef(new Animated.Value(0)).current;
@@ -52,6 +59,25 @@ const CustomTabBar = ({ state, navigation }) => {
       mass: 0.9,
     }).start();
   }, [translateY, visible]);
+
+  const goToTab = route => {
+    const isFocused = state.routes[state.index].key === route.key;
+    const event = navigation.emit({
+      type: 'tabPress',
+      target: route.key,
+      canPreventDefault: true,
+    });
+
+    if (!isFocused && !event.defaultPrevented) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setVisible(true);
+      navigation.navigate(route.name);
+    }
+  };
+
+  const cartRoute = state.routes.find(route => route.name === NAVIGATION_MY_CARTS_V2);
+  const pillRoutes = state.routes.filter(route => route.name !== NAVIGATION_MY_CARTS_V2);
+  const cartFocused = cartRoute && state.routes[state.index].key === cartRoute.key;
 
   return (
     <Animated.View
@@ -69,29 +95,14 @@ const CustomTabBar = ({ state, navigation }) => {
       ]}
     >
       <View style={styles.tabBar}>
-        {state.routes.map((route, index) => {
-          const isFocused = state.index === index;
-
-          const onPress = () => {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
-
-            if (!isFocused && !event.defaultPrevented) {
-              LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-              setVisible(true);
-              navigation.navigate(route.name);
-            }
-          };
-
+        {pillRoutes.map((route, index) => {
+          const isFocused = state.routes[state.index].key === route.key;
           const tintColor = isFocused ? brandColors.goldAccent : 'rgba(255,255,255,0.75)';
 
           return (
             <TouchableOpacity
               key={index}
-              onPress={onPress}
+              onPress={() => goToTab(route)}
               style={styles.tabItem}
               activeOpacity={0.7}
             >
@@ -103,6 +114,20 @@ const CustomTabBar = ({ state, navigation }) => {
           );
         })}
       </View>
+      {!!cartRoute && (
+        <TouchableOpacity
+          onPress={() => goToTab(cartRoute)}
+          style={[styles.cartFab, cartFocused && styles.cartFabActive]}
+          activeOpacity={0.85}
+        >
+          <Icon
+            type="feather"
+            name="shopping-cart"
+            color={cartFocused ? brandColors.goldAccent : brandColors.surface}
+            size={s(24)}
+          />
+        </TouchableOpacity>
+      )}
     </Animated.View>
   );
 };
@@ -127,11 +152,13 @@ const styles = StyleSheet.create({
   // PADDING như CSS — nên `paddingBottom` ở `container` không đẩy được
   // `tabBar` lên nữa khi tabBar tự thành absolute. Ghi thẳng khoảng cách
   // đáy lên `bottom` của chính tabBar thay vì trông chờ padding cha.
+  // `right` rút ngắn lại (thay vì s(16) full-width) để chừa chỗ cho
+  // `cartFab` nổi riêng bên phải (2026-09-19).
   tabBar: {
     position: 'absolute',
     left: s(16),
-    right: s(16),
-    bottom: Platform.OS === 'ios' ? s(22) : s(16),
+    right: s(94),
+    bottom: BOTTOM_INSET,
     flexDirection: 'row',
     borderRadius: radiusScale.pill,
     height: s(66),
@@ -149,6 +176,25 @@ const styles = StyleSheet.create({
   label: {
     fontSize: fs(10.5),
     fontWeight: '600',
+  },
+  // Nút tròn Giỏ hàng nổi riêng bên phải, cao hơn pill 1 chút cho cảm
+  // giác "nổi" đúng như ảnh mẫu app giao đồ ăn sếp gửi tham khảo.
+  cartFab: {
+    position: 'absolute',
+    right: s(16),
+    bottom: BOTTOM_INSET + s(6),
+    width: s(64),
+    height: s(64),
+    borderRadius: s(32),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: brandColors.tealPrimary,
+    borderWidth: s(3),
+    borderColor: brandColors.background,
+    ...brandShadow.sheet,
+  },
+  cartFabActive: {
+    borderColor: brandColors.goldAccent,
   },
 });
 
