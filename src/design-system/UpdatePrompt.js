@@ -67,19 +67,28 @@ const UpdatePrompt = () => {
     >
       <View style={styles.overlay}>
         <View style={styles.card}>
-          <Text style={styles.title}>Đã có bản cập nhật mới</Text>
+          <Text style={styles.title}>Có bản cập nhật mới</Text>
           <Text style={styles.desc}>
-            Khởi động lại ứng dụng để áp dụng phiên bản mới nhất.
+            Ứng dụng vừa tải xong bản cập nhật mới. Khởi động lại ngay để áp dụng?
           </Text>
-          <PressScale
-            onPress={onReload}
-            disabled={reloading}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>
-              {reloading ? 'Đang khởi động lại...' : 'OK, khởi động lại'}
-            </Text>
-          </PressScale>
+          <View style={styles.buttonRow}>
+            <PressScale
+              onPress={() => setVisible(false)}
+              disabled={reloading}
+              style={styles.buttonSecondary}
+            >
+              <Text style={styles.buttonSecondaryText}>Để sau</Text>
+            </PressScale>
+            <PressScale
+              onPress={onReload}
+              disabled={reloading}
+              style={styles.buttonPrimary}
+            >
+              <Text style={styles.buttonPrimaryText}>
+                {reloading ? 'Đang khởi động...' : 'Đồng ý'}
+              </Text>
+            </PressScale>
+          </View>
         </View>
       </View>
     </Modal>
@@ -119,16 +128,36 @@ const styles = StyleSheet.create({
     lineHeight: s(19),
     marginBottom: s(20),
   },
-  button: {
+  buttonRow: {
+    flexDirection: 'row',
     width: '100%',
+    gap: s(10),
+  },
+  buttonSecondary: {
+    flex: 1,
+    minHeight: s(48),
+    borderRadius: s(radiusScale.pill),
+    backgroundColor: brandColors.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: s(16),
+  },
+  buttonSecondaryText: {
+    color: brandColors.textDark,
+    fontFamily: Fonts.bold,
+    fontWeight: 'normal',
+    fontSize: fs(14),
+  },
+  buttonPrimary: {
+    flex: 1,
     minHeight: s(48),
     borderRadius: s(radiusScale.pill),
     backgroundColor: brandColors.tealPrimary,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: s(20),
+    paddingHorizontal: s(16),
   },
-  buttonText: {
+  buttonPrimaryText: {
     color: brandColors.surface,
     fontFamily: Fonts.bold,
     fontWeight: 'normal',

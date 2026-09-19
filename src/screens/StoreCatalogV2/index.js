@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView, RefreshControl, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 import PressScale from '~/design-system/PressScale';
 import AppBackground from '~/design-system/AppBackground';
@@ -132,37 +133,55 @@ const StoreCatalogV2 = ({ navigation, route }) => {
       </View>
 
       {categories.length > 0 && (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryRow}
-        >
-          <PressScale
-            style={[styles.categoryChip, !activeCategoryId && styles.categoryChipActive]}
-            onPress={() => onSelectCategory(null)}
+        <View style={styles.categoryRowWrap}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoryRow}
           >
-            <Text style={[styles.categoryChipText, !activeCategoryId && styles.categoryChipTextActive]}>
-              Tất cả
-            </Text>
-          </PressScale>
-          {categories.map(cat => (
             <PressScale
-              key={cat.category_id}
-              style={[styles.categoryChip, activeCategoryId === cat.category_id && styles.categoryChipActive]}
-              onPress={() => onSelectCategory(cat.category_id)}
+              style={[styles.categoryChip, !activeCategoryId && styles.categoryChipActive]}
+              onPress={() => onSelectCategory(null)}
             >
-              <Text
-                style={[
-                  styles.categoryChipText,
-                  activeCategoryId === cat.category_id && styles.categoryChipTextActive,
-                ]}
-                numberOfLines={1}
-              >
-                {cat.category_name}
+              <Text style={[styles.categoryChipText, !activeCategoryId && styles.categoryChipTextActive]}>
+                Tất cả
               </Text>
             </PressScale>
-          ))}
-        </ScrollView>
+            {categories.map(cat => (
+              <PressScale
+                key={cat.category_id}
+                style={[styles.categoryChip, activeCategoryId === cat.category_id && styles.categoryChipActive]}
+                onPress={() => onSelectCategory(cat.category_id)}
+              >
+                <Text
+                  style={[
+                    styles.categoryChipText,
+                    activeCategoryId === cat.category_id && styles.categoryChipTextActive,
+                  ]}
+                  numberOfLines={1}
+                >
+                  {cat.category_name}
+                </Text>
+              </PressScale>
+            ))}
+          </ScrollView>
+          {/* Fade mờ dần ở rìa phải (2026-09-19, sửa lại lần 2) — bản sửa
+              trước chỉ giới hạn bề rộng chữ để "…" hoạt động, nhưng cái
+              user thấy là "cắt" lại là do BẢN THÂN thanh cuộn: ở vị trí
+              nghỉ (chưa cuộn), chip cuối cùng vừa lọt khung hình luôn bị
+              rìa màn hình cắt ngang dở dang — đây là hành vi tự nhiên
+              của MỌI thanh cuộn ngang (không phải lỗi chữ), không có
+              cách nào tránh 100% trừ khi che bằng 1 dải mờ dần để nhìn
+              như CHỦ Ý gợi ý "còn nữa, cuộn tiếp đi" thay vì trông như
+              vỡ layout. pointerEvents="none" để không chặn cuộn/bấm. */}
+          <LinearGradient
+            colors={['transparent', brandColors.background]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.categoryFade}
+            pointerEvents="none"
+          />
+        </View>
       )}
 
       <FlatList
@@ -225,10 +244,20 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     flexShrink: 1,
   },
+  categoryRowWrap: {
+    position: 'relative',
+    marginBottom: s(14),
+  },
   categoryRow: {
     paddingHorizontal: s(20),
     gap: s(8),
-    marginBottom: s(14),
+  },
+  categoryFade: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    width: s(28),
   },
   categoryChip: {
     paddingHorizontal: s(14),
