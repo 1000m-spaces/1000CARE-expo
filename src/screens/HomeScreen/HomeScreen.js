@@ -31,6 +31,7 @@ import { showToast } from '~/utils/toast';
 import strings from '~/i18n';
 import BackgroundWash from '~/design-system/BackgroundWash';
 import PressScale from '~/design-system/PressScale';
+import { useTabBarVisibility } from '~/navigation/TabBarVisibilityContext';
 import { s, fs } from '~/utils/responsive';
 
 // Trang chủ — 2026-09-16: thay hẳn sang backend marketplace-core theo
@@ -91,38 +92,54 @@ const BANNER_WIDTH = DEVICE_WIDTH - s(40);
 // thay vì để trống trơn không có gì.
 // Quãng đường trượt = bề rộng track - bề rộng viên thuốc - lề 2 đầu.
 const BANNER_CAPSULE_TRACK_WIDTH = BANNER_WIDTH - s(48) - s(24);
+// Mượt hơn (2026-09-19, sếp báo chỗ đổi chiều đi/về còn hơi cứng):
+// - Easing đổi từ `inOut(ease)` (quadratic mặc định RN, hơi "gãy" ở gần
+//   2 đầu) sang bezier chuẩn Material "standard" (.4,0,.2,1) — mượt và
+//   tự nhiên hơn ở cả lúc bắt đầu lẫn lúc dừng.
+// - Thêm hiệu ứng "squash & stretch" (scaleX phồng nhẹ 1→1.16→1 giữa
+//   quãng đường) — cùng lấy từ `progress` nên luôn đồng bộ khớp hướng
+//   di chuyển, tạo cảm giác viên thuốc có "đàn hồi" khi trượt thay vì
+//   chỉ dịch chuyển cứng nhắc theo 1 trục.
 const BannerLoadingCapsule = () => {
   const progress = useRef(new Animated.Value(0)).current;
+  const smoothEasing = Easing.bezier(0.4, 0, 0.2, 1);
 
   useEffect(() => {
     const loop = Animated.loop(
       Animated.sequence([
         Animated.timing(progress, {
           toValue: 1,
-          duration: 950,
-          easing: Easing.inOut(Easing.ease),
+          duration: 1100,
+          easing: smoothEasing,
           useNativeDriver: true,
         }),
         Animated.timing(progress, {
           toValue: 0,
-          duration: 950,
-          easing: Easing.inOut(Easing.ease),
+          duration: 1100,
+          easing: smoothEasing,
           useNativeDriver: true,
         }),
       ]),
     );
     loop.start();
     return () => loop.stop();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress]);
 
   const translateX = progress.interpolate({
     inputRange: [0, 1],
     outputRange: [0, BANNER_CAPSULE_TRACK_WIDTH],
   });
+  const scaleX = progress.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 1.16, 1],
+  });
 
   return (
     <View style={[styles.bannerLoadingTrack, { width: BANNER_WIDTH }]}>
-      <Animated.View style={[styles.bannerLoadingCapsule, { transform: [{ translateX }] }]} />
+      <Animated.View
+        style={[styles.bannerLoadingCapsule, { transform: [{ translateX }, { scaleX }] }]}
+      />
     </View>
   );
 };
@@ -334,6 +351,7 @@ const SearchEntryBar = ({ navigation }) => (
 
 const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const { handleScroll } = useTabBarVisibility();
 
   const versionNew = useSelector(state => getVersionNew(state));
   const forceUpdate = useSelector(state => getForceUpdate(state));
@@ -379,6 +397,8 @@ const HomeScreen = ({ navigation }) => {
             style={styles.homeStoreList}
             contentContainerStyle={styles.homeStoreListContent}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
           >
             <SearchEntryBar navigation={navigation} />
             <HomeBannerCarousel banners={banners} status={bannersStatus} />

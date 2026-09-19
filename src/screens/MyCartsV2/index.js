@@ -12,6 +12,7 @@ import { formatMoney } from '~/utils/format';
 import { NAVIGATION_STORE_CART_V2, NAVIGATION_STORES_V2 } from '~/navigation/routes';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
+import { useTabBarVisibility } from '~/navigation/TabBarVisibilityContext';
 
 // Tab "Giỏ hàng" chính — thay tab "Giỏ quà" cũ (backend NeoMed) theo
 // quyết định 2026-09-16 (thay hẳn Home/Đơn hàng/Giỏ hàng sang
@@ -22,6 +23,7 @@ import { fs, s } from '~/utils/responsive';
 // [[marketplace-core-business-model]].
 const MyCartsV2 = ({ navigation }) => {
   const dispatch = useDispatch();
+  const { handleScroll } = useTabBarVisibility();
   const status = useSelector(state => getCartsV2Status(state));
   const carts = useSelector(state => selectCartsV2(state));
   const stores = useSelector(state => selectStoresV2(state));
@@ -79,6 +81,8 @@ const MyCartsV2 = ({ navigation }) => {
         keyExtractor={item => item.id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
         refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}
         ListEmptyComponent={
           !loading && (

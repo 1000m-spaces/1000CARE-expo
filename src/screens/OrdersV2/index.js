@@ -11,6 +11,7 @@ import { formatMoney } from '~/utils/format';
 import { NAVIGATION_ORDER_DETAIL_V2 } from '~/navigation/routes';
 import { brandColors, brandShadow } from '~/design-system/tokens';
 import { fs, s } from '~/utils/responsive';
+import { useTabBarVisibility } from '~/navigation/TabBarVisibilityContext';
 
 const ORDER_STATUS_LABEL = {
   placed: { text: 'Đã đặt', color: brandColors.goldAccent },
@@ -30,6 +31,7 @@ const ORDER_STATUS_LABEL = {
 // header tự ẩn nút back khi không có gì để pop (navigation.canGoBack()).
 const OrdersV2 = ({ navigation }) => {
   const dispatch = useDispatch();
+  const { handleScroll } = useTabBarVisibility();
   const status = useSelector(state => getOrdersV2Status(state));
   const orders = useSelector(state => getOrdersV2(state));
   const loading = status === Status.LOADING;
@@ -78,6 +80,8 @@ const OrdersV2 = ({ navigation }) => {
         keyExtractor={item => String(item.id)}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={() => dispatch(getOrdersListV2())} />
         }
