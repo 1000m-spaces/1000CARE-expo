@@ -177,9 +177,12 @@ const StoreCatalogV2 = ({ navigation, route }) => {
               DÙNG rgba(...,0) THAY VÌ chuỗi 'transparent' — 'transparent'
               literal khiến LinearGradient nội suy màu ra 1 vệt đen/xám
               giữa 2 điểm dừng trên 1 số máy thật (bug 2026-09-19, y hệt
-              màu nền #F5F6F7 nhưng alpha 0 mới nội suy đúng). */}
+              màu `brandColors.background` nhưng alpha 0 mới nội suy
+              đúng — PHẢI khớp giá trị hex hiện tại của token đó, đợt
+              đổi bộ màu violet/lime sau này lỡ quên sửa số rgba cứng ở
+              đây thì lại ra vệt y như cũ). */}
           <LinearGradient
-            colors={['rgba(245,246,247,0)', brandColors.background]}
+            colors={['rgba(250,249,252,0)', brandColors.background]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.categoryFade}
