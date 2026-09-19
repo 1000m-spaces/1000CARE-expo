@@ -231,12 +231,6 @@ const styles = StyleSheet.create({
     marginBottom: s(14),
   },
   categoryChip: {
-    // maxWidth CHỦ Ý — không đặt thì Text bên trong không có bề rộng cố
-    // định để `numberOfLines={1}` biết chỗ nào cắt "…", nên chip cuối
-    // cùng đang cuộn dở bị cắt cụt ngang từ giữa chữ bởi rìa màn hình
-    // (không thấy cả viền bo tròn kết thúc), nhìn như lỗi hiển thị thay
-    // vì 1 chip đã rút gọn gọn gàng (báo lỗi 2026-09-19).
-    maxWidth: s(160),
     paddingHorizontal: s(14),
     paddingVertical: s(9),
     borderRadius: s(999),
@@ -249,6 +243,14 @@ const styles = StyleSheet.create({
     borderColor: brandColors.tealPrimary,
   },
   categoryChipText: {
+    // maxWidth đặt Ở ĐÂY (trên chính Text, KHÔNG phải trên View chip
+    // cha) — maxWidth của cha không tự ép Text con co lại vì Text không
+    // nằm trong 1 flex row cần chia chỗ, nó tự đo theo nội dung rồi
+    // TRÀN ra ngoài maxWidth của cha (RN không tự cắt trừ khi chính
+    // Text bị giới hạn bề rộng) — đây là lý do bản sửa trước (maxWidth
+    // trên categoryChip) không ăn thua, chip vẫn bị rìa màn hình cắt
+    // cụt giữa chữ thay vì tự rút gọn "…" (báo lỗi lại 2026-09-19).
+    maxWidth: s(160) - s(28),
     color: brandColors.textDark,
     fontSize: fs(12),
     fontWeight: '700',
