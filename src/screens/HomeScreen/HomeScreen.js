@@ -195,8 +195,13 @@ const HomeBannerCarousel = ({ banners, status }) => {
   );
 };
 
+// `sale_price` (2026-09-19, chỉ campaign flash_sale) — tuỳ chọn, không
+// phải SP nào trong list "Giá sốc" cũng có (backoffice thêm SP vào
+// list trước, đặt giá sốc sau). Có thì gạch ngang `price` + nổi bật
+// `sale_price`; không có thì hiện `price` bình thường như SP khác.
 const SupplierProductCard = ({ product, onPress }) => {
   const thumb = getV2ProductThumb(product);
+  const hasSale = product.sale_price != null && product.sale_price < product.price;
   return (
     <PressScale style={styles.supplierProductCard} onPress={() => onPress(product)}>
       {thumb ? (
@@ -207,7 +212,14 @@ const SupplierProductCard = ({ product, onPress }) => {
         </View>
       )}
       <Text style={styles.supplierProductName} numberOfLines={2}>{product.name}</Text>
-      <Text style={styles.supplierProductPrice}>{formatMoney(product.price, { unit: 'đ' })}</Text>
+      {hasSale ? (
+        <View style={styles.supplierProductSaleRow}>
+          <Text style={styles.supplierProductSalePrice}>{formatMoney(product.sale_price, { unit: 'đ' })}</Text>
+          <Text style={styles.supplierProductOldPrice}>{formatMoney(product.price, { unit: 'đ' })}</Text>
+        </View>
+      ) : (
+        <Text style={styles.supplierProductPrice}>{formatMoney(product.price, { unit: 'đ' })}</Text>
+      )}
     </PressScale>
   );
 };
@@ -232,9 +244,42 @@ const FeaturedSupplierBlock = ({ campaign, onProductPress }) => {
   );
 };
 
+// Đếm ngược tới `campaign.ends_at` (2026-09-19) — server chỉ trả 1 mốc
+// thời gian tĩnh, tick từng giây là việc của client. Backoffice giữ
+// nguyên mốc này khi sửa linh tinh khác (đổi SP, bật/tắt...) nên tin
+// tưởng hiển thị liên tục, KHÔNG cần refetch campaign để "làm mới" giờ.
+const formatCountdownPart = n => String(n).padStart(2, '0');
+const CountdownTimer = ({ endsAt }) => {
+  const [remainingMs, setRemainingMs] = useState(() => new Date(endsAt).getTime() - Date.now());
+
+  useEffect(() => {
+    const tick = () => setRemainingMs(new Date(endsAt).getTime() - Date.now());
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [endsAt]);
+
+  if (remainingMs <= 0) return null;
+
+  const totalSeconds = Math.floor(remainingMs / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return (
+    <View style={styles.countdownWrap}>
+      <Icon type="feather" name="clock" color={brandColors.dangerText} size={s(12)} />
+      <Text style={styles.countdownText}>
+        {formatCountdownPart(hours)}:{formatCountdownPart(minutes)}:{formatCountdownPart(seconds)}
+      </Text>
+    </View>
+  );
+};
+
 // "Giá sốc" (campaign `flash_sale`) — SP có thể thuộc NHIỀU NCC/store
-// khác nhau gộp chung 1 dải, giá là giá thật của SP (không có giá riêng
-// campaign) — hiển thị y hệt dòng SP nổi bật, chỉ khác tiêu đề + icon.
+// khác nhau gộp chung 1 dải, giá thật hoặc `sale_price` (nếu backoffice
+// đã đặt). `ends_at` (tuỳ chọn, cấp campaign) → đếm ngược, không có thì
+// khỏi hiện — hiển thị y hệt dòng SP nổi bật, chỉ khác tiêu đề + icon.
 const FlashSaleSection = ({ campaigns, onProductPress }) => {
   if (!campaigns.length) return null;
   return (
@@ -244,16 +289,18 @@ const FlashSaleSection = ({ campaigns, onProductPress }) => {
         <Text style={styles.flashSaleTitle}>Giá sốc</Text>
       </View>
       {campaigns.map(campaign => (
-        <ScrollView
-          key={campaign.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.supplierProductRail}
-        >
-          {(campaign.products || []).map(p => (
-            <SupplierProductCard key={p.product_id} product={p} onPress={onProductPress} />
-          ))}
-        </ScrollView>
+        <View key={campaign.id} style={styles.flashSaleCampaignBlock}>
+          {!!campaign.ends_at && <CountdownTimer endsAt={campaign.ends_at} />}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.supplierProductRail}
+          >
+            {(campaign.products || []).map(p => (
+              <SupplierProductCard key={p.product_id} product={p} onPress={onProductPress} />
+            ))}
+          </ScrollView>
+        </View>
       ))}
     </View>
   );

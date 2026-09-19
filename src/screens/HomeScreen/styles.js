@@ -101,6 +101,23 @@ export default StyleSheet.create({
     fontSize: fs(12.5),
     fontWeight: '800',
   },
+  supplierProductSaleRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: s(6),
+    flexWrap: 'wrap',
+  },
+  supplierProductSalePrice: {
+    color: brandColors.dangerText,
+    fontSize: fs(12.5),
+    fontWeight: '800',
+  },
+  supplierProductOldPrice: {
+    color: brandColors.mutedLight,
+    fontSize: fs(10.5),
+    fontWeight: '600',
+    textDecorationLine: 'line-through',
+  },
   flashSaleSection: {
     marginBottom: s(20),
   },
@@ -113,6 +130,25 @@ export default StyleSheet.create({
   flashSaleTitle: {
     color: brandColors.textDark,
     fontSize: fs(15),
+    fontWeight: '800',
+  },
+  flashSaleCampaignBlock: {
+    marginBottom: s(8),
+  },
+  countdownWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: s(6),
+    backgroundColor: brandColors.dangerTint,
+    borderRadius: s(999),
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+    marginBottom: s(10),
+  },
+  countdownText: {
+    color: brandColors.dangerText,
+    fontSize: fs(11.5),
     fontWeight: '800',
   },
   suggestionsSection: {
