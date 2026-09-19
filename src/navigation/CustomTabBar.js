@@ -106,7 +106,7 @@ const CustomTabBar = ({ state, navigation }) => {
               style={styles.tabItem}
               activeOpacity={0.7}
             >
-              <Icon type="feather" name={TAB_ICON[route.name]} color={tintColor} size={s(22)} />
+              <Icon type="feather" name={TAB_ICON[route.name]} color={tintColor} size={s(19)} />
               <Text style={[styles.label, { color: tintColor }]} numberOfLines={1}>
                 {TAB_LABEL[route.name]}
               </Text>
@@ -124,7 +124,7 @@ const CustomTabBar = ({ state, navigation }) => {
             type="feather"
             name="shopping-cart"
             color={cartFocused ? brandColors.goldAccent : brandColors.surface}
-            size={s(24)}
+            size={s(21)}
           />
         </TouchableOpacity>
       )}
@@ -153,49 +153,54 @@ const styles = StyleSheet.create({
   // `tabBar` lên nữa khi tabBar tự thành absolute. Ghi thẳng khoảng cách
   // đáy lên `bottom` của chính tabBar thay vì trông chờ padding cha.
   // `right` rút ngắn lại (thay vì s(16) full-width) để chừa chỗ cho
-  // `cartFab` nổi riêng bên phải (2026-09-19).
+  // `cartFab` nổi riêng bên phải (2026-09-19). Chiều cao rút từ 66→58 +
+  // shadow nhẹ lại (2026-09-19, sếp báo thanh to/nặng quá sau khi đổi
+  // sang nền tím đặc violet-700 — khối tím lớn + đổ bóng đậm nhìn nặng
+  // hơn hẳn bản teal cũ dù cùng 1 kích thước).
   tabBar: {
     position: 'absolute',
     left: s(16),
-    right: s(94),
+    right: s(86),
     bottom: BOTTOM_INSET,
     flexDirection: 'row',
     borderRadius: radiusScale.pill,
-    height: s(66),
+    height: s(58),
     alignItems: 'center',
     justifyContent: 'space-around',
     backgroundColor: brandColors.tealPrimary, // --ink đặc, không còn kính mờ
-    ...brandShadow.sheet,
+    ...brandShadow.soft,
   },
   tabItem: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: s(3),
+    gap: s(2),
   },
   label: {
-    fontSize: fs(10.5),
+    fontSize: fs(9.5),
     fontWeight: '600',
   },
   // Nút tròn Giỏ hàng nổi riêng bên phải — CÙNG `bottom` và CÙNG chiều
   // cao với `tabBar` (không +6 nâng lên như bản trước, sếp báo bị lệch
   // không thẳng hàng với pill) để mép trên/dưới khớp thẳng hàng đúng 1
   // đường với pill chính, nhìn như 1 khối liền chứ không phải 1 FAB nổi
-  // lệch tầng. Cũng bỏ viền trắng (`borderWidth`/`borderColor` cũ) theo
-  // yêu cầu — chỉ còn shadow tách khối, không viền cứng (2026-09-19).
+  // lệch tầng. Không viền cứng thường trực (sếp từng báo viền trắng) —
+  // chỉ hiện viền vàng khi ĐANG active (`cartFabActive`, borderWidth chỉ
+  // đặt ở đó, không đặt sẵn ở `cartFab`).
   cartFab: {
     position: 'absolute',
     right: s(16),
     bottom: BOTTOM_INSET,
-    width: s(66),
-    height: s(66),
-    borderRadius: s(33),
+    width: s(58),
+    height: s(58),
+    borderRadius: s(29),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: brandColors.tealPrimary,
-    ...brandShadow.sheet,
+    ...brandShadow.soft,
   },
   cartFabActive: {
+    borderWidth: s(2),
     borderColor: brandColors.goldAccent,
   },
 });

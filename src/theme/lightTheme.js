@@ -100,7 +100,13 @@ export default {
    * Note: If statusBarColor is light, set barStyle to `dark-content` else `light-content`
    */
   appbar: {
-    statusBarColor: brandColors.surface,
+    // ĐỔI 2026-09-19: statusBarColor trước dùng `surface` (trắng tinh
+    // #FFFFFF) trong khi nền thật của app (BackgroundWash/màn Home) là
+    // `background` (#FAF9FC, hơi ngả tím rất nhẹ) — 2 màu gần giống
+    // nhau nhưng đủ khác để lộ 1 dải màu khác ngay sau status bar (sếp
+    // báo "header lệch màu so với background"). Khớp lại đúng `background`
+    // để liền mạch, không còn seam.
+    statusBarColor: brandColors.background,
     barStyle: 'dark-content',
     backgroundColor: brandColors.surface,
     tintColor: brandColors.tealPrimary,
