@@ -177,20 +177,22 @@ const styles = StyleSheet.create({
     fontSize: fs(10.5),
     fontWeight: '600',
   },
-  // Nút tròn Giỏ hàng nổi riêng bên phải, cao hơn pill 1 chút cho cảm
-  // giác "nổi" đúng như ảnh mẫu app giao đồ ăn sếp gửi tham khảo.
+  // Nút tròn Giỏ hàng nổi riêng bên phải — CÙNG `bottom` và CÙNG chiều
+  // cao với `tabBar` (không +6 nâng lên như bản trước, sếp báo bị lệch
+  // không thẳng hàng với pill) để mép trên/dưới khớp thẳng hàng đúng 1
+  // đường với pill chính, nhìn như 1 khối liền chứ không phải 1 FAB nổi
+  // lệch tầng. Cũng bỏ viền trắng (`borderWidth`/`borderColor` cũ) theo
+  // yêu cầu — chỉ còn shadow tách khối, không viền cứng (2026-09-19).
   cartFab: {
     position: 'absolute',
     right: s(16),
-    bottom: BOTTOM_INSET + s(6),
-    width: s(64),
-    height: s(64),
-    borderRadius: s(32),
+    bottom: BOTTOM_INSET,
+    width: s(66),
+    height: s(66),
+    borderRadius: s(33),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: brandColors.tealPrimary,
-    borderWidth: s(3),
-    borderColor: brandColors.background,
     ...brandShadow.sheet,
   },
   cartFabActive: {
